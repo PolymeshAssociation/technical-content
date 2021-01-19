@@ -1,0 +1,23 @@
+{
+  "name": "polymath-developer-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Polymath Developer Portal",
+  "keywords": [
+    "gatsby"
+  ],
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
+  "dependencies": {
+    "gatsby": "^2.26.1",
+    "gatsby-theme-apollo-docs": "^4.5.12",
+    "gatsby-transformer-remark": "^2.14.0",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
+  }
+}
