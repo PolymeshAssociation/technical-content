@@ -18,6 +18,8 @@
   },
   "dependencies": {
     "@cloudflare/wrangler": "^1.13.0",
+    "@fontsource/ibm-plex-mono": "~4.1.0",
+    "@fontsource/inter": "~4.1.0",
     "gatsby": "2.26.1",
     "gatsby-theme-apollo-docs": "4.5.12",
     "gatsby-transformer-remark": "^2.14.0",
