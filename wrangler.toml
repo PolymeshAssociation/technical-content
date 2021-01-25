@@ -1,0 +1,15 @@
+name = "technical-content"
+type = "webpack"
+workers_dev = true
+route = ""
+zone_id = ""
+
+[site]
+bucket = "./public"
+entry-point = "workers-site"
+
+[env.main]
+name = "technical-content-main"
+
+[env.staging]
+name = "technical-content-staging"
