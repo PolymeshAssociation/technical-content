@@ -18,11 +18,11 @@
   },
   "dependencies": {
     "@cloudflare/wrangler": "^1.13.0",
-    "gatsby": "^2.26.1",
-    "gatsby-theme-apollo-docs": "^4.5.12",
+    "gatsby": "2.26.1",
+    "gatsby-theme-apollo-docs": "4.5.12",
     "gatsby-transformer-remark": "^2.14.0",
     "puppeteer": "^5.5.0",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0"
+    "react": "16.14.0",
+    "react-dom": "16.14.0"
   }
 }
