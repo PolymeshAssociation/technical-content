@@ -1,4 +1,43 @@
-
 body {
 	font-family: "Inter";
+}
+
+h1 {
+	font-size: 30pt;
+	font-weight: 700;
+}
+
+h2 {
+	font-size: 18pt;
+	font-weight: 700;
+}
+
+h3 {
+	font-size: 16pt;
+	font-weight: 400;
+}
+
+p {
+	font-size: 10pt;
+	font-weight: 400;
+}
+
+ul {
+	font-size: 10pt;
+	font-weight: 400;
+}
+
+.highlight {
+	font-size: 12pt;
+	font-weight: 500;
+}
+
+.quote {
+	font-family: "IBM Plex Mono";
+	font-size: 15pt;
+	font-style: italic;
+}
+
+.footnote {
+	font-size: 6.6pt;
 }
