@@ -24,7 +24,7 @@ For debugging, use `npm run develop --verbose`
 To build the deployable website, run `npm run build`. This will create the output package in the `/public` folder.
 
 ### Known issues
-* All solved
+* gatsby is now using some advanced caching on local dev (which is great!). Sometimes, you might need to clear the cache manually if you don't see assets (images) or some included resources (like the menu) updating. To clean, run: `npm run clean`.
 
 ### Notes
 * When updating the gatsby configuration, you need to restart the server. There is now a message that will appear in the Browser, notifying you about this.
