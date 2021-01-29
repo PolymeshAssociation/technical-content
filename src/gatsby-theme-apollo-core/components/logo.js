@@ -8,7 +8,7 @@ const Wrapper = styled.div({
 export default function Logo() {
   return (
     <Wrapper>
-      <img src={'/polymath-logo.svg'} alt="Polymesh Logo" height="32" />
+      <img src={'/polymesh-logo.svg'} alt="Polymesh Logo" height="32" />
     </Wrapper>
   );
 }
