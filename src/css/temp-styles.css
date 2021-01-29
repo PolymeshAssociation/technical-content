@@ -76,6 +76,14 @@ a.action-link img {
 	margin: 0 15px;
 }
 
+.box-action-cards .content-wrapper .action-card-large:first-child {
+	margin-left: 0;
+}
+
+.box-action-cards .content-wrapper .action-card-large:last-child {
+	margin-right: 0;
+}
+
 .box-action-cards .content-wrapper .action-card-large .banner-image {
 	width: 100%;
 	border: 1px solid #cbcbcb;
