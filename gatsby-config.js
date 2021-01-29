@@ -17,7 +17,6 @@ const apolloDocsOptions = {
   ...themeOptions,
   root: __dirname,
   contentDir: './content/',
-  subtitle: 'Polymath Developer Portal subtitle',
   description: 'Polymath Developer Portal description',
   githubRepo: 'PolymathNetwork/technical-content',
   siteName: 'Polymath Developer Portal',

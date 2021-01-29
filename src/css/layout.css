@@ -1,24 +1,28 @@
 body {
 	font-family: "Inter";
+	color: #6C7D88;
 }
 
 h1 {
 	font-size: 30pt;
 	font-weight: 700;
+	color: #4D4D4D;
 }
 
 h2 {
 	font-size: 18pt;
 	font-weight: 700;
+	color: #4D4D4D;
 }
 
 h3 {
 	font-size: 16pt;
-	font-weight: 400;
+	font-weight: 700;
+	color: #4D4D4D;
 }
 
 p {
-	font-size: 10pt;
+	font-size: 12pt;
 	font-weight: 400;
 }
 
