@@ -1,5 +1,5 @@
 module.exports = {
-  "Introduction to Polymath": require("./01-introduction/structure.js"),
+  "Introduction to Polymesh": require("./01-introduction/structure.js"),
   "Up and running in X minutes": require("./02-up-and-running/structure.js"),
   "Originate an asset": require("./03-originate-an-asset/structure.js"),
   "Distributing assets": require("./04-distributing-assets/structure.js"),
