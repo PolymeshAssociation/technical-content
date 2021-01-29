@@ -1,6 +1,6 @@
 const themeOptions = require('./theme-options');
 
-const pathPrefix = "";
+const pathPrefix = "/";
 
 const getSidebarConfig = () => {
   const sidebarContent = require('./content/structure.js');
@@ -16,7 +16,7 @@ const getSidebarConfig = () => {
 const apolloDocsOptions = {
   ...themeOptions,
   root: __dirname,
-  contentDir: 'content',
+  contentDir: './content/',
   subtitle: 'Polymath Developer Portal subtitle',
   description: 'Polymath Developer Portal description',
   githubRepo: 'PolymathNetwork/technical-content',
@@ -33,6 +33,9 @@ module.exports = {
   	{
       resolve: 'gatsby-theme-apollo-docs',
       options: apolloDocsOptions
+    },
+    {
+      resolve: 'gatsby-transformer-remark',
     }
   ]
 };
