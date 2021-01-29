@@ -5,3 +5,134 @@ slug: governance-on-polymesh
 ---
 
 # Governance on Polymesh
+
+Governance in blockchains means a set of rules outlining the chain management, change implementation, and decision-making responsibilities.
+
+In blockchains, governance is always a very difficult but equally important topic. This is especially true for blockchains on which security tokens are issued, as the chain is the source of truth, i.e. it establishes the state of facts.
+
+There are two distinct **types of governance** in blockchain networks:
+-	On-chain governance (rules and decision-making are on-chain), like in the case of Tezos, Cardano, Polkadot and Polymesh, and
+-	Off-chain governance (debates in forums like Reddit, conferences, et.), such as in Ethereum or Bitcoin.
+
+On-chain governance is beneficial due to the transparency of rules and the inclusion of users in the decision-making process.
+
+General-purpose blockchains are often challenged by change management. Disagreements on changes to the blockchain or their implementation can lead to forks. In case of hard forks, there is no current legal or regulatory clarity. Therefore, there is significant coordination necessary between the nodes that run the blockchain’s software to successfully implement upgrades. At the same time, blockchains have to be able to adapt and evolve.
+
+## Governance on Polymesh
+
+Governance is established in **upgrades** and **on-chain governance**. The governance system is designed to be compatible with regulatory regimes and provide a solution to the challenges general-built blockchains have in the areas of identity, accountability, confidentiality, system governance and evolution.
+
+Governance encompasses the following areas:
+-	Inflation care,
+-	Penalties,
+-	Bonding periods,
+-	Chain upgrades, and 
+-	Validation of existing operators.
+
+Operators have to be validated to implement a permissioned blockchain and manage permission roles. Validation is bound by the governance system fostering decentralisation.
+
+Chain upgrades are essential for the blockchain to evolve. In Polymesh, the node binary is on-chain.
+
+
+NOTES-TBI
+•	Use governance for a bunch of areas:
+•	Chain upgrade (hard fork)
+•	Inclusion of upgrades
+•	General -purpose chains: coordination problem of chains like Ethereum, when it comes to updates
+•	Polymesh: Node binary is on-chain (binary for blockchain → upgrade is change on-chain representation of the binary → every node checks if there is a new binary, if yes, then it starts working with that version
+•	Possibility of a hard fork? Highly unlikely
+•	Chose WebAssembly → no bugs because of OS
+•	BUT: software bugs could create a divergence leading to a fork
+•	Result: no messy governance → finality required for legal transfer and payment probability
+•	Architecturally: Built on the Substrate Framework
+•	Forkless Runtime Upgrades → seamless upgrades on the chain rather than risk hard forks
+•	Any changes to the chain (typically recorded IRL) being recorded directly on the chain
+•	Enables users to create proposals and support proposed changes all on the immutable ledger
+•	Forkless Runtime Upgrades 
+•	Record and store chain governance information → convenient from a chain management standpoint 
+•	User of chain gets a voice on how chain is managed → through Polymesh Governance dApp (user friendly interface)
+•	2 chamber approach
+•	1st chamber: all POLYX token holders →  Any POLYX holder can create a Polymesh Improvement Proposal (PIP) by submitting details of their change and bonding POLYX to the PIP
+•	Cooling-off period
+•	Poll of support begins, where support is shown by POLYX bonded either for or against the passing of the PIP
+•	The PIP with most support will be evaluated and voted on by the Governing Council at the next scheduled meeting.
+•	Additional community-supported PIPs may be taken into consideration as well.
+•	2nd chamber: Polymesh Governing Council (GC) 
+•	Primary role of the GC: manage, find consensus, and chart a path forward for the chain, can fast-track proposals to deal with emergency fixes and deploy new features during Testnet 
+•	Membership: ⅔ majority, self-managed for Genesis block already set, future: possible combination between number of seats for token holders and others
+NOTES
+
+
+## The governance process
+
+Upgrades to the Polymesh blockchain can be submitted for review and approval through a Polymesh Improvement Proposal (PIP). Proposals are concrete, on-chain actions. Areas relating to the off-chain realm are not addressed by PIPs.
+
+Governance in Polymesh includes **three stakeholders**:
+-	the POLYX token holders,
+-	the Committees, and
+-	the Governing Council.
+
+The **Committees** are groups of individuals with five to 20 members. They are categorised by topics. Committees can submit PIPs, so-called community-curated PIPs. These are always considered by the Governing Council, the decision-making body.
+The **Governing Council** is a group of individuals or identities. It is the body responsible for decision-making.
+
+Currently membership in the Committees and Governing Council is not mutually exclusive, i.e. members can be part of both at the same time. This can be changed in the future through a PIP.
+
+The governance process is comprised of the following **stages**:
+1.	Proposal
+2.	Signalling
+3.	Voting
+4.	Governing Council meeting
+
+Let’s take a more detailed look at the different stages of the governance process! How does a PIP become an upgrade to the Polymesh blockchain?
+
+To **propose** an upgrade a PIP has to be submitted. One can bond some POLYX to the proposal and add information specifying the proposal. Next the PIP is open for **signalling**; POLYX token holders can signal support or dissent with the PIP by bonding POLYX to it. The native token is used as an indicator of the proposal’s popularity. After the community has an opportunity to voice their opinion, the PIP moves to the **voting** stage.
+
+--> div box
+Do you want to take a look at the last PIPs?
+INCLUDE SCREENSHOT FROM DASHBOARD and LINK FOR GITHUB
+
+
+NOTES - TBI
+•	Process:
+		→ SIGNALLING for governance
+3.	VOTING
+•	Depends on number of POLYX tokens
+•	Voting rights: 1 POLYX=1 vote [this is modifiable]
+•	Can split number of tokens
+•	Can only use as many POLYX as one currently holds
+•	POLYX is locked while bonded, only withdraw and staking possible → didn’t want to make users decide between network security and using tokens
+•	Once proposal is through or vote is withdrawn, then tokens will be sent back/freed
+•	Signalling from the community rather than voting
+4.	Governing Council Meeting
+•	Does snapshot of proposal → Ordered by Y/N votes
+•	Discusses proposals → number of proposals revised each month/session can be decided by council
+•	Which is the most important proposal?
+•	Order of debate = order of snapshot
+•	Decision possibilities: approve/reject/skip proposal
+•	Skip: only fixed number of times before having to decide
+•	A decision for each proposal is required
+•	Here Signals come into play: Outcome signal for governance process to which proposals are important → Governing Council decides
+→ Community/token holders need to be taken into consideration
+Compromise: Control over ecosystem, while investing a large amount of assets
+•	Release Coordinator (RC) 
+•	Executes PIPs, i.e. schedules them
+•	Member of Governing Council
+•	Can be replaced
+•	Cooling-off Period: PIP visible but cannot be voted → can be amended or deleted 
+•	Cooling-off Period: PIP visible but cannot be voted → can be amended or deleted 
+
+•	Implemented on-chain as PIPs are token-curated and their snapshot is token-curated → registry
+•	Transparency limited on voting records: don’t know who voted how, but how vote resulted
+NOTES
+
+
+## Step-by-step: Governance possibilities with the Dashboard
+
+--> WILL ADD SCREENSHOTS AND STEPS
+
+--> Screenshots will be polished for 2nd round. -->
+
+References
+•	Governance: https://info.polymath.network/blog/polymesh-pillar-series-part-4-governance-on-polymesh
+•	Forkless Runtime Upgrades: https://www.parity.io/hello-substrate/ + https://www.parity.io/a-brief-summary-of-everything-substrate-polkadot/ 
+•	Best Practices for Creating Proposals on Polymesh Governance: https://blog.polymath.network/best-practices-creating-proposals-polymesh-governance-ff1d68d8dbe9 
