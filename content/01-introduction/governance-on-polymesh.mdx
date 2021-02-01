@@ -75,11 +75,11 @@ Do you want to take a look at the last PIPs? LINK FOR GITHUB
 
 The **voting** for the signalling phase depends on the number of POLYX tokens, where one POLYX equals one vote. This could be modified by a PIP. The number of POLYX tokens can be split, but at all times, one cannot use more POLYX than one holds at the time. During the bonding, the POLYX is locked. It can **only** be withdrawn. Staking of the bonded tokens is still possible. This conditions don’t make users opt between network security and the use of tokens. Once the proposal is through, i.e. the PIP reached enough support, or in case votes are withdrawn, the tokens are freed.
 
-After PIPs finalise the signalling stage, they are considered in a **Governing Council Meeting**. First, a snapshot of the proposals is taken and ordered by the number of “Yes” and “No” votes for each proposal. This determines the order in which the proposals are discussed by the council. The number of proposals revised during each session can be determined by the council.
+After PIPs finalise the signalling stage, they are considered in a **Governing Council Meeting**. First, a snapshot of the proposals is taken and ordered by the number of "Yes" and "No" votes for each proposal. This determines the order in which the proposals are discussed by the council. The number of proposals revised during each session can be determined by the council.
 
 How is the order of debate determined exactly? Does it go from most to least important proposal? The order of debate follows the order found in the snapshot.
 
-When considering the individual PIPs, council members can either “approve”, “reject”, or “skip” a proposal. With the caveat that there is only a fixed number of times a proposal can be skipped before it has to be approved or rejected, as a decision for each proposal is required.
+When considering the individual PIPs, council members can either "approve", "reject", or "skip" a proposal. With the caveat that there is only a fixed number of times a proposal can be skipped before it has to be approved or rejected, as a decision for each proposal is required.
 
 Now, the signals come into play. The signals from the token holders are indications for the Governing Council to base their decisions on it in regard to support for a PIP as well as perceived importance. Signalling can be understood as a result of a compromise between managing the ecosystem while also investing a large amount of assets.
 
@@ -90,3 +90,168 @@ The proposals are implemented on-chain, as PIPs and the snapshot are token-curat
 Transparency can be a tricky characteristic when it comes to voting procedures in general. In Polymesh, transparency is limited on voting records. Meaning, one cannot know who voted how, only the vote result as such.
 
 ## Step-by-step: Governance possibilities with the Dashboard
+
+Now that we have a clear understanding of the governance process itself, let’s take a look at how this translates to our Dashboard.
+
+First, open up your browser and check that you are logged into your Polymesh Wallet. Open the dashboard by going to [https://dashboard.polymesh.live/](https://dashboard.polymesh.live/).
+
+If it’s your first time, you will probably see the following:
+
+![Welcome to the Polymesh Dashboard](../features/images/welcome-polymesh-dashboard.png)
+ 
+Click on "Connect Polymesh Wallet". Your wallet will then ask you for an authorisation.
+
+![Dashboard Access](../features/images/dashboard-authorisation.png)
+
+Click on "Authorize".
+
+The Dashboard will open in your browser.
+
+![Dashboard Overview](../features/images/dashboard-general.png)
+
+Now, in the upper tab bar click on "Governance".
+
+This will lead you to:
+
+![Polymesh Governance Page](../features/images/polymesh-governance-page.png)
+
+Click on "Go to Governance" to be redirected to [https://governance.polymesh.live/](https://governance.polymesh.live/).
+
+![Connect Wallet to Governance](../features/images/governance-landing-page.png)
+
+If you see the above, then please click on "Connect Polymesh Wallet".
+
+Once you have connected the wallet or if you don’t see the above, the redirect should lead you to:
+
+![Governance Dashboard Overview](../features/images/governance-dashboard.png)
+
+Welcome to the governance dashboard!
+
+The dashboard also includes a short overview of your Polymesh ID, keys, and account balance.
+
+With the dashboard you are able to:
+
+* see who the council members are,
+* gain insights into the closed proposals,
+* take a look at the council agenda,
+* check the open proposals, and
+* create a proposal.
+
+To see who the **members of the Governing Council** are, click on "See council members".
+
+![List of Council Members](../features/images/list-council members.png)
+
+You will be redirected to a list of the members with their corresponding identities, i.e. DID.
+
+Do you want to take a look at past proposals? Just click on the tab at the lower half of the page saying "Closed Proposals".
+
+![Closed Proposals](../features/images/closed-proposals.png)
+
+How is the council agenda looking? The same process applies; click on the tab at the lower half of the page titled "Council Agenda".
+
+![Council Agenda](../features/images/council-agenda.png)
+
+To have an overview of the current proposals, which will be open to signalling by token holders, click on the tab "Open Proposals". You can sort the list of open PIPs by votes and proposal IDs.
+
+![Current Proposals](../features/images/open-proposals.png)
+
+All open proposals will be listed. The listing includes certain information on the PIPs:
+
+* the proposal ID (at the upper left corner of each "proposal card"),
+* right beneath it, the proposal name,
+* the identity of the user that submit the proposal,
+* the proposal’s category, and 
+* a button to participate in the signalling.
+
+Click on "Have your say" to be directed to signalling for the PIP.
+
+![Overview Test Proposal](../features/images/test-proposal-overview.png)
+
+To participate in the signalling, click either on "Yes" or "No" to show support or dissent, and enter the amount of POLYX with which you want to weigh your vote. You can also use "Set Max" so that all your POLYX is used as weight for the proposal.
+
+Now, click on "Submit".
+
+--> Include an info box:
+You can only bond as much POLYX as you currently hold!
+
+For example, let’s support the test proposal with 10 POLYX. So, click "Yes" and insert the number of POLYX in the field.
+
+![Support Proposals](../features/images/proposal-support.png)
+
+Once you hit "Submit", a window opens for you to review and confirm your response. As long as the proposal remains open, you can change your vote.
+
+![Submit Vote](../features/images/submit-vote.png)
+
+Confirm if all looks good.
+
+A window to your Wallet will open, requesting you to sign your vote.
+
+![Signing Vote](../features/images/signing-vote.png)
+
+Click on "Sign" after entering your wallet password in the field.
+
+In your browser, you should see:
+
+![Notification Successful Voting](../features/images/poll-submission-successful.png)
+
+Congratulations! You just voted.
+
+Now that we have explored the Dashboard. Let’s just go for it and create a proposal!
+
+In your governance dashboard, click on the button "Create a proposal". This opens a side window in your browser that helps you include all the general information and implementation details necessary to submit a proposal.
+
+![Proposal Specifications](../features/images/proposal-details.png)
+
+As general information, the proposal title and the proposal details, i.e. an URL to the details, is included. For the implementation details, one has to select a category for the proposal. The available categories are:
+
+* User Balances,
+* User Identity,
+* Proposal Rules,
+* User Identity,
+* Proposal Rules,
+* Polymesh Voting Rules,
+* Staking Parameters, and
+* System Preferences.
+
+![Categories](../features/images/category-overview.png)
+
+The function to call also has to be selected.
+
+For the category _User Balances_ you can select _Force Transfer_. Afterwards, you need to specify:
+
+* the Polymesh address from which tokens are transferred,
+* the Polymesh address to which tokens are transferred, and
+* the amount of POLYX to be transferred.
+
+When selecting _User Identity_ the function to call is _User Identity Master key rotation for CDD_. This function requires details in regard to the authorization for rotation.
+
+When choosing _Proposal Rules_, the function is _Set minimum bond required for proposals_. Details on the minimum bond have to be included.
+
+For _Polymesh Voting Rules_ the option _Set minimum bond required for proposal to pass_ is available. It requires details on the numerator for threshold and denominator of threshold.
+
+The _System Preferences_ category offers _Queue code for network parameters_. A code snippet has to be added as detailed information.
+
+When the category is _Staking Parameters_ one can select between _Add a permissioned operator_, _Waive deferred operator fine_, _Remove a permissioned operator_, and _Set minimum stake amount_. When adding or removing a permissioned operator, specifications on the Polymesh ID for both and the intended count when adding an operator is required. To wave a deferred operator fine, era and list of fines are necessary. To propose a change on the minimum stake amount, a stake amount in POLYX needs to be provided.
+
+After including all general information and implementation details, enter the amount of bond for the proposal and click "Submit".
+
+--> Include tip box
+The minimum amount for a bond is 5,000.00 POLYX.
+
+Afterwards, the proposal submission has to be confirmed.
+
+![Proposal Submission Confirmation](../features/images/proposal-submission-confirmation.png)
+
+Once you confirm, you will need to sign the proposal submission.
+
+![Signing Proposal Submission](../features/images/signing-proposal.png)
+
+"Sign" the submission and you have just included a new proposal.
+
+![Successful Proposal Submission](../features/images/successful-proposal-submission.png)
+
+It will be visible under the "Open Proposal" tab.
+
+Congratulations on submitting a proposal!
+
+--> Screenshots will be polished for next round. -->
