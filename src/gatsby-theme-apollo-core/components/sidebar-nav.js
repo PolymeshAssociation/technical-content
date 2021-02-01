@@ -24,7 +24,7 @@ const ExpandAll = styled.button(smallCaps, {
   cursor: 'pointer',
   color: 'inherit',
   ':hover': {
-    opacity: colors.hoverOpacity,
+    opacity: 1,
     color: "#1348E3"
   },
   svg: {
@@ -36,12 +36,13 @@ const ExpandAll = styled.button(smallCaps, {
 const StyledList = styled.ul({
   marginLeft: 0,
   marginBottom: 32,
+  marginTop: '10px',
   listStyle: 'none'
 });
 
 const StyledListItem = styled.li({
   fontSize: '1rem',
-  lineHeight: 1.5,
+  lineHeight: 1.214,
   marginBottom: '0.5rem',
   a: {
     color: 'inherit',
@@ -50,8 +51,11 @@ const StyledListItem = styled.li({
       opacity: colors.hoverOpacity,
       color: "#1348E3"
     },
+    ':first-child': {
+      marginBottom: '10px'
+    },
     '&.active': {
-      color: colors.primary,
+      color: "#1348E3",
       pointerEvents: 'none'
     }
   }
@@ -70,15 +74,15 @@ const categoryTitleStyles = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '10px 0',
+  padding: '3px 0',
   color: colors.text1,
   fontWeight: 'bold',
   fontSize: "0.9rem",
-  lineHeight: '1',
+  lineHeight: '1.9',
   ...smallCaps,
   svg: size(10),
   '&.active': {
-    color: colors.primary
+    color: "#1348E3"
   }
 };
 
