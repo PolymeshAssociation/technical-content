@@ -39,7 +39,12 @@ Adding to a fork improbability, Polymesh is built on the [Substrate Framework](h
 
 ## The governance process
 
-Upgrades to the Polymesh blockchain can be submitted for review and approval through a Polymesh Improvement Proposal (PIP). Proposals are concrete, on-chain actions. Areas relating to the off-chain realm are not addressed by PIPs.
+Upgrades to the Polymesh blockchain can be submitted for review and approval through a **Polymesh Improvement Proposal (PIP)**. Proposals are concrete, on-chain actions. Areas relating to the off-chain realm are not addressed by PIPs. PIPs are the mean to manage:
+
+* network upgrades,
+* changing network parameters,
+* network role permissions (i.e. adding permissioned operators or CDD providers), and
+* treasury fund distribution.
 
 Polymesh bases its governance on a **two chamber approach**. The first chamber consists of all POLYX utility token holders. Any POLYX holder has the right to submit a PIP by submitting detailed information regarding the change and bond POLYX to the PIP. The second chamber is the Polymesh Governing Council.
 
@@ -48,12 +53,12 @@ Let’s take a closer look at the stakeholders involved in governance!
 Governance in Polymesh includes **three stakeholders**:
 
 * the POLYX token holders,
-* the Committees, and
+* the committees, and
 * the Governing Council.
 
-The **Committees** are groups of individuals with 5 to 20 members. They are categorised by topics. Committees can submit PIPs, so-called community-curated PIPs. These are always considered by the Governing Council, the decision-making body.
+The **committees** are groups of individuals with 5 to 20 members. They are categorised by topics. There are different technical committees and an Upgrade Committee. Committees can submit PIPs. These are always considered by the Governing Council, the decision-making body. Membership is determined by voting in the committees; Members are voted in and out the committees by their members. Each committee has a voting treshhold, i.e. a minimum number of members needs to agree on an action for it to be executed.
 
-The **Governing Council** is a group of individuals or identities. It is the body responsible for decision-making. Currently, membership in the Committees and Governing Council is not mutually exclusive, i.e. members can be part of both at the same time. Membership for the Genesis block, i.e. the first block in the chain, is already set. The council’s composition can be changed in the future through a PIP. The primary role of the Governing Council is to manage the blockchain, find consensus, and chart the general direction of development for the blockchain. It can fast-track proposals to deal with emergency fixes.
+The **Governing Council** is a group of individuals or identities. It is the body responsible for decision-making. The council manages its own membership and voting structure (**non-PIP actions**). Currently, membership in the Committees and Governing Council is not mutually exclusive, i.e. members can be part of both at the same time. Membership for the Genesis block, i.e. the first block in the chain, is already set. The council’s composition can be changed in the future through a PIP. The primary role of the Governing Council is to manage the blockchain, find consensus, and chart the general direction of development for the blockchain. It can fast-track proposals to deal with emergency fixes.
 
 The governance process is comprised of the following **stages**:
 
@@ -62,28 +67,50 @@ The governance process is comprised of the following **stages**:
 3. Voting (during Governing Council Meeting)
 4. PIP Implementation
 
+Let’s take a more detailed look at what happens during the different stages of the governance process! How does a PIP become an upgrade to the Polymesh blockchain?
+
 ![Governance Process Overview](../features/images/governance-process-overview.png)
 
-Let’s take a more detailed look at the different stages of the governance process! How does a PIP become an upgrade to the Polymesh blockchain?
+The governance process begins with a proposal submission; To **propose** an upgrade a PIP has to be submitted. PIPs can be submitted as either a **community proposal** or a **committee proposal**.
 
-To **propose** an upgrade a PIP has to be submitted. One can bond some POLYX to the proposal and add information specifying the proposal. When a PIP is submitted, the PIP is visible but cannot be voted upon during a cooling-off period. Still, the proposal can be amended or deleted.
+When a token holder submits a community proposal, he/she can bond some POLYX to the proposal and add information specifying the proposal. When a PIP is submitted, it remains visible and goes into a cooling-off period. During this period, the proposal can be amended or deleted.
 
 After the cooling-off period, the PIP is open for **support signalling**, so to say voting by the community of token holders: POLYX token holders can signal support or dissent with the PIP by bonding POLYX to it. The native token is used as an indicator of the proposal’s popularity.
 
---> div box has to be included!
-Do you want to take a look at the last PIPs? LINK FOR GITHUB
+<HighlightBox type="tip">
+
+Do you want to take a look at the last PIPs? Check it out at []() LINK FOR GITHUB --> ask Adam and Nick
+
+</HighlightBox>
 
 The **voting** for the signalling phase depends on the number of POLYX tokens, where one POLYX equals one vote. This could be modified by a PIP. The number of POLYX tokens can be split, but at all times, one cannot use more POLYX than one holds at the time. During the bonding, the POLYX is locked. It can **only** be withdrawn. Staking of the bonded tokens is still possible. This conditions don’t make users opt between network security and the use of tokens. Once the proposal is through, i.e. the PIP reached enough support, or in case votes are withdrawn, the tokens are freed.
 
 After PIPs finalise the signalling stage, they are considered in a **Governing Council Meeting**. First, a snapshot of the proposals is taken and ordered by the number of "Yes" and "No" votes for each proposal. This determines the order in which the proposals are discussed by the council. The number of proposals revised during each session can be determined by the council.
 
+<HighlightBox type="info">
+
+Unlike community submitted PIPs, a committee submitted PIP is not subject to signalling from the community. It is included in the ordered list of PIPs for the Governing Council Meeting.
+
+</HighlightBox>
+
 How is the order of debate determined exactly? Does it go from most to least important proposal? The order of debate follows the order found in the snapshot.
 
-When considering the individual PIPs, council members can either "approve", "reject", or "skip" a proposal. With the caveat that there is only a fixed number of times a proposal can be skipped before it has to be approved or rejected, as a decision for each proposal is required.
+The snapshot gives the Governing Council a list of PIPs, including:
+
+* committee submitted PIPs (proposals from the Technical Committees and Upgrade Commitee), and
+* POLYX-curated PIPs (proposals from POLYX token holders).
+
+Committee proposals are unordered in the snapshot, while community proposals are ordered depending on the signalling of token holders.
+
+The Governing Council has to execute community PIPs as ordered in the snapshot. Whereas, committee proposals can be executed in any order or not be executed.
+
+When considering the individual PIPs, council members can either "approve", "reject", or "skip" a proposal. With the caveat that there is only a fixed number of times a proposal can be skipped before it has to be approved or rejected, as a decision for each proposal is required. Currently, token-curated PIPs can only be skipped **once**.
 
 Now, the signals come into play. The signals from the token holders are indications for the Governing Council to base their decisions on it in regard to support for a PIP as well as perceived importance. Signalling can be understood as a result of a compromise between managing the ecosystem while also investing a large amount of assets.
 
-Once the Governing Council approves the PIPs, the so-called **Release Coordinator** executes the PIPs, i.e. schedules their implementation. The Release Coordinator is a member of the Governing Council, which can be replaced.
+Once the Governing Council approves the PIPs, the so-called **Release Coordinator** executes the PIPs, i.e. schedules their implementation. The Release Coordinator is a member of the Governing Council, elected by the same.
+
+Ratified PIPs, i.e. accepted by the Governing Council, have a default execution time set in amount of blocks since ratification. The Release Coordinator can re-schedule PIPs or even enact PIPs immediately. The scheduling of PIPs allows to prepare and coordinate upgrades.
 
 The proposals are implemented on-chain, as PIPs and the snapshot are token-curated.
 
