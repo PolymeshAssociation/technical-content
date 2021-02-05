@@ -1,11 +1,12 @@
 const path = require('path');
 const here = `${path.parse(__dirname).base}${path.sep}`;
 module.exports = [
-    `${here}why-polymesh`,
-    `${here}governance-on-polymesh`,
-    `${here}technical-stack`,
-    `${here}components-and-tools`,
-    `${here}polyx`,
-    `${here}identity`,
-    `${here}discover-nets`
+    `${here}intro-why-polymesh`,
+    `${here}intro-governance`,
+    `${here}intro-stack`,
+    `${here}intro-tools`,
+    `${here}intro-polyx`,
+    `${here}intro-identity`,
+    `${here}intro-networks`,
+    `${here}intro-quiz`
 ];
