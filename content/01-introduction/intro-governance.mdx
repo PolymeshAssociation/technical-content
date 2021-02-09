@@ -4,36 +4,40 @@ description: How does the blockchain evolve?
 slug: /introduction/intro-governance
 ---
 
-_Governance in blockchains means a set of rules outlining the chain management, change implementation, and decision-making responsibilities._
+_In blockchains, the word governance describes the rules, process management and decision-making responsibilities by which the developers and maintainers keep the chain evolving._
 
-In blockchains, governance is always a very difficult but equally important topic. This is especially true for blockchains on which security tokens are issued, as the chain is the source of truth, i.e. it establishes the state of facts.
+It is always a difficult but equally important topic. This is especially true for blockchains on which participants issue security tokens, as the chain forms the source of truth, i.e. it establishes the state of facts. Additionally, one can expect the environment to evolve, which will require the blockchain itself to evolve and change too.
 
 There are two distinct **types of governance** in blockchain networks:
 
-* On-chain governance (rules and decision-making are on-chain), as in the case of Tezos, Cardano, Polkadot and Polymesh, and
-* Off-chain governance (debates in forums like Reddit, conferences, etc.), such as in Ethereum or Bitcoin.
+* On-chain governance, whereby rules and decisions are made on-chain, as in the case of Tezos, Cardano, Polkadot and, you guessed it, Polymesh.
+* Off-chain governance, whereby stakeholders debate on forums like Reddit, conferences, etc., as in the case of Ethereum and Bitcoin.
 
-On-chain governance is beneficial due to the transparency of rules and the inclusion of users in the decision-making process.
+## Off-chain governance?
 
-General-purpose blockchains are often challenged by change management. Disagreements on changes to the blockchain or their implementation can lead to forks. In case of hard forks, there is no current legal or regulatory clarity. Therefore, there is significant coordination necessary between the nodes that run the blockchain’s software to successfully implement upgrades. At the same time, blockchains have to be able to adapt and evolve.
+Off-chain is the manner by which early blockchain developers handled governance, and it presents challenges. For instance, in case of disagreements on the nature of changes to the blockchain or their implementation, the rift can lead to separate factions backing more than one implementation. This situation can lead to hard forks, i.e. a change in the protocol of a blockchain that is backward-incompatible, creating more than one source of truth. Were this to happen, there is no current legal or regulatory clarity about deciding the relevant state for security tokens. We can assume, capital market participants and regulators are unlikely to accept this uncertainty.
 
-## Governance on Polymesh
+Next, even after stakeholders have reached consensus on a given change, node operators face a coordination problem when it comes to updating them. Nodes need to deploy their blockchain software within an agreed time-window. Again, node operators need to coordinate off-chain, for this to happen. If they disagree about deployments or the implementation, forks are likely once more.
 
-Governance is established in **upgrades** and **on-chain governance**. The governance system is designed to be compatible with regulatory regimes and provides a solution to the challenges general-built blockchains have in the areas of identity, accountability, confidentiality, system governance and evolution.
+## Polymesh's take on on-chain governance
 
-Governance encompasses the following areas:
+As opposed to off-chain governance, on-chain governance's benefits lie in its rules transparency, the provable inclusion of stakeholders in the decision-making process, and on-chain coordination.
 
-* System primitives ruled by governance, such as inflation care, penalties, bonding periods,
-* Chain upgrades, and
+Governance is established in **upgrades** and **on-chain**. It is designed to be compatible with regulatory regimes and provides a solution to the challenges general-built blockchains have in the areas of identity, accountability, confidentiality, system governance and evolution.
+
+Governance covers the following areas:
+
 * The validation of existing operators.
+* Certain system primitives, such as inflation care, penalties, bonding periods.
+* Chain upgrades.
 
-Operators have to be validated to implement a permissioned blockchain and manage permission roles. Validation is bound by the governance system fostering decentralisation.
+This is a permissioned blockchain, and its operators should be able to come and go. To be able to operate, an operator needs to be validated by the system beforehand. This validation is covered by the governance system, fostering decentralisation.
 
-Chain **upgrades**, i.e. changes to the protocol of a blockchain, are essential for the blockchain to evolve. **General-purpose chains**, such as Ethereum, face a coordination problem when it comes to updates. As updates have to be accepted, i.e. implemented, by the nodes running the blockchain’s software, and much of the governance process is off-chain, i.e. updates are debated in forums outside of the chain, coordination is essential. In case of disagreements regarding the updates or their implementation, forks are likely. Especially hard forks, a change in the protocol of a blockchain that is not backward-compatible, deciding the state relevant for security tokens is impossible. Additionally, currently no legal or regulatory certainty exists for the instance of a hard fork. This aspect is unappealing for capital market participants and regulators.
+Chain **upgrades**, i.e. changes to the protocol are decided and implemented by certain stakeholders as delineated in the current governance system. Moreover, the node binary is stored directly on-chain. Meaning an upgrade leads to a change of the on-chain representation of the binary. Thus, each node checks if there is a new binary, and if there is, starts working with that new version automatically. The possibility of non-malicious hard forks is therefore highly unlikely.
 
-**Polymesh** doesn’t encounter this type of coordination challenges as governance is conducted on-chain, and upgrades are decided and implemented by certain stakeholders as delineated in the current governance system. Moreover, the node binary is stored on-chain. Meaning an upgrade leads to a change of the on-chain representation of the binary. Thus, each node checks if there is a new binary, and if there is, starts working with that new version automatically. The possibility of hard forks is therefore highly unlikely.
+Another aspect of Polymesh that adds to the improbability of hard forks is the choice to use WebAssembly (WASM) for the protocol binary. WASM bytecode was initially conceived to enable high-performance applications on webpages. For this reason, large software companies maintain WASM compilers and virtual machines for various operating system platforms. This landscape makes the risk of hard forks caused by compiler or platform bugs highly unlikely.
 
-Another aspect of Polymesh that adds to the improbability of hard forks is the choice to use WebAssembly, a bytecode created to enable high-performance applications on webpages, to avoid bugs because of the operating system. Software bugs could create a divergence, which leads to a fork but this remains highly unlikely. Polymesh’s clear-structured governance mechanism assists in achieving the finality required for legal transfer and payment probability. This is a big added value compared to the offer of general blockchains.
+Polymesh’s clear-structured governance mechanism assists in achieving the finality required for legal transfer and payment probability. This is a big added value compared to the offer of general blockchains.
 
 Adding to a fork improbability, Polymesh is built on the [Substrate Framework](https://www.substrate.io/). It allows for [forkless runtime upgrades](https://www.parity.io/a-brief-summary-of-everything-substrate-polkadot/), which results in seamless upgrades on the blockchain rather than risking a hard fork, as well as the recording and storing of the governance information on-chain. Any change to the blockchain is recorded directly on it. This is convenient from a chain management standpoint and enables the possibility for users to have a say in the chain management through a user-friendly interface, the _governance dApp_.
 
@@ -98,7 +102,7 @@ First, open up your browser and check that you are logged into your Polymesh Wal
 If it’s your first time, you will probably see the following:
 
 ![Welcome to the Polymesh Dashboard](../features/images/welcome-polymesh-dashboard.png)
- 
+
 Click on "Connect Polymesh Wallet". Your wallet will then ask you for an authorisation.
 
 ![Dashboard Access](../features/images/dashboard-authorisation.png)
@@ -160,7 +164,7 @@ All open proposals will be listed. The listing includes certain information on t
 * the proposal ID (at the upper left corner of each "proposal card"),
 * right beneath it, the proposal name,
 * the identity of the user that submit the proposal,
-* the proposal’s category, and 
+* the proposal’s category, and
 * a button to participate in the signalling.
 
 Click on "Have your say" to be directed to signalling for the PIP.
