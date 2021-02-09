@@ -20,13 +20,15 @@ This is a valid leg description. It should be evident that Alice's approval is n
 
 > Bob sent 500 USD off-chain to Alice with reference `0x123bff`
 
-This is another valid leg description. Here again both parties approval is necessary, Bob may not want to give the impression that he has sent 500 USD off-chain, or 10 million, or that it was required of him. Alice may not want to let it be known that she has received cash, as she may be asked to return it.
+This is another valid leg description, called a signed receipt. Here again both parties approval is necessary, Bob may not want to give the impression that he has sent 500 USD off-chain, or 10 million, or that it was required of him. Alice may not want to let it be known that she has received cash, as she may be asked to return it.
 
 ## Affirmations
 
-These required approvals that legs require are called **affirmations**. A key associated with an identity can be used to sign an affirmation for a leg. For a given leg to be affirmed, it needs to be have received all required affirmations.
+The approvals that legs require are called **affirmations**. A key associated with an identity can be used to sign an affirmation for a leg. For a given leg to be affirmed, it needs to be have received all required affirmations.
 
 And yes, a secondary key or a sufficiently entrusted custodian can affirm on behalf of the main identity.
+
+When the identity owning an asset has affirmed a leg, then the asset is _committed_ so it cannot be affirmed concurrently in another instruction's leg, by mistake or malice.
 
 ## Instructions - Multiparty Transactions
 
