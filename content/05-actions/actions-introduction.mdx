@@ -103,13 +103,45 @@ During the annual general meetings votes by the shareholders are conducted. Thes
 
 Eeach ballot has a start and an end date. Between start and end, investors (i.e. the token holders) can vote on all motions included in the ballot.
 
-What is a motion? A motion is a set of choices to which weights can be assigned. Usually motions can be confirmed ("aye"), declined ("nay"), or amended ("aye with X amendment"). 
+What is a motion? A motion is a set of choices to which weights can be assigned. Usually motions can be confirmed ("aye"), declined ("nay"), or amended ("aye with X amendment"). The weight of a vote is limited by the maximum amount of tokens an identity holds. It is limited by total token amount, but token amounts, i.e. weight, can be split for the whole decision.
 
+For example, an investor, i.e. token holder, of ACME tokens is asked to vote on a motion to distribute benefits. The investor holds 100 tokens.
 
+The preference of the investor is to accept the motion with an amend, then to not accept the motion withoud amends. The investor doesn't want to accept the motion in its current form.
+
+The investor weighs its vote in the following manner:
+
+* amend the motion to distribute at later point - weigh of 75 tokens,
+* decline the motion - weigh of 25 tokens, and
+* accept the motion - weigh of 0 tokens.
+
+All motions aree independent of each other. This means that the whole token amount can be used to weigh each motion seperately.
+
+What does that mean in the context of our example.
+
+There are two motions: one to distribute capital now and one to elect a new CAA. The investor weighs motion 1 in the following way:
+
+* amend the motion to distribute at later point - weigh of 75 tokens,
+* decline the motion - weigh of 25 tokens, and
+* accept the motion - weigh of 0 tokens.
+
+Motion 2 is weighed:
+
+* amend the motion to establish a different CAA - weigh of 25 tokens,
+* decline the motion - weigh of 25 tokens, and
+* accept the motion - weigh of 50 tokens.
+
+The investor was able to use all 100 tokens for weighing for each motion seperately.
+
+Is there another option to configure a ballot?
+
+A ballot can be configured with ranked-choice voting (RCV). This allows voters to specify that the weight, assigned to a choice not making it, should fall back to a different choice. For example, consider 3 choices paired with weights: - a) 49 votes, no fallback - b) 100 votes, fallback to a) - c) 120 votes, no fallback.
+
+In this case, c) initially has most weight assigned to it. However, once a) has been discarded, the 49 votes it would move over to b), which now has 149 votes in total. Therefore, b) becomes the adopted choice.
 
 # Links
 
 * Checkpoints: https://github.com/PolymathNetwork/polymesh_docs/blob/master/Polymesh/docs/assets.md#checkpoints 
 * Corporate Actions: https://developers.polymesh.live/corporate_actions/ 
-* Corporate action pallet:distribution: https://docs.polymesh.live/pallet_corporate_actions/distribution/index.html 
+* Corporate action pallet distribution: https://docs.polymesh.live/pallet_corporate_actions/distribution/index.html 
 
