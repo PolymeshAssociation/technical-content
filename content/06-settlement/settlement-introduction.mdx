@@ -1,20 +1,68 @@
 ---
 title: Overview
-description: Settlement in Polymesh
+description: Settlement and Custody in Polymesh
 slug: /settlement/settlement-introduction
 ---
 
-## Multiparty Transactions
+Settlement is where an action that was agreed beforehand is effectively acted upon. In the case of Polymesh, the prior agreement is that of an exchange or transfer of securities. And they introduce some terminology.
 
-## Instructions
+* a **leg** is the smallest action of a settlement, like 1 transfer of securities from Alice to Bob, or the recognition of an off-chain payment. Simply creating a leg does not make it execute. First, all compliance has to be satisfied. Next, a leg cannot exist by itself, instead one or more legs need to be part of:
+* an **instruction**, which aggregates related legs to create an indivisible action, an atomic transaction in computer parlance. This means that when an instruction is executed, all its legs are executed concurrently. There is no situation where only some of an instruction's legs have executed. This also means that a single unconfirmed leg can hold up the whole instruction. Additionally, an instruction cannot exist by itself, instead instructions are created and executed when _housed_ in:
+* a **venue**, which is a logical object meant for the purpose of collecting instructions. It is also associated with certain access rights, like who can add an instruction to it.
+
+Let's review those separately
 
 ## Legs
 
-## KYC Requirements
+> Alice sends 100 ACME shares from her _trading_ portfolio to Bob's default portfolio
+
+This is a valid leg description. It should be evident that Alice's approval is necessary here for the action to eventually take place; we are talking about _her_ shares here. It also necessary for Bob's approval to be collected as, despite Alice's generosity, receiving securities has tax implications that he may not want to shoulder.
+
+> Bob sent 500 USD off-chain to Alice with reference `0x123bff`
+
+This is another valid leg description. Here again both parties approval is necessary, Bob may not want to give the impression that he has sent 500 USD off-chain, or 10 million, or that it was required of him. Alice may not want to let it be known that she has received cash, as she may be asked to return it.
 
 ## Affirmations
 
+These required approvals that legs require are called **affirmations**. A key associated with an identity can be used to sign an affirmation for a leg. For a given leg to be affirmed, it needs to be have received all required affirmations.
+
+And yes, a secondary key or a sufficiently entrusted custodian can affirm on behalf of the main identity.
+
+## Instructions - Multiparty Transactions
+
+Sending shares to Bob or sending USD to Alice is all well and good, but, in our world, the overwhelming majority of securities transactions are trades. For instance:
+
+* Leg 1: Alice sends 100 of her ACME shares to Bob on the condition that she receives 500 USD.
+* Leg 2: Bob sends 500 USD to Alice on the condition that he receives 100 ACME shares.
+
+Explicit in this trade is that the 2 legs should happen in concert or none should happen at all. In computer jargon, this is called an atomic operation, a.k.a. a transaction. But because the word _transaction_ is already used in Polymesh to describe the serialised bits of information added to the blockchain, such an atomic securities trade is called an **instruction**.
+
+An instruction cannot be created without legs, and legs cannot be created outside an instruction. Also, after it has been created, an instruction cannot be modified. It should be obvious once you imagine that a party could modify the second leg after the other party has already affirmed the first leg.
+
+## KYC Requirements
+
+As all things Polymesh, for anything to happen, the compliance rules have to be met. This is true of instructions. So, in our 2-legged instruction example, the CDD claims attached to Alice's and Bob's identities should comply with the rules of ACME regarding sending and receiving, and the instruction will remain in a pending state until they are satisfied too.
+
 ## Atomic Execution
 
+## Venue
 
+Finally, an instruction is not created in a void, but instead it is created inside a venue. Ultimately, an identity is responsible for a given venue, and for the rights it gives others on it about creating instructions in it.
 
+Once an instruction has been created inside a venue, it cannot be moved to another.
+
+## Chain of Responsibility
+
+A settlement is interesting for the parties who directly benefit from it, like Alice and Bob in our trading example. However, they are not the only parties that wish to see settlement happen without problems.
+
+### Seen from exchanges
+
+An exchange matches parties for a trade to which they agreed in principle. When the exchange has a match, the parties are legally bound to complete the trade, i.e. settle it. If a trading party fails to complete the trade, the reputational risk would jump back at the exchange, raising questions about the honesty of its traders. So exchanges have a vested interest in making sure that all their matched trades settle.
+
+To achieve this they keep tabs on their participants' reputation, and make sure to collect adequate information before creating a fully-descriptive instruction.
+
+### Seen from custodians
+
+Custodians can represent a security beneficiary, for instance on an exchange. They may represent more than one beneficiary on an exchange too, and, from the point of view of an exchange, the _trader_ is the custodian. So the exchange is in effect keeping track of the custodians' reputations. In turn, when it comes to a given settlement, a custodian cannot override a beneficiary's failing compliance. This is a reputation risk for custodians. Therefore, they ought to check for the compliance of their customers before they go and represent them on an exchange.
+
+Also, given enough liquidity, a given custodian can also act as an exchange between parties when it is possible to create such matches. In this case too, the custodians have a vested interest in making sure that a settlement instruction completes.
