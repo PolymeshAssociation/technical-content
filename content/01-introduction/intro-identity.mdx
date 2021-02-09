@@ -1,0 +1,146 @@
+---
+title: Identity
+description: Identity in Polymesh
+slug: /introduction/intro-identity
+---
+
+## “My name is Alice”
+
+This deceptively simple-sounding statement is among the first sentences children learn to say and it is among the first statements one learns when studying a new language. This concept is second-nature to human beings.
+
+Just as proverbial fish seldom think about water, we seldom find ourselves pondering the meaning of such a statement. But, when we are talking about systems that “prove” certain things, it’s important to understand exactly what is being proven, and how it is being proven. Let us avoid confusion about fundamental concepts by deconstructing what was said, consider the challenge of proving it and the way Polymesh solves the problem.
+
+## Polymesh Identity: “Who are you?”
+
+One of the first challenges we face when unpacking this topic is that some of the common terms are overloaded with too many meanings for different contexts. Let us make the first distinction.
+
+You, dear reader, are the one who is reading this message. You may hear the words in your mind as you absorb their meaning. No matter what you were called, or how many times you change your name, you will always be you. You can do things and you can own things. You can interact with others. You can be accountable for the things you do.
+
+Intuitively, you know that someone wrote the words, possibly a team of people. But you also know that this publication comes from Polymath, and Polymath, the organisation is responsible for what is written here.
+
+In the legal and corporate world, corporations are “persons” meaning (approximately) that organisations can own things and do things. The people who work for organisations are generally not individually responsible for things the organisation does. They work within the organisation and they usually have limited authority to act on the organisation’s behalf. Indeed, given that an organisation is a legal construct, we can surmise that whenever an organisation acts, it is probably executed by one or more people acting on its behalf or possibly an automated system that is owned by the organisation and operated by the people who work there.
+
+Polymesh deals with assets, ownership, and financial transactions. A Polymesh “Identity”, or PID, can be an individual or an organisation. Organisations always act through the people and automations that are authorised to act on their behalf.
+
+This brings us to the first important pillar that will support our understanding of Polymesh Identities:
+
+A PID represents an individual or an organisation.
+There may be one or more actors with unique signatures and defined permissions who act on behalf of the PID.
+
+## Attestations: “Show me your ID”
+
+Discussion of “Identity” and what it means can be hampered by the various meanings of the phrase “ID” in other contexts. Clearly, your driver’s license and passport are not you. They are in your wallet or purse, and you are reading this message. No rational observer would confuse a plastic document for you. When someone asks us to show our ID, this is usually a request for evidence of identity.
+
+In social settings, it is usually of no importance to confirm someone’s legal name. They may prefer to be called by something else, and that’s acceptable in a casual context. We might consider it rude if a new acquaintance challenged our claim about our first name for no apparent reason. In more formal settings, it is important to confirm the facts and we are accustomed to presenting our “ID”, more precisely documents we have collected over our lifetimes, in order to demonstrate that our claims are indeed factual.
+
+Can we say that an “ID” document provides proof of a fact? Are such documents always accurate? Not so if one has moved recently. Details like our home address might be out of date for a time. It would be more accurate to say that an ID document provides evidence.
+
+Will any document suffice? It would be more accurate to say that only documents that emerge from known issuers with strict processes can provide strong evidence.
+
+If one is presenting a passport as evidence of citizenship then we can say, with certainty that the passport office of a certain sovereign nation believed, at the time of issuance, that the person’s citizenship was as specified in the document.
+
+Another property of good ID documents is they should be difficult to forge. The more forgery-resistant the document is, the stronger the evidence. This is where cryptography shines since there is no known (practical) method of forging cryptographic signatures. We can always say, with near certainty, that someone with knowledge of a given private key must have produced a given signature. The main caveat is that private keys must be kept confidential.
+
+We might summarise by saying that the strength of the evidence is proportional to the thoroughness of the process, the reputation of the document issuer, and the forgery-resistant nature of the document itself.
+
+Diagram …
+what it says, plus
+what we know about the origination process, plus
+the reputation of the issuer
+= Strength of Evidence
+
+That assessment is roughly equivalent to the decision to accept or reject an ID document that purports to establish something about the person who is presenting it.
+
+In Polymesh, descriptive properties of a PID are called Attestations. An Attestation is a statement about the PID and it is always issued by another Identity. As we will see, Know Your Customer (KYC) providers and Customer Due Diligence (CDD) providers execute their own internal processes to confirm the facts and then issue Attestations. This enables a PID to prove something about themselves in (approximately) the following cryptographically provable  format:
+
+A known, accountable organisation signed an attestation on a certain day indicating that the PID in question represents Alice. This Attestation expires on a given date.
+
+Slightly more technically accurate:
+
+```
+{
+    Subject: Alice’s PID,
+    Name: Alice,
+    Signed: KYC Provider,
+    Date: January 30, 2021,
+    Expires: January 29, 2022
+}
+```
+
+The KYC Service Provider that provides the Attestation is testifying that they followed their process to reach that conclusion. The Attestation is signed in a way that proves it came from someone with knowledge of the KYC Service Provider’s private key. In this way, the existence of the Attestation stands as evidence that the process took place, and `Name: Alice` was the result.
+
+Illustration
+
+Link
+
+## Signing Keys: “Sign Here”
+
+This arrangement maps well to an intuitive understanding of the actual material and legal world.
+
+Let us consider ACME Corp,  an entity with a PID. We can know the true legal name of the corporation behind a PID because a KYC Service Provider attests that they have reviewed the pertinent documentation, for example, the Certificate of Incorporation.
+
+The organisation can own things and do things. Let us say that Alice works for ACME Corp. Alice is an individual who can own things and do things for herself (her PID), as well as an employee of ACME Corp. When she is acting on behalf of ACME Corp, within the limits of her authority, she signs with a signing key by ACME Corp., on behalf of ACME Corp. When she is acting on her own behalf, she uses a self-assigned signing key associated with her personal PID.
+
+Adding just a little bit of precision to the foregoing description, an entity has its own PID, has zero or more Secondary keys, and a Primary Key that can create and remove Secondary keys. Secondary keys have well-defined permissions outlining what they can do on behalf of the PID. Permissions are managed by the Primary Key.
+
+Lastly, both Primary and Secondary signing keys may be of several types. A simple private key may be sufficiently secure for Alice’s routine duties. However, the key itself can be multi-signature if more security is desired, or a mnemonic if more convenience is desired.
+
+Illustration
+
+Link
+
+## Portfolios
+
+Polymesh Identities optionally organise owned assets into Portfolios. Portfolios are logical containers that provide a way to define permission boundaries as well as organise reporting. For example, Alice might have complete control over the assets in the Portfolio she is employed to manage, some control of specific assets in other Portfolios or all of the assets in specific Portfolios, and no control of other assets beyond her permission boundaries.
+
+Illustration
+
+Link
+
+## Permissions
+
+Polymesh permission requirements are organised on a method-by-method basis because not all permissions are required in all cases. Refer to the Reference Documentation for details.
+
+In the most stringent case, the allowable actions are the intersection of the Action, the Portfolio, and the Asset. In some cases, one or more of those properties is not relevant to the action to be undertaken so explicit permission is not required.
+
+Illustration
+
+Link
+
+## Polymesh Unique Identity System
+
+Of particular importance in the world of regulated securities is repelling so-called Sybil attacks. The name is inspired by the 1976 movie of the same name. The main character in the film is a woman who suffers from a multiple personality disorder. The creation of multiple accounts by a single individual in order to circumvent restrictions is known as a Sybil attack.
+
+An example of a Sybil attack in the realm of regulated securities could be, for example, accumulating a sizeable stake in security while avoiding reporting requirements. The Polymesh Unique Identity System is designed to repel this type of attack.
+
+PUIS is an offchain process that records hashes of PID Attestations. Attestation requirements are defined by the securities themselves, or more precisely the originators of those securities. Since the Attestations originate from KYC providers they are expected to be trustworthy and accurate. The Attestations are hashed to minimise metadata leakage and then compared to a database of observed hashes.
+
+In this way, PUIS identifies attempts to use multiple PIDs to represent the same entity.
+
+Illustration
+
+Link
+
+## Know Your Customer
+
+While efforts are underway to establish a worldwide standard, there is no universally accepted process for identifying and vetting individuals and organisations or representing the Attestations.
+
+As such, each originator establishes their own policy covering the information they must know about each investor (or counterparty) and how they must know it, i.e. the process.
+
+KYC Service Providers offer suites of services that implement such policies. Each check has corresponding procedures. For example, individual checks are steps such as consuming/interpreting an image of a passport or driver’s license, facial recognition, criminal database checks, etc., or for an organisation, collecting incorporation documents and signing officer signatures. KYC Service Providers can attest to such matters as investor accreditation, legal name, place of residence, or the legally incorporated status of an organisation.
+
+While each originator sets their own policy, considerable overlap is expected. Attestations associated with an investor’s PID can be re-used in other contexts, provided the Attestations have not expired and the Attestation the PID already has is acceptable in terms of form and source.
+
+Polymesh is designed to welcome existing KYC Service Providers into the Polymesh network. The API integrates easily with existing systems, which allows KYC Service Providers to issue on-chain Attestations. For more information on this topic, prospective KYC Service Providers should review the admission process described here.
+
+Illustration
+
+Link
+
+## Customer Due Diligence
+
+Customer Due Diligence, or CDD, is a minimal KYC Attestation that entitles a PID to interact with the Polymesh network. Functions with material importance are restricted to PIDs that have completed CDD with a CDD Service Provider.
+
+In this way, it is possible to conduct certain activities with no explicit KYC requirements in a pseudo-anonymous fashion. Even so, it is still true to say that no trading occurs between unidentifiable parties because all PIDs must complete Customer Due Diligence before materially important transactions are allowed.
+
+## Links

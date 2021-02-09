@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import {breakpoints} from 'gatsby-theme-apollo-core';
-import IconInfo from "../assets/hi-info.svg"
-import IconTip from "../assets/hi-tip.svg"
-import IconWarn from "../assets/hi-warn.svg"
+import IconInfo from "../assets/hi-info-n.svg"
+import IconTip from "../assets/hi-tip-n.svg"
+import IconWarn from "../assets/hi-warn-n.svg"
 
 const HighlightBoxWrapper = styled.div({
   background: "#EDEDED",
@@ -27,18 +27,19 @@ const HighlightBoxIcon = styled.div`
   display: flex;
   img {
     width: 80px;
+    margin: 0;
   }
 
   ${({ type }) => type==="info" && `
-    background: #2F3B59;
+    background: #4A125E;
   `}
 
   ${({ type }) => type==="tip" && `
-    background: #EC1D24;
+    background: #11D6CC;
   `}
 
   ${({ type }) => type==="warn" && `
-    background: #EDC434;
+    background: #E745F1;
   `}
 `;
 
@@ -60,22 +61,22 @@ const HighlightBoxContent = styled.div`
   
   ${({ type }) => type==="info" && `
     &::before {
-      content: "Info!";
-      color: #2F3B59;
+      content: "Info";
+      color: #4A125E;
     }
   `}
 
   ${({ type }) => type==="tip" && `
     &::before {
-      content: "Tip!";
-      color: #EC1D24;
+      content: "Tip";
+      color: #11D6CC;
     }
   `}
 
   ${({ type }) => type==="warn" && `
     &::before {
-      content: "Warning!";
-      color: #2F353F;
+      content: "Warning";
+      color: #E745F1;
     }
   `}
 `;
