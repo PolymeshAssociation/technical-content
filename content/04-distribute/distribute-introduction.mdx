@@ -4,9 +4,63 @@ description: Distributing Assets
 slug: /distributeintroduction
 ---
 
-## What is a Distribution?
+Let's start with: What is a distribution?
 
-Specialized solutions exist for corporate actions and trade settlement but other reasons for distributing assets exist. For
+Capital distributions are a common procedure in the financial world. Most capital distributions are payments related to assets from an account, fund, or individual security to investors or other beneficiaries, or those related to payments of stock or other payouts to shareholders.
+
+The source for a distribution can be a numbere of financial products. Still, all distribution usually consists of a direct payment to a beneficiary.
+
+As distributions are essential forr financial products, especially securities, they have also found there way into the Polymesh design.
+
+## Asset distribution on Polymesh
+
+When it comes to distribution, Polymesh can do more than record a corporate action on-chain. It can handle capital distributions natively on-chain to, for example, distribute dividens associated with an asset token.
+
+Asset distribution is a part of corporate actions on Polymesh.
+
+How is asset distribution conducted on Polymesh?
+
+First, a corporate action (CA) is created with a predictable or unpredictable benefit using ```initiate_corporate_action```.
+
+<HighlightBox type="tip">
+
+If the term corporate action doesn't ring a bell or you want to take a closer look at corporate actions in Polymesh, just go to the module addressing corporate actions. --> INCLUDE LINK TO OVERVIEW SECTION
+
+</HighlightBox>
+
+Once the CA is created, a distribution is attached to the CA using the dispatchable ```distribute``` from the capital distribution pallet.
+
+<HighlightBox type="info">
+
+To have a closer look at the distribution pallet go to: [https://docs.polymesh.live/pallet_corporate_actions/distribution/index.html](https://docs.polymesh.live/pallet_corporate_actions/distribution/index.html)
+
+</HighlightBox>
+
+The distribution includes specifications on the amount of currrency to be distributed from the portfolio of the so-called **corporate action agent (CAA)**, and a start and expiration date.
+
+<HighlightBox type="info">
+
+The corporate action agent is the one to initiate a corporate action (CAA). By default, the asset owner is the CAA.
+
+</HighlightBox>
+
+The [capital distribution pallet](https://docs.polymesh.live/pallet_corporate_actions/distribution/index.html) offers the needed variety of functionality to distribute benefits, predictable and unpredictable ones. There are functions to:
+
+* Start a distribution,
+* Claim or push benefits of a distribution, and
+* Reclaim unclaimed dividends.
+
+The pallet includes the following dispatchable functions:
+
+* ```distribute```,
+* ```claim```,
+* ```push_benefit```,
+* ```reclaim```, and
+* ```remove_distribution```.
+
+```distribute``` starts the capital distribution. Then with ```claim``` a benefit is pulled. The benefit claim can be done for active capital distributions on behalf of a token holder. The default for ```claim``` pulls the benefit to a default portfolio. Whereas, ```push_benefit``` pushes a benefit of an active distribution.
+
+As long as the distribution hasn't reached its payment date, ```remove_distribution``` let's cancell the capital distribution. In case of an expired distribution, one can ```reclaim``` forfeited benefits - a distribution is active beginning with ```distribute``` and the start time.
 
 ## Authorization
 
@@ -16,3 +70,7 @@ Specialized solutions exist for corporate actions and trade settlement but other
 
 ## KYC Process
 
+## Links
+
+* Corporate action - Capital distribution: https://developers.polymesh.live/corporate_actions/
+* Distribution pallet: https://docs.polymesh.live/pallet_corporate_actions/distribution/index.html

@@ -1,52 +1,53 @@
 ---
 title: Actions with the Dashboard
-description: Corporate Actions with the Polymesh Dashboard
+description: KYC Actions with the Polymesh Dashboard
 slug: /kyc/kyc-dashboard
 ---
 
 ## Dashboard
 
-It is possible to validate a KYC for a given Polymesh Identity (PID) using the Pokymesh Dashboard. For reasons of scaleability, Polymath expects that most KYC Service Providers will integrate Polymesh's on-chain attestations with their established business processes and automated systems using the SDK. 
+It is possible to validate a KYC for a given Polymesh Identity (PID) using the Polymesh Dashboard. For reasons of scaleability, Polymath expects that most KYC Service Providers will integrate Polymesh's on-chain attestations with their established business processes and automated systems using the SDK.
 
-Even so, let us walk through the process using the Polymesh Dashboard to get acquainted with the process. 
+Even so, let us walk through the process using the Polymesh Dashboard to get acquainted with the process.
 
 ## Trigger a KYC requirement
 
-KYC may be triggered by a trade settlement or distribution that requires that all owners verify their identity. 
+It is obviously possible for a person or entity to independently start a KYC process with a given KYC provider. It is also possible a dashboard, or another integrated system, prompts a user to complete a KYC process before stepping forward. Such a KYC prompt may be triggered by a trade settlement or distribution that requires that all owners verify their identity.
 
 ## Off-chain processes
 
-The originator establishes the KYC requirement and the process used to verify attestations. The KYC Service Provider generally offers a suite of services the originator can purchase, rather than an absolute assurance that the attestions are truthful. 
+The originator establishes the KYC requirement and the process used to verify attestations. The KYC Service Provider generally offers a suite of services the originator can purchase, rather than an absolute assurance that the attestions are truthful.
 
-To understand how this works, consider a simple matter of someone's first name. Let us say the person claims their name is Alice. The originator's task is to establish a process that will them in regulatory compliance and then find a way to execute the process consistently, which is how the KYC Service Provider can help. 
+To understand how this works, consider a simple matter of someone's first name. Let us say the person claims their name is Alice. The originator's task is to establish a process that will let them be in regulatory compliance and then find a way to execute the process consistently, which is how the KYC Service Provider can help.
 
-There are many ways to verify such a claim. One method has already been hinted at. We might call this a self-attestation because the person has informally stated their name. To _verify_ that claim, the originator needs _evidence_. 
+There are many ways to verify such a claim. One method has already been hinted at. We might call this a self-attestation because the person has informally stated their name. To _verify_ that claim, the originator needs _evidence_.
 
-The evidence can include examining idenfification documents, cross-checking other databases and in many cases includes facial recognition and other technologies. The originator determines what their process will be and the KYC Service Provider offers a buffet of options to choose from, usually in flexible combinations. 
+The evidence can include examining identification documents, cross-checking other databases and in many cases includes facial recognition and other technologies. The originator determines what their process will be and the KYC Service Provider offers a buffet of options to choose from, usually in flexible combinations.
 
-The agreement between the originator and the KYC Service Provider is an off-chain artifact. The decisions about what to do and how throught he process should is an off-chain concern. What is left? 
+The agreement between the originator and the KYC Service Provider is an off-chain artifact. The decisions about what to do and how thorough the process should be is an off-chain concern. What is left?
 
-In essence, the KYC Provider attests they followed the agreed procedure, whatever it happens to be, and found that the claim is valid or invalid. 
+In essence, the KYC Provider attests they followed the agreed procedure, whatever it happens to be, and found that the claim is valid or invalid.
 
-The result is something approximating: 
+The result is something approximating:
 
 ```
-{ 
-	name: Alice, 
-	verified by: ezKYC, 
-	using: process, 
-	onDate: March 1, 2021 
-} 
+{
+	name: Alice,
+	verified by: EzKyc,
+	using: premiumProcessV2,
+	onDate: March 1, 2021,
+    validUntil: March 1, 2022
+}
 ```
-Since this is signed by the KYC Provider, it becomes a virtually inarguable fact that the KYC Service Provider did indeed attest to the facts on a certain day after following a well-defined process. This is subtly different from imagining that the blockchain cannot possibly be in error about Alice's name. 
+Since this is signed by the KYC Provider, it becomes a virtually inarguable fact that the KYC Service Provider did indeed attest to the facts on a certain day after following a well-defined process. This is subtly different from imagining that the blockchain cannot possibly be in error about Alice's name. The information about Alice is as good as EzKyc's process to determine it.
 
 ## On-Chain Enforcement
 
-Polymesh allows originators to bind their KYC requirements to the assets they create. The system will not allow a transfer to someone who is not properly verified. It is therefore possible to assert that all owners of a given asset have indeed passed the KYC process, and it is simultaneously possible to assert that every asset on Polymesh can have a unique KYC policy. 
+Polymesh allows originators to bind their KYC requirements to the assets they create. The system will not allow a transfer to someone who is not properly verified. It is therefore possible to assert that all owners of a given asset have indeed passed the KYC process, and it is simultaneously possible to assert that every asset on Polymesh can have a unique KYC policy.
 
-Trade and settlement may be stalled while the receiver completes the needed KYC Process with the KYC Service Provider that provides the service. 
+Trade and settlement may be stalled while the receiver completes the needed KYC Process with the KYC Service Provider that provides the service.
 
-Since the process details are actually off-chain, the on-chain concerns are reduced approximately to a simple true/false response to identity claims. 
+Since the process details are actually off-chain, the on-chain concerns are reduced approximately to a simple true/false response to identity claims.
 
 ## Reuseable Attestions
 
