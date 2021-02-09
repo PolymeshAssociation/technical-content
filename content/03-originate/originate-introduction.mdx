@@ -6,7 +6,7 @@ slug: /originate/originate-introduction
 
 Polymesh makes it exceptionally simple to originate a regulated security. It is a well-defined process. There is more than one way to accomplish it and your decision will usually be based on scale. 
 
-For example, a business may only occasionally issue new securities in which case the intuitive manual approach will be sufficient. Service providers who routinely issue securities for their clients may with to eliminate repetition. In this case, create an integration with internal systems and automate the process. 
+For example, a business may only occasionally issue new securities in which case the intuitive manual approach will be sufficient. Service providers who routinely issue securities for their clients may with to eliminate repetition. In this case, create an integration with internal systems and automate the process.
 
 Before we dive in, let us consider what we need to accomplish.
 
@@ -25,11 +25,11 @@ ACME will create the securities on the Polymesh blockchain. Since ACME is requir
 - Defining the KYC Requirements and establishing an agreed process that the KYC Service Provider will provide
 - Defining jurisdictional properties ...
 
-## Standardization
+## Standardisation
 
-All this is configurable through Polymesh. Unlike Smart Contract-oriented blockchains where all of the security properties and compliance processes would need to be painstakingly codified, Polymesh presents a well-solved solution that requires only configuration to record the choices that were made when the business decisions were finalized. Compliance is built in and attends to concerns such as ensuring that securities are only transferred to known entities, in authorized jurisdictions and the confidentiality of users and their holdings is maintained. 
+All this is configurable through Polymesh. Unlike smart contract-oriented blockchains where all of the security properties and compliance processes would need to be painstakingly codified, Polymesh presents a well-solved solution that requires only configuration to record the choices that were made when the business decisions were finalized. Compliance is built in and attends to concerns such as ensuring that securities are only transferred to known entities, in authorized jurisdictions and the confidentiality of users and their holdings is maintained. 
 
-Securities on Polymesh are all constructed from the same basic structure which simplifies integrations and interoperability. 
+Securities on Polymesh are all constructed from the same basic structure which simplifies integrations and interoperability. Standardised asset creation allows for related functionalities to perform corporate actions, settlement, and compliance, as well as a seamless functioning of these across assets.
 
 ## Exercise
 
@@ -37,4 +37,76 @@ Securities on Polymesh are all constructed from the same basic structure which s
 - Deploy with the SDK and automation
 
 ## Links
+
+
+Content to add:
+
+Any digitally represented asset can be originated and managed through the asset base layer logic in Polymesh.
+
+Managing the full lifecycle of an asset on Polymesh includes:
+
+* issunace of digital securities,
+* initial distribution of assets, and
+* corporate actions related to the asset (dividend payments, capital distributions, corporate ballots).
+
+All these can be performed directly on the blockchain.
+
+What type of assets can be issued? Assets issued on Polymesh can be either divisible or indivisible.
+
+All assets are differentiated by a **ticker registration**. The ticker is a 12 character identifier. Tickers can be registered by any user and are valid until their expiry date, currently six months after the initial registration. This usually occurs when asset origination is finalised. Once a ticker is registred and as long as the registration remains valid, no other user can issue an asset with that specific ticker. Additionally, transfering ticker registration to other identities is possible.
+
+Additional **external identifiers** can be used on Polymesh next to the ticker. Example of such are ISINs, CUSIPs, CINs, LEIs, and DTIs. Polymesh validates the consistency of the external identifiers, i.e. control if the checksum match.
+
+Who does the asset belong to? **Ownership** of an asset is determined through:
+
+* the total supply of tokens representing ownership in an asset, and
+* the individual investor balances of each identity invested in an asset.
+
+## Asset origination
+
+The **issuer** of an asset is the identity that registered the ticker for the asset and created it. Ownership of an asset can be transfered to another identity through a ```TransferAsset``` authorisation. Once the target identity accepts the transfer, ownership changes.
+
+The asset issuer holds the permissions to:
+
+* update the documentation and identifiers of an asset,
+* freeze and unfreeze asset transfers,
+* permission venues to conduct asset settlement,
+* add and remove compliance rules, and
+* conduct a forced transfers of ownership from any investor bacl to the primary issuance agent of the asset.
+
+<HighlightBox type="info">
+
+The issuance agent is an idenitity responsible for treasury management and token distribution. The agent is elected by the asset issuer.
+
+</HighlightBox>
+
+As mentioned before, asset origination requires a registered ticker. If a ticker isn't reserved, the registrration is done automatically when an asset is created/originated by a user.
+
+To originate an asset not only a ticker is necessary but furthermore, the type of asset (equity, bond, fund) has to be specified. Every asset is initially created with zero total supply.
+
+**Associated documents** can be added to assets by the asset's issuer, which is also the only one that can update or modify the documentation. Hereby, the document is not stored on-chain. The reference for the associated document is stored on-chain to establish a link to the document off-chain. The reference includes:
+
+* name of the document,
+* URL, which for privacy and confidentiality reasons can be a permissioned URL with credentials for access,
+* document type (optional),
+* filing date, and
+* hash of the docuemnts content.
+
+Compliance is established at the identity-level. Thus, receiving or parying with tokens requires that all involved identities must have claims matching the compliance rules for the asset. The compliance rules can be specified by the asset issuer. Compliance is therefore enforced on-chain.
+
+Identities play a large role in asset origination, as every asset is **associated with two identities and one unique ticker**. The asset issuer's and primary issuance agent's identity are both linked to the asset. The identity that created the asset and the one responsible for distribution are linked to the asset. Both roles can be fulfilled by the same identity, and the asset issuer can change the primary issuance agent.
+
+
+
+
+For the initial issuance, every 
+
+<HighlightBox type="info">
+
+Take a look at the asset pallet documentation at: [https://docs.polymesh.live/pallet_asset/index.html](https://docs.polymesh.live/pallet_asset/index.html)
+
+</HighlightBox>
+
+
+
 
