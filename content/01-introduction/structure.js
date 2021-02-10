@@ -5,7 +5,7 @@ module.exports = [
     `${here}intro-why-polymesh`,
     `${here}intro-governance`,
     `${here}intro-stack`,
-    `${here}intro-tools`,
+//    `${here}intro-tools`,
     `${here}intro-polyx`,
     `${here}intro-identity`,
     `${here}intro-networks`,
