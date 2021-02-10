@@ -6,7 +6,7 @@ slug: /introduction/intro-governance
 
 _In blockchains, the word governance describes the rules, process management and decision-making responsibilities by which the developers and maintainers keep the chain evolving._
 
-It is always a difficult but equally important topic. This is especially true for blockchains on which participants issue security tokens, as the chain forms the source of truth, i.e. it establishes the state of facts. Additionally, one can expect the environment to evolve, which will require the blockchain itself to evolve and change too.
+It is always a challenging but important topic. This is especially true for blockchains on which participants issue security tokens, as the chain forms the source of truth, i.e. it establishes the state of facts and the rules of the network. A fundamental challenge is establishing a set of rules that provide assurance in an environment that is expected to evolve. A solution to this problem is to establish a strictly-enforced process that will govern the evolution of the rules.
 
 There are two distinct **types of governance** in blockchain networks:
 
@@ -15,23 +15,23 @@ There are two distinct **types of governance** in blockchain networks:
 
 ## Off-chain governance?
 
-Off-chain is the manner by which early blockchain developers handled governance, and it presents challenges. For instance, in case of disagreements on the nature of changes to the blockchain or their implementation, the rift can lead to separate factions backing more than one implementation. This situation can lead to hard forks, i.e. a change in the protocol of a blockchain that is backward-incompatible, creating more than one source of truth. Were this to happen, there is no current legal or regulatory clarity about deciding the relevant state for security tokens. We can assume, capital market participants and regulators are unlikely to accept this uncertainty.
+Off-chain is the manner by which early blockchain developers handled governance. It creates challenges. For example, in the case of disagreement about changes to the blockchain, the rift can lead to separate factions backing more than one implementation. This situation can lead to hard forks, which is two different sources of truth depending on which set of rules observers believe is authoritative. Were this to happen in regulated securities settings, there is no current legal or regulatory clarity that addresses the more relevant state of the security tokens. Capital market participants and regulators are unlikely to accept this uncertainty. Simply put, this must be prevented.
 
-Next, even after stakeholders have reached consensus on a given change, node operators face a coordination problem when it comes to updating them. Nodes need to deploy their blockchain software within an agreed time-window. Again, node operators need to coordinate off-chain, for this to happen. If they disagree about deployments or the implementation, forks are likely once more.
+Next, even after stakeholders have reached consensus on a given change, node operators face a coordination problem when it comes to updating their systems. Nodes need to deploy their blockchain software within an agreed time-window. Again, node operators need to coordinate off-chain, for this to happen. If they disagree about deployments or the implementation, forks are likely.
 
-## Polymesh's take on on-chain governance
+## Polymesh's approach to on-chain governance
 
 As opposed to off-chain governance, on-chain governance's benefits lie in its rules transparency, the provable inclusion of stakeholders in the decision-making process, and on-chain coordination.
 
-Governance is established in **upgrades** and **on-chain**. It is designed to be compatible with regulatory regimes and provides a solution to the challenges general-built blockchains have in the areas of identity, accountability, confidentiality, system governance and evolution.
+Governance is **on-chain** and upgrades unfold by a prescribed process that addresses both the decision-making stage and coordination problem at the deployment stage. The process is designed to be compatible with regulatory regimes and it provides a solution to the challenges general-built blockchains have in the areas of identity, accountability, confidentiality, system governance and evolution.
 
 Governance covers the following areas:
 
 * The validation of existing operators.
-* Certain system primitives, such as inflation care, penalties, bonding periods.
+* Certain system primitives, such as inflation care, penalties, and bonding periods.
 * Chain upgrades.
 
-This is a permissioned blockchain, and its operators should be able to come and go. To be able to operate, an operator needs to be validated by the system beforehand. This validation is covered by the governance system, fostering decentralisation.
+This is a permissioned blockchain. Operators can join or leave the network and they are always known entities approved by the network users via the on-chain governance system.
 
 Chain **upgrades**, i.e. changes to the protocol are decided and implemented by certain stakeholders as delineated in the current governance system. Moreover, the node binary is stored directly on-chain. Meaning an upgrade leads to a change of the on-chain representation of the binary. Thus, each node checks if there is a new binary, and if there is, starts working with that new version automatically. The possibility of non-malicious hard forks is therefore highly unlikely.
 
