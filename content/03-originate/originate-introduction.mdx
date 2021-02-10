@@ -24,13 +24,17 @@ Managing the full lifecycle of an asset on Polymesh includes:
 
 All these can be performed directly on the blockchain.
 
-What type of assets can be issued? Assets issued on Polymesh can be either divisible or indivisible.
+### What type of assets can be issued? 
+
+Assets issued on Polymesh can be either divisible or indivisible.
 
 All assets are differentiated by a **ticker registration**. The ticker is a 12 character identifier. Tickers can be registered by any user and are valid until their expiry date, currently six months after the initial registration. This usually occurs when asset origination is finalised. Once a ticker is registred and as long as the registration remains valid, no other user can issue an asset with that specific ticker. Additionally, transfering ticker registration to other identities is possible.
 
 Additional **external identifiers** can be used on Polymesh next to the ticker. Example of such are ISINs, CUSIPs, CINs, LEIs, and DTIs. Polymesh validates the consistency of the external identifiers, i.e. control if the checksum match.
 
-Who does the asset belong to? **Ownership** of an asset is determined through:
+### Who does the asset belong to? 
+
+**Ownership** of an asset is determined through:
 
 * the total supply of tokens representing ownership in an asset, and
 * the individual investor balances of each identity invested in an asset.
@@ -85,64 +89,33 @@ This two step approach **separates the issuance and distribution processes**. Is
 
 In Polymesh, the asset checkpoint is a compilation of the balances of an asset at a given point of time (i.e. at a certain block height). The record of balances equal to the total balance of the asset and the balances held by the different identities.
 
-Why do we need asset checkpoints?
+### Why do we need asset checkpoints?
 
 Asset checkpoints help us establish a record of the asset ownership. This can be then used for capital distribution and corporate ballots.
 
-How is a checkpoint created?
+### How is a checkpoint created?
 
 There are two options to create a checkpoint:
 
-* Call the dispatchable ```create_checkpoint(ticker)```, or
-* Call the dispatchable ```create_checkpoint_schedule(ticker, schedule)```.
+* Create it immediately
+* Schedule future creation at intervals
 
-Both will create a checkpoint.
+The first method records the total balance immediately and the balance of identities is recorded just before the next transaction to or from the identity. The process is called **lazi checkpointing**.
 
-With the former, a checkpoint is created of the ```ticker```; The total balance is recorded immediately and the balance of identities is recorded just before the next transaction to or from the identity. As identity balances are not created immediately, the process is called **lazi checkpointing**.
+### What happens if there are no transactions? 
 
-What happens if no transactions are made? Then no records result.
+Then no checkpoints for the identity are necessary and they are not created.
 
-With the latrer, a checkpoint is scheduled. The schedule is defined with a starting timestamp (in seconds) and a regular interval period for recurring checkpoints. The period can be a multiple of seconds, minutes, hours, days, weeks, months, or years.
+Scheduled checkpoints are defined with a starting timestamp (in seconds) and a regular interval period. The period can be a multiple of seconds, minutes, hours, days, weeks, months, or years.
 
-What happens in case of a period with zero length? The schedule is non-recurring and there is only a checkpoint at the start of the period.
+### What happens in case of a period with zero length? 
 
-Scheduling checkpoints happens lazily, meaning it is performed on asset transactions or minting. So, what happens when there is no transaction? The checpoint does not get rescheduled. This doesn't result in a disadvantage for the scheduler as missed checkpoints are taken into account.
+The schedule is non-recurring and a single checkpoint is created at the scheduled start.
+
+Scheduled checkpoints are also executed lazily, meaning work is performed as needed and just in time. There is no disadvantage in doing so since previous balances are valid in the context of a checkpoint when no balance-altering transaction has occured. 
 
 ## Links
 
 * Asset Documentation: https://developers.polymesh.live/assets/ 
 * Asset pallet documentation: https://docs.polymesh.live/pallet_asset/index.html
 
-# Old Content: (to remove)
-
-## The Security
-
-It will be helpful to consider a hypothetical real-world situation. Although Polymesh offers options to address many edge cases, this is a very simple example. Let us suppose that ACME Inc. (ACME) wishes to create a security for it's upcoming IPO. 
-
-- The security will represent equity in the firm
-- 100 million authorized shares will be created
-
-## Compliance
-
-ACME will create the securities on the Polymesh blockchain. Since ACME is required to ensure compliance, ACME will first make important business decisions. 
-
-- Choosing and engaging a KYC Service Provider. ACME chose EzKYC.
-- Defining the KYC Requirements and establishing an agreed process that the KYC Service Provider will provide
-- Defining jurisdictional properties ...
-
-## Standardisation
-
-All this is configurable through Polymesh. Unlike smart contract-oriented blockchains where all of the security properties and compliance processes would need to be painstaki## Exercise
-
-- Deploy through the Polymesh Dashboard
-- Deploy with the SDK and automation
-ngly codified, Polymesh presents a well-solved solution that requires only configuration to record the choices that were made when the business decisions were finalized. Compliance is built in and attends to concerns such as ensuring that securities are only transferred to known entities, in authorized jurisdictions and the confidentiality of users and their holdings is maintained. 
-
-Securities on Polymesh are all constructed from the same basic structure which simplifies integrations and interoperability. Standardised asset creation allows for related functionalities to perform corporate actions, settlement, and compliance, as well as a seamless functioning of these across assets.
-
-## Exercise
-
-- Deploy through the Polymesh Dashboard
-- Deploy with the SDK and automation
-
-## Links

@@ -6,11 +6,18 @@ slug: /originate/sdk
 
 In the previous exercise, we originated a simple asset. As we did so we discovered that there are many more configurable properties available to address common business requirements. Everything that can be done with the Polymesh Dashboard, and more can be done with integrations using the SDK. Indeed, the dashboard itself is constructed using the SDK. 
 
-In the simple example, ACME Inc. will be unlikely to originate new securities very frequently. Provided that the parameters exposed through the Polymesh Dashboard are appropriate for each case, AMCE will probably never need to use the SDK. However, if ACME uses a service to perform the actual origination then that business may face considerable repetition. The SDK can help with that. 
+In the simple example, ACME will be unlikely to originate new securities very frequently. Provided that the parameters exposed through the Polymesh Dashboard are appropriate for each case, AMCE will probably never need to use the SDK. However, if ACME uses a service to perform the actual origination then that business may face considerable repetition. The SDK can help with that. 
+
+The Polymesh Dashboard is constructed with the SDK. Therefore, every process you see there has corresponding SDK methods you can use in integrations with internal systems. For example, checkpoints and the two methods of creating them were briefly describe in the introduction. The SDK methods, these are:
+
+* dispatchable: ```create_checkpoint(ticker)```, or
+* dispatchable: ```create_checkpoint_schedule(ticker, schedule)```.
+
+You can find complete documentation in the SDK documentation. 
 
 ## Familiar
 
-Internal systems can integrate with Polymesh using the SDK. The SDK presents a comprehensive set of business-level methods for inspecting and interacting with the Polymesh network, using familiar Javascript or Typescript at the developer's discretion.
+Internal systems can integrate with Polymesh using the SDK. The SDK presents a comprehensive set of business-level methods for inspecting and interacting with the Polymesh network using familiar Javascript or Typescript at the developer's discretion.
 
 
 ## Methods Used
@@ -23,4 +30,7 @@ Internal systems can integrate with Polymesh using the SDK. The SDK presents a c
 
 
 ## Links
+
+- SDK, create_checkpoint
+- SDK, create_checkpoint_schedule
 
