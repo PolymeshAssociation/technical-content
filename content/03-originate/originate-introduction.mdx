@@ -4,42 +4,15 @@ description: Originating Assets with Polymesh
 slug: /originate/originate-introduction
 ---
 
-Polymesh makes it exceptionally simple to originate a regulated security. It is a well-defined process. There is more than one way to accomplish it and your decision will usually be based on scale. 
+Polymesh makes it exceptionally simple to originate a regulated security. There is more than one way to execute the process and your implementation decisions will usually be based on scale. 
 
-For example, a business may only occasionally issue new securities in which case the intuitive manual approach will be sufficient. Service providers who routinely issue securities for their clients may with to eliminate repetition. In this case, create an integration with internal systems and automate the process.
+For example, a business may only occasionally issue new securities in which case the intuitive manual approach will be sufficient. Service providers who routinely issue securities for their clients may wish to eliminate repetition. In this case, create an integration with internal systems and automate the process. The Token Foundry found in the Polymesh dashboard is an example of an integration created with the SDK.
 
-Before we dive in, let us consider what we need to accomplish.
+Before we dive in, let us explore the overal asset representation and the origination process. 
 
-## The Security
+![security tokens](images/security_tokens.png)
 
-It will be helpful to consider a hypothetical real-world situation. Although Polymesh offers options to address many edge cases, this is a very simple example. Let us suppose that ACME Inc. (ACME) wishes to create a security for it's upcoming IPO. 
-
-- The security will represent equity in the firm
-- 100 million authorized shares will be created
-
-## Compliance
-
-ACME will create the securities on the Polymesh blockchain. Since ACME is required to ensure compliance, ACME will first make important business decisions. 
-
-- Choosing and engaging a KYC Service Provider. ACME chose EzKYC.
-- Defining the KYC Requirements and establishing an agreed process that the KYC Service Provider will provide
-- Defining jurisdictional properties ...
-
-## Standardisation
-
-All this is configurable through Polymesh. Unlike smart contract-oriented blockchains where all of the security properties and compliance processes would need to be painstakingly codified, Polymesh presents a well-solved solution that requires only configuration to record the choices that were made when the business decisions were finalized. Compliance is built in and attends to concerns such as ensuring that securities are only transferred to known entities, in authorized jurisdictions and the confidentiality of users and their holdings is maintained. 
-
-Securities on Polymesh are all constructed from the same basic structure which simplifies integrations and interoperability. Standardised asset creation allows for related functionalities to perform corporate actions, settlement, and compliance, as well as a seamless functioning of these across assets.
-
-## Exercise
-
-- Deploy through the Polymesh Dashboard
-- Deploy with the SDK and automation
-
-## Links
-
-
-# Content input:
+## Security Token Design
 
 Any digitally represented asset can be originated and managed through the asset base layer logic in Polymesh.
 
@@ -80,7 +53,7 @@ The issuance agent is an idenitity responsible for treasury management and token
 
 </HighlightBox>
 
-As mentioned before, asset origination requires a registered ticker. If a ticker isn't reserved, the registrration is done automatically when an asset is created/originated by a user.
+As mentioned before, asset origination requires a registered ticker. If a ticker isn't reserved, the registration is done automatically when an asset is created/originated by a user.
 
 To originate an asset not only a ticker is necessary but furthermore, the type of asset (equity, bond, fund) has to be specified. Every asset is initially created with zero total supply.
 
@@ -92,11 +65,11 @@ To originate an asset not only a ticker is necessary but furthermore, the type o
 * filing date, and
 * hash of the docuemnts content.
 
-Compliance is established at the identity-level. Thus, receiving or parying with tokens requires that all involved identities must have claims matching the compliance rules for the asset. The compliance rules can be specified by the asset issuer. Compliance is therefore enforced on-chain.
+Compliance is established at the identity-level. Thus, receiving or paying with tokens requires that all involved identities must have claims matching the compliance rules for the asset. Those claims must be attested to by the asset's KYC Service Provider. The compliance rules are specified by the asset issuer. Asset compliance is, therefore, flexible within a standardized structure and enforced on-chain.
 
 Identities play a large role in asset origination, as every asset is **associated with two identities and one unique ticker**. The **asset issuer's and primary issuance agent's identity** are both linked to the asset. The identity that created the asset and the one responsible for distribution are linked to the asset. Both roles can be fulfilled by the same identity, and the asset issuer can change the primary issuance agent.
 
-It is also possible for the asset isuer to opt for a primary issuance agent for the asset with a different identity. The new identity holder has to accept this role before the change can be effectuated.
+It is also possible for the asset issuer to opt for a primary issuance agent for the asset with a different identity. The new identity holder has to accept this role before the change can be effectuated.
 
 <HighlightBox type="info">
 
@@ -106,7 +79,7 @@ Take a look at the asset pallet documentation at: [https://docs.polymesh.live/pa
 
 Issuance begins with the creation and configuration of the asset. The tokens are issued to the primary issuance agent. Once the tokens are issued, the agent can distribute the tokens to investors directly or through a security token offering. The distribution is conducted using the settlement engine.
 
-This two step approach seperates the **issuance** from the **distribution process**. With this, the issuance bypasses the compliance and settlement engines. Still compliance and settlement functionality is upheld because the tokens are **only** issued to the issuance agent.
+This two step approach **separates the issuance and distribution processes**. Issuance bypasses the compliance and settlement engines but compliance and settlement functionality is upheld because the tokens are **only** issued to the issuance agent.
 
 ## Asset checkpoints
 
@@ -127,9 +100,9 @@ Both will create a checkpoint.
 
 With the former, a checkpoint is created of the ```ticker```; The total balance is recorded immediately and the balance of identities is recorded just before the next transaction to or from the identity. As identity balances are not created immediately, the process is called **lazi checkpointing**.
 
-What happens if no transactions are made? Then no rercords result.
+What happens if no transactions are made? Then no records result.
 
-With the later, a checkpoint is scheduled. The schedule is defined with a starting timestamp (in seconds) and a regular interval period for recurring checkpoints. The period can be a multiple of seconds, minutes, hours, days, weeks, months, or years.
+With the latrer, a checkpoint is scheduled. The schedule is defined with a starting timestamp (in seconds) and a regular interval period for recurring checkpoints. The period can be a multiple of seconds, minutes, hours, days, weeks, months, or years.
 
 What happens in case of a period with zero length? The schedule is non-recurring and there is only a checkpoint at the start of the period.
 
@@ -139,3 +112,37 @@ Scheduling checkpoints happens lazily, meaning it is performed on asset transact
 
 * Asset Documentation: https://developers.polymesh.live/assets/ 
 * Asset pallet documentation: https://docs.polymesh.live/pallet_asset/index.html
+
+# Old Content: (to remove)
+
+## The Security
+
+It will be helpful to consider a hypothetical real-world situation. Although Polymesh offers options to address many edge cases, this is a very simple example. Let us suppose that ACME Inc. (ACME) wishes to create a security for it's upcoming IPO. 
+
+- The security will represent equity in the firm
+- 100 million authorized shares will be created
+
+## Compliance
+
+ACME will create the securities on the Polymesh blockchain. Since ACME is required to ensure compliance, ACME will first make important business decisions. 
+
+- Choosing and engaging a KYC Service Provider. ACME chose EzKYC.
+- Defining the KYC Requirements and establishing an agreed process that the KYC Service Provider will provide
+- Defining jurisdictional properties ...
+
+## Standardisation
+
+All this is configurable through Polymesh. Unlike smart contract-oriented blockchains where all of the security properties and compliance processes would need to be painstaki## Exercise
+
+- Deploy through the Polymesh Dashboard
+- Deploy with the SDK and automation
+ngly codified, Polymesh presents a well-solved solution that requires only configuration to record the choices that were made when the business decisions were finalized. Compliance is built in and attends to concerns such as ensuring that securities are only transferred to known entities, in authorized jurisdictions and the confidentiality of users and their holdings is maintained. 
+
+Securities on Polymesh are all constructed from the same basic structure which simplifies integrations and interoperability. Standardised asset creation allows for related functionalities to perform corporate actions, settlement, and compliance, as well as a seamless functioning of these across assets.
+
+## Exercise
+
+- Deploy through the Polymesh Dashboard
+- Deploy with the SDK and automation
+
+## Links
