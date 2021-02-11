@@ -4,9 +4,168 @@ description: Distribute Assets with the Polymesh SDK
 slug: /distribute/distribute-sdk
 ---
 
-As always, everything that be done via the dashboard can be integrated with internal systems using the SDK. Use this to automate and scale repetitive processes. 
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+import HighlightBox from "../../src/components/HighlightBox"
 
-Let us see how ACME's distribution would be performed using methods in the SDK. 
+As always, everything that can be done via the dashboard can be integrated with internal systems using the SDK. Use this to automate and scale repetitive processes.
+
+Let us see how ACME's share distribution would be performed using methods in the SDK.
+
+## Preconditions
+
+We assume that:
+
+* Alice, ACME's acting agent, already has a Polymesh identity.
+* A Polymesh client has been [instantiated](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#static-connect) by Alice so she can do the next actions:
+    <MultiCodeBlock>
+
+    ```typescript
+    const apiAlice: Polymesh = await Polymesh.connect({
+        "nodeUrl": "wss://pme.polymath.network", // For instance, or the proper network
+        "accountMnemonic": "word1 word2 ..."
+    });
+    ```
+
+    ```javascript
+    const apiAlice = await Polymesh.connect({
+        "nodeUrl": "wss://pme.polymath.network", // For instance, or the proper network
+        "accountMnemonic": "word1 word2 ..."
+    });
+    ```
+
+    </MultiCodeBlock>
+* The ACME token has been created already and has been retrieved.
+    <MultiCodeBlock>
+
+    ```typescript
+    const token: SecurityToken = await apiAlice.getSecurityToken({
+        "ticker" :"ACME"
+    });
+    ```
+
+    ```javascript
+    const token = await apiAlice.getSecurityToken({
+        "ticker" :"ACME"
+    });
+    ```
+
+    </MultiCodeBlock>
+* Alice is the owner of the ACME token and also its primary issuance agent.
+
+## Issue Alice's share
+
+Time for Alice to get her agreed amount of shares. As we mentioned in the previous chapter, implicit in `const token` is that the `context` is `apiAlice`, because we used `apiAlice` to retrieve its information. In other words, any action performed on `token` will effectively be done by Alice.
+
+Of the 100,000 total supply of shares, she is entitled to 20,000 of them, so let's reflect that:
+
+<MultiCodeBlock>
+
+```typescript
+const issuance: Issuance = token.issuance;
+```
+
+```javascript
+const issuance = token.issuance;
+```
+
+</MultiCodeBlock>
+
+Here too, in `issuance`, the context is still `apiAlice`. In fact, its [`parent`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/issuance#properties-1) is the `token` itself.
+
+<MultiCodeBlock>
+
+```typescript
+const issueQueue: TransactionQueue‹SecurityToken› = await issuance.issue({
+    "amount": new BigNumber("20000")
+});
+await issueQueue.run();
+```
+
+```javascript
+const issueQueue = await issuance.issue({
+    "amount": new BigNumber("20000")
+});
+await issueQueue.run();
+```
+
+</MultiCodeBlock>
+
+<HighlightBox type="tip">
+
+There is no beneficiary to mention because an `issue` command sends the shares to the issuance agent, which, at this point is Alice herself. Additionally, it sends the shares to her default portfolio.
+
+</HighlightBox>
+At this point, Alice has received her shares.
+
+## In a separate portfolio?
+
+Now, if Alice wanted to move her ACME shares from her default portfolio to a new "cold store" portfolio, she first needs to [create](https://developers.polymath.network/polymesh-sdk-api-reference/classes/portfolios#create) the portfolio, then to move the shares:
+
+<MultiCodeBlock>
+
+```typescript
+const alice: CurrentIdentity = await apiAlice.getCurrentIdentity();
+const portfolios: Portfolios = alice.portfolios;
+const portfolioQueue: TransactionQueue‹NumberedPortfolio›› = await portfolios.create({
+    "name": "Cold store"
+});
+const coldStore: NumberedPortfolio = await portfolioQueue.run();
+const portfolioId: BigNumber = coldStore.id;
+```
+
+```javascript
+const alice = await apiAlice.getCurrentIdentity();
+const portfolios = alice.portfolios;
+const portfolioQueue = await portfolios.create({
+    "name": "Cold store"
+});
+const coldStore = await portfolioQueue.run();
+const portfolioId = coldStore.id;
+```
+
+</MultiCodeBlock>
+
+It is this `portfolioId` that could be used to [retrieve](https://developers.polymath.network/polymesh-sdk-api-reference/classes/portfolios#getportfolio) the portfolio at a later date. Time to [move](https://developers.polymath.network/polymesh-sdk-api-reference/classes/portfolio#movefunds) the shares:
+
+<MultiCodeBlock>
+
+```typescript
+const defaultPortfolio: DefaultPortfolio = await alice.portfolios.getPortfolio();
+const whatToMove: PortfolioMovement = {
+    "token": token,
+    "amount": new BigNumber("20000")
+};
+const moveQueue: TransactionQueue‹void› = await defaultPortfolio.move({
+    "items": whatToMove,
+    "to": coldStore
+});
+await moveQueue.run();
+```
+
+```javascript
+const defaultPortfolio = await alice.portfolios.getPortfolio();
+const whatToMove = {
+    "token": token,
+    "amount": new BigNumber("20000")
+};
+const moveQueue = await defaultPortfolio.move({
+    "items": whatToMove,
+    "to": coldStore
+});
+await moveQueue.run();
+```
+
+</MultiCodeBlock>
+
+## How can Alice issue Bob's share?
+
+If, instead of issuing for herself, Alice was issuing for someone else, she would have to follow up with another operation to further transfer the shares to the other identity. To achieve that, she would have to create a proper **settlement instruction**, which is the subject of the next chapter.
+
+## When all is done
+
+Assuming all parties have received their shares, it could be advantageous for the company to create a checkpoint. This post-issuance checkpoint would provide visibility about what was achieved during the issuance.
+
+<!-- TODO when SDK exposes that -->
 
 ## Methods Used
 
@@ -18,4 +177,3 @@ Let us see how ACME's distribution would be performed using methods in the SDK.
 
 
 ## Links
-
