@@ -18,9 +18,40 @@ TODO: Best storyline?
 
 ## Select the correct signing key
 
+## Distribute the token
+
+Following from Originate-Dashboard, now I am going to get some shares for myself (Alice), but also to set the total supply.
+
+- Click on Distribution https://tokenstudio.polymesh.live/token/ACME2/distribution
+- Click on "Mint Tokens": I am the distribution agent, and make it 100,000
+- Click "Mint"
+- Confirmation modal window. only tx cost
+- Wallet popup with `asset: issue(ticker, value)`
+- Progress modal window.
+- Success modal window.
+- Click on "Distribute Tokens". It is greyed out on the right, but it is active.
+- It wants to create a uId scope. -> I did not have to do this with SDK. will have to see if it makes sense.
+- Confirmation modal window. only tx cost
+- Wallet popup
+- Progress modal window.
+- Success modal window.
+- Copy your `0x123` identity at the top right.
+- Click again on "Distribute Tokens".
+- In the popup menu from the left "Add new distribution event", named it "For Alice".
+- Click "Add"
+- Confirmation modal window. only tx cost
+- Wallet popup with `settlement: createVenue(details, signers, venue_type)`, strange
+- Progress modal window.
+- Success modal window.
+- Continuing in this popup menu, I chose "Single Polymesh id", pasted my `0x123` id and 20,000
+
+I hit a snag, I cannot use the same identity, it has to be another one.
+I'll stop here, but then, perhaps you can send your ACME token to my identity: `0xd80bfa2b0ef45a6093fb04cff8bde3545ef731d0247b363824bb8978c3bd8d76` on Alcyone.
+For the purpose of exercise, the lone student should create 2 identities I am afraid.
+And I will surely have to review the SDK part accordingly.
+
 ## Send the asset to the other party
 
 ## KYC Requirement for the receiving party
 
-Normally, the user will simply wait for the KYC provider to work with the other party to complete the KYC process if it is not already completed. For this exercise, we will switch to ExKYC's point of view and verify the recipient, then return to ACME's perspective to observe the completed distribution. 
-
+Normally, the user will simply wait for the KYC provider to work with the other party to complete the KYC process if it is not already completed. For this exercise, we will switch to ExKYC's point of view and verify the recipient, then return to ACME's perspective to observe the completed distribution.

@@ -29,9 +29,81 @@ At a later stage, the company founders hope to reach an IPO, another event invol
 - You will need some POLYX to pay for network resources as you send transactions. If you do not have any POLYX then you should get some free POLYX for the Testnet =>
 - Everyone on Polymesh who sends a materially significant transaction must, at a minimum, complete the Customer Due Diligence (CDD) process. If you have not already done so, complete CDD now. =>
 
-## Open the Dashboard
+## Prerequisites
+
+- You use the Polymesh Wallet browser extension.
+- You have a private key and an identity on Alcyone testnet.
+- You have used the POLY to POLYX Bridge to get some POLYX on Alcyone. Convert at least 15k POLY as the ticker reservation is 2.5k, the ticker configuration is 10k.
+
+## Open the Token Studio
+
+- Go to https://tokenstudio.polymesh.live/my-tokens
+- It should ask you to sign 1 transaction. Since there were only bytes, I don't know what this was. I also failed to find it in the https://app.polymesh.live/#/explorer after the fact.
+- Don't click on "don't ask for 15 minutes", otherwise you will not know when it is creating a tx. Of course, there are modal windows that ask you to confirm before hitting the Wallet, but that means you depend on the GUI to be coded nicely.
+- If you use https://app.polymesh.live/#/explorer, don't forget to copy paste the [Polymesh schema](https://github.com/PolymathNetwork/Polymesh/blob/develop/polymesh_schema.json) into https://app.polymesh.live/#/settings/developer.
 
 ## Navigate to Origination
+
+- In https://tokenstudio.polymesh.live/my-tokens click on "New Security Token".
+- Skip the Service Provider marketplace. Although it would be worth talking about what it is.
+- So "Go to ticker reservation".
+- Obviously "ACME" is not available, but "ACME2" was for me. I think that either the screenshots have something other than ACME, or, before screenshot, you "Inspect element" and change the wording undercover :)
+- Click "Reserve ticker symbol"
+- There is a confirmation modal popup: "Confirm"
+- Then the Polymesh Wallet shows up to sign `asset: registerTicker(ticker)`
+- Sign
+- Reservation appears in progress. Quick grab it.
+- Then success window. "Done"
+- I have 60 days left to create the token proper.
+- Parameters: name: ACME Co, Type: Equity Preferred, Divisibilty: Indivisible.
+- I expected to see the total supply there because it is available in the SDK apparently.
+- Same with confirmation modal window
+- Wallet pop-up for `asset: createAsset(name, ticker, total_supply, divisible, asset_type, identifiers, funding_round)`
+- There I see the total supply is defaulting to 0... Mmh
+- Progress modal window.
+- success modal window.
+- Now to Token Management. https://tokenstudio.polymesh.live/token/ACME2/dashboard
+
+## To Compliance
+
+We want to add jurisdiction cdd, not in Liechtenstein.
+This part is missing in the SDK section at the moment, still have to look at how to do it, but let's do that here:
+
+- Click on tab "Compliance" at the top.
+- Click add a provider.
+- In the opening menu from the left, leave only "Jurisdiction" ticked.
+- I checked in the marketplace, there is no existing KYC provider, so I just used my own Polymesh id, even if I named the attestation's provider "EzKyc".
+- Clicked "Add".
+- Confirmation modal window. Modal progress window. Only tx cost here.
+- Wallet popup with `complianceManager: addDefaultTrustedClaimIssuer(ticker, issuer)`
+- Success modal window.
+- In compliance rule, Condition 1 choose: "Must be", "KYC".
+- Add another rule, Condition 2 choose: "Cannot be", "Jurisdiction", "Liechtenstein"
+- Tick both "Enforce buy lockup" and "Enforce sell lockup"
+- Click submit changes.
+- Confirmation modal window. only tx cost
+- Wallet popup with `complianceManager: addComplianceRequirement(ticker, sender_conditions, receiver_conditions)`
+- Progress modal window.
+- Success modal window.
+- Now it should show in green "This rule is active"
+
+I happen to have forgotten the "Enforce" ticks first so I had to resubmit. The strange thing is that there were 2 transactions, 1 to remove rules and the other to put rules. Does this mean that someone could slip in between the 2 and so bypass the rules entirely?
+I think to be safe rather than sorry, when they do that in real life, the token owner should disable transfers first here https://tokenstudio.polymesh.live/token/ACME2/dashboard "Advanced token configuration", then do the change, then enable the transfers again right away.
+
+- I want to be able to receive this token so my account must meet the rules.
+- Go to Attestations.
+- Copy my `0x123` identity at the top right of the window.
+- Click "Add new identity"
+- In the popup menu from the left, keep a single Polymesh id, paste my `0x123` identity. Enable jurisdiction and selected Georgia.
+- Click Save
+- Confirmation modal window. only tx cost
+- Wallet popup with `identity: addClaim(target, claim, expiry)`
+- Progress modal window.
+- Success modal window.
+- It should now be listed. I am both the target and the provider.
+
+From there, we will move to distribute.
+
 
 ## Specify Service Providers
 
