@@ -4,24 +4,90 @@ description: Originating Assets with the Polymesh SDK
 slug: /originate/sdk
 ---
 
-In the previous exercise, we originated a simple asset. As we did so we discovered that there are many more configurable properties available to address common business requirements. Everything that can be done with the Polymesh Dashboard, and more can be done with integrations using the SDK. Indeed, the dashboard itself is constructed using the SDK. 
+In the previous exercise, we originated a simple asset, ACME equity. As we did so, we discovered that there are many more configurable properties available to address common business requirements. Everything that can be done with the Polymesh Dashboard, and more, can be done with integrations using the SDK. Indeed, the dashboard itself is constructed using the SDK.
 
-In the simple example, ACME will be unlikely to originate new securities very frequently. Provided that the parameters exposed through the Polymesh Dashboard are appropriate for each case, AMCE will probably never need to use the SDK. However, if ACME uses a service to perform the actual origination then that business may face considerable repetition. The SDK can help with that. 
+In our simple example, ACME will be unlikely to originate new securities very frequently. Provided that the parameters exposed through the Polymesh Dashboard are appropriate for each case, AMCE will probably never need to use the SDK. However, if ACME uses a service to perform the actual origination then that business may face considerable repetition. The SDK can help with that.
 
 The Polymesh Dashboard is constructed with the SDK. Therefore, every process you see there has corresponding SDK methods you can use in integrations with internal systems. For example, checkpoints and the two methods of creating them were briefly describe in the introduction. The SDK methods, these are:
 
 * dispatchable: ```create_checkpoint(ticker)```, or
 * dispatchable: ```create_checkpoint_schedule(ticker, schedule)```.
 
-You can find complete documentation in the SDK documentation. 
+You can find complete documentation in the SDK documentation.
 
 ## Familiar
 
 Internal systems can integrate with Polymesh using the SDK. The SDK presents a comprehensive set of business-level methods for inspecting and interacting with the Polymesh network using familiar Javascript or Typescript at the developer's discretion.
 
+## Preconditions
 
-## Methods Used
+We assume that:
 
+* Alice, ACME's acting agent, already has a Polymesh identity.
+* A Polymesh client has been [instantiated](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#static-connect) by Alice so she can do the next actions:
+    ```typescript
+    const apiAlice: Polymesh = await Polymesh.connect({
+        "nodeUrl": "wss://pme.polymath.network", // For instance, or the proper network
+        "accountMnemonic": "word1 word2 ..."
+    });
+    ```
+
+## Ticker reservation
+
+Alice needs to [reserve](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#reserveticker) the ACME ticker:
+
+```typescript
+const reservationQueue: TransactionQueue‹TickerReservation› = await apiAlice.reserveTicker({
+    "ticker": "ACME"
+});
+```
+The queue is just that, a queue. Notice that it is a generic type specified with `TickerReservation`. This means that eventually, the object the queue returns is an instance of `TickerReservation`. Let's [run](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#run) it.
+
+```typescript
+const reservation: TickerReservation = await reservationQueue.run();
+```
+It is at this point that the necessary signatures are collected for the transactions. `apiAlice` was created straight with the mnemonic, so the signature will happen automatically. However, if this was taking place in the browser, for instance in the Token dashboard and the Polymesh Wallet extension, then there is a possibility that Alice will reject the request for signature.
+
+You would need to `try .run() catch` it for errors. Here, we opted for clarity and omitted it.
+
+Also note that with `await reservationQueue.run()` we patiently wait for the queue to have finalised. However any `TransactionQueue` can provide intermediate information with regards to its changing status and that of its component transactions. If this is of interest to you, you can pass callbacks to [`onStatusChange`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#onstatuschange) and [`onTransactionStatusChange`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#ontransactionstatuschange).
+
+At this stage, Alice owns the registration. You can confirm it with the following:
+
+```typescript
+const alice: CurrentIdentity = await apiAlice.getCurrentIdentity();
+const details: TickerReservationDetails = await reservation.details();
+const owner: Identity = details.owner;
+assert(owner.did == alice.did);
+```
+
+## Ticker creation
+
+With the reservation done, it is time to issue the ticker proper. Oh wait! The reservation may have happened some time ago and your `const reservation: TickerReservation` instance is no longer in memory. How do you get it back? With [getTickerReservation](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#gettickerreservation):
+
+```typescript
+const reservation: TickerReservation = await apiAlice.getTickerReservation({
+    "ticker": "ACME"
+});
+```
+You will note that the class `TickerReservation` keeps a [`protected context: Context`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/tickerreservation#properties-1). This `context` in turn keeps a [`polymeshApi`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/context#properties-1). It is in there that we find the implicit knowledge that it is Alice that is asking for the next actions. If it were any other identity that had asked for the reservation, this other identity would not be able to `.createToken` because they do not own the reservation.
+
+With our `reservation` in memory, we now can:
+
+```typescript
+const tokenQueue: TransactionQueue<SecurityToken> = await reservation.createToken({
+    "name": "ACME Co",
+    "tokenType": KnownTokenType.EquityPreferred,
+    "isDivisible": false,
+    "totalSupply": new BigNumber("100000")
+});
+```
+We have another queue, so as we did before:
+
+```typescript
+const token: SecurityToken = await tokenQueue.run();
+```
+Implicit in the creation of this token is that Alice is both the token's owner and its primary issuance agent (PIA). We are satisfied with this situation. Alice is not yet a holder of any amount of the security token, though, we remedy that in the next chapter "Distribution".
 
 ## Methods Reference
 
@@ -33,4 +99,3 @@ Internal systems can integrate with Polymesh using the SDK. The SDK presents a c
 
 - SDK, create_checkpoint
 - SDK, create_checkpoint_schedule
-
