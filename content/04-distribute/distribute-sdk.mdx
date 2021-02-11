@@ -125,7 +125,7 @@ const portfolioId = coldStore.id;
 
 </MultiCodeBlock>
 
-It is this `portfolioId` that could be used to retrieve it at a later date. Time to [move](https://developers.polymath.network/polymesh-sdk-api-reference/classes/portfolio#movefunds) the shares:
+It is this `portfolioId` that could be used to [retrieve](https://developers.polymath.network/polymesh-sdk-api-reference/classes/portfolios#getportfolio) the portfolio at a later date. Time to [move](https://developers.polymath.network/polymesh-sdk-api-reference/classes/portfolio#movefunds) the shares:
 
 <MultiCodeBlock>
 
@@ -159,13 +159,13 @@ await moveQueue.run();
 
 ## How can Alice issue Bob's share?
 
-If, instead of issuing for herself, Alice was issuing for someone else, she would have to follow up with another operation to further transfer the shares to the other identity. To achieve that, she would have to create a proper **settlement instruction**, which is the subject of the next chapter**.
+If, instead of issuing for herself, Alice was issuing for someone else, she would have to follow up with another operation to further transfer the shares to the other identity. To achieve that, she would have to create a proper **settlement instruction**, which is the subject of the next chapter.
 
 ## When all is done
 
 Assuming all parties have received their shares, it could be advantageous for the company to create a checkpoint. This post-issuance checkpoint would provide visibility about what was achieved during the issuance.
 
-
+<!-- TODO when SDK exposes that -->
 
 ## Methods Used
 

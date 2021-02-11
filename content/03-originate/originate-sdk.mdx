@@ -80,7 +80,7 @@ const reservation = await reservationQueue.run();
 
 </MultiCodeBlock>
 
-It is at this point that the necessary signatures are collected for the transactions. `apiAlice` was created straight with the mnemonic, so the signature will happen automatically. However, if this was taking place in the browser, for instance in the Token dashboard and the Polymesh Wallet extension, then there is a possibility that Alice will reject the request for signature.
+It is at this point that the necessary signatures are collected for the transactions. `apiAlice` was created straight with the mnemonic, so the signature will happen automatically. However, if this was taking place in the browser, for instance in the Token dashboard and the Polymesh Wallet extension, then there is a possibility that Alice will refuse to sign when prompted.
 
 <HighlightBox type="tip">
 
@@ -103,12 +103,19 @@ assert(owner.did == alice.did);
 
 ```javascript
 const alice = await apiAlice.getCurrentIdentity();
-const details = await reservation.details();
-const owner = details.owner;
+const { owner } = await reservation.details();
 assert(owner.did == alice.did);
 ```
 
 </MultiCodeBlock>
+
+Something is not immediately apparent from the few lines of code above. It is nonetheless important to point it out. When we created `apiAlice` with `await Polymesh.connect()`, we passed an identifier `accountMnemonic` that allowed the SDK to recreate the private key. As a repeat of what was covered in the introduction module, this private key is not the Polymesh identity proper. The private key is associated to an identity, whether as a primary key or a secondary one. And when it is used to sign a transaction, it is the associated identity that will be considered to be the one doing the action.
+
+<HighlightBox type="info">
+
+So when we wrote `await` in `await apiAlice.getCurrentIdentity()`, this is no accident. We indeed need to do a round trip to the blockchain to know what identity our private key is associated with.
+
+</HighlightBox>
 
 ## Ticker creation
 
