@@ -4,11 +4,11 @@ description: Originating Assets with Polymesh
 slug: /originate/originate-introduction
 ---
 
-Polymesh makes it exceptionally simple to originate a regulated security. There is more than one way to execute the process and your implementation decisions will usually be based on scale. 
+Polymesh makes it exceptionally simple to originate a regulated security. There is more than one way to execute the process and your implementation decisions will usually be based on scale.
 
 For example, a business may only occasionally issue new securities in which case the intuitive manual approach will be sufficient. Service providers who routinely issue securities for their clients may wish to eliminate repetition. In this case, create an integration with internal systems and automate the process. The Token Foundry found in the Polymesh dashboard is an example of an integration created with the SDK.
 
-Before we dive in, let us explore the overal asset representation and the origination process. 
+Before we dive in, let us explore the overal asset representation and the origination process.
 
 ![security tokens](images/security_tokens.png)
 
@@ -24,15 +24,15 @@ Managing the full lifecycle of an asset on Polymesh includes:
 
 All these can be performed directly on the blockchain.
 
-### What type of assets can be issued? 
+### What type of assets can be issued?
 
 Assets issued on Polymesh can be either divisible or indivisible.
 
-All assets are differentiated by a **ticker registration**. The ticker is a 12 character identifier. Tickers can be registered by any user and are valid until their expiry date, currently six months after the initial registration. This usually occurs when asset origination is finalised. Once a ticker is registred and as long as the registration remains valid, no other user can issue an asset with that specific ticker. Additionally, transfering ticker registration to other identities is possible.
+All assets are differentiated by a **ticker registration**. The ticker is a 12 character identifier. Tickers can be registered by any user and the registration remains valid until their expiry date, currently six months after the initial registration. This usually occurs when asset origination is finalised. Once a ticker is registred and as long as the registration remains valid, no other user can issue an asset with that specific ticker. Additionally, transfering ticker registration to other identities is possible.
 
 Additional **external identifiers** can be used on Polymesh next to the ticker. Example of such are ISINs, CUSIPs, CINs, LEIs, and DTIs. Polymesh validates the consistency of the external identifiers, i.e. control if the checksum match.
 
-### Who does the asset belong to? 
+### Who does the asset belong to?
 
 **Ownership** of an asset is determined through:
 
@@ -69,7 +69,7 @@ To originate an asset not only a ticker is necessary but furthermore, the type o
 * filing date, and
 * hash of the docuemnts content.
 
-Compliance is established at the identity-level. Thus, receiving or paying with tokens requires that all involved identities must have claims matching the compliance rules for the asset. Those claims must be attested to by the asset's KYC Service Provider. The compliance rules are specified by the asset issuer. Asset compliance is, therefore, flexible within a standardized structure and enforced on-chain.
+Compliance is established at the identity-level. Thus, receiving or paying with tokens requires that all involved identities must have claims matching the compliance rules for the asset. Those claims must be attested to by the asset's KYC Service Provider. The compliance rules are specified by the asset issuer. Asset compliance is, therefore, flexible within a standardised structure and enforced on-chain.
 
 Identities play a large role in asset origination, as every asset is **associated with two identities and one unique ticker**. The **asset issuer's and primary issuance agent's identity** are both linked to the asset. The identity that created the asset and the one responsible for distribution are linked to the asset. Both roles can be fulfilled by the same identity, and the asset issuer can change the primary issuance agent.
 
@@ -83,39 +83,34 @@ Take a look at the asset pallet documentation at: [https://docs.polymesh.live/pa
 
 Issuance begins with the creation and configuration of the asset. The tokens are issued to the primary issuance agent. Once the tokens are issued, the agent can distribute the tokens to investors directly or through a security token offering. The distribution is conducted using the settlement engine.
 
-This two step approach **separates the issuance and distribution processes**. Issuance bypasses the compliance and settlement engines but compliance and settlement functionality is upheld because the tokens are **only** issued to the issuance agent.
+This two-step approach **separates the issuance and distribution processes**. Issuance bypasses the compliance and settlement engines but compliance and settlement functionality is upheld because the tokens are **only** issued to the issuance agent.
 
 ## Asset checkpoints
 
-In Polymesh, the asset checkpoint is a compilation of the balances of an asset at a given point of time (i.e. at a certain block height). The record of balances equal to the total balance of the asset and the balances held by the different identities.
+In Polymesh, an asset checkpoint is a compilation of the balances of an asset at a given point of time (in effect at a certain block height). The record of balances equal to the total balance of the asset and the balances held by the different identities.
 
 ### Why do we need asset checkpoints?
 
-Asset checkpoints help us establish a record of the asset ownership. This can be then used for capital distribution and corporate ballots.
+Asset checkpoints help us establish a record of the asset ownership at a point in time. This can then be used for capital distribution and corporate ballots.
 
 ### How is a checkpoint created?
+
+If a checkpoint was actually making a copy of the blockchain data it would consume a lot of computing resources. Instead, a checkpoint is a marker, which is extremely quick to create and finalise in a block. This checkpoint-as-a-marker only records the total supply of the asset. Subsequently, after the checkpoint, if a transaction on the asset modifies an identity's held balance, a single record is added to the checkpoint with the values _before_ the change, i.e. the values that existed at the time of creation of the checkpoint. In computing terms, the process is called **lazy checkpointing**.
 
 There are two options to create a checkpoint:
 
 * Create it immediately
-* Schedule future creation at intervals
+* Schedule future creation(s) at intervals
 
-The first method records the total balance immediately and the balance of identities is recorded just before the next transaction to or from the identity. The process is called **lazi checkpointing**.
+For the avoidance of doubt, if there are no transactions after the checkpoint's creation, then it will not record any held balance as, indeed, the current blockchain data is the same as the desired data at the checkpoint.
 
-### What happens if there are no transactions? 
+### Scheduled checkpoints?
 
-Then no checkpoints for the identity are necessary and they are not created.
+Scheduled checkpoints are defined with a starting timestamp (in seconds) and a regular interval period. The period can be a multiple of seconds, minutes, hours, days, weeks, months, or years. If the period is of zero length, then the schedule is understood as non-recurring and a single checkpoint is created at the scheduled start.
 
-Scheduled checkpoints are defined with a starting timestamp (in seconds) and a regular interval period. The period can be a multiple of seconds, minutes, hours, days, weeks, months, or years.
-
-### What happens in case of a period with zero length? 
-
-The schedule is non-recurring and a single checkpoint is created at the scheduled start.
-
-Scheduled checkpoints are also executed lazily, meaning work is performed as needed and just in time. There is no disadvantage in doing so since previous balances are valid in the context of a checkpoint when no balance-altering transaction has occured. 
+Scheduled checkpoints are also executed lazily, meaning work is performed as needed and just in time. There is no disadvantage in doing so since previous balances are valid in the context of a checkpoint when no balance-altering transaction has occured.
 
 ## Links
 
-* Asset Documentation: https://developers.polymesh.live/assets/ 
+* Asset Documentation: https://developers.polymesh.live/assets/
 * Asset pallet documentation: https://docs.polymesh.live/pallet_asset/index.html
-
