@@ -90,7 +90,7 @@ You would need to `try .run() catch` it for errors. Here, we opted for clarity a
 
 Also note that with `await reservationQueue.run()` we patiently wait for the queue to have finalised. However any `TransactionQueue` can provide intermediate information with regards to its changing status and that of its component transactions. If this is of interest to you, you can pass callbacks to [`onStatusChange`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#onstatuschange) and [`onTransactionStatusChange`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#ontransactionstatuschange).
 
-At this stage, Alice owns the registration. You can confirm it with the following:
+At this stage, Alice owns the reservation. You can confirm it with the following:
 
 <MultiCodeBlock>
 
