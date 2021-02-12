@@ -36,6 +36,19 @@ Through the governance process a so-called "sunset" window can be set. All previ
 
 The trusted, or permissioned, CDD providers isse all CDD claims on Polymesh. Regularly, the claim expires after six months. After the claim expires, the user needs to re-authenticate.
 
+Polymesh supports the following **claim types**:
+
+* a user is accredited,
+* a user is verified with a CDD check,
+* a user is verified with a KYC check, including a string representing jurisdiction,
+* a user has an active "BuyLockup",
+* a user has an active "SellLockup",
+* a user is exempted from a jurisdiction,
+* a user is blocked, and
+* a user claims a linkage between identities of one entity (self-issued by user).
+
+Some claim types require additional information for the claim, i.e. parameter specifications. Every claim has an expiry. After it expires, it is no longer valid.
+
 As said before, every identity **must** hold a valid CDD claim to interact with the network. An identity can have **more than one valid claim**. More than  one claim can be seen as a redundancy, but also a possibility to ensure CDD validity at any time, even when a provider is removed from the on-chain list.
 
 A user can have **multiple identities**. In this case, each identity requires a corresponding CDD claim from one or more providers. A user with multiple identities is free to get all necessary CDD claims from different providers or just one for all CDD claims. When the user opts for the same CDD provider for all his associated identities, only one KYC check is necessary.
