@@ -1,5 +1,5 @@
 ---
-title: Originate with the SDK
+title: With the SDK
 description: Originating Assets with the Polymesh SDK
 slug: /originate/sdk
 ---
@@ -11,7 +11,7 @@ In the previous exercise, we originated a simple asset, ACME equity. As we did s
 
 In our simple example, ACME will be unlikely to originate new securities very frequently. Provided that the parameters exposed through the Polymesh Dashboard are appropriate for each case, AMCE will probably never need to use the SDK. However, if ACME uses a service to perform the actual origination then that business may face considerable repetition. The SDK can help with that.
 
-The Polymesh Dashboard is constructed with the SDK. Therefore, every process you see there has corresponding SDK methods you can use in integrations with internal systems. For example, checkpoints and the two methods of creating them were briefly describe in the introduction. The SDK methods, these are:
+The Polymesh Dashboard is constructed with the SDK. Therefore, every process you see there has corresponding SDK methods you can use in integrations with internal systems. For example, checkpoints and the two methods of creating them were briefly described in the introduction. The SDK methods are:
 
 * dispatchable: ```create_checkpoint(ticker)```, or
 * dispatchable: ```create_checkpoint_schedule(ticker, schedule)```.
