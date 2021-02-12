@@ -136,7 +136,33 @@ The instruction is settled, the tokens are unlocked, Bob now owns 100 ACME token
 
 --> IMAGE HAS TO BE DESIGNED
 
-### 
+### Transfer with an exchange
+
+Now, let's take a look at a transfer involving an exchange.
+
+Again, Alice wants to sell 100 ACME tokens. Bob, the buyer, wants to buy 100 ACME tokens for 10 USDC. Both are looking for a trade match on the exchange NextDaq.
+
+NextDaq matches Alice with Bob. After coordinating the aggreed price, i.e. 100 ACME tokens for 10 USDC, NextDaq creates a venue.
+
+The venue has one single instruction with two legs. The time of expiration is 24 hours from the venue creation.
+
+![Transfer with an Exchange](../features/images/exchange-mediated-transfer.png)
+
+The transfer cannot be settled until all counterparties have provided authorisation for the instruction. This has to be achieved before the venue expires.
+
+Bob authorises the instruction. Thus, his 10 USDC are locked. In the meantime, Alice authorises the instruction and her 100 ACME tokens are locked.
+
+With authorisation provided, it's time for instruction execution. Alice receives 10 USDC and Bob his 100 ACME tokens.
+
+**How would this transfer look with pre-given authorisation?**
+
+Alice still wants to sell 100 ACME tokens and Bob wants to buy them for 10 USDC. NextDaq again matches Alice and Bob, and coordinates the agreed price.
+
+NextDaq receives signed authorisations from Alice and Bob. The authorisations represent the approval of both counterparties on the specific instruction for the transfer. Whereas, Bob provides authorisation using a signed receipt of a fund of transfer of 10 USDC to Alice. As Bob transfered the 10 USDC, there is no lock on additional funds from Bob. Bob's rreceipt signed data is marked as locked instead.
+
+NextDaq creates a venue with one insstruction and two legs. The authorisations from Alice and Bob are provided for the venue.
+
+The instruction is created and at the same time, it is authorised. This leads to an instant settlement of the instruction. Also, Bob's receipt is marked used. Alice receives 10 USDC and Bob 100 ACME tokens.
 
 ## Chain of Responsibility
 
@@ -207,6 +233,4 @@ For a good overview on instructions, just scroll to _Instructions - Multipart Tr
 
 ## Links
 
-* Custody:
 * Settlement: https://developers.polymesh.live/settlement/
-
