@@ -29,13 +29,19 @@ In their own words, "Substrate is a modular framework that enables you to create
 
 Polymesh is built on Substrate. As such, Substrate tools are useable for low-level inspection of the chain state. At this level, the transactions appear relatively raw as compared to the Polymesh SDK and Dashboard where data is parsed and presented in more-readable form.
 
+[Substrate](https://www.substrate.io/)
+
 ## Consensus
 
 Polymesh uses a Nominated Proof-of-Stake consensus in which operators create and validate blocks. It is a high-speed protocol as compared to proof-of-work systems. The operators themselves are appointed by network participants who signal support through the on-chain governance process which includes staking POLYX and sharing in network rewards for doing so.
 
+[Consensus](https://developers.polymesh.live/consensus/)
+
 ## Governance
 
 Certain system parameters as well as the operators and system upgrades are controlled by a sophisticated on-chain governance system. In summary, sensitive functions that control the evolution of the network are managed by on-chain decision-making and deterministic execution. The governance system itself can be upgraded via a system upgrade. This is only possible by consensus achieved through the prevailing governance system. The protocol prevents forks, provides an unambiguous description of the current rules and a precise description of the process that must unfold before any change to those rules would be possible.
+
+[Governace](/introduction/governance)
 
 ## Extensions (Extrinsics)
 
@@ -45,14 +51,25 @@ Polymesh's rules are defined as "extrinsics" which are extensions to the blockch
 
 Blockchain transactions are always signed and a so-called wallet's purpose is to hold signing keys and sign on behalf of the user. Given the flexibility of public/private key encryption, there are always multiple ways to sign a transaction - some are more human-friendly and some are more machine-friendly. The Polymesh Wallet is a human-friendly browser extension that holds secret signing keys and asks for confirmation from a human user before signing transactions.
 
+[Wallet](/introduction/wallet)
+
 ## Dashboard
 
 The Polymesh Dashboard is a multi-faceted Web GUI that is in many ways like a blockchain explorer. Again, we see the advantage of a purpose-built chain as compared to a generalised chain. The Polymesh Dashboard knows precisely what the application is about and effortlessly interprets every transaction. Many activities that would require specialised application-layer user-interfaces are seemlessly integrated into this unified GUI. The interface is built using the SDK, which gives developers a hint of what is possible using the SDK.
+
+[Polymesh Dashboard](https://dashboard.polymesh.live/)
 
 ## SDK
 
 The SDK is a JavaScript or Typescript (developer's choice) set of methods that expose the entire Polymesh API. The SDK wraps blockchain concerns in a way that will be familiar to developers of non-blockchain applications. It is expected that most Service Providers will integrate Polymesh into their legacy systems using the SDK.
 
+[Polymesh SDK](https://developers.polymath.network/classic-sdk/)
+
 ## Links:
 
-- https://www.substrate.io/
+- Wallet: [/introduction/wallet](/introduction/wallet)
+- Governance: [/introduction/governance](/introduction/governance)
+- Dashboard: https://dashboard.polymesh.live/
+- Consensus: https://developers.polymesh.live/consensus/
+- Substrate: https://www.substrate.io/
+- SDK: https://developers.polymath.network/classic-sdk/
