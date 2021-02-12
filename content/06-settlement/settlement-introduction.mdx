@@ -134,7 +134,7 @@ The instruction is settled, the tokens are unlocked, Bob now owns 100 ACME token
 
 ![Peer-to-Peer Transfer](../features/images/peer-to-peer-transfer.png)
 
---> IMAGE HAS TO BE DESIGNED
+--> IMAGE HAS TO BE DESIGNED, change parameters in regard to expiration date
 
 ### Transfer with an exchange
 
@@ -148,6 +148,8 @@ The venue has one single instruction with two legs. The time of expiration is 24
 
 ![Transfer with an Exchange](../features/images/exchange-mediated-transfer.png)
 
+--> IMAGE HAS TO BE DESIGNED, change parameters in regard to expiration date
+
 The transfer cannot be settled until all counterparties have provided authorisation for the instruction. This has to be achieved before the venue expires.
 
 Bob authorises the instruction. Thus, his 10 USDC are locked. In the meantime, Alice authorises the instruction and her 100 ACME tokens are locked.
@@ -160,7 +162,7 @@ Alice still wants to sell 100 ACME tokens and Bob wants to buy them for 10 USDC.
 
 NextDaq receives signed authorisations from Alice and Bob. The authorisations represent the approval of both counterparties on the specific instruction for the transfer. Whereas, Bob provides authorisation using a signed receipt of a fund of transfer of 10 USDC to Alice. As Bob transfered the 10 USDC, there is no lock on additional funds from Bob. Bob's rreceipt signed data is marked as locked instead.
 
-NextDaq creates a venue with one insstruction and two legs. The authorisations from Alice and Bob are provided for the venue.
+NextDaq creates a venue with a single instruction and two legs. The time of expiration is 24 hours from the venue creation. The authorisations from Alice and Bob are provided for the venue.
 
 The instruction is created and at the same time, it is authorised. This leads to an instant settlement of the instruction. Also, Bob's receipt is marked used. Alice receives 10 USDC and Bob 100 ACME tokens.
 
