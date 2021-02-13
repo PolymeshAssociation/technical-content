@@ -1,16 +1,83 @@
 ---
-title: Overview
-description: Customer Due Dilligence (CDD) in Polymesh
+title: CDD Overview
+description: Polymesh CDD
 slug: /cdd/introduction
 ---
 
+Due diligence is a concept often employed in corporate law and business agreements. The stipulation is that conducting due diligence measures beafore a new business venture, company evaluations, etc. helps with information asymmetry. A preliminary investigation provides added information for decision-making. The improved quality of information for a decision in the end mitigates the amount of risk of an operation.
+
+Often customer due diligence is part of regulatory requirements. It is employed to reduce the amount of systemic risk stemming from individual business operations in a system.
+
+Polymesh leverages a network of professional KYC service providers to enable a quick and easy onboarding for the network's users. At the same time, it adds a security layer for the network and participants.
+
 ## Minimum KYC Requirement
 
-Polymesh enforces a system-wide minimal KYC requirement. In order to transaction regulated securities the parties must complete Customer Due Dilligence (CDD) first. 
+Polymesh enforces a system-wide minimal KYC requirement. In order to transaction regulated securities, the parties must complete customer due dilligence (CDD) first. CDD on Polymesh is part of the network's design tailored to regulated securities.
 
-Even in a case where the originator of a regulated security has specified no KYC requirements, the CDD requirement remains in effect. In this way, CDD can be understood as the minimum viable KYC process that all users who have regulated assets have passed. 
+Even in a case where the originator of a regulated security has specified no KYC requirements, the CDD requirement remains in effect. In this way, CDD can be understood as the minimum viable KYC process that all users, who have regulated assets, have passed.
+
+While onboarding on Polymesh, the CDD provider creates a users identity attaching a CDD claim. Valid CDD checks are part of the networks pre-processing checks. Without a valid claim, interacting with the network isn't possible as **all on-chain transactions require an associated CDD identity**.
 
 ## Becoming a CDD Service Provider
 
+CDD makes it possible that every transaction is associated with an identity, which in turn is linked to a valid CDD claim. Where a **valid CDD claim** is issued by a permissioned identity, i.e. the KYC service provider.
+
+CDD service providers are permissioned, but what does being permissioned mean on Polymesh?
+
+To add a new CDD service provider to the network, a PIP has to be created. If the PIP is successfull, the CDD provider is added to a "list of" permissioned CDD providers on-chain.
+
+The same applies for removing CDD providers: An existing provider from the list of permissioned CDD service providers on-chain can only be removed through a PIP.
+
+After removing the CDD provider, what happens with the CDD claims?
+
+Through the governance process a so-called "sunset" window can be set. All previously issued CDD claims remain valid. The provider cannot issue new claims during the period. Hereby, the user can then request a new claim from another service provider and not loose access because the previous service was removed.
+
+## Establishing CDD through claims
+
+The trusted, or permissioned, CDD providers isse all CDD claims on Polymesh. Regularly, the claim expires after six months. After the claim expires, the user needs to re-authenticate.
+
+Polymesh supports the following **claim types**:
+
+* a user is accredited,
+* a user is verified with a CDD check,
+* a user is verified with a KYC check, including a string representing jurisdiction,
+* a user has an active "BuyLockup",
+* a user has an active "SellLockup",
+* a user is exempted from a jurisdiction,
+* a user is blocked, and
+* a user claims a linkage between identities of one entity (self-issued by user).
+
+Some claim types require additional information for the claim, i.e. parameter specifications. Every claim has an expiry. After it expires, it is no longer valid.
+
+As said before, every identity **must** hold a valid CDD claim to interact with the network. An identity can have **more than one valid claim**. More than  one claim can be seen as a redundancy, but also a possibility to ensure CDD validity at any time, even when a provider is removed from the on-chain list.
+
+A user can have **multiple identities**. In this case, each identity requires a corresponding CDD claim from one or more providers. A user with multiple identities is free to get all necessary CDD claims from different providers or just one for all CDD claims. When the user opts for the same CDD provider for all his associated identities, only one KYC check is necessary.
+
+Multiple identities are vital so that a user can obfuscate his/her asset holdings. By storing assets in different portfolios associated with different identities, the overall asset portfolio remains private. This fits well with a blockchain network developed for security tokens and capital markets.
+
+Identities from the same user, independently of whether it is a single user or a private entity like a company, are still tied together through the Polymesh Confidentiality Identity Mechanism.
+
+<HighlightBox type="tip">
+
+Feeling unsure about the <b>Polymesh Confidentiality Identity Mechanism</b>? Check out the section on identity again!
+
+--> INCLUDE LINK TO SECTION
+
+</HighlightBox>
+
+The **Polymath Unique Identity System (PUIS)** is responsible for issuing a unique identifier, i.e. an entity ID, to each entity on the network. This is independent from the CDD provider used for onboarding. When a user is new or needs to verify the existing identity, the CDD provider tasked to verify the claim interacts with PUIS.
+
+The entity ID is not just pushed on-chain to allow for a certain degree of confidentiality. An external observer couold link identities of the same user, i.e. entity, together, if the entity IDs would be included on-chain.
+
+While privacy and confidentiality remain vital, some form of on-chain tracking is essential to allow for transparent tracking. How is this achieved if the entity ID isn't on-chain?
+
+A Pedersen hash of the entity ID in addition to some randomising factors is linked to the CDD claims. Therefore, multiple identities of one entity can be linked through their commitment to the same entity ID. There is no linkage between the identities itself. The result is an in increased degree of compliance for trading regulated assets and of security by adding a protection for second layer protocols. Second layer protcols can leverage the Sybil protection measures when building on Polymesh.
+
+For regulatory reasons, an asset issuer might want to track the number of investors, i.e. users holding the issued asset. It can be increasingly difficult in a system upholding confidentiality and users having multiple identities. For this reason, users can link their identities together.
+
+How can a user link identities? Taking the entity ID and the on-chain commitments to the entity ID, a user can add a self-issued Scope Claim to the identity. Thus, linking identities is possible.
+
 ## Links
 
+* Confidential Identity: https://developers.polymesh.live/confidential_identity/
+* Customer Due Diligence: https://developers.polymesh.live/cdd/ 
