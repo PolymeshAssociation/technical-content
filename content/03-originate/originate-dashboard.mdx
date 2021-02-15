@@ -6,22 +6,22 @@ slug: /originate/dashboard
 
 ## Exercise
 
-Let us walk through the asset origination process using the Polymesh Wallet, a browser and the Polymesh Token Studio. It will be helpful to consider a hypothetical real-world situation. Although Polymesh offers options to address many edge cases, this is a very simple example. Let us suppose that ACME Inc. (ACME) is being incorporated and its founders wish to create a security for its stock on Polymesh from the start.
+Let us walk through the asset origination process using the Polymesh Wallet, a browser and the Polymesh Token Studio. It will be helpful to consider a hypothetical real-world situation. Although Polymesh offers options to address many edge cases, this is a very simple example. Let us suppose that ACME Co. (ACME) is being incorporated and its founders wish to create a security for its stock on Polymesh from the start.
 
 - The security will represent equity in the firm.
 - It will need a ticker symbol. The founders chose ACME.
-- Alice is one of the founders and will be the acting agent for ticker creation and asset issuance.
-- 100,000 authorised shares will be created and given to its founders, including 20,000 to Alice.
+- Alice is the CEO and one of the founders and will be the acting agent for ticker creation and asset issuance.
+- 100,000 authorised shares will be created and given to its founders, including 20,000 of them to Alice.
 
 At a later stage, the company founders hope to reach an IPO, another event involving the stock, but we are not there yet.
 
 ## Compliance
 
- ACME will create the securities on the Polymesh blockchain. Since ACME is required to ensure compliance, it will first make important business decisions.
+ ACME Co will create the securities on the Polymesh blockchain. Since ACME Co is required to ensure compliance, it will first make important business decisions.
 
- - Choosing and engaging a KYC Service Provider. ACME chose EzKyc.
+ - Choosing and engaging a KYC Service Provider. ACME Co chose EzKyc.
  - Defining the KYC requirements and establishing an agreed process that the KYC Service Provider will provide.
- - Defining jurisdictional properties. ACME chose anyone not a resident of Liechtenstein.
+ - Defining jurisdictional properties. ACME Co chose anyone not a resident of Liechtenstein.
 
 
 - We will originate the asset described in the overview =>
@@ -32,8 +32,9 @@ At a later stage, the company founders hope to reach an IPO, another event invol
 ## Prerequisites
 
 - You use the Polymesh Wallet browser extension.
-- You have a private key and an identity on Alcyone testnet.
+- You have a private key and an identity on Alcyone testnet. Let's call it Alice.
 - You have used the POLY to POLYX Bridge to get some POLYX on Alcyone. Convert at least 15k POLY as the ticker reservation is 2.5k, the ticker configuration is 10k.
+- You create another private key and associate another identity to it. Let's call it AliceAsCeo.
 
 ## Open the Token Studio
 
@@ -44,6 +45,7 @@ At a later stage, the company founders hope to reach an IPO, another event invol
 
 ## Navigate to Origination
 
+- Make sure you have selected AliceAsCeo in PolyWallet.
 - In https://tokenstudio.polymesh.live/my-tokens click on "New Security Token".
 - Skip the Service Provider marketplace. Although it would be worth talking about what it is.
 - So "Go to ticker reservation".
@@ -67,12 +69,12 @@ At a later stage, the company founders hope to reach an IPO, another event invol
 ## To Compliance
 
 We want to add jurisdiction cdd, not in Liechtenstein.
-This part is missing in the SDK section at the moment, still have to look at how to do it, but let's do that here:
+This part is incomplete in the SDK section at the moment, still have to look at how to do it, but let's do that here:
 
 - Click on tab "Compliance" at the top.
 - Click add a provider.
 - In the opening menu from the left, leave only "Jurisdiction" ticked.
-- I checked in the marketplace, there is no existing KYC provider, so I just used my own Polymesh id, even if I named the attestation's provider "EzKyc".
+- I checked in the marketplace, there is no existing KYC provider, so let's just use "aliceAsCeo" identity as EzKyc, and name the attestation's provider "EzKyc".
 - Clicked "Add".
 - Confirmation modal window. Modal progress window. Only tx cost here.
 - Wallet popup with `complianceManager: addDefaultTrustedClaimIssuer(ticker, issuer)`
