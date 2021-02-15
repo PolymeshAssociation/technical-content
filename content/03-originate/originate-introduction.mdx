@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: Origination Process
 description: Originating Assets with Polymesh
 slug: /originate/originate-introduction
 ---
@@ -14,12 +14,13 @@ Before we dive in, let us explore the overal asset representation and the origin
 
 ## Security Token Design
 
-Any digitally represented asset can be originated and managed through the asset base layer logic in Polymesh.
+Any digitally-represented asset can be originated and managed through the asset base layer logic in Polymesh.
 
 Managing the full lifecycle of an asset on Polymesh includes:
 
 * issuance of digital securities,
-* initial distribution of assets, and
+* initial distribution of assets,
+* exchange of assets, and
 * corporate actions related to the asset (dividend payments, capital distributions, corporate ballots).
 
 All these can be performed directly on the blockchain.
@@ -28,7 +29,7 @@ All these can be performed directly on the blockchain.
 
 Assets issued on Polymesh can be either divisible or indivisible.
 
-All assets are differentiated by a **ticker registration**. The ticker is a 12 character identifier. Tickers can be registered by any user and the registration remains valid until their expiry date, currently six months after the initial registration. This usually occurs when asset origination is finalised. Once a ticker is registred and as long as the registration remains valid, no other user can issue an asset with that specific ticker. Additionally, transfering ticker registration to other identities is possible.
+All assets are differentiated by a **ticker registration**. The ticker is a 12 character identifier. Tickers can be registered by any user and the registration remains valid until their expiry date, currently six months after the initial registration. This usually occurs when asset origination is finalised. Once a ticker is registered and as long as the registration remains valid, no other user can issue an asset with that specific ticker. Additionally, transferring ticker registration to other identities is possible.
 
 Additional **external identifiers** can be used on Polymesh next to the ticker. Example of such are ISINs, CUSIPs, CINs, LEIs, and DTIs. Polymesh validates the consistency of the external identifiers, i.e. control if the checksum match.
 
