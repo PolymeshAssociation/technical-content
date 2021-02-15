@@ -12,7 +12,7 @@ Developers who are new to distributed ledger technology may find the following c
 
 - A blockchain is similar to a transaction replay log that can, in theory, recreate the system state by replaying the transactions in order. The transaction log is an append-only structure that contains everything that has ever happened in the system. A _transaction_ is the name of the smallest indivisible unit of state change added to the blockchain.
 - Blockchains are stateful protocols, meaning anywhere there is connectivity there is the possibility of inspecting or interacting with the on-chain protocol.
-- Blockchains are deterministic. Logic that would traditionally exist on servers often exists as Smart Contracts. These self-enforcing programs create inviolable rules that can be used to create application-layer solutions. Smart Contracts are usually published by deployment transactions so that their existence is an inarguable fact. Since their functions are determistic there is always only one correct interpretation of effect of any input.
+- Blockchains are deterministic. Logic that would traditionally exist on servers often exists as Smart Contracts. These self-enforcing programs create inviolable rules that can be used to create application-layer solutions. Smart Contracts are usually published by deployment transactions so that their existence is an inarguable fact. Since their functions are deterministic there is always only one correct interpretation of effect of any input.
 - Correct operation of the chain is assured by distributed consensus as nodes independently ascertain what the result of a transaction _must be_ given the preceding state of the chain. Malfunctioning or Byzantine nodes are simply ignored by the rest of the network. Consensus-mechanism logic is a differentiating factor among competing blockchains, since each presents different performance, finality and fault-tolerance assurances.
 - Every input to a blockchain is a signed transaction so other nodes can be certain that any proposed payload was signed by particular participant(s) before evaluating what the transaction does at the protocol level and in the context of any Smart Contract logic that might be involved.
 
@@ -55,7 +55,7 @@ Blockchain transactions are always signed and a so-called wallet's purpose is to
 
 ## Dashboard
 
-The Polymesh Dashboard is a multi-faceted Web GUI that is in many ways like a blockchain explorer. Again, we see the advantage of a purpose-built chain as compared to a generalised chain. The Polymesh Dashboard knows precisely what the application is about and effortlessly interprets every transaction. Many activities that would require specialised application-layer user-interfaces are seemlessly integrated into this unified GUI. The interface is built using the SDK, which gives developers a hint of what is possible using the SDK.
+The Polymesh Dashboard is a multi-faceted Web GUI that is in many ways like a blockchain explorer. Again, we see the advantage of a purpose-built chain as compared to a generalised chain. The Polymesh Dashboard knows precisely what the application is about and effortlessly interprets every transaction. Many activities that would require specialised application-layer user-interfaces are seamlessly integrated into this unified GUI. The interface is built using the SDK, which gives developers a hint of what is possible using the SDK.
 
 [Polymesh Dashboard](https://dashboard.polymesh.live/)
 
