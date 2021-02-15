@@ -101,12 +101,27 @@ a.action-link img {
 .box-action-cards .content-wrapper .action-card-large .action-card-table td {
 	padding: 0 0 10px 0;
 	border: 0;
-	width: 50%;
+	padding-bottom: 20px;
 }
 
-.box-action-cards .content-wrapper .action-card-large .action-card-table a {
+.box-action-cards .content-wrapper .action-card-large .action-card-table td.left {
+	width: 40%;
+}
+
+.box-action-cards .content-wrapper .action-card-large .action-card-table a.main-link {
 	text-transform: uppercase;
 	font-weight: 700;
 	font-size: 10pt;
+	color: #1348E3;
+	text-decoration: none;
+}
+
+.box-action-cards .content-wrapper .action-card-large .action-card-table a.sub-link {
+	display: block;
+	text-decoration: none;
+	color: #6C7D88;
+}
+
+.box-action-cards .content-wrapper .action-card-large .action-card-table a.sub-link:hover {
 	color: #1348E3;
 }
