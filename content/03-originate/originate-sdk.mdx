@@ -186,51 +186,51 @@ Implicit in the creation of this token is that Alice, as the CEO, is both the to
 
 ## Compliance
 
-However, as the CEO, Alice still needs to do one more step, define the conditions of ownership. Namely, require anyone who acquires the token to not be a resident of Liechtenstein. An exception will be made of the primary issuance agent who is simply used as a conduit.
+However, as the CEO, Alice still needs to do one more step, define the conditions of ownership. Namely, require anyone who acquires the token to not be a resident of Liechtenstein. An exception will be made of the primary issuance agent who is simply used as a conduit, and can send to anyone.
 
 <MultiCodeBlock>
 
 ```typescript
 const acmeCompliance: Compliance = token.compliance;
 const acmeRequirements: Requirements = acmeCompliance.requirements;
-const aliceAsCeoId = await apiAliceAsCeo.getCurrentIdentity();
+const aliceAsCeo = await apiAliceAsCeo.getCurrentIdentity();
 const setRequirementsQueue: TransactionQueue<SecurityToken> = await acmeRequirements.set({
     "requirements": [
         [
             {
-                "target": ConditionTarget.Both,
+                "target": ConditionTarget.Sender,
                 "type": ConditionType.IsPrimaryIssuanceAgent
             }
         ],
         [
             {
-                "target": ConditionTarget.Both,
+                "target": ConditionTarget.Receiver,
                 "type": ConditionType.IsPresent,
                 "claim": {
-                    "type": ClaimType.Jurisdiction,
+                    "type": ClaimType.KnowYourCustomer,
                     "scope": {
-                        "type": ScopeType.Identity,
-                        "value": "Residence"
+                        "type": ScopeType.Ticker,
+                        "value": token.ticker
                     }
                 },
                 "trustedClaimIssuers": [{
-                    "identity": aliceAsCeoId,
-                    "trustedFor": [ClaimType.Jurisdiction]
+                    "identity": aliceAsCeo.did,
+                    "trustedFor": [ClaimType.KnowYourCustomer]
                 }]
             },
             {
-                "target": ConditionTarget.Both,
+                "target": ConditionTarget.Receiver,
                 "type": ConditionType.IsAbsent,
                 "claim": {
                     "type": ClaimType.Jurisdiction,
                     "code": CountryCode.Li,
                     "scope": {
-                        "type": ScopeType.Identity,
-                        "value": "Residence"
+                        "type": ScopeType.Ticker,
+                        "value": token.ticker
                     }
                 },
                 "trustedClaimIssuers": [{
-                    "identity": aliceAsCeoId,
+                    "identity": aliceAsCeo.did,
                     "trustedFor": [ClaimType.Jurisdiction]
                 }]
             }
@@ -243,22 +243,49 @@ const updatedToken: SecurityToken = await setRequirementsQueue.run();
 ```javascript
 const acmeCompliance = token.compliance;
 const acmeRequirements = acmeCompliance.requirements;
-const setRequirementsQueue = await acmeRequirements.set([[
-    {
-        "condition_type": ConditionType.asIsPresent("isJurisdiction"),
-        "issuers": [{
-            "issuer": aliceAsCeo.did,
-            "trusted_for": TrustedFor.asSpecific("isJurisdiction")
-        }]
-    },
-    {
-        "condition_type": ConditionType.asIsAbsent(Claim.asJurisdiction(["Li", "isIdentity"])),
-        "issuers": [{
-            "issuer": aliceAsCeo.did,
-            "trusted_for": TrustedFor.asSpecific("isJurisdiction")
-        }]
-    }
-]]);
+const setRequirementsQueue = await acmeRequirements.set({
+    "requirements": [
+        [
+            {
+                "target": "Sender",
+                "type": "IsPrimaryIssuanceAgent"
+            }
+        ],
+        [
+            {
+                "target": "Receiver",
+                "type": "IsPresent",
+                "claim": {
+                    "type": "KnowYourCustomer",
+                    "scope": {
+                        "type": "Ticker",
+                        "value": token.ticker
+                    }
+                },
+                "trustedClaimIssuers": [{
+                    "identity": aliceAsCeo.did,
+                    "trustedFor": ["KnowYourCustomer"]
+                }]
+            },
+            {
+                "target": "Receiver",
+                "type": "IsAbsent",
+                "claim": {
+                    "type": "Jurisdiction",
+                    "code": "Li",
+                    "scope": {
+                        "type": "Ticker",
+                        "value": token.ticker
+                    }
+                },
+                "trustedClaimIssuers": [{
+                    "identity": aliceAsCeo.did,
+                    "trustedFor": ["Jurisdiction"]
+                }]
+            }
+        ]
+    ]
+});
 const updatedToken: SecurityToken = await setRequirementsQueue.run();
 ```
 
