@@ -19,6 +19,24 @@
   max-width: 350px;
 }
 
+.box-overview-card-dyn {
+	padding: 15px;
+	border-bottom: 1px solid #EDEDED;
+	margin-bottom: 40px;
+  padding-bottom: 40px;
+}
+
+.box-overview-card-dyn .content {
+
+}
+
+
+.box-overview-card-dyn .inline-image-float-right {
+	width: 35%;
+	float: right;
+	margin-left: 15px;
+}
+
 .box-action-cards {
 	padding: 15px;
 	margin-bottom: 40px;
