@@ -21,22 +21,22 @@ Internal systems can integrate with Polymesh using the SDK. The SDK presents a c
 
 ## Preconditions
 
-If you went through the quick start, we can assume that you have created an account on the Polymesh testnet and that you have credited it with POLY. We shall call this account `alice`, and it represents a personal account. To go through the previous Token Studio exercise, you had to create another identity, that of Alice acting as the CEO of ACME Co. We shall call this account `aliceAsCeo`:
+If you went through the quick start, we can assume that you have created an account (a public / private key pair) on the Polymesh testnet, that you associated it with an identity, and that you credited it with POLYX. We shall call this personal account `aliceKey`, and the personal identity it represents `alice`. To go through the previous Token Studio exercise, you had to create another identity, that of Alice acting as the CEO of ACME Co. We shall call this account `ceoKey`, and its corresponding identity `ceo`. To recap:
 
-* Alice, ACME's acting agent, already has a Polymesh identity, tied to a primary private key named `aliceAsCeo`.
-* `aliceAsCeo`'s private key is based on the `"word1 word2 ..."` mnemonic.
-* A Polymesh client has been [instantiated](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#static-connect) by Alice so she can do the next actions:
+* Alice, ACME's CEO and acting agent, already has a Polymesh identity, tied to a primary private key named `ceo`.
+* `ceoKey`'s private key is based on the `"word1 word2 ..."` mnemonic.
+* A Polymesh client has been [instantiated](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#static-connect) by Alice the CEO so she can do the next actions:
     <MultiCodeBlock>
 
     ```typescript
-    const apiAliceAsCeo: Polymesh = await Polymesh.connect({
+    const apiCeo: Polymesh = await Polymesh.connect({
         "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word1 word2 ..."
     });
     ```
 
     ```javascript
-    const apiAliceAsCeo = await Polymesh.connect({
+    const apiCeo = await Polymesh.connect({
         "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word1 word2 ..."
     });
@@ -46,32 +46,32 @@ If you went through the quick start, we can assume that you have created an acco
 
 ## Ticker reservation
 
-Before creating the token proper, Alice needs to [reserve](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#reserveticker) the ACME ticker so that it is not squatted while the founders incorporate the company. Think of it on same level as grabbing the `.com` domain as early as possible:
+Before creating the token proper, the CEO needs to [reserve](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#reserveticker) the ACME ticker so that it is not squatted while the founders incorporate the company. Think of it on same level as grabbing your `.com` domain as early as possible:
 
 <MultiCodeBlock>
 
 ```typescript
-const reservationQueue: TransactionQueue<TickerReservation> = await apiAliceAsCeo.reserveTicker({
+const reservationQueue: TransactionQueue<TickerReservation> = await apiCeo.reserveTicker({
     "ticker": "ACME"
 });
 ```
 
 ```javascript
-const reservationQueue = await apiAliceAsCeo.reserveTicker({
+const reservationQueue = await apiCeo.reserveTicker({
     "ticker": "ACME"
 });
 ```
 
 </MultiCodeBlock>
 
-The `TransactionQueue` type is just that, a queue. The transactions in it have not been launched. Notice that:
+The `TransactionQueue` type is just that, a queue. The transaction(s) in it have not been launched. Notice that:
 
-* It is a generic type specified with `TickerReservation`. This means that eventually, the object the queue returns is an instance of `TickerReservation`.
-* The constructor of `TransactionQueue` expects a [`context`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#constructor); it is in this `context` object that `apicAliceAsCeo` is referenced so it is understood that this is the private key to use.
+* It is a generic type parameterised with `TickerReservation`. This means that, eventually, the queue yields an instance of `TickerReservation`.
+* The constructor of `TransactionQueue` expects a [`context`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#constructor); it is in this `context` object that `apicCeo` is referenced so it is understood that `ceoKey` is the private key to use.
 * Each transaction in the queue has its own status.
 * The queue itself has its own [status](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#status).
 
-Of note, the reservation cost, at the time of writing, is of **2,500 POLY**, before network fees. Let's [run](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#run) it.
+Of note, the reservation cost, at the time of writing, is of **2,500 POLYX**, before network fees. Let's [run](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#run) it.
 
 <MultiCodeBlock>
 
@@ -85,7 +85,7 @@ const reservation = await reservationQueue.run();
 
 </MultiCodeBlock>
 
-It is at this point that the necessary signatures are collected for the transactions. `apiAliceasCeo` was created straight with the mnemonic, so the signature will be affixed automatically. However, if this was taking place in the browser, for instance in the Token Studio dashboard and with the Polymesh Wallet extension, then there is a possibility that Alice will refuse to sign when prompted.
+It is at this point that the necessary signatures are collected for the transactions. `apiCeo` was created straight with the mnemonic, so the signature will be affixed automatically. However, if this was taking place in the browser, for instance in the Token Studio dashboard and with the Polymesh Wallet extension, then there is a possibility that Alice will refuse to sign when prompted.
 
 <HighlightBox type="tip">
 
@@ -93,32 +93,32 @@ You would need to `try .run() catch` it for errors. Here, we opted for clarity a
 
 </HighlightBox>
 
-Also note that with `await reservationQueue.run()` we patiently wait for the queue to have finalised. However any `TransactionQueue` can provide intermediate information with regards to its changing status and that of its component transactions. If this is of interest to you, you can pass callbacks to [`onStatusChange`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#onstatuschange) and [`onTransactionStatusChange`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#ontransactionstatuschange).
+Also note that with `await reservationQueue.run()` we patiently wait for the queue to have finalised all its transactions. However, a `TransactionQueue` can provide intermediate information with regards to its changing status and that of its component transactions. If this is of interest to you, you can pass callbacks to [`onStatusChange`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#onstatuschange) and [`onTransactionStatusChange`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#ontransactionstatuschange).
 
 At this stage, Alice owns the reservation. You can confirm it with the following:
 
 <MultiCodeBlock>
 
 ```typescript
-const aliceAsCeo: CurrentIdentity = await apiAliceAsCeo.getCurrentIdentity();
+const ceo: CurrentIdentity = await apiCeo.getCurrentIdentity();
 const details: TickerReservationDetails = await reservation.details();
 const owner: Identity = details.owner;
-assert(owner.did == aliceAsCeo.did);
+assert(owner.did == ceo.did);
 ```
 
 ```javascript
-const aliceAsCeo = await apiAliceAsCeo.getCurrentIdentity();
+const ceo = await apiCeo.getCurrentIdentity();
 const { owner } = await reservation.details();
-assert(owner.did == aliceAsCeo.did);
+assert(owner.did == ceo.did);
 ```
 
 </MultiCodeBlock>
 
-Something is not immediately apparent from the few lines of code above. It is nonetheless important to point it out. When we created `apiAliceAsCeo` with `await Polymesh.connect()`, we passed an identifier `accountMnemonic` that allowed the SDK to recreate the private key. At the risk of repeating what was covered in the introduction module, this private key is not the Polymesh identity proper, nor is the public key. The public key is associated with an identity, whether as a primary key or a secondary one. And when the private key is used to sign a transaction, it is the **associated identity** that will be considered to be the one doing the action. This associated identity information is not embedded in the private key. It is an association that is stored on the blockchain, and as such, it needs to be retrieved to be known.
+Something is not immediately apparent from the few lines of code above. It is nonetheless important to point it out. When we created `apiCeo` with `await Polymesh.connect()`, we passed an identifier `accountMnemonic` that allowed the SDK to recreate the `ceoKey` private key. At the risk of repeating what was covered in the introduction module, this private key is not the Polymesh identity proper, nor is it the public key. The public key is associated with an identity, whether as a primary key, like here, or a secondary one. And when the private key is used to sign a transaction, it is the **associated identity** that will be considered to be the one doing the action. This associated identity information is not embedded in the private key. It is an association that is stored on the blockchain, may change in the future, and as such, it needs to be retrieved to be known.
 
 <HighlightBox type="info">
 
-So when we wrote `await` in `await apiAlice.getCurrentIdentity()`, this is no accident. We indeed need to do a round trip to the blockchain to know what identity our public key is associated with.
+So when we wrote `await` in `await apiCeo.getCurrentIdentity()`, this is no accident. We indeed need to do a round trip to the blockchain to know what identity our public key is associated with.
 
 </HighlightBox>
 
@@ -129,24 +129,24 @@ With the reservation done, it is time to issue the ticker proper. Oh wait! The r
 <MultiCodeBlock>
 
 ```typescript
-const apiAliceAsCeo: Polymesh = await Polymesh.connect({...});
-const reservation: TickerReservation = await apiAliceAsCeo.getTickerReservation({
+const apiCeo: Polymesh = await Polymesh.connect({...});
+const reservation: TickerReservation = await apiCeo.getTickerReservation({
     "ticker": "ACME"
 });
 ```
 
 ```javascript
-const apiAliceAsCeo = await Polymesh.connect({...});
-const reservation = await apiAliceAsCeo.getTickerReservation({
+const apiCeo = await Polymesh.connect({...});
+const reservation = await apiCeo.getTickerReservation({
     "ticker": "ACME"
 });
 ```
 
 </MultiCodeBlock>
 
-You will note that the class `TickerReservation`, just like the transaction queue, keeps a [`protected context: Context`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/tickerreservation#properties-1). This `context` in turn keeps a [`polymeshApi`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/context#properties-1). It is in there that we find the implicit knowledge that it is `aliceAsCeo`'s identity that is asking for the next actions. If it were any other **identity** that had called `getTickerReservation`, this other identity would not be able to follow up with a `.createToken` command because they do not own the reservation.
+You will note that the class `TickerReservation`, just like the transaction queue, keeps a [`protected context: Context`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/tickerreservation#properties-1). This `context` in turn keeps a [`polymeshApi`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/context#properties-1). It is in there that we find the implicit knowledge that it is `ceo`'s identity that is asking for the next actions. If it were any other **identity** that had called `getTickerReservation`, this other identity would not be able to follow up with a `.createToken` command because it does not own the reservation.
 
-With our `reservation` in memory, and 10,000 POLY in `aliceAsCeo` wallet, which is the cost of creation of 1 security token, we now can create it:
+With our `reservation` in memory, and 10,000 POLYX in `ceo`'s wallet, which is the cost of creation of 1 security token, we now can create it:
 
 <MultiCodeBlock>
 
@@ -184,16 +184,30 @@ const token = await tokenQueue.run();
 
 Implicit in the creation of this token is that Alice, as the CEO, is both the token's owner and its primary issuance agent (PIA). We are satisfied with this situation. Alice, under her personal account, is not yet a holder of any amount of the security token, though, we remedy that in the next chapter "Distribution".
 
+This `token` instance will not always be in memory, so if we wanted to fetch it at a later date, we would do:
+
+<MultiCodeBlock>
+
+```typescript
+const token: SecurityToken = await apiCeo.getSecurityToken({ "ticker": "ACME" });
+```
+
+```javascript
+const token = await apiCeo.getSecurityToken({ "ticker": "ACME" });
+```
+
+</MultiCodeBlock>
+
 ## Compliance
 
-However, as the CEO, Alice still needs to do one more step, define the conditions of ownership. Namely, require anyone who acquires the token to not be a resident of Liechtenstein. An exception will be made of the primary issuance agent who is simply used as a conduit, and can send to anyone.
+However, as the CEO, Alice still needs to do one more step, that is, define the conditions of ownership. Namely, require anyone who acquires the token to not be a resident of Liechtenstein. An exception will be made of the primary issuance agent who is simply used as a conduit, and can send to anyone. We use the CEO's identity as the KYC service provider, but realistically, it should be another identity.
 
 <MultiCodeBlock>
 
 ```typescript
 const acmeCompliance: Compliance = token.compliance;
 const acmeRequirements: Requirements = acmeCompliance.requirements;
-const aliceAsCeo = await apiAliceAsCeo.getCurrentIdentity();
+const ceo: CurrentIdentity = await apiCeo.getCurrentIdentity();
 const setRequirementsQueue: TransactionQueue<SecurityToken> = await acmeRequirements.set({
     "requirements": [
         [
@@ -214,7 +228,7 @@ const setRequirementsQueue: TransactionQueue<SecurityToken> = await acmeRequirem
                     }
                 },
                 "trustedClaimIssuers": [{
-                    "identity": aliceAsCeo.did,
+                    "identity": ceo.did,
                     "trustedFor": [ClaimType.KnowYourCustomer]
                 }]
             },
@@ -230,7 +244,7 @@ const setRequirementsQueue: TransactionQueue<SecurityToken> = await acmeRequirem
                     }
                 },
                 "trustedClaimIssuers": [{
-                    "identity": aliceAsCeo.did,
+                    "identity": ceo.did,
                     "trustedFor": [ClaimType.Jurisdiction]
                 }]
             }
@@ -243,6 +257,7 @@ const updatedToken: SecurityToken = await setRequirementsQueue.run();
 ```javascript
 const acmeCompliance = token.compliance;
 const acmeRequirements = acmeCompliance.requirements;
+const ceo = await apiCeo.getCurrentIdentity();
 const setRequirementsQueue = await acmeRequirements.set({
     "requirements": [
         [
@@ -263,7 +278,7 @@ const setRequirementsQueue = await acmeRequirements.set({
                     }
                 },
                 "trustedClaimIssuers": [{
-                    "identity": aliceAsCeo.did,
+                    "identity": ceo.did,
                     "trustedFor": ["KnowYourCustomer"]
                 }]
             },
@@ -279,7 +294,7 @@ const setRequirementsQueue = await acmeRequirements.set({
                     }
                 },
                 "trustedClaimIssuers": [{
-                    "identity": aliceAsCeo.did,
+                    "identity": ceo.did,
                     "trustedFor": ["Jurisdiction"]
                 }]
             }
