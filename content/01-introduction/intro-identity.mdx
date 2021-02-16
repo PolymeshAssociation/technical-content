@@ -14,11 +14,13 @@ So, let's dive right into it!
 
 This deceptively simple-sounding statement is among the first sentences children learn to say and it is among the first statements one learns when studying a new language. This concept is second-nature to human beings.
 
-Just as proverbial fish seldom thinks about water, we seldom find ourselves pondering the meaning of such a statement. But, when we are talking about systems that "prove" certain things, it's important to understand exactly what is being proven, and how it is being proven.
+Just as proverbial fish seldom think about water, we seldom find ourselves pondering the meaning of such a statement. But, when we are talking about systems that "prove" certain things, it's important to understand exactly what is being proven, and how it is being proven.
 
 Let's avoid confusion about fundamental concepts by deconstructing what was said, consider the challenge of proving it, and the way Polymesh solves the problem.
 
 ## Polymesh Identity: "Who are you?"
+
+![natural person](/placeholder-image.png)
 
 One of the first challenges we face when unpacking this topic is that some of the common terms are overloaded with too many meanings in different contexts. Let us make the first distinction.
 
@@ -37,24 +39,22 @@ There may be one or more actors with unique signatures and defined permissions w
 
 ## Attestations: "Show me your ID"
 
-Discussions of "identity" and what it means can be hampered by the various meanings of the phrase "ID" in other contexts. Clearly, your driver's license and passport are not you. They are in your wallet or purse, and you are reading this message. No rational observer would confuse a plastic document for you. When someone asks us to show our ID, this is usually a request for the **evidence of identity**.
+Discussions of "identity" and what it means can be hampered by the various meanings of the phrase "ID" in other contexts. Clearly, your driver's license and passport are not you. They are in your wallet or purse, and you are reading this message. No rational observer would confuse a plastic document for you. When someone asks us to show our ID, this is usually a request for  **evidence of identity**.
 
-In social settings, it is usually of no importance to confirm someone's legal name. They may prefer to be called by something else, and that's acceptable in a casual context. We might consider it rude if a new acquaintance challenged our claim about our first name for no apparent reason. In more formal settings, it is important to confirm the facts and we are accustomed to present our "ID", more precisely documents we have collected over our lifetimes, in order to demonstrate that our claims are indeed factual.
+In social settings, it is usually of no importance to confirm someone's legal name. They may prefer to be called by something else, and that's acceptable in a casual context. We might consider it rude if a new acquaintance challenged our claim about our first name for no apparent reason. In more formal settings, it is important to confirm the facts and we are accustomed to presenting our "ID", more precisely documents we have collected over our lifetimes, in order to demonstrate that our claims are indeed factual.
 
-Can we say that an ID document provides proof of a fact? Are such documents always accurate? Not so if one has moved recently. Details like our home address might be out of date for a time. It would be more accurate to say that an **ID document provides evidence**.
+Can we say that an ID document provides proof of a fact? Are such documents always accurate? Not necessarily so. If one has moved recently. Details like our home address might be out of date for a time. It would be more accurate to say that an **ID document provides evidence**. 
 
-Will any document suffice? It would be more accurate to say that only documents that emerge **from known issuers with strict processes** can provide strong evidence. For this reason, government-issued photo IDs are a common mean of identification.
+Will any document suffice? It would be more accurate to say that only documents that emerge **from known issuers with strict processes** can provide strong evidence. For this reason, government-issued photo IDs are a common method of identification.
 
-If one is presenting a passport as evidence of citizenship, we can say with certainty that the passport office of a certain sovereign state believed, at the time of issuance, that the person's citizenship was as specified in the document.
+If one is presenting a passport as evidence of citizenship, we can say with certainty that the passport office of a certain sovereign state believed, at the time of issuance, that the person's citizenship was as specified in the document and the reason they believed it to be so was because they followed a strict process to arrive at that conclusion. The passport itself is evidence that of this took place. 
 
 Another property of good ID documents is they should be **difficult to forge**. The more forgery-resistant the document is, the stronger the evidence. This is where cryptography shines since there is no known (practical) method of forging cryptographic signatures. We can always say, with near certainty, that someone with knowledge of a given private key must have produced a given signature. The main caveat is that private keys must be kept confidential.
 
 We might summarise by saying that the **strength of the evidence is proportional to the thoroughness of the process, the reputation of the document issuer, and the forgery-resistant nature of the document itself**.
 
 ![attestation](images/11_attestation.png)
-what it says, plus what we know about the origination process, plus the reputation of the issuer = Strength of Evidence
-
-That assessment is roughly equivalent to the decision to accept or reject an ID document that purports to establish something about the person who is presenting it.
+What we know about the origination process and the reputation of the issuer tells us what we need to know to evaluate the strength of the evidence in support of the _claims_ (for example, date of birth). That assessment is roughly equivalent to the decision to accept or reject an ID document that purports to establish something about the person who is presenting it.
 
 In Polymesh, **descriptive properties of a PID** are called **attestations**. An attestation is a statement about the PID and it is always issued by another identity. As we will see, Know Your Customer (KYC) and Customer Due Diligence (CDD) providers execute their own internal processes to confirm the facts and then issue attestations. This enables a PID to prove something about themselves in (approximately) the following cryptographically provable format:
 
@@ -72,15 +72,15 @@ Slightly more technically accurate:
 }
 ```
 
-The KYC service provider that contributes the attestation is testifying that they followed their process to reach that conclusion. The attestation is signed in a way that proves it came from someone with knowledge of the KYC service provider's private key. In this way, the existence of the attestation stands as evidence that the process took place, and `Name: Alice` was the result.
+The KYC service provider that contributes the attestation is testifying that they followed their process to reach that conclusion. The attestation is signed in a way that proves it came from someone with knowledge of the KYC service provider's private key. In this way, the existence of the attestation stands as evidence that the process took place, and `Name: Alice` was the result. With this signed attestation in her possession, Alice can can present it to anyone at any time. There is no further need to involve the KYC Service Provider as long as the verifier is satisfied with the attestations Alice can present. 
 
 ## Signing Keys: "Sign Here"
 
-This arrangement maps well to an intuitive understanding of the actual material and legal world.
+This arrangement maps well to an intuitive understanding of the actual material and legal worlds.
 
 Let's consider ACME Corp, an entity with a PID. We can know the true legal name of the corporation behind a PID because a KYC service provider attests that they have reviewed the pertinent documentation, for example, the Certificate of Incorporation.
 
-The organisation can own things and do things. Let's say that Alice works for ACME Corp. Alice is an individual who can own things and do things for herself (her PID) as well as for ACME Corp, being an employee of the organisation. When she is acting on behalf of ACME Corp, within the limits of her authority, she signs with a signing key by ACME Corp, on behalf of ACME Corp. When she is acting on her own behalf, she uses a self-assigned signing key associated with her personal PID.
+The organisation can own things and do things. Let's say that Alice works for ACME Corp. Alice is an individual who can own things and do things for herself (her PID) as well as for ACME Corp, being an employee of the organisation. When she is acting on behalf of ACME Corp, within the limits of her authority, she signs with a signing key assigned to her by ACME Corp, on behalf of ACME Corp. When she is acting on her own behalf, she uses a self-assigned signing key associated with her personal PID.
 
 Adding just a little bit of precision to the foregoing description, an entity has its own PID, has zero or more secondary keys, and a primary key that can create and remove secondary keys. Secondary keys have well-defined permissions outlining what they can do on behalf of the PID. Permissions are managed by the primary key.
 
@@ -94,11 +94,11 @@ Lastly, both primary and secondary signing keys may be of several types. A simpl
 
 ## Portfolios
 
+![portfolios](/placeholder-image.png)
+
 Polymesh Identities optionally organise owned assets into **portfolios**. Portfolios are **logical containers** that provide a way to define permission boundaries as well as organise reporting.
 
 For example, Alice might have complete control over the assets in the portfolio she is employed to manage, some control over specific assets in other portfolios, or all of the assets in specific portfolios, and no control over other assets beyond her permission boundaries.
-
---> Illustration to be included
 
 <HighlightBox type="info">
 
@@ -118,7 +118,7 @@ Refer to the reference documentation for details on [permissioned roles](https:/
 
 In the most stringent case, the allowable actions are the intersection of the **action**, the **portfolio**, and the **asset**. In some cases, one or more of those properties are not relevant to the action to be undertaken so explicit permission is not required.
 
-![permission](images/permission.png)
+![permission](./images/12_permission.png)
 
 ## Polymesh Unique Identity System
 
@@ -148,7 +148,7 @@ KYC service providers offer suites of services that implement such policies. Eac
 
 While each originator sets their own policy, considerable overlap is expected. Attestations associated with an investor's PID can be re-used in other contexts, provided the attestations have not expired and the attestation the PID already has is acceptable in terms of form and source.
 
---> Illustration to be included
+![know your customer](/placeholder-image.png)
 
 Polymesh is designed to welcome existing KYC service providers into the Polymesh network. The API integrates easily with existing systems, which allows KYC service providers to **issue on-chain attestations**.
 
