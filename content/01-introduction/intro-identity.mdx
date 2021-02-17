@@ -39,15 +39,15 @@ There may be one or more actors with unique signatures and defined permissions w
 
 ## Attestations: "Show me your ID"
 
-Discussions of "identity" and what it means can be hampered by the various meanings of the phrase "ID" in other contexts. Clearly, your driver's license and passport are not you. They are in your wallet or purse, and you are reading this message. No rational observer would confuse a plastic document for you. When someone asks us to show our ID, this is usually a request for  **evidence of identity**.
+Discussions of "identity" and what it means can be hampered by the various meanings of the phrase "ID" in other contexts. Clearly, your driver's license and passport are not you. They are in your wallet or purse, and you are reading this message. No rational observer would confuse a plastic document for you. When someone asks us to show our ID, this is usually a request for **evidence of identity**.
 
 In social settings, it is usually of no importance to confirm someone's legal name. They may prefer to be called by something else, and that's acceptable in a casual context. We might consider it rude if a new acquaintance challenged our claim about our first name for no apparent reason. In more formal settings, it is important to confirm the facts and we are accustomed to presenting our "ID", more precisely documents we have collected over our lifetimes, in order to demonstrate that our claims are indeed factual.
 
-Can we say that an ID document provides proof of a fact? Are such documents always accurate? Not necessarily so. If one has moved recently. Details like our home address might be out of date for a time. It would be more accurate to say that an **ID document provides evidence**. 
+Can we say that an ID document provides proof of a fact? Are such documents always accurate? Not necessarily so. If one has moved recently. Details like our home address might be out of date for a time. It would be more accurate to say that an **ID document provides evidence**.
 
 Will any document suffice? It would be more accurate to say that only documents that emerge **from known issuers with strict processes** can provide strong evidence. For this reason, government-issued photo IDs are a common method of identification.
 
-If one is presenting a passport as evidence of citizenship, we can say with certainty that the passport office of a certain sovereign state believed, at the time of issuance, that the person's citizenship was as specified in the document and the reason they believed it to be so was because they followed a strict process to arrive at that conclusion. The passport itself is evidence that of this took place. 
+If one is presenting a passport as evidence of citizenship, we can say with certainty that the passport office of a certain sovereign state believed, at the time of issuance, that the person's citizenship was as specified in the document and the reason they believed it to be so was because they followed a strict process to arrive at that conclusion. The passport itself is evidence that of this took place.
 
 Another property of good ID documents is they should be **difficult to forge**. The more forgery-resistant the document is, the stronger the evidence. This is where cryptography shines since there is no known (practical) method of forging cryptographic signatures. We can always say, with near certainty, that someone with knowledge of a given private key must have produced a given signature. The main caveat is that private keys must be kept confidential.
 
@@ -72,7 +72,7 @@ Slightly more technically accurate:
 }
 ```
 
-The KYC service provider that contributes the attestation is testifying that they followed their process to reach that conclusion. The attestation is signed in a way that proves it came from someone with knowledge of the KYC service provider's private key. In this way, the existence of the attestation stands as evidence that the process took place, and `Name: Alice` was the result. With this signed attestation in her possession, Alice can can present it to anyone at any time. There is no further need to involve the KYC Service Provider as long as the verifier is satisfied with the attestations Alice can present. 
+The KYC service provider that contributes the attestation is testifying that they followed their process to reach that conclusion. The attestation is signed in a way that proves it came from someone with knowledge of the KYC service provider's private key. In this way, the existence of the attestation stands as evidence that the process took place, and `Name: Alice` was the result. With this signed attestation in her possession, Alice can present it to anyone at any time. There is no further need to involve the KYC Service Provider as long as the verifier is satisfied with the attestations Alice can present.
 
 ## Signing Keys: "Sign Here"
 
@@ -86,7 +86,7 @@ Adding just a little bit of precision to the foregoing description, an entity ha
 
 ![signing keys](images/signing_keys.png)
 
-Lastly, both primary and secondary signing keys may be of several types. A simple private key may be sufficiently secure for Alice's routine duties. However, the key itself can be multi-signature if more security is desired or a mnemonic if more convenience is desired. 
+Lastly, both primary and secondary signing keys may be of several types. A simple private key may be sufficiently secure for Alice's routine duties. However, the key itself can be multi-signature if more security is desired or a mnemonic if more convenience is desired.
 
 <HighlightBox type="info">
 <a href = 'https://developers.polymesh.live/ledger/'>Ledger signing hardware</a> can be used to safeguard signing keys.
@@ -108,7 +108,7 @@ Portfolios relate strongly to custody on Polymesh. For a more detailed account, 
 
 ## Permissions
 
-Polymesh's permission requirements are organised on a method-by-method basis because not all permissions are required in all cases. 
+Polymesh's permission requirements are organised on a method-by-method basis because not all permissions are required in all cases.
 
 <HighlightBox type="tip">
 
@@ -172,10 +172,10 @@ For a more in-depth look at CDD on Polymesh, dive right into [Polymesh's CDD](/c
 
 ## Links
 
-- Primitives: Identity https://developers.polymesh.live/identity/ 
+- Primitives: Identity https://developers.polymesh.live/identity/
 - Primitives: Confidential Identity: https://developers.polymesh.live/confidential_identity/
-- Primitives: Customer Due Diligence: https://developers.polymesh.live/cdd/ 
+- Primitives: Customer Due Diligence: https://developers.polymesh.live/cdd/
 - Primitives: Portfolios and Custody: https://developers.polymesh.live/portfolios_custody/
-- Primitives: Compliance: https://developers.polymesh.live/compliance/ 
+- Primitives: Compliance: https://developers.polymesh.live/compliance/
 - Primitives: Authorizations: https://developers.polymesh.live/authorisations/
-- Polymesh Network: Permissioned Roles: https://developers.polymesh.live/permissioned_roles/ 
+- Polymesh Network: Permissioned Roles: https://developers.polymesh.live/permissioned_roles/
