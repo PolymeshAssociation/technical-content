@@ -24,20 +24,20 @@ Since you will interact with the testnet while you pursue the suggested exercise
 
 It will be helpful to understand a little bit of history to understand how this process works and why it works the way it does. In summary, the original Polymath network and network token, POLY, was deployed on the Ethereum mainnet. Those POLY tokens do indeed have material value. Consequently, the conversion process is backward-compatible. Owners of POLY can convert their POLY to POLYX at a ratio of 1:1. 
 
-This process works by locking POLY on the Ethereum network, which means sending them to a contract that takes them out of circulation. Without delving too deeply into the smart contract details, suffice it say users send their POLY to the contract, then the POLYX is sent to the PID. 
+This process works by locking POLY on the Ethereum network, which means sending them to a contract that takes them out of circulation. Without delving too deeply into the smart contract details, suffice it to say users send their POLY to the contract, then the POLYX is sent to the PID. 
 
 The technical challenge is that these are separate blockchains. So, the bridge involves an off-chain process that monitors Ethereum for incoming POLY and releases POLYX on Polymesh in response to events observed on Ethereum. Also, since Ethereum and Polymesh use different account schemes, the UI will associate the sending Ethereum address with the receiving Polymesh ID. 
 
-This process is familiar to POLY holders who are already accustomed to Ethereum tokens. And, the testnet implementation helps test and verify the conversion process. In order to get some free POLYX, you will first establish the initial conditions of real POLY holder on Ethereum. This section will take you through the process. 
+The preliminary conditions are familiar to POLY holders who are already accustomed to Ethereum tokens. And, the testnet implementation helps test and verify the conversion process. In order to get some free POLYX, you will first establish the initial conditions of a POLY holder on Ethereum.
 
 ## MetaMask
 
-MetaMask is popular wallet for Ethereum. You can use any wallet you like. Just extrapolate from the signing instructions to your wallet of choice. 
+MetaMask is a browser plug-in wallet that is very on Ethereum. You can use any wallet you like. Just extrapolate from the MetaMask signing instructions to follow the procedures of your wallet of choice. 
 
 
-MetaMask is a browser plug-in. If you don't already have MetaMask, search for in your browser plug-ins area or get it from here: https://metamask.io/
+If you don't already have MetaMask, search for in your browser plug-ins area or get it from here: https://metamask.io/
 
-Take your time a follow the on-screen instructures to create one account. Initially, it will have no money, which is fine. 
+Take your time and follow the on-screen instructures to create one account. Initially, it will have no money, which is fine. 
 
 ## Kovan Testnet
 
@@ -47,9 +47,9 @@ It's a good idea to open MetaMask and change to the Kovan Test Network now. Clic
 
 ## Testnet ETH
 
-Ethereum uses ETH to pay for transaction fees. Since we cannot complete this process without sending a transactions, we will need some testnet ETH to pay for the transactions. 
+Ethereum uses ETH to pay for transaction fees. Since we cannot complete this process without sending transactions, we will need some testnet ETH to pay for them. 
 
-Testnet ETH has no value and it is given away. All we have to do is ask. You can ask a friend, or use a faucet which is an automated or semi-automated system that gives it away. Automated systems tend to have anti-spam/anti-abuse mechanisms to help ensure everyone will receive enough to move forward. 
+Testnet ETH has no value and it is given away. All we have to do is ask. You can ask a friend, or use a faucet which is an automated or semi-automated system that simply gives it away. Automated systems tend to have anti-spam/anti-abuse mechanisms to help ensure everyone will receive enough to move forward. 
 
 - ETH Faucet: Visit this web site which uses your Github account to authenticate users:  https://faucet.kovan.network/
 - Gitter Chat: Visit this web site and post your Ethereum address. Funds are on the way.  https://gitter.im/kovan-testnet/faucet 
@@ -84,7 +84,7 @@ Point your browser to the dashboard explorer and select POLY to POLYX Bridge: ht
 
 ![dashboard explorer](images/dashboard-explore-bridge.png)
 
-Or go directly to: https://polybridge.polymesh.live/
+Or, go directly to: https://polybridge.polymesh.live/
 
 ![bridge](images/polybridge.png)
 
@@ -114,7 +114,9 @@ Press `Confirm`.
 
 MetaMask will, again, ask you to confirm that you intend to send the specified amount of POLY to the Polymesh bridge. Confirm this tansactions. 
 
-Now, you will see two stages of the process unfold. First, Ethereum will process the transaction where you sent POLY to the bridge. This is the "Locking" transaction. Then, Polymesh will observe this event on Ethereum and send you an equal amount of POLYX. 
+Now, you will see two stages of the process unfold. First, Ethereum will process the transaction that sends your testnet POLY to the bridge. This is the "Locking" transaction. Then, Polymesh will observe this event on Ethereum and send you an equal amount of POLYX. 
+
+![success](images/bridge-success.png)
 
 When everything confirms, you will have POLYX in your wallet. 
 
