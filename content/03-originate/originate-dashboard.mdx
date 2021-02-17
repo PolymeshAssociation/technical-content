@@ -6,14 +6,12 @@ slug: /originate/dashboard
 
 ## Exercise
 
-Let us walk through the asset origination process using the Polymesh Wallet, a browser and the Polymesh Token Studio. It will be helpful to consider a hypothetical real-world situation. Although Polymesh offers options to address many edge cases, this is a very simple example. Let us suppose that ACME Inc. (ACME) is being incorporated and its founders wish to create a security for its stock on Polymesh from the start.
+Let us explore the asset origination process using the Polymesh Wallet, a browser and the Polymesh Token Studio. It will be helpful to consider a hypothetical real-world situation. Let us suppose that ACME Co. (ACME) is being incorporated and its founders wish to create a security for its stock on Polymesh from the start.
 
 - The security will represent equity in the firm.
 - It will need a ticker symbol. The founders chose ACME.
-- Alice is one of the founders and will be the acting agent for ticker creation and asset issuance.
-- 100,000 authorised shares will be created and given to its founders, including 20,000 to Alice.
 
-At a later stage, the company founders hope to reach an IPO, another event involving the stock, but we are not there yet.
+At a later stage, the company founders hope to issue an IPO, another event involving the stock, but we are not there yet.
 
 ## Compliance
 
@@ -23,15 +21,64 @@ At a later stage, the company founders hope to reach an IPO, another event invol
  - Defining the KYC requirements and establishing an agreed process that the KYC Service Provider will provide.
  - Defining jurisdictional properties. ACME chose anyone not a resident of Liechtenstein.
 
-
-- We will originate the asset described in the overview =>
-- If you do you already have a Polymesh Wallet you should install it now =>
-- You will need some POLYX to pay for network resources as you send transactions. If you do not have any POLYX then you should get some free POLYX for the Testnet =>
-- Everyone on Polymesh who sends a materially significant transaction must, at a minimum, complete the Customer Due Diligence (CDD) process. If you have not already done so, complete CDD now. =>
+Since this action is materially significant, Alice will have to first complete [customer due diligence](/quickstart/quickstart-cdd). You will also need POLYX to pay network transaction fees. If you don't have any, or don't have enough, [get some free testnet POLYX](/quickstart/quickstart-polyx). 
 
 ## Open the Dashboard
 
+![dashboard](images/01-dashboard.png)
+
 ## Navigate to Origination
+
+Choose `Token Studio` or navigate directly to https://tokenstudio.polymesh.live/. 
+
+![token studio dashboard](images/02-token-studio.png)
+
+The dashboard and the token studio may ask you to authorize. This allows the sites to inspect your keys which let's the site personalize the presentation. The sites cannot authorize signed transactions without further consent, so go ahead and authorize if the wallets prompts you. 
+
+![authorize](images/03-token-studio-authorize.png)
+
+## Register for Token Studio
+
+You might be wondering why token studio is asking for your name when it is clearly displayed in your wallet. Recall that network participants have completed customer due diligence](/quickstart/quickstart-cdd) but this does not reveal who they are to other network members. Is the same with token studio, which can see the identity (when the wallet is authorized) but can't know the name stored in the wallet (for your own reference) or the information that was provided to the Customer Due Diligence Service Provider. 
+
+To assist with user support, let us know how to reach you. 
+
+![register](images/04-token-studio-register.PNG)
+
+Sign the transaction. 
+
+![sign](images/05-token-studio-register-sign.PNG)
+
+## My Tokens 
+
+The dashboard shows your tokens. Nothing has been created yet. 
+
+Click on `Create Security Token`. 
+
+![create](images/06-my-tokens-dashboard.PNG)
+
+The service provider marketplace is where you will choose your KYC Service Provider. For now, let us just reserve the symbol. 
+
+![reserve symbol](07-go-to-ticker.PNG)
+
+Enter the symbol you want to reserve. Symbol reservations are held for 60 days to allow ample time to attend to the security tokens details before finalizing origination. Symbol reservations ensure no duplicate trading symbols on the network and issuers can proceed in confidence that another organization will not sieze the desired symbol before everything is ready. 
+
+![reserve form](images/08-reserve-ticker.PNG)
+
+Wait! There is problem. If you are following along, changes are another user has already reserved the ACME symbol. 
+
+![unavailable](images/09-not-available.PNG)
+
+You will have to get creative and enter a symbol no one else has reserved. 
+
+![available](images/10-symbol-available.PNG)
+
+## Send the Reservation
+
+It will cost 2,500 POLYX to reserve the symbol on the blockchain. If you are low on POLYX, [get some free testnet POLYX](/quickstart/quickstart-polyx).
+
+
+
 
 ## Specify Service Providers
 
