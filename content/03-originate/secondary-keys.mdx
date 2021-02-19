@@ -6,58 +6,58 @@ slug: /originate/secondary
 
 ## ACME Corporation
 
-So far we have seen that obtaining the wallet software, verifying your ID and issuing a security token are surprisingly simple. However, the examples given were somewhat simplistic to avoid complicating matters with adjacent concerns. Now, we will prepare a somewhat more realistic example. 
+So far we have seen that obtaining the wallet software, verifying your ID and issuing a security token are surprisingly simple. However, the examples given were somewhat simplistic to avoid complicating matters with adjacent concerns. Now, we will prepare a somewhat more realistic example.
 
-You may have noticed that Alice originated a security token. In all probability this is not precisely what she wants. She is possibly doing the work, but it is her company and not herself that would originate a security. In other words, Alice does the talking but ACME performs the action. 
+You may have noticed that Alice originated a security token. In all probability this is not precisely what she wants. She is possibly doing the work, but it is her company and not herself that would originate a security. In other words, Alice does the talking but ACME performs the action.
 
 ## Secondary Keys
 
-The goal is that ACME should be an identified organization that has passed customer due diligence and Alice has, in addition to her personal wallet a signing key to use when she represents ACME in her capacity as CEO. 
+The goal is that ACME should be an identified organisation that has passed customer due diligence and Alice has, in addition to her personal wallet, a signing key to use when she represents ACME in her capacity as CEO.
 
 ## Use Another Computer
 
-The simplest way to create a wallet for ACME that is entirely separate from Alice's wallet is to use a different computer. This procedure closely matches a real-world scenario where these activities would indeed occur separately. 
+The simplest way to create a wallet for ACME that is entirely separate from Alice's wallet is to use a different computer. This procedure closely matches a real-world scenario where these activities would indeed occur separately.
 
 1. Create a [wallet](./quickstart-wallet) and PID for ACME
 2. Complete [customer due diligence](quickstart-cdd)
 3. [Get some POLYX](quickstart-polyx) (ACME will need some, too)
 
-Here, ACME has been verified and has some POLYX. 
+Here, ACME has been verified and has some POLYX.
 
 ![assign key](images/01-assign-key.png)
 
-## Create a Secondary Keys
+## Create a Secondary Key
 
-ACME can assign a key but Alice will have to supply it. More precisely, Alice will provide the public information but not the private signing key which means that ACME cannot sign on her behalf. 
+ACME can assign a key but Alice will have to supply it. More precisely, Alice will provide the public information but not the private signing key, which means that ACME cannot sign on her behalf.
 
-Returning to Alice's wallet, simple click Add a key and follow the usual procedure. Assign an internal name that will help Alice remember what the key is for, e.g. ACME CEO. The result will be that Alice has a second, unassigned key. Do not assign this key or it will be associated with Alice. That is not what we want. Instead, let us say that Alice provides it to ACME through an off-chain communication and ACME adds it on their authority. 
+Returning to Alice's wallet, simply click <kbd>Add a key</kbd> and follow the usual procedure. Assign an internal name that will help Alice remember what the key is for, e.g. ACME CEO. The result will be that Alice has a second, unassigned key. **Do not** assign this key or it will be associated with Alice. That is not what we want. Instead, let us say that Alice provides it to ACME through an off-chain communication channel and ACME adds it on their authority.
 
-Now that ACME has the key Alice provided, return to ACME's wallet and dashboard, navigate to the Account tab and press Assign a key. You will see that UI permits the operator to paste _any_ Polymesh key into the form. Paste Alice's key there, give the account am nickname, e.g. Alice (our CEO), and verify the transaction. 
+Now that ACME has the key Alice provided, return to ACME's wallet and dashboard, navigate to the <kbd>Account</kbd> tab and press <kbd>Assign a key</kbd>. You will see that the UI permits the operator to paste _any_ Polymesh key into the form. Paste Alice's key there, give the account a nickname, e.g. Alice (our CEO), and verify the transaction.
 
-Of course, ACME cannot do that without Alice's consent. 
+Of course, ACME cannot do that without Alice's consent.
 
-Back to Alice's wallet, dashboard and Accounts tab, see that Alice is informed that ACME wants to assign _her key_ to _their identity_. 
+Back to Alice's wallet, dashboard and <kbd>Accounts</kbd> tab, see that Alice is informed that ACME wants to assign _her key_ to _their identity_.
 
 <HighlightBox type="tip">
 
-Press the icon to the left of Alice's secondary key to bring the right account into focus. This is how Alice choose the key to use for signing at any given time. The header information in the wallet changes to reflect this and the web UI senses the change and refreshes to display the new context.
+Press the icon to the left of Alice's secondary key to bring the right account into focus. This is how Alice chooses the key to use for signing at any given time. The header information in the wallet changes to reflect this and the web UI senses the change and refreshes to display the new context.
 
 </HighlightBox>
 
 ![images](images/02-approve-assignment.png)
 
-Since Alice is the CEO and gave ACME her key for this purpose, she expects this and approves the assignment. 
+Since Alice is the CEO and gave ACME her key for this purpose, she expects this and, after checking the identity, approves the assignment.
 
 ![ceo](images/03-CEO.PNG)
 
-Alice's wallet will now have two signing keys, one for personal affairs and one for her capacity as CEO. The wallet will change as she sitches between these roles. Here, her personal signing key is in focus. The header and the Accounts page on the dashboard reflect this context - this is Alice's personal account. 
+Alice's wallet will now have two signing keys, one for personal affairs and one for her capacity as CEO. The wallet will change as she switches between these roles. Here, her personal signing key is in focus. The header and the Accounts page on the dashboard reflect this context - this is Alice's personal account.
 
 ![alice's ceo key](images/03-CEO.PNG)
 
-She can change context by clicking on the little blue circle to the left of ACME CEO. This brings the CEO signing key into focus. Notice that the header region of the wallet updates to reflect this, and the Accounts website refeshes immediately to show the ACME Identity where she is a signer. 
+She can change context by clicking on the little blue circle to the left of ACME CEO. This brings the CEO signing key into focus. Notice that the header region of the wallet updates to reflect this, and the Accounts website refeshes immediately to show the ACME Identity where she is a signer.
 
 ![ceo context](images/04-ACME-context.png)
 
 ## Summary
 
-Identities can delegate authority other users using secondary keys. Users can generate secondary keys for each area of responsibility and safely provide others with the public-facing identifiers. Users can assign keys that belong to other users to their own identity, but only if the owners of those keys (who have the private keys) consent to the assignment. 
+Identities can delegate authority to other users using secondary keys. Users can generate secondary keys for each area of responsibility and safely provide others with the public-facing identifiers. Users can assign keys that belong to other users to their own identity, but only if the owners of those keys (who have the private keys) consent to the assignment.
