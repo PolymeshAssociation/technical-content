@@ -13,26 +13,27 @@ As always, everything that can be done via the Token Studio dashboard can be int
 
 We assume that:
 
-* Alice, ACME Co's CEO and acting agent, already has a Polymesh identity, `ceo`.
+* ACME, the company already has a Polymesh identity, `acme`.
+* Alice, ACME Co's CEO and acting agent, holds a secondary private key for `acme` that allows her to act on its behalf.
 * Alice the CEO can [instantiate](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#static-connect) a Polymesh client whenever she needs to act with:
     <MultiCodeBlock>
 
     ```typescript
     const apiCeo: Polymesh = await Polymesh.connect({
         "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
-        "accountMnemonic": "word1 word2 ..."
+        "accountMnemonic": "word31 word32 ..."
     });
     ```
 
     ```javascript
     const apiCeo = await Polymesh.connect({
         "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
-        "accountMnemonic": "word1 word2 ..."
+        "accountMnemonic": "word31 word32 ..."
     });
     ```
 
     </MultiCodeBlock>
-* The ACME token has been created already and has been retrieved / reinflated.
+* The ACME token,has been created already and has been retrieved / reinflated.
     <MultiCodeBlock>
 
     ```typescript
@@ -48,7 +49,7 @@ We assume that:
     ```
 
     </MultiCodeBlock>
-* Alice, acting as the CEO, is the owner of the ACME token and also its primary issuance agent.
+* `acme` is the owner of the ACME token. `acme` will also be the token's primary issuance agent.
 * Alice has another identity, `alice`, that represents her as an individual.
 * Alice the individual also can [instantiate](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#static-connect) a Polymesh client whenever she needs to act with:
     <MultiCodeBlock>
@@ -56,14 +57,14 @@ We assume that:
     ```typescript
     const apiAlice: Polymesh = await Polymesh.connect({
         "nodeUrl": "wss://alcyone-rpc.polymesh.live",
-        "accountMnemonic": "word21 word22 ..."
+        "accountMnemonic": "word1 word2 ..."
     });
     ```
 
     ```javascript
     const apiAlice = await Polymesh.connect({
         "nodeUrl": "wss://alcyone-rpc.polymesh.live",
-        "accountMnemonic": "word21 word22 ..."
+        "accountMnemonic": "word1 word2 ..."
     });
     ```
 
@@ -71,15 +72,15 @@ We assume that:
 
 ## Prepare the distribution
 
-Time for Alice to get her agreed amount of shares. As we mentioned in the previous chapter, implicit in `const token` is that the `context` is `apiCeo`, because we used `apiCeo` to retrieve its information. In other words, any action performed on a `token` inflated by `apiCeo` will effectively be done by Alice the CEO.
+Time for Alice to get her agreed amount of shares. As we mentioned in the previous chapter, implicit in `const token` is that the `context` is `apiCeo`, because we used `apiCeo` to retrieve its information. In other words, any action performed on a `token` inflated by `apiCeo` will effectively be done by the `acme` identity.
 
-At the time of its creation, the ACME token had a total supply of zero. Of the eventual 100,000 total supply of shares that the founders intend to issue, Alice is personally entitled to 20,000 of them. The primary issuance agent (Alice as CEO) first issues, in effect mints, the shares to themselves, then sends them to their ultimate beneficiary(ies), like Alice. Sending securities to someone needs to be approved by the recipient. The correct Polymesh structure to achieve that is to create a settlement instruction. And all settlement instructions are created in a venue. So let's get started:
+At the time of its creation, the ACME token had a total supply of zero. Of the eventual 100,000 total supply of shares that the founders intend to issue, Alice is personally entitled to 20,000 of them. The primary issuance agent first issues, in effect mints, the shares to themselves, then sends them to their ultimate beneficiary(ies), like Alice. Sending securities to someone needs to be approved by the recipient. The correct Polymesh structure to achieve that is to create a settlement instruction. And all settlement instructions are created in a venue. So let's get started:
 
 <MultiCodeBlock>
 
 ```typescript
-const ceo: CurrentIdentity = await apiCeo.getCurrentIdentity();
-const distributionVenueQueue: TransactionQueue<Venue> = await ceo.createVenue({
+const acme: CurrentIdentity = await apiCeo.getCurrentIdentity();
+const distributionVenueQueue: TransactionQueue<Venue> = await acme.createVenue({
     "type": VenueType.Distribution,
     "details": "For ACME Co"
 });
@@ -88,8 +89,8 @@ const distributionVenueId: string = distributionVenue.id.toString();
 ```
 
 ```javascript
-const ceo = await apiCeo.getCurrentIdentity();
-const distributionVenueQueue = await ceo.createVenue({
+const acme = await apiCeo.getCurrentIdentity();
+const distributionVenueQueue = await acme.createVenue({
     "type": "Distribution",
     "details": "For ACME Co"
 });
@@ -104,12 +105,16 @@ We keep `distributionVenueId`, the string id of the venue, for later as this is 
 <MultiCodeBlock>
 
 ```typescript
-const token: SecurityToken = await apiCeo.getSecurityToken({ "ticker": "ACME" });
+const token: SecurityToken = await apiCeo.getSecurityToken({
+    "ticker": "ACME"
+});
 const issuance: Issuance = token.issuance;
 ```
 
 ```javascript
-const token = await apiCeo.getSecurityToken({ "ticker": "ACME" });
+const token = await apiCeo.getSecurityToken({
+    "ticker": "ACME"
+});
 const issuance = token.issuance;
 ```
 
@@ -137,11 +142,11 @@ await issueQueue.run();
 
 <HighlightBox type="tip">
 
-There is no beneficiary to mention because an `issue` command sends the shares to the issuance agent, which, at this point is the CEO. Additionally, it sends the shares to the default portfolio.
+There is no beneficiary to mention because an `issue` command sends the shares to the issuance agent, which, at this point is `acme`. Additionally, it sends the shares to the identity's default portfolio.
 
 </HighlightBox>
 
-At this point, Alice the CEO, has received shares. Not _her_ shares, though. We still need to send them over to Alice the individual.
+At this point, ACME, has 20,000 received shares. We still need to send them over to Alice the individual.
 
 ## In which portfolio?
 
@@ -176,12 +181,12 @@ To [retrieve](https://developers.polymath.network/polymesh-sdk-api-reference/cla
 <MultiCodeBlock>
 
 ```typescript
-const aliceId: string = alice.did;
+const aliceDid: string = alice.did;
 const coldStoreId: string = coldStore.id.toString(10);
 ```
 
 ```javascript
-const aliceId = alice.did;
+const aliceDid = alice.did;
 const coldStoreId = coldStore.id;
 ```
 
@@ -189,17 +194,17 @@ const coldStoreId = coldStore.id;
 
 ## Moving the shares, finally
 
-Who creates the settlement instruction to move the shares? Alice, the CEO, so let's flip back to her. From her end, she needs to re-inflate some instances given the previous information:
+Who creates the settlement instruction to move the shares? Alice the CEO, on behalf of ACME, so let's flip back to the proper context: `apiCeo`. From her end, she needs to re-inflate some instances given the previous information:
 
 <MultiCodeBlock>
 
 ```typescript
-const ceo: CurrentIdentity = await apiCeo.getCurrentIdentity();
-const ceoDefaultPortfolio: DefaultPortfolio = await ceo.portfolios.getPortfolio();
-const ceoId: string = ceo.did;
+const acme: CurrentIdentity = await apiCeo.getCurrentIdentity();
+const acmeDefaultPortfolio: DefaultPortfolio = await acme.portfolios.getPortfolio();
+const acmeDid: string = acme.did;
 
 const alice: Identity = await apiCeo.getIdentity({
-    "did": aliceId
+    "did": aliceDid
 });
 const aliceColdStore: Portfolio = await alice.portfolios.getPortfolio({
     "portfolioId": new BigNumber(coldStoreId)
@@ -207,12 +212,12 @@ const aliceColdStore: Portfolio = await alice.portfolios.getPortfolio({
 ```
 
 ```javascript
-const ceo = await apiCeo.getCurrentIdentity();
-const ceoDefaultPortfolio = await ceo.portfolios.getPortfolio();
-const ceoId = ceo.did;
+const acme = await apiCeo.getCurrentIdentity();
+const acmeDefaultPortfolio = await acme.portfolios.getPortfolio();
+const acmeDid = acme.did;
 
 const alice = await apiCeo.getIdentity({
-    "did": aliceId
+    "did": aliceDid
 });
 const aliceColdStore = await alice.portfolios.getPortfolio({
     "portfolioId": new BigNumber(coldStoreId)
@@ -229,7 +234,7 @@ Now to the settlement instruction:
 const distributionInstructionQueue: TransactionQueue<Instruction> = await distributionVenue.addInstruction({
     "legs": [{
         "amount": new BigNumber(20000),
-        "from": ceoDefaultPortfolio,
+        "from": acmeDefaultPortfolio,
         "to": aliceColdStore,
         "token": token
     }]
@@ -242,7 +247,7 @@ const distributionInstructionId: string = distributionInstruction.id.toString(10
 const distributionInstructionQueue = await distributionVenue.addInstruction({
     "legs": [{
         "amount": new BigNumber(20000),
-        "from": ceoDefaultPortfolio,
+        "from": acmeDefaultPortfolio,
         "to": aliceColdStore,
         "token": token
     }]
@@ -253,7 +258,7 @@ const distributionInstructionId = distributionInstruction.id.toString(10);
 
 </MultiCodeBlock>
 
-This instruction is now recorded in the blockchain as pending. Alice the CEO is satisfied with it, so she goes ahead and affirms it. Remember that all the above actions where done in the context of `ceo`, so now it as simple as:
+This instruction is now recorded in the blockchain as pending. Alice the CEO is satisfied with it, so she goes ahead and affirms it. Remember that all the above actions where done in the context of `acme`, so now it as simple as:
 
 <MultiCodeBlock>
 
@@ -269,15 +274,15 @@ await distributionInstruction.affirm();
 
 ## Does Alice agree?
 
-Now it is time to turn to Alice, the future share owner, and seek her affirmation. Since she is most likely on another computer or system, we need once more to reinflate the instruction from Alice's point of view. For that to happen, Alice the CEO needs to send `aliceAsCeoId`, `distributionVenueId` and `distributionInstructionId` to Alice's system:
+Let's return to Alice, the future share owner, and seek her affirmation. Since she is most likely on another computer or system, we need once more to reinflate the instruction from Alice's point of view. For that to happen, Alice the CEO needs to send, or copy-paste, `acmeDid`, `distributionVenueId` and `distributionInstructionId` to Alice's system:
 
 <MultiCodeBlock>
 
 ```typescript
-const ceo: Identity = await apiAlice.getIdentity({
-    "did": ceoId
+const acme: Identity = await apiAlice.getIdentity({
+    "did": acmeDid
 });
-const venue: Venue = (await ceoId.getVenues()).find((venue: Venue) => {
+const venue: Venue = (await acme.getVenues()).find((venue: Venue) => {
     return venue.id.isEqualTo(new BigNumber(distributionVenueId));
 });
 const aliceInstruction: Instruction = (await venue.getPendingInstructions()).find((instruction: Instruction) => {
@@ -286,10 +291,10 @@ const aliceInstruction: Instruction = (await venue.getPendingInstructions()).fin
 ```
 
 ```javascript
-const ceo = await apiAlice.getIdentity({
-    "did": ceoId
+const acme = await apiAlice.getIdentity({
+    "did": acmeDid
 });
-const venue = (await ceoId.getVenues()).find((venue) => {
+const venue = (await acme.getVenues()).find((venue) => {
     return venue.id.isEqualTo(new BigNumber(distributionVenueId));
 });
 const aliceInstruction = (await venue.getPendingInstructions()).find((instruction) => {
@@ -325,22 +330,22 @@ Well, she can check what's inside her portfolio:
 const coldStore: NumberedPortfolio = await alice.portfolios.getPortfolio({
     "portfolioId": new BigNumber(coldStoreId)
 });
-const acmeBalances: PortfolioBalance[] = await coldStore.getTokenBalances({
+const acmeTokenBalances: PortfolioBalance[] = await coldStore.getTokenBalances({
     "tokens": [ "ACME" ]
 });
-const acmeBalance: PortfolioBalance = acmeBalances[0];
-assert(acmeBalance.total.isEqualTo(new BigNumber("20000")));
+const acmeTokenBalance: PortfolioBalance = acmeTokenBalances[0];
+assert(acmeTokenBalance.total.isEqualTo(new BigNumber("20000")));
 ```
 
 ```javascript
 const coldStore = await alice.portfolios.getPortfolio({
     "portfolioId": new BigNumber(coldStoreId)
 });
-const acmeBalances = await coldStore.getTokenBalances({
+const acmeTokenBalances = await coldStore.getTokenBalances({
     "tokens": [ "ACME" ]
 });
-const acmeBalance = acmeBalances[0];
-assert(acmeBalance.total.isEqualTo(new BigNumber("20000")));
+const acmeTokenBalance = acmeTokenBalances[0];
+assert(acmeTokenBalance.total.isEqualTo(new BigNumber("20000")));
 ```
 
 </MultiCodeBlock>
@@ -361,19 +366,19 @@ const distributionInstructionQueue: TransactionQueue<Instruction> = await distri
     "legs": [
         {
             "amount": new BigNumber(20000),
-            "from": ceoDefaultPortfolio,
+            "from": acmeDefaultPortfolio,
             "to": aliceColdStore,
             "token": token
         },
         {
             "amount": new BigNumber(30000),
-            "from": ceoDefaultPortfolio,
+            "from": acmeDefaultPortfolio,
             "to": bobTargetPortfolio,
             "token": token
         },
         {
             "amount": new BigNumber(50000),
-            "from": ceoDefaultPortfolio,
+            "from": acmeDefaultPortfolio,
             "to": carolTargetPortfolio,
             "token": token
         }
@@ -392,19 +397,19 @@ const distributionInstructionQueue = await distributionVenue.addInstruction({
     "legs": [
         {
             "amount": new BigNumber(20000),
-            "from": ceoDefaultPortfolio,
+            "from": acmeDefaultPortfolio,
             "to": aliceColdStore,
             "token": token
         },
         {
             "amount": new BigNumber(30000),
-            "from": ceoDefaultPortfolio,
+            "from": acmeDefaultPortfolio,
             "to": bobTargetPortfolio,
             "token": token
         },
         {
             "amount": new BigNumber(50000),
-            "from": ceoDefaultPortfolio,
+            "from": acmeDefaultPortfolio,
             "to": carolTargetPortfolio,
             "token": token
         }
