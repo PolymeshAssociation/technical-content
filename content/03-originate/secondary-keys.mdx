@@ -16,13 +16,23 @@ Let us resolve this.
 
 The goal is that ACME should be an identified organisation that has passed customer due diligence and Alice has, in addition to her personal wallet, a signing key to use when she represents ACME in her capacity as CEO.
 
-## Use Another Computer
+There is more than one way to do this. Alice, can, for example, create another key for ACME. With that key in focus (click the blue circle to the left of the unassigned key), complete [customer due diligence](/quickstart/quickstart-cdd). This will create a new primary key and a new identity. Then, create a secondary key for the CEO and assign it to the new identity. 
 
-The simplest way to create a wallet for ACME that is entirely separate from Alice's wallet is to use a different computer. This procedure closely matches a real-world scenario where these activities would indeed occur separately.
+Why would you do that? Key management policy is unique to each organization but it is anticipated that organizations will not want to use their primary keys for ordinary operations even for the CEO. That is to say, the CEO should be a secondary key known only to the CEO, and not the primary key that can assign and unassign secondary keys to the identity and set permissions. 
 
-1. Create a [wallet](./quickstart-wallet) and PID for ACME
-2. Complete [customer due diligence](./quickstart-cdd)
-3. [Get some POLYX](./quickstart-polyx) (ACME will need some, too)
+Alice could dismiss the preceding suggestion and do it all from one wallet, i.e. wearing all of the hats and the end result would look approximately like the illustration below, which is perfectly acceptable for practice and learning. Alice has primary keys for herself, for ACME Co., and a CEO key she would use for most ACME-related activities. 
+
+![all three keys](images/30-three-keys.png)
+
+Let us instead proceed as though ACME and Alice are indeed separate entities. Possibly ACME existed before Alice became CEO and ACME's keys are managed by separate personnel. How would that work?
+
+## Use Another Computer or Browser
+
+Let us suppose that the ACME PID is managed by someone other than Alice. We can simulate by using a different computer. This procedure closely matches a real-world scenario where these activities would indeed occur separately.
+
+1. Create a [wallet](/quickstart/quickstart-wallet) and PID for ACME
+2. Complete [customer due diligence](/quickstart/quickstart-cdd)
+3. [Get some POLYX](/quickstart/quickstart-polyx) (ACME will need some, too)
 
 Below, ACME has been verified and has some POLYX.
 
@@ -30,9 +40,19 @@ Below, ACME has been verified and has some POLYX.
 
 ## Create a Secondary Key
 
-ACME can assign a key but Alice will have to supply it. More precisely, Alice will provide the public information but not the private signing key, which means that ACME cannot sign on her behalf.
+ACME can assign a key but Alice will have to supply it to them. More precisely, Alice will provide the public information but not the private signing key, which means that ACME cannot sign on her behalf. ACME can determine the scope of the CEO's (Alice) permission within ACME but only Alice can actually sign as CEO. 
 
-Returning to Alice's wallet, simply click <kbd>Add a key</kbd> and follow the usual procedure. Assign an internal name that will help Alice remember what the key is for, e.g. ACME CEO. The result will be that Alice has a second, unassigned key. **Do not** assign this key or it will be associated with Alice. That is not what we want. Instead, let us say that Alice provides it to ACME through an off-chain communication channel and ACME adds it on their authority.
+Returning to Alice's wallet, simply click <kbd>Add a key</kbd> and follow the usual procedure. Assign an internal name that will help Alice remember what the key is for, e.g. ACME CEO. The result will be that Alice has a second, unassigned key. **Do not** assign this key. There is nothing Alice can do to associate the key she just made with ACME, a PID she does not control. Instead, let us say that Alice provides they public key to ACME through an off-chain communication channel and ACME adds it to _their identity_ on their own authority.
+
+In case that is unclear, the flow would be:
+
+1. ACME exists and is managed by ACME personnel
+2. Alice is appointed CEO
+3. As part of ACME's onboarding process, ACME asks Alice for a key
+4. Alice generates a key (pair) for this purpose and gives the address to ACME
+5. ACME adds the address to their PID. They would also manage permissions. 
+
+As we will see below, Alice's consent will be required for step 5 in the business process. 
 
 Now that ACME has the key Alice provided, return to ACME's wallet and dashboard, navigate to the <kbd>Account</kbd> tab and press <kbd>Assign a key</kbd>. You will see that the UI permits the operator to paste _any_ Polymesh key into the form. Paste Alice's key there, give the account a nickname, e.g. Alice (our CEO), and verify the transaction.
 
