@@ -86,7 +86,10 @@ Adding just a little bit of precision to the foregoing description, an entity ha
 
 ![signing keys](images/signing_keys.png)
 
-Lastly, both primary and secondary signing keys may be of several types. A simple private key may be sufficiently secure for Alice's routine duties. However, the key itself can be multi-signature if more security is desired or a mnemonic if more convenience is desired.
+Lastly, both primary and/or secondary signing keys may be one of several types:
+
+* A _simple_ private key, based on private knowledge, like a seed or mnemonic, may be sufficiently secure for Alice's routine duties.
+* Or a _multi-signature_ key in that it is based on _m_ keys, of which _n_, the quorum, must agree for any action to be validated.
 
 <HighlightBox type="info">
 <a href = 'https://developers.polymesh.live/ledger/'>Ledger signing hardware</a> can be used to safeguard signing keys.
@@ -150,7 +153,7 @@ While each originator sets their own policy, considerable overlap is expected. A
 
 ![know your customer](/placeholder-image.png)
 
-Polymesh is designed to welcome existing KYC service providers into the Polymesh network. The API integrates easily with existing systems, which allows KYC service providers to **issue on-chain attestations**.
+Polymesh is designed to welcome existing KYC service providers into the Polymesh network. The SDK integrates easily with existing systems, which allows KYC service providers to **issue on-chain attestations**.
 
 <HighlightBox type="tip">
 

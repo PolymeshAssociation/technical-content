@@ -44,11 +44,11 @@ We will take a closer look at Polymesh's governance system at a later point of t
 
 </HighlightBox>
 
-## Extensions (Extrinsics)
+## Extrinsics and Smart Extensions
 
-Polymesh's rules are defined as "extrinsics", which are extensions to the blockchain protocol itself. In other words, there is a similarity to smart contracts but extrinsics are implemented at a lower level.
+Let's drop a bit of new terminology on top of already known concepts. Borrowing from [Substrate](https://substrate.dev/docs/en/knowledgebase/learn-substrate/extrinsics), the term **extrinsics** describes any outside information that enters the blockchain, typically user-signed transactions submitted to the blockchain. So you may come across wording like the "create token extrinsic", which is none other than a properly formatted transaction that expresses the intent to create a token. Polymesh exposes a number of extrinsics, which constitute the base-layer business logic of the blockchain, in, for instance, identity, assets and governance. As a side-note, extrinsics may also be so-called _inherents_, the term used for non-signed transactions usually written by operators of the chain, such as block timestamps.
 
-Developers can extend Polymesh by creating Substrate extensions. For example, extend an asset with a custom logic restricting transfers in a way that is not anticipated by the existing network.
+Not to be confused with **smart extensions**, which are smart-contract that developers can create for narrow use cases, for example, to extend an asset with a custom logic restricting transfers in a way that is not anticipated by the existing network.
 
 ## Wallet
 
@@ -62,9 +62,9 @@ You want to know more about the Polymesh Wallet? Take a look at our section on t
 
 ## Dashboard
 
-The **Polymesh Dashboard** is a multi-faceted Web GUI that is in many ways like a blockchain explorer. Again, we see the advantage of a purpose-built chain as compared to a generalised chain.
+The **Polymesh Dashboard** is a multi-faceted Web-based application that is in many ways like a blockchain explorer. Again, we see the advantage of a purpose-built chain as compared to a generalised chain.
 
-The Polymesh Dashboard knows precisely what the application is about and effortlessly interprets every transaction. Many activities that would require specialised application-layer user-interfaces are seamlessly integrated into this unified GUI. The interface is built using the SDK, which gives developers a hint of what is possible using the SDK.
+The Polymesh Dashboard knows precisely what the application is about and effortlessly interprets every transaction. Many activities that would require specialised application-layer user-interfaces are seamlessly integrated into this unified application. The interface is built using the SDK, which gives developers a hint of what is possible using the SDK.
 
 <HighlightBox type="info">
 
