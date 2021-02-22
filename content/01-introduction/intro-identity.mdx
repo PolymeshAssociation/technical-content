@@ -88,7 +88,10 @@ Adding just a little bit of precision to the foregoing description, an entity ha
 
 ![signing keys](images/signing_keys.png)
 
-Lastly, both primary and secondary signing keys may be of several types. A simple private key may be sufficiently secure for Alice's routine duties. However, the key itself can be multi-signature if more security is desired, or a mnemonic if more convenience is desired.
+Lastly, both primary and/or secondary signing keys may be one of several types:
+
+* A _simple_ private key, based on private knowledge, like a seed or mnemonic, may be sufficiently secure for Alice's routine duties.
+* Or a _multi-signature_ key in that it is based on _m_ keys, of which _n_, the quorum, must agree for any action to be validated.
 
 --> Illustration to be included
 
@@ -114,7 +117,7 @@ Portfolios relate strongly to custody on Polymesh. For a more detailed account, 
 
 ## Permissions
 
-Polymesh's permission requirements are organised on a method-by-method basis because not all permissions are required in all cases. 
+Polymesh's permission requirements are organised on a method-by-method basis because not all permissions are required in all cases.
 
 <HighlightBox type="tip">
 
@@ -156,7 +159,7 @@ While each originator sets their own policy, considerable overlap is expected. A
 
 --> Illustration to be included
 
-Polymesh is designed to welcome existing KYC service providers into the Polymesh network. The API integrates easily with existing systems, which allows KYC service providers to **issue on-chain attestations**.
+Polymesh is designed to welcome existing KYC service providers into the Polymesh network. The SDK integrates easily with existing systems, which allows KYC service providers to **issue on-chain attestations**.
 
 <HighlightBox type="tip">
 
@@ -178,10 +181,10 @@ For a more in-depth look at CDD on Polymesh, dive right into [Polymesh's CDD](/c
 
 ## Links
 
-- Primitives: Identity https://developers.polymesh.live/identity/ 
+- Primitives: Identity https://developers.polymesh.live/identity/
 - Primitives: Confidential Identity: https://developers.polymesh.live/confidential_identity/
-- Primitives: Customer Due Diligence: https://developers.polymesh.live/cdd/ 
+- Primitives: Customer Due Diligence: https://developers.polymesh.live/cdd/
 - Primitives: Portfolios and Custody: https://developers.polymesh.live/portfolios_custody/
-- Primitives: Compliance: https://developers.polymesh.live/compliance/ 
+- Primitives: Compliance: https://developers.polymesh.live/compliance/
 - Primitives: Authorizations: https://developers.polymesh.live/authorisations/
-- Polymesh Network: Permissioned Roles: https://developers.polymesh.live/permissioned_roles/ 
+- Polymesh Network: Permissioned Roles: https://developers.polymesh.live/permissioned_roles/
