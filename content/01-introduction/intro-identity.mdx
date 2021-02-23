@@ -123,15 +123,15 @@ In the most stringent case, the allowable actions are the intersection of the **
 
 ![permission](./images/12_permission.png)
 
-## Polymesh Unique Identity System
+## Polymesh Unique Identity System (PUIS)
 
 Of particular importance in the world of regulated securities is the repelling of so-called **Sybil attacks**. The name is inspired by the 1976 movie of the same name. The main character in the film is a woman who suffers from a multiple personality disorder. The creation of multiple accounts by a single individual in order to circumvent restrictions is known as a Sybil attack.
 
-An example of a Sybil attack in the realm of regulated securities could be accumulating a sizeable stake in the security while avoiding reporting requirements. The Polymesh Unique Identity System (PUIS) is designed to repel this type of attack.
+An example of a Sybil attack in the realm of regulated securities could be a single entity accumulating a sizeable stake in the security with the use of multiple PIDs, while avoiding reporting requirements. The Polymesh Unique Identity System (PUIS) is designed to repel this type of attack.
 
-The PUIS is an off-chain process that records hashes of PID attestations. Attestation requirements are defined by the securities themselves, or more precisely the originators of those securities. Since the attestations originate from KYC providers, they are expected to be trustworthy and accurate. The attestations are hashed to minimise metadata leakage and then compared to a database of observed hashes.
+The PUIS is an off-chain process based around an off-chain database. This database can only be accessed by CDD providers. CDD providers can insert new customers, or query for existing ones by using so-called identity _fingerprints_ unique to their customer. In this PUIS, the CDD customer's unique id, or uID, is a v4 UUID generated once when the customer is on-boarded for the first time. It is by this uID that customers are indexed in the PUIS system, and uIDs too always remain off-chain.
 
-In this way, PUIS identifies attempts to use multiple PIDs to represent the same entity.
+Only a Perdersen (cryptographic) commitment of the uID is published on-chain as part of the CDD claim. CDD customers do know their uID and can eventually reveal it, off-chain, to asset originators that have compliance rules about the investing entities; as opposed to compliance rules about the investing PIDs. In this way, the PUIS lets investors use multiple PIDs, for privacy reasons say, while enabling certain compliance rules about entities.
 
 ![unique ID system](images/13_polymesh_unique_id.png)
 
