@@ -7,7 +7,7 @@ slug: /distribute/sdk
 import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
 import HighlightBox from "../../src/components/HighlightBox"
 
-As always, everything that can be done via the Token Studio dashboard can be integrated with internal systems using the SDK. Use this to automate and scale repetitive processes. Let us see how ACME's share distribution would be performed using methods in the SDK. What we want to achieve is for Alice, acting as the CEO, to issue 20,000 shares of ACME Co to Alice the individual.
+As always, everything that can be done via the Token Studio dashboard can be integrated with internal systems using the SDK. Use this to automate and scale repetitive processes. Let us see how ACME's share distribution would be performed using methods in the SDK. What we want to achieve is for ACME to issue 20,000 shares of ACME Co to Alice the individual. As CEO, Alice will act for ACME.
 
 ## Preconditions
 
@@ -32,7 +32,7 @@ We assume that:
     ```
 
     </MultiCodeBlock>
-* The ACME token has been created already and has been retrieved / reinflated.
+* The ACME token has already been created.
     <MultiCodeBlock>
 
     ```typescript
@@ -73,7 +73,9 @@ We assume that:
 
 Time for Alice to get her agreed amount of shares. As we mentioned in the previous chapter, implicit in `const token` is that the `context` is `apiCeo`, because we used `apiCeo` to retrieve its information. In other words, any action performed on a `token` inflated by `apiCeo` will effectively be done by Alice the CEO.
 
-At the time of its creation, the ACME token had a total supply of zero. Of the eventual 100,000 total supply of shares that the founders intend to issue, Alice is personally entitled to 20,000 of them. The primary issuance agent (Alice as CEO) first issues, in effect mints, the shares to themselves, then sends them to their ultimate beneficiary(ies), like Alice. Sending securities to someone needs to be approved by the recipient. The correct Polymesh structure to achieve that is to create a settlement instruction. And all settlement instructions are created in a venue. So let's get started:
+At the time of its creation, the ACME token had a total supply of zero. Alice is personally entitled to 20,000 Of the eventual 100,000 total supply of shares that the founders intend to issue. The primary issuance agent (Alice as CEO) first issues, in effect mints, the shares to themselves, then sends them to their ultimate beneficiary(ies), like Alice. Sending securities to someone needs the consent of the recipient. The correct Polymesh structure to achieve that is to create a settlement instruction. And all settlement instructions are created in a venue. Therefore, we will create venue. 
+
+Let's get started:
 
 <MultiCodeBlock>
 
@@ -423,8 +425,6 @@ Or whichever distribution was agreed between the parties. The advantage of this 
 Assuming all parties have received their shares, it could be advantageous for the company to create a checkpoint. This post-issuance checkpoint would provide visibility about what was achieved during the issuance.
 
 <!-- TODO when SDK exposes that -->
-
-## Exercise
 
 ## Links
 
