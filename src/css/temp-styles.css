@@ -154,3 +154,21 @@ a.action-link img {
 		display: block;
 	}
 }
+
+@media only screen and (max-width: 1610px) {
+	.box-action-cards .content-wrapper .action-card-large .intro-text {
+		min-height: 180px;
+	}
+}
+
+@media only screen and (max-width: 1390px) {
+	.box-action-cards .content-wrapper .action-card-large .intro-text {
+		min-height: 200px;
+	}
+}
+
+@media only screen and (max-width: 1300px) {
+	.box-action-cards .content-wrapper .action-card-large .intro-text {
+		min-height: 280px;
+	}
+}
