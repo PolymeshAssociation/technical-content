@@ -103,13 +103,13 @@ At this stage, Alice owns the reservation. You can confirm it with the following
 const alice: CurrentIdentity = await apiAlice.getCurrentIdentity();
 const details: TickerReservationDetails = await reservation.details();
 const owner: Identity = details.owner;
-assert(owner.did == alice.did);
+assert(owner.did === alice.did);
 ```
 
 ```javascript
 const alice = await apiAlice.getCurrentIdentity();
 const { owner } = await reservation.details();
-assert(owner.did == alice.did);
+assert(owner.did === alice.did);
 ```
 
 </MultiCodeBlock>
@@ -287,7 +287,7 @@ const ceoAccount: CurrentAccount = apiCeo.getAccount();
 const pendingAuthorizations: AuthorizationRequest[] = await ceoAccount.authorizations.getReceived();
 const acmeAuthorization: AuthorizationRequest = pendingAuthorizations
     .find((pendingAuthorization: AuthorizationRequest) => {
-        return pendingAuthorization.issuer.did == acmeDid;
+        return pendingAuthorization.issuer.did === acmeDid;
     });
 await acmeAuthorization.accept();
 ```
@@ -297,7 +297,7 @@ const ceoAccount = apiCeo.getAccount();
 const pendingAuthorizations = await ceoAccount.authorizations.getReceived();
 const acmeAuthorization = pendingAuthorizations
     .find((pendingAuthorization) => {
-        pendingAuthorization.issuer.did == acmeDid;
+        pendingAuthorization.issuer.did === acmeDid;
     });
 await acmeAuthorization.accept();
 ```
@@ -356,7 +356,7 @@ So she can narrow down the authorisation.
 const pendingAuthorizations: AuthorizationRequest[] = await ceoAccount.authorizations.getReceived();
 const transferAuthorization: AuthorizationRequest = pendingAuthorizations
     .find((pendingAuthorization: AuthorizationRequest) => {
-        return pendingAuthorization.issuer.did == aliceDid;
+        return pendingAuthorization.issuer.did === aliceDid;
     });
 await transferAuthorization.accept();
 ```
@@ -365,7 +365,7 @@ await transferAuthorization.accept();
 const pendingAuthorizations = await ceoAccount.authorizations.getReceived();
 const transferAuthorization = pendingAuthorizations
     .find((pendingAuthorization) => {
-        return pendingAuthorization.issuer.did == aliceDid;
+        return pendingAuthorization.issuer.did === aliceDid;
     });
 await transferAuthorization.accept();
 ```
