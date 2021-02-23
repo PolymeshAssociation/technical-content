@@ -130,14 +130,14 @@ Now that the ticker is reserved, it is time to issue the security token. Oh wait
 
 ```typescript
 const apiAlice: Polymesh = await Polymesh.connect({...});
-const reservation: TickerReservation = await apiCeo.getTickerReservation({
+const reservation: TickerReservation = await apiAlice.getTickerReservation({
     "ticker": "ACME"
 });
 ```
 
 ```javascript
 const apiAlice = await Polymesh.connect({...});
-const reservation = await apiCeo.getTickerReservation({
+const reservation = await apiAlice.getTickerReservation({
     "ticker": "ACME"
 });
 ```
@@ -189,11 +189,11 @@ This `token` instance will not always be in memory, so if we wanted to fetch it 
 <MultiCodeBlock>
 
 ```typescript
-const token: SecurityToken = await apiCeo.getSecurityToken({ "ticker": "ACME" });
+const token: SecurityToken = await apiAlice.getSecurityToken({ "ticker": "ACME" });
 ```
 
 ```javascript
-const token = await apiCeo.getSecurityToken({ "ticker": "ACME" });
+const token = await apiAlice.getSecurityToken({ "ticker": "ACME" });
 ```
 
 </MultiCodeBlock>
@@ -249,11 +249,11 @@ At this point, `apiCeo` has no associated identity. It is an account in search o
 <MultiCodeBlock>
 
 ```typescript
-const pubCeo: string = apiCeo.key;
+const pubCeo: string = apiCeo.getAccount().address;
 ```
 
 ```javascript
-const pubCeo = apiCeo.key;
+const pubCeo = apiCeo.getAccount().address;
 ```
 
 </MultiCodeBlock>
