@@ -33,7 +33,7 @@ We assume that:
     ```
 
     </MultiCodeBlock>
-* The ACME token has been created already and has been retrieved / reinflated.
+* The ACME token has been created already and has been retrieved and instantiated with the following.
     <MultiCodeBlock>
 
     ```typescript
@@ -72,7 +72,7 @@ We assume that:
 
 ## Prepare the distribution
 
-Time for Alice to get her agreed amount of shares. As we mentioned in the previous chapter, implicit in `const token` is that the `context` is `apiCeo`, because we used `apiCeo` to retrieve its information. In other words, any action performed on a `token` inflated by `apiCeo` will effectively be done by the `acme` identity.
+Time for Alice to get her agreed amount of shares. As we mentioned in the previous chapter, implicit in `const token` is that the `context` is `apiCeo`, because we used `apiCeo` to retrieve its information. In other words, any action performed on a `token` instantiated by `apiCeo` will effectively be done by the `acme` identity.
 
 At the time of its creation, the ACME token had a total supply of zero. Of the eventual 100,000 total supply of shares that the founders intend to issue, Alice is personally entitled to 20,000 of them. The primary issuance agent first issues, in effect mints, the shares to themselves, then sends them to their ultimate beneficiary(ies), like Alice. Sending securities to someone needs to be approved by the recipient. The correct Polymesh structure to achieve that is to create a settlement instruction. And all settlement instructions are created in a venue. So let's get started:
 
@@ -194,7 +194,7 @@ const coldStoreId = coldStore.id;
 
 ## Moving the shares, finally
 
-Who creates the settlement instruction to move the shares? Alice the CEO, on behalf of ACME, so let's flip back to the proper context: `apiCeo`. From her end, she needs to re-inflate some instances given the previous information:
+Who creates the settlement instruction to move the shares? Alice the CEO, on behalf of ACME, so let's flip back to the proper context: `apiCeo`. From her end, she needs to re-instantiate some instances given the previous information:
 
 <MultiCodeBlock>
 
@@ -274,7 +274,7 @@ await distributionInstruction.affirm();
 
 ## Does Alice agree?
 
-Let's return to Alice, the future share owner, and seek her affirmation. Since she is most likely on another computer or system, we need once more to reinflate the instruction from Alice's point of view. For that to happen, Alice the CEO needs to send, or copy-paste, `acmeDid`, `distributionVenueId` and `distributionInstructionId` to Alice's system:
+Let's return to Alice, the future share owner, and seek her affirmation. Since she is most likely on another computer or system, we need once more to reinstantiate the instruction from Alice's point of view. For that to happen, Alice the CEO needs to send, or copy-paste, `acmeDid`, `distributionVenueId` and `distributionInstructionId` to Alice's system:
 
 <MultiCodeBlock>
 
