@@ -260,19 +260,7 @@ const distributionInstructionId = distributionInstruction.id.toString(10);
 
 </MultiCodeBlock>
 
-This instruction is now recorded in the blockchain as pending. Alice the CEO is satisfied with it, so she goes ahead and affirms it. Remember that all the above actions where done in the context of `acme`, so now it as simple as:
-
-<MultiCodeBlock>
-
-```typescript
-await distributionInstruction.affirm();
-```
-
-```javascript
-await distributionInstruction.affirm();
-```
-
-</MultiCodeBlock>
+This instruction is now recorded in the blockchain as pending. Alice the CEO is satisfied with it. She does not need to affirm it as the SDK identified her affirmation would have been required anyway, and so used the relevant [`add_and_affirm_instruction` extrinsic](https://docs.polymesh.live/pallet_settlement/enum.Call.html#variant.add_and_affirm_instruction) right away.
 
 ## Does Alice agree?
 
@@ -287,7 +275,8 @@ const acme: Identity = await apiAlice.getIdentity({
 const venue: Venue = (await acme.getVenues()).find((venue: Venue) => {
     return venue.id.isEqualTo(new BigNumber(distributionVenueId));
 });
-const aliceInstruction: Instruction = (await venue.getPendingInstructions()).find((instruction: Instruction) => {
+const pendingInstructions: Instruction[] = await venue.getPendingInstructions();
+const aliceInstruction: Instruction = pendingInstructions.find((instruction: Instruction) => {
     return instruction.id.isEqualTo(distributionInstructionId);
 });
 ```
@@ -299,23 +288,28 @@ const acme = await apiAlice.getIdentity({
 const venue = (await acme.getVenues()).find((venue) => {
     return venue.id.isEqualTo(new BigNumber(distributionVenueId));
 });
-const aliceInstruction = (await venue.getPendingInstructions()).find((instruction) => {
+const pendingInstructions = await venue.getPendingInstructions();
+const aliceInstruction = pendingInstructions.find((instruction) => {
     return instruction.id.isEqualTo(distributionInstructionId);
 });
 ```
 
 </MultiCodeBlock>
 
+Alice could also have chosen to retrieve all the pending instructions associated with her `CurrentIdentity`. That would have included all instructions, not just that one from the distribution venue she knows about. With a view to reduce the possibility of spam, she chose to use the venue to retrieve the instructions.
+
 Now, it is just a matter of affirming the instruction:
 
 <MultiCodeBlock>
 
 ```typescript
-const updatedInstruction: Instruction = await aliceInstruction.affirm();
+const updatedInstructionQueue: TransactionQueue<Instruction> = await aliceInstruction.affirm();
+const updatedInstruction: Instruction = await updatedInstructionQueue.run();
 ```
 
 ```javascript
-const updatedInstruction = await aliceInstruction.affirm();
+const updatedInstructionQueue = await aliceInstruction.affirm();
+const updatedInstruction = await updatedInstructionQueue.run();
 ```
 
 </MultiCodeBlock>
