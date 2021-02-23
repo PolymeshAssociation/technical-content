@@ -60,10 +60,10 @@ let remarkPluginConfig = [
   {
     resolve: "gatsby-remark-images",
     options: {
-      maxWidth: 736, // page max container width
+      maxWidth: 936, // page max container width
       linkImagesToOriginal: false,
-      showCaptions: true,
-      quality: 7
+      showCaptions: false,
+      quality: 70
     }
   },
   {
