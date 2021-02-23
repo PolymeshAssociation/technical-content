@@ -17,9 +17,9 @@ const apolloDocsOptions = {
   ...themeOptions,
   root: __dirname,
   contentDir: './content/',
-  description: 'Polymath Developer Portal description',
+  description: 'Polymesh Developer Portal description',
   githubRepo: 'PolymathNetwork/technical-content',
-  siteName: 'Polymath Developer Portal',
+  siteName: 'Polymesh Developer Portal',
   sidebarCategories: getSidebarConfig(),
 }
 
