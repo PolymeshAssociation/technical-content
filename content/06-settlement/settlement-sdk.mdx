@@ -365,14 +365,14 @@ Let's look at what it would look like from SafeHands point of view. Because Alic
 ```typescript
 const pendingInstructions: Instruction[] = await tradeVenue.getPendingInstructions();
 const aliceInstruction: Instruction = pendingInstructions.find((instruction: Instruction) => {
-    return instruction.id.isEqualTo(tradeInstructionId);
+    return instruction.id.isEqualTo(new BigNumber(tradeInstructionId));
 });
 ```
 
 ```javascript
 const pendingInstructions = await tradeVenue.getPendingInstructions();
 const aliceInstruction = pendingInstructions.find((instruction: Instruction) => {
-    return instruction.id.isEqualTo(tradeInstructionId);
+    return instruction.id.isEqualTo(new BigNumber(tradeInstructionId));
 });
 ```
 
@@ -400,7 +400,7 @@ It returns previously-known information about `aliceOrderId` in the shape of:
     "amount": new BigNumber("1000"),
     "from": {
         "identity": aliceDid,
-        "id": "tradingFolio.id.toString(10)
+        "id": "tradingFolio.id
     },
     "to": {
         "identity": safeHandsDid,
@@ -413,7 +413,7 @@ It returns previously-known information about `aliceOrderId` in the shape of:
 }
 ```
 
-Now, SafeHands need to live up to their name and only affirm the instruction if it is one they recognise. Polymesh, at the API level, allows one to affirm a single leg for a single portfolio. However the SDK finds the relevant legs and portfolios for you, and in turn adds all the necessary affirmations in the transaction queue. The flip side of this coin is that SafeHands therefore has to make sure nothing untoward was slipped in.
+Now, SafeHands need to live up to their name and only affirm the instruction if it is one they recognise. Polymesh, at the API level, allows one to affirm a single leg for a single portfolio. However the SDK finds the relevant legs and portfolios for you, and in turn adds all the necessary affirmations in the transaction queue. The flip side of this convenience is that SafeHands therefore has to make sure nothing untoward was slipped in.
 
 <MultiCodeBlock>
 
@@ -444,14 +444,14 @@ const paymentLegs: Leg[] = legs.data.filter((leg: Leg) => {
 assert(payment.length === 1);
 
 const paymentLeg: Leg = paymentLegs[0];
-const payeeFolio: Portfolio = new Portfolio({
+const payerFolio: Portfolio = new Portfolio({
     "did": paymentLeg.from.did,
     "id": paymentLeg.from.id
 });
-const payeeCustodian: Identity = await payeeFolio.getCustodian();
+const payerCustodian: Identity = await payerFolio.getCustodian();
 // Is someone trying to pay us with our own money?
 // Or with money from one of our clients?
-if (paymentLeg.from.did === safeHandsDid || payeeCustodian.did === safeHandsDid) {
+if (paymentLeg.from.did === safeHandsDid || payerCustodian.did === safeHandsDid) {
     const rejectQueue: TransactionQueue<Instruction> = await aliceInstruction.reject();
     await rejectQueue.run();
     // TODO keep a trace of this attempted fraud in a reputation system.
@@ -488,14 +488,14 @@ const paymentLegs = legs.data.filter((leg) => {
 assert(payment.length === 1);
 
 const paymentLeg = paymentLegs[0];
-const payeeFolio = new Portfolio({
+const payerFolio = new Portfolio({
     "did": paymentLeg.from.did,
     "id": paymentLeg.from.id
 });
-const payeeCustodian = await payeeFolio.getCustodian();
+const payerCustodian = await payerFolio.getCustodian();
 // Is someone trying to pay us with our own money?
 // Or with money from one of our clients?
-if (paymentLeg.from.did === safeHandsDid || payeeCustodian.did === safeHandsDid) {
+if (paymentLeg.from.did === safeHandsDid || payerCustodian.did === safeHandsDid) {
     const rejectQueue = await aliceInstruction.reject();
     await rejectQueue.run();
     // TODO keep a trace of this attempted fraud in a reputation system.
@@ -522,7 +522,7 @@ They will collect affirmations on instructions they created. When they collect t
 ```typescript
 const pendingInstructions: Instruction[] = await tradeVenue.getPendingInstructions();
 const earlierInstruction: Instruction = pendingInstructions.find((instruction: Instruction) => {
-    return instruction.id.isEqualTo(tradeInstructionId);
+    return instruction.id.isEqualTo(new BigNumber(tradeInstructionId));
 });
 if (typeof earlierInstruction === "undefined") {
     return; // All good
@@ -559,7 +559,7 @@ if (safeHandsAffirmation.status === "Affirmed" && onTrustAffirmation.status === 
 ```javascript
 const pendingInstructions = await tradeVenue.getPendingInstructions();
 const earlierInstruction = pendingInstructions.find((instruction: Instruction) => {
-    return instruction.id.isEqualTo(tradeInstructionId);
+    return instruction.id.isEqualTo(new BigNumber(tradeInstructionId));
 });
 if (typeof earlierInstruction === "undefined") {
     return; // All good
