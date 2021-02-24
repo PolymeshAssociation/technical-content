@@ -59,6 +59,10 @@ In Polymesh, nothing material happens until the compliance rules have to be met.
 
 ## Atomic Execution
 
+Instructions execute completely, or not at all. For example, the above-mentioned instruction has two legs to send shares from Alice to Bob and funds from Bob to Alice. Alice and Bob both need to affirm that the entire instruction is agreeable and properly represents their agreement. Instructions contain other details such as when to actually execute, e.g. as soon as its affirmed or at a scheduled point of time in the future. Alice and Bob's affirmations indicate their agreement with all such details. 
+
+The actual execution is atomic, meaning that the instructions are always either completely executed or not executed at all. There is no case in which one leg of instruction has executed and the other has not. 
+
 ## Venue
 
 Finally, an instruction is not created in a void, but instead it is created inside a venue. Ultimately, an identity is responsible for its own venues, for access rights and for who can create instructions within them.
