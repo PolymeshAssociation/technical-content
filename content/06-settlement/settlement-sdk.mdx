@@ -190,7 +190,7 @@ await acceptQueue.run();
 
 At this point, Alice can simply interact with SafeHands on their platform, and direct them to what she wants to achieve. Her broker could also choose to display in her account that she has entrusted them with 1,000 ACME shares, to keep her informed of the status of her account.
 
-## USD dollar?
+## US dollar?
 
 We are going to use an on-chain representation of the US dollar. It can be as conceptually simple as another security token issued by a bank. Let's name our bank DeepPockets, and have them issue the token named DEEPUSD. DeepPockets happens to have a sterling reputation, so Polymesh network participants believe them when they claim that they will honour anyone wishing to redeem its DEEPUSD token against off-chain USD 1 for 1. This setup is convenient as, later on, it will allow the trade to have all its components on chain.
 
@@ -237,6 +237,63 @@ assert(isPossible === "Success");
 </MultiCodeBlock>
 
 This test will unfortunately also test whether Alice can receive new ACME shares, which is one irrelevant hurdle SafeHands does not care about.
+
+If SafeHands, or any other custodian, have a customer who wants to acquire some ACME shares, they would have to make sure that they satisfy the _receive_ part of the compliance. If you recall, it was defined as:
+
+1. Have a KYC claim. As per the exercise from ACME itself, which is an artefact of keeping the exercise simpler, although it could be from any KYC service provider as per ACME's choice. Let's name it EzKyc. Presumably a provider that is tasked with verifying the customer's jurisdiction so as to meaningfully satisfy the second point.
+2. Not have a claimed jurisdiction of Liechtenstein.
+
+What would it look like if EzKyc were to publish a claim against Bob, with DID of `bobDid`, valid for 1 year, for the purpose of receiving ACME tokens?
+
+<MultiCodeBlock>
+
+```typescript
+const nextYear: Date = new Date();
+nextYear.setFullYear(nextYear.getFullYear() + 1);
+const claimQueue: TransactionQueue<void> = await apiEzKyc.claims.addClaims({
+    "claims": [
+        {
+            "claim": {
+                "type": ClaimType.Jurisdiction,
+                "code": CountryCode.Gb,
+                "scope": {
+                    "type": ScopeType.Ticker,
+                    "value": "ACME"
+                }
+            },
+            "expiry": nextYear,
+            "target": bobDid
+        }
+    ]
+});
+await claimQueue.run();
+```
+
+```javascript
+const nextYear = new Date();
+nextYear.setFullYear(nextYear.getFullYear() + 1);
+const claimQueue = await apiEzKyc.claims.addClaims({
+    "claims": [
+        {
+            "claim": {
+                "type": "Jurisdiction",
+                "code": "Gb",
+                "scope": {
+                    "type": "Ticker",
+                    "value": "ACME"
+                }
+            },
+            "expiry": nextYear,
+            "target": bobDid
+        }
+    ]
+});
+await claimQueue.run();
+```
+
+</MultiCodeBlock>
+
+This action is done by EzKyc, not by SafeHands or any other custodian. Although it is conceivable that said custodians would direct their customers to the actions they need to complete before they can move forward.
 
 ## Further processes
 
