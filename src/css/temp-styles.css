@@ -33,6 +33,7 @@
 
 .box-overview-card-dyn .inline-image-float-right {
 	width: 35%;
+	max-height: 200px;
 	float: right;
 	margin-left: 15px;
 }
@@ -63,8 +64,8 @@
 }
 
 .box-action-cards .content-wrapper .action-card .action-icon {
-  height: 30px;
-  margin: 40px auto 40px auto;
+  height: 50px;
+  margin: 30px auto 30px auto;
 }
 
 a.action-link {
