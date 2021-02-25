@@ -30,23 +30,9 @@ It is expected that brokers, custodians, transfer agents and other parties will 
 
 Each organization that integrates with the system will have unique blend of concerns depending the services offered, existing business processes and existing systems. For this reason, the dashboard and token studio do not model a specific way of approaching this process at this time. Rather, the SDK provides granular methods for participants like SafeHands to create bespoke, in-house integration. The end result is automation of the processes that let Alice and Bob trade security tokens through familiar customer-facing user interfaces, and B2B processes that allow for efficient settlement. This facilitates acceptance of security tokens and delivery of related services with minimal disruption of existing business, technical and legal processes. 
 
-## Polymesh Substrate App
+## Preliminary steps
 
-Recall that [Polymesh is built with Substrate](/introduction/intro-stack) which is a set of modules for creating a blockchain. Substrate provides tools that offer low-level access to everything that happens on a Substrate network and these tools work with Polymesh. 
-
-The [Polymesh Substrate App](https://app.polymesh.live) is such a tool. Blockchain enthusiasts will recognize that it is similar to block explorers found in other settings. One can use it to explore the blockchain and transactions in depth. 
-
-The methods that define what Polymesh does and how it does it are called extrinsics in the Substrate lexicon. This tool facilitates direct iteraction with the extrinsics, i.e. creating, signing and sending transactions. Consequently, this tool is an avenue to interact with any Polymesh method directly and witness the result.
-
-We will use the [Polymesh Substrate App](https://app.polymesh.live) to create a simple instruction. As we go, we will observe the granularity and flexibility of the methods that support automations and integrations that can be constructed using the SDK. A more advanced example is unfolded in the next section.
-
-Open the Polymesh Substrate App at https://app.polymesh.live. It opens on the `Explorer` tab and displays recent blocks and events. 
-
-![polymesh explorer](images/01-explorer.png)
-
-Feel free to peruse recent blocks and see that the extrinsics describe the methods and parameters that were signed and the results of the transactions, but don't be alarmed if it seems technical. This information is of interest to developers who create automated systems and user-friendly interfaces. 
-
-## Pause Compliance Rules
+### Pause Compliance Rules
 
 Before we proceed too far, we must remove an obstacle. When we originated the ACME shares we created a basic compliance regime as would normally be the case. We designated ACME themselves as the KYC Service Provider, meaning that they would attend to verifying information about their shareholders internally. We did not, however, explore how they perform this function or how the users complete the process. So, compliance rules are in effect and Alice hasn't met the requirements. She will be unable to trade and you will see that the network prevents a non-compliant transfer at a deep level if you attempt this exercise while skipping this step. 
 
@@ -58,7 +44,63 @@ To keep this settlement exercise as simple as possible, let us remove the obstac
 
 Confirm and sign, of course. 
 
+### Create Bob
+
+ Alice will transfer some of her shares to another user. For this to work, we will need another user, so create a user with new identity, Bob, complete customer due diligence and get some POLYX because they will need to sign some transactions. 
+ 
+ - `+ Add a new key`
+ - **Do not** assign the key to Alice or ACME.
+ - Proceed to the dashboard and create a new identity, Bob. 
+ - Complete [customer due diligence](/quickstart/quickstart-cdd), as Bob.
+ - [Get some POLYX](/quickstart/quickstart-polyx) for Bob.
+
+![bob](images/01c2-bob.png)
+
+### Create a uID Scope
+
+<!--- I'm not sure this is needed because Bob should be able to create the necessary uID when he affirms the incoming transfer. -->
+
+Every user must have a uID scope for the securities in their portfolios. As Bob, navigate to `Portfolios` on the Dashboard and click `Manage uID scopes`. 
+
+![manage scopes](images/01d-manage-scope.png)
+
+Create a uID scope Bob and ACME, using the symbol you chose for your ACME shares. 
+
+![create scope](images/01e-create-scope.png)
+
+We will need some information from the blockchain. 
+
+## Polymesh Substrate App
+
+Recall that [Polymesh is built with Substrate](/introduction/intro-stack) which is a set of modules for creating a blockchain. Substrate provides tools that offer low-level access to everything that happens on a Substrate network and these tools work with Polymesh. 
+
+The [Polymesh Substrate App](https://app.polymesh.live) is such a tool. Blockchain enthusiasts will recognize that it is similar to block explorers found in other settings. One can use it to explore the blockchain and transactions in depth. 
+
+The methods that define what Polymesh does and how it does it are called extrinsics in the Substrate lexicon. This tool facilitates direct iteraction with the extrinsics, i.e. creating, signing and sending transactions. Consequently, this tool is an avenue to interact with any Polymesh method directly and witness the result.
+
+Open the Polymesh Substrate App at https://app.polymesh.live. It opens on the `Explorer` tab and displays recent blocks and events. 
+
+![polymesh explorer](images/01-explorer.png)
+
+Feel free to peruse recent blocks and see that the extrinsics describe the methods and parameters that were signed and the results of the transactions, but don't be alarmed if it seems technical. This information is of interest to developers who create automated systems and user-friendly interfaces. 
+
+### Reveal the Venue Number
+
+Every settlement takes place within a venue. When we created the ACME token and performed the distribution, the Token Studio created a default venue for us, so we weren't burdened with this step. Now, we will need the venue number. What is it? How can we find out?
+
+As you might imagine, every fact is recorded on the blockchain so we only need to know where to look. Navigate to `Developers`, `Chain State`. 
+
+- Under `selected query state` choose `settlement`.
+- To the right, select `userVenues(Identityid): Vec<u64>`
+- Press entirely
+
+Here, the system responded, `78`. You will need the number that applies to _your token_. 
+
+![venue](images/01b-venue.png)
+
 ## Settlement Instruction
+
+We will use the [Polymesh Substrate App](https://app.polymesh.live) to create a simple instruction. As we go, we will observe the granularity and flexibility of the methods that support automations and integrations that can be constructed using the SDK. A more advanced example is unfolded in the next section.
 
 Navigate to `Extrinsics` on the `Developer` menu. 
 
@@ -76,11 +118,9 @@ Further options to exist to set the trade date and value date in the future. Aga
 
 ## Legs
 
-Legs are where the purpose of the transaction is defined. For example, if Alice wants to transfer shares to Bob and Bob will pay Alice (and no one else is involved) then one or two legs would be used to describe the share transfer and payment.
+Legs are where the purpose of the transaction is defined. For example, if Alice wants to transfer shares to Bob and Bob will pay Alice (and no one else is involved) then one or two legs would be used to describe the share transfer, and possible the payment.
 
-You can, if you like, at this point create a new personal account for Bob. Bob will need to clear customer due diligence and get some POLYX before he can receive Alice's shares. If you have been following along, you already have an Polymesh DID for ACME and we can imagine that ACME is buying back some of Alice's shares. This transaction will transfer some shares from Alice to ACME. 
-
-Astute readers will note that the dashboard has a purpose-built user interface for such a simple transfer, but our purpose to unfold the tools one can use to create more complex settlements. 
+Astute readers will note that the dashboard has a purpose-built user interface for such a simple transfer, but our purpose is to unfold the tools one can use to create more complex settlements. 
 
 Click `Add item` next to `legs:` at the bottom of the form. This opens the legs form as it is defined within the `addAndAffirmInstruction` extrinsic. Each activity has its own parameters. Settlements have 0-n legs each with `from` and `to` portfolios, and an `asset` and an `amount`. 
 
@@ -90,15 +130,31 @@ Let us return 100 shares to ACME.
 
 Copy Alice's Polymesh DID and paste into the `from: did: IdentityId`. 
 
-Copy ACME's Polymesh DID and paste into the `to: did: IdentityId`.
+Copy Bob's Polymesh DID and paste into the `to: did: IdentityId`.
 
 Recall that Alice moved her shares to her `cold store` portfolio. Here, we have some choices. Alice could leave this partially-completed form for a moment and transfer 100 or more shares to her default portfolio, or she can another detail to this leg. 
 
-In `fron: PortfolioId: Kind: PortfolioKind`, select `User`. The Portfolio number is a little tricky to verify using only gui tools but developers can easily enumerate the user portfolios that exist, their friendly names and their numbers. We will wave our hands slightly for simplicity here and discern that it must be `1`. 
+We can use a `Chain State` query to enumerate the portfolios Alice has. See if you can find your way to the appropriate query to assertain that Alice's `cold store` portfolio is indeed `1`. Or, take this as a given. In any case, to transfer from a portfolio other than the default, select `User` portfolio and input the portfolio number. 
+
+Input the unique symbol for the security token you created.
 
 Now, we will `Submit transaction`. The web site reports what it intends to do. We `Sign and Submit`. A signature is required, so that prompts the wallet to request it. 
 
+Alice will transfer 100 shares to Bob. Notice that the number entered can be scaled. To the right, `kilo` would multiply the input value by 1,000. Leave it as POLYX, which we will take to mean `1:1` in this context. 
 
+![leg](images/04-leg.png)
+
+Now it time to `Submit Transaction`. 
+
+The website presents the confirmation, followed by the wallet prompting for your signature in the usual way. 
+
+## What Do We Expect to Happen Next?
+
+Recall that Bob needs to affirm this transfer. It cannot proceed without his consent, so the transfer is in a pending state. As Bob, navigate to the dashboard, portfolio tab, where Bob can affirm (accept) the incoming transfer. 
+
+## Show-stopper
+
+![failed](images/alice-to-bob-fail.PNG)
 
 
 

@@ -42,7 +42,13 @@ Below, ACME has been verified and has some POLYX.
 
 ACME can assign a key but Alice will have to supply it to them. More precisely, Alice will provide the public information but not the private signing key, which means that ACME cannot sign on her behalf. ACME can determine the scope of the CEO's (Alice) permission within ACME but only Alice can actually sign as CEO.
 
-Returning to Alice's wallet, simply click <kbd>Add a key</kbd> and follow the usual procedure. Assign an internal name that will help Alice remember what the key is for, e.g. ACME CEO. The result will be that Alice has a second, unassigned key. **Do not** assign this key. There is nothing Alice can do to associate the key she just made with ACME, a PID she does not control. Instead, let us say that Alice provides the public key to ACME through an off-chain communication channel and ACME adds it to _their identity_ on their own authority.
+Returning to Alice's wallet, simply click <kbd>Add a key</kbd> and follow the usual procedure. Give the key a namme that will help Alice remember what the key is for, e.g. ACME CEO. The result will be that Alice has a second, unassigned key. **Do not** assign this key. There is nothing Alice can do to associate the key she just made with ACME, a PID she does not control. Instead, let us say that Alice provides the public key to ACME through an off-chain communication channel and ACME adds it to _their identity_ on their own authority.
+
+<HighlightBox type="tip">
+
+You can create the ACME primary in the same wallet Alice uses. Add a key, and **do not** assign the key to Alice's Polymesh DID. Instead, bring the new key into focus, proceed to the dashboard and create a new identity.
+
+</HighlightBox>
 
 In case that is unclear, the flow would be:
 
