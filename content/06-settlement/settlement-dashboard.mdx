@@ -175,11 +175,11 @@ Input the unique symbol for the security token you created.
 
 <HighlightBox type="tip">
  
-If this instruction involved 2 or more asset transfers, then we would create additional legs. Instructions settle atomically, meaning all legs execute completely. There is **no case in which an instruction is partially processed** or some, but not all legs are processed.
+If this instruction involved 2 or more asset transfers, then we would create additional legs. Instructions settle atomically, meaning all legs execute completely. There is **no case in which an instruction is partially processed** or some, but not all legs are processed. See examples of more complex transaction with multiple legs in the reference documentation: https://developers.polymesh.live/settlement/
 
 </HighlightBox>
 
-Alice will transfer 1.000 shares to Bob. Notice that the number entered can be scaled. To the right, `kilo` would multiply the input value by 1,000. Leave it as POLYX, which we will take to mean `1:1` in this context.
+Alice will transfer 1.000 shares to Bob. Notice that the number entered can be scaled. To the right, `kilo` would multiply the input value by 1,000. Leave it as POLYX, which means `1:1` in this context.
 
 Now, `Submit transaction`. The web site reports what it intends to do. We agree, and `Sign and Submit`. A signature is required, so that prompts the wallet to request it.
 
@@ -216,3 +216,5 @@ Since this the first time Bob has received ACME shares, Bob will create a uID sc
 
 - Polymesh Substrate App https://app.polymesh.live
 - Polymesh Dashboard https://dashboard.polymesh.live 
+- Prolymesh Primatives, Settlement: https://developers.polymesh.live/settlement/ 
+
