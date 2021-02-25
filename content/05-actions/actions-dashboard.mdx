@@ -6,9 +6,83 @@ slug: /actions/dashboard
 
 ## Exercise
 
-Following ACME's IPO, the shares are widely distributed and traded. Let us imagine that it has been a very good quarter since ACME went public and the board now wishes to distribute a dividend. Each shareholder will be entitled to receive a portion of the dividend in proportion to the number of shares they own.
+The ACME token has been trading for a while, and the company has had a very good quarter. The board has decided to distribute a dividend of 5,000. Each shareholder will be entitled to receive a portion of the dividend in proportion to the number of shares they own. They will use Polymesh for that.
 
 To prepare for this, the signer will need access to on-chain funds to send and permission to use those funds for this purpose. If you have been following the previous examples, your Polymesh ID should have permission. For a deep-dive into access control and permissions in Polymesh, see here =>
+
+## Who can do it?
+
+Corporate actions can be initiated by the token owner itself, or by an appointed CAA, or corporate action agent. Only the token owner can appoint the CAA. I could not find which extrinsic this is.
+
+## Where is the money?
+
+In token studio. ACME (or Alice the CEO, to make it simple) needs to create a DEEPUSD token, and issue 5,000 of them in ACME's default portfolio. No compliance requirement on it.
+Perhaps no need to do a distribution, just create and issue by ACME.
+
+## What's my share?
+
+> Each shareholder will be entitled to receive a portion of the dividend in proportion to the number of shares they own.
+
+This deceptively simple statement hides the fact that shareholdings change and so a decision has to be made as to what point in time is the relevant one. And how to keep a record of the shareholdings. That's where checkpoints come into play.
+
+In Developer - Extrinsics, select the "checkpoint" group, and "createCheckpoint(ticker)" on the right. Enter "ACME" in the field. You get a checkpoint id that you will reuse. In practice, the checkpoint may have been made earlier. Way earlier, or for instance as the first decision of the board, before they even decided the dividend distribution. The idea being to avoid opportunistic price moves, and / or insider trading.
+
+## Set up the action
+
+Using an account with authority, for instance the CFO secondary key. In Extrinsics, select the "corporateAction" group, and "initiateCorporateAction(...)" on the right. Then for the different fields:
+
+* ticker: "ACME"
+* kind: "UnpredictableBenefit"
+* decl_date: Put a date now or a few minutes in the past but after the checkpoint. With something like this https://www.epochconverter.com/ you need to choose the milliseconds, so perhaps add 000.
+* record_date: click for option, choose Existing
+    * Existing: CheckpointId: enter the id created earlier.
+* details: quarter dividends
+* targets: click for option: Not sure if we leave this unchecked.
+    * identities:
+        * enter aliceDid
+        * enter bobDid
+    * treatment: Include
+* No tax lol
+
+And submit transaction. Note the id of the Corporate Action.
+
+## Prepare the dividend
+
+It is a separate action from the record of the decision.
+
+Extrinsics "capitalDistribution", "distribute(ca_id...)".
+
+* ca_id:
+    * ticker: "ACME"
+    * local_id: the one you saved earlier
+* portfolio: leave empty
+* currency: DEEPUSD
+* balance: 5,000. It says POLYX at the right, but it is just an artefact of the "Balance" type that always thinks it is POLYX.
+* payment_at: make it a minute in the future, so that it is after the CA, also milliseconds.
+
+## Can ACME use those USD?
+
+The USDs are now locked in ACME's portfolio
+
+Developer - Chain State, "portfolio": "portfolioLockedAssets()":
+You can see that in ACME's portfolio there are 5k locked DEEPUSD in default portfolio
+
+## Alice the individual gets her dividend
+
+Developer - Extrinsics "capitalDistribution", "claim(ca_id)".
+
+* ca_id:
+    * ticker: "ACME"
+    * local_id: the one you saved earlier
+
+## Confirm the transfer
+
+Developer - Chain State, "portfolio": "portfolioLockedAssets()":
+You can see that in ACME's portfolio there are 4,010 locked DEEPUSD in default portfolio
+
+"portfolio": "portfolioAssetBalances"
+And in Alice's default portfolio there are 990 unlocked USD. That's if she sent 200 shares to Bob if I am correct.
+Should be able to see it in Token studio too.
 
 ## Open the Dashboard
 
