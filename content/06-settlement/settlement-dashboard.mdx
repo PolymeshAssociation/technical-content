@@ -4,6 +4,8 @@ description: Settlement with the Polymesh App Portal
 slug: /settlement/settlement-dashboard
 ---
 
+import HighlightBox from "../../src/components/HighlightBox"
+
 ## Use-Case
 
 If you have been following along up to this point, you have already seen an example of settlement in practice. ACME's distribution agent (also ACME) [sent shares](/distribute/dashboard) and Alice accepted the transfer.
@@ -170,6 +172,12 @@ Recall that Alice moved her shares to her `cold store` portfolio. Here, we have 
 We can use a `Chain State` query to enumerate the portfolios Alice has. See if you can find your way to the appropriate query to ascertain that Alice's `cold store` portfolio is indeed `1`. Or, take this as a given because it is the first and only user portfolio Alice has if you have been following closely. In any case, to transfer from a portfolio other than the default, select `User` portfolio and input the portfolio number.
 
 Input the unique symbol for the security token you created.
+
+<HighlightBox type="tip">
+ 
+If this instruction involved 2 or more asset transfers, then we would create additional legs. Instructions settle atomically, meaning all legs execute completely. There is **no case in which an instruction is partially processed** or some, but not all legs are processed.
+
+</HighlightBox>
 
 Alice will transfer 1.000 shares to Bob. Notice that the number entered can be scaled. To the right, `kilo` would multiply the input value by 1,000. Leave it as POLYX, which we will take to mean `1:1` in this context.
 
