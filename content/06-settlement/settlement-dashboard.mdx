@@ -48,7 +48,7 @@ Confirm and sign, of course.
 
 ### Create Bob
 
- Alice will transfer some of her shares to another user. For this to work, we will need another user, so create a user with a new identity, Bob, complete [customer due diligence](/quickstart/quickstart-cdd) and [get some POLYX](/quickstart/quickstart-polyx)  because Bob will need to sign some transactions.
+ Alice will transfer some of her shares to another user. For this to work, we will need another user, so create a user with a new identity, Bob, complete [customer due diligence](/quickstart/quickstart-cdd) and [get some POLYX](/quickstart/quickstart-polyx) because Bob will need to sign some transactions.
 
  - `+ Add a key`
  - **Do not** assign the key to Alice or ACME.
@@ -61,7 +61,7 @@ Confirm and sign, of course.
 <!--- Not sure this is needed because Bob should be able to create the necessary uID when he affirms the incoming transfer.
 
 ### Create a uID Scope
- 
+
 Every user must have a uID scope for the securities in their portfolios. As Bob, navigate to `Portfolios` on the Dashboard and click `Manage uID scopes`.
 
 ![manage scopes](images/01d-manage-scope.png)
@@ -88,7 +88,7 @@ Open the Polymesh Substrate App at https://app.polymesh.live. It opens on the `E
 
 Peruse recent blocks and see that the extrinsics describe the methods and parameters that were signed and the results of the transactions, but don't be alarmed if it seems technical. This information is of interest to developers who create automated systems and user-friendly interfaces.
 
-<!--- Discover ACME's venue. Alice will create one, instead. 
+<!--- Discover ACME's venue. Alice will create one, instead.
 
 ### Reveal the Venue Number
 
@@ -113,25 +113,25 @@ Navigate to `Extrinsics` on the `Developer` menu.
 
 If you don't see Alice's personal "POLYWALLET", open the wallet and select Alice's personal primary key to set the context. The page will refresh.
 
-Transfers in Polymesh do not occur in a void. Each transfer occurs in a venue, which is an organised trading facility (OTF), regulated market (RMs), or multilateral trading facility (MTF) that receives instructions from counter-parties for the purpose of matching, to convert separate orders into executed trades. 
+Transfers in Polymesh do not occur in a void. Each transfer occurs in a venue, which is an organised trading facility (OTF), regulated market (RMs), or multilateral trading facility (MTF) that receives instructions from counter-parties for the purpose of matching, to convert separate orders into executed trades.
 
-In summary, venues are logical groups of instructions and settlements. The creator of a venue controls permission, meaning who is allowed to create settlements within the venue. When ACME transferred shares to Alice, the token studio created a venue for ACME. By default, only ACME has permission to trade there. We can safely assume that Alice doesn't have permission at this time. 
+In summary, venues are logical groups of instructions and settlements. The creator of a venue controls permission, meaning who is allowed to create settlements within the venue. When ACME transferred shares to Alice, the token studio created a venue for ACME. By default, only ACME has permission to trade there. We can safely assume that Alice doesn't have permission at this time.
 
-Alice cannot create a settlement outside of a venue, so Alice needs a venue. Alice can create her own venue where she has permission to trade. 
+Alice cannot create a settlement outside of a venue, so Alice needs a venue. Alice can create her own venue where she has permission to trade.
 
-1. Be sure Alice's personal account is in focus, in the wallet. 
-2. Navigate to `Developer`, `Extrinsics`. 
+1. Be sure Alice's personal account is in focus, in the wallet.
+2. Navigate to `Developer`, `Extrinsics`.
 3. Select `Settlement` under `submit the following extrinsic`. Choosing this category updates the related extrinsics to the right.
 5. Select `createVenue(details, signers, venue, type)`. Notice the human-readable explanation of what it does, "Registers a new venue" and the list of arguments it accepts, "details, signers, venue and type".
-6. Under `details: VenueDetails` paste Alice's Polymesh DID. She will have permission to create settlements in this venue. 
-7. Leave the venue type set to `Other`. 
+6. Under `details: VenueDetails` paste Alice's Polymesh DID. She will have permission to create settlements in this venue.
+7. Leave the venue type set to `Other`.
 8. `Submit Transaction`
 
 ![create venue](images/01f-create-venue.png)
 
 ## Venue Number
 
-You should receive a positive response after the above transaction is confirmed, signed and sent. In just a moment, you will see your transaction in the blockchain. Navigate to `Network`, `Explore` and look for `settlement.VenueCreated`. Expand the transaction. Your venue number will be unique, so take note of it. In the example below, the system assigned venue number 83. 
+You should receive a positive response after the above transaction is confirmed, signed and sent. In just a moment, you will see your transaction in the blockchain. Navigate to `Network`, `Explore` and look for `settlement.VenueCreated`. Expand the transaction. Your venue number will be unique, so take note of it. In the example below, the system assigned venue number 83.
 
 At this moment, it suffices for us to spot our recent transaction in the list. There are many ways to query the blockchain to find such a detail in the future. See if you can discover on your own how to use `Developer`/`Chain state` to query the venues where Alice is _allowed_ to create a settlement. Hint: The query is about settlements and user venues.
 
@@ -139,13 +139,13 @@ At this moment, it suffices for us to spot our recent transaction in the list. T
 
 ## Settlement Instruction
 
-Next, Alice will create a settlement. 
+Next, Alice will create a settlement.
 
-Return to Navigate to `Developer`, `Extrinsics`. 
+Return to Navigate to `Developer`, `Extrinsics`.
 
-Again, select the `settlement` category. The subcategory updates to show the variants of this extrinsic and each variant includes a short, human-readable description of what it does. This time, select `addAndAffirmInstruction` which _adds and affirms a new instruction_. It makes sense to cover both steps in one transaction since Alice is both creating the instruction and also agrees with it. Remember, the receiver will also affirm the instruction before it executes. Alice could create the instruction without affirming it if, for example, she is waiting for funds from Bob. 
+Again, select the `settlement` category. The subcategory updates to show the variants of this extrinsic and each variant includes a short, human-readable description of what it does. This time, select `addAndAffirmInstruction` which _adds and affirms a new instruction_. It makes sense to cover both steps in one transaction since Alice is both creating the instruction and also agrees with it. Remember, the receiver will also affirm the instruction before it executes. Alice could create the instruction without affirming it if, for example, she is waiting for funds from Bob.
 
-Next is the `Venue`. All settlements occur in a venue. This is where Alice will need to know her own venue number from the earlier step. In the example, we created venue 83 but your number will be different. 
+Next is the `Venue`. All settlements occur in a venue. This is where Alice will need to know her own venue number from the earlier step. In the example, we created venue 83 but your number will be different.
 
 Moving on, we come to `settlement_type` which defaults to _Settle on Affirmation_ which means that the transaction will settle when everyone agrees, or shortly thereafter. Notice that the instruction can be forward-dated to a future block. Let's leave it set to _SettleOnAffirmation_.
 
@@ -174,40 +174,40 @@ We can use a `Chain State` query to enumerate the portfolios Alice has. See if y
 Input the unique symbol for the security token you created.
 
 <HighlightBox type="tip">
- 
+
 If this instruction involved 2 or more asset transfers, then we would create additional legs. Instructions settle atomically, meaning all legs execute completely. There is **no case in which an instruction is partially processed** or some, but not all legs are processed. See examples of more complex transaction with multiple legs in the reference documentation: https://developers.polymesh.live/settlement/
 
 </HighlightBox>
 
-Alice will transfer 1.000 shares to Bob. Notice that the number entered can be scaled. To the right, `kilo` would multiply the input value by 1,000. Leave it as POLYX, which means `1:1` in this context.
+Alice will transfer 1,000 shares to Bob. Notice that the number entered can be scaled. To the right, `kilo` would multiply the input value by 1,000. Leave it as POLYX, which means `1:1` in this context.
 
 Now, `Submit transaction`. The web site reports what it intends to do. We agree, and `Sign and Submit`. A signature is required, so that prompts the wallet to request it.
 
 ## Transaction
 
-Return to `Network`, `Explorer`. 
+Return to `Network`, `Explorer`.
 
-You will see a new transaction created, titled `settlement.InstructionCreated`. Expand it and see the details of the settlement instruction created just now. 
+You will see a new transaction created, titled `settlement.InstructionCreated`. Expand it and see the details of the settlement instruction created just now.
 
-Again, the `Chain state` queries offer numerous ways to recall this information in the future. For example, one could find the settlement instructions created by Alice, related to Bob or related to ACME. 
+Again, the `Chain state` queries offer numerous ways to recall this information in the future. For example, one could find the settlement instructions created by Alice, related to Bob or related to ACME.
 
 ![settlement transaction](images/07-settlement-created.png)
 
 ## Not settled
 
-The transaction that creates the instruction is created and confirmed, but the trade has not occured yet. This is an important difference between Polymesh and many other distributed blockchain-based systems. In other cases, there is nothing Bob can do to prevent the arrival of assets in his portfolio, which is problematic in the context of regulated securities. In Polymesh, Bob needs to affirm the instruction and Bob can reject the instruction if he disagrees with it. 
+The transaction that creates the instruction is created and confirmed, but the trade has not occured yet. This is an important difference between Polymesh and many other distributed blockchain-based systems. In other cases, there is nothing Bob can do to prevent the arrival of assets in his portfolio, which is problematic in the context of regulated securities. In Polymesh, Bob needs to affirm the instruction and Bob can reject the instruction if he disagrees with it.
 
-Let us have a look from Bob's perspective now that this instruction exists. 
+Let us have a look from Bob's perspective now that this instruction exists.
 
 Change to Bob's Polymesh DID in the wallet and navigate to the `Portfolios` tab in the dashboard: https://dashboard.polymesh.live.
 
-Bob has one incoming transfer. It is 1,000 ACME shares. 
+Bob has one incoming transfer. It is 1,000 ACME shares.
 
 ![incoming](images/08-incoming-bob.png)
 
-Accept the transfer and receive the shares. 
+Accept the transfer and receive the shares.
 
-Since this the first time Bob has received ACME shares, Bob will create a uID scope for ACME. The system leads Bob through the process. Also, Bob may wish to move some or all of his shares to another portfolio. For details on these processes, return to [Token Studio Dashboard](/distribute/dashboard) in the Distribution section to recall how Alice received her first ACME shares and moved them to her cold store portfolio. 
+Since this is the first time Bob has received ACME shares, Bob will create a uID scope for ACME. The system leads Bob through the process. Also, Bob may wish to move some or all of his shares to another portfolio. For details on these processes, return to [Token Studio Dashboard](/distribute/dashboard) in the Distribution section to recall how Alice received her first ACME shares and moved them to her cold store portfolio.
 
 
 
@@ -215,6 +215,5 @@ Since this the first time Bob has received ACME shares, Bob will create a uID sc
 ## Links
 
 - Polymesh Substrate App https://app.polymesh.live
-- Polymesh Dashboard https://dashboard.polymesh.live 
-- Prolymesh Primatives, Settlement: https://developers.polymesh.live/settlement/ 
-
+- Polymesh Dashboard https://dashboard.polymesh.live
+- Polymesh Primitives, Settlement: https://developers.polymesh.live/settlement/
