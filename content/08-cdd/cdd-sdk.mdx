@@ -4,7 +4,93 @@ description: Corporate Actions with the Polymesh SDK
 slug: /cdd/cdd-sdk
 ---
 
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+import HighlightBox from "../../src/components/HighlightBox"
+
 A CDD Service provider can scale their business by integrating with existing internal systems. Consider a queue of KYC requests, user-facing onboarding systems and other methods of gathering information followed by evaluation and a decision. The decision itself can be committed to Polymesh in the form of a CDD attestation.
+
+A CDD provider is a special kind of KYC provider, one that is appointed by the Governing Council to act in the capacity of CDD provider. If you get hold of a Polymesh account, you can find out if it is a CDD provider by doing:
+
+<MultiCodeBlock>
+
+```typescript
+const otherIdentity: Identity = await yourApi.getIdentity(otherDid);
+const isIndeed: boolean = await otherIdentity.isCddProvider();
+```
+
+```javascript
+const otherIdentity = await yourApi.getIdentity(otherDid);
+const isIndeed = await otherIdentity.isCddProvider();
+```
+
+</MultiCodeBlock>
+
+To become a Polymesh user, one has to go through CDD, it is the _cost_ of admission to the network. You will recall from the introduction to Identity that the Polymesh Unique Identity System (PUIS) provides a way to report on unique Polymesh users while preserving privacy, all this cryptographically. As a CDD provider, you therefore need to generate the Perdersen commitment that could eventually be used by the Polymesh user to ascertain control.
+
+If you are the CDD provider and have KYC'd a new customer, you can do:
+
+<MultiCodeBlock>
+
+```typescript
+const nextYear: Date = new Date();
+nextYear.setFullYear(nextYear.getFullYear() + 1);
+const yourCustomerDid: string = getOrCreateNew();
+const cddId: string = pedersen(uID, yourCustomerDid); // Off-chain process.
+const cddQueue: TransactionQueue<void> = await yourApi.claims.addClaims({
+    "claims": [
+        {
+            "claim": {
+                "type": ClaimType.CustomerDueDiligence,
+                "id": cddId
+            },
+            "expiry": nextYear,
+            "target": yourCustomerDid
+        }
+    ]
+});
+await cddQueue.run();
+```
+
+```javascript
+const nextYear = new Date();
+nextYear.setFullYear(nextYear.getFullYear() + 1);
+const yourCustomerDid = getOrCreateNew();
+const cddId = pedersen(uID, yourCustomerDid); // Off-chain process.
+const cddQueue = await yourApi.claims.addClaims({
+    "claims": [
+        {
+            "claim": {
+                "type": "CustomerDueDiligence",
+                "id": cddId
+            },
+            "expiry": nextYear,
+            "target": yourCustomerDid
+        }
+    ]
+});
+await cddQueue.run();
+```
+
+</MultiCodeBlock>
+
+Keeping in the realm of proving control, when an asset originator requires unicity report, the investor can do:
+
+<MultiCodeBlock>
+
+```typescript
+const alice: string = await apiAlice.getCurrentIdentity();
+const uniqueQueue: TransactionQueue<void> = await apiAlice.claims.addInvestorUniquenessClaim({
+    "cddId": the same as that above,
+    "proof": createZeroKnowledgeProof(uID, cddId),
+    "scope": {
+        "type": ScopeType.Identity,
+        "value": alice.did
+    },
+    "scopeId": no sure
+});
+```
+
+</MultiCodeBlock>
 
 ## Inspect the Queue
 

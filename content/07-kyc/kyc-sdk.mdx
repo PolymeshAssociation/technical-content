@@ -4,11 +4,156 @@ description: Corporate Actions with the Polymesh SDK
 slug: /kyc/kyc-sdk
 ---
 
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+import HighlightBox from "../../src/components/HighlightBox"
+
 Using the Polymesh dashboard for KYC is all well and good but it does not scale well.
 
 A KYC Service provider may want to scale their business by integrating with existing internal systems. Consider a queue of KYC requests, user-facing onboarding systems and other methods of gathering information followed by evaluation and a decision. The decision itself can be optionally committed to Polymesh in the form of an attestation.
 
 A level-0 integration of an existing KYC system with Polymesh would be to keep the Polymesh dashboard open and have an operator copy paste addresses from one system to another and press buttons repeatedly. Beside the risk of error, it lets operators have access to the KYC company's private keys, which could potentially be used for other purposes.
+
+Remember when Alice the CEO set up the conditions for receiving ACME shares; the future holder must:
+
+* have a KYC claim by the designated KYC provider.
+* the jurisdiction in this claim must not be of Liechtenstein.
+
+However we briefly saw only briefly in the settlement module how you would add a claim that would allow someone to receive ACME shares. Let's repeat it here.
+
+<MultiCodeBlock>
+
+```typescript
+const nextYear: Date = new Date();
+nextYear.setFullYear(nextYear.getFullYear() + 1);
+const claimQueue: TransactionQueue<void> = await apiEzKyc.claims.addClaims({
+    "claims": [
+        {
+            "claim": {
+                "type": ClaimType.Jurisdiction,
+                "code": CountryCode.Gb,
+                "scope": {
+                    "type": ScopeType.Ticker,
+                    "value": "ACME"
+                }
+            },
+            "expiry": nextYear,
+            "target": bobDid
+        }
+    ]
+});
+await claimQueue.run();
+```
+
+```javascript
+const nextYear = new Date();
+nextYear.setFullYear(nextYear.getFullYear() + 1);
+const claimQueue = await apiEzKyc.claims.addClaims({
+    "claims": [
+        {
+            "claim": {
+                "type": "Jurisdiction",
+                "code": "Gb",
+                "scope": {
+                    "type": "Ticker",
+                    "value": "ACME"
+                }
+            },
+            "expiry": nextYear,
+            "target": bobDid
+        }
+    ]
+});
+await claimQueue.run();
+```
+
+</MultiCodeBlock>
+
+Any identity can add an attestation to another identity. This is very different from CDD providers, which are permissioned. This means that it is potentially open to abuse, and ACME's compliance cannot rely on _any_ jurisdictional attestation. This is why the compliance needs to mention the identity of the KYC service provider.
+
+## Change the jurisdiction claim
+
+What happens if Bob moves from the United Kingdom to France? His jurisdiction claim ought to change alongside. However you cannot just modify a claim. You would have to revoke it. And since there is no identifier associated to the claim added to Bob earlier, to revoke it, you need to call the revoke function with the same parameters you used to add the claim, minus the `expiry`. Other than that, you would have to issue a brand new claim too. Noting that if you revoked first he may be prevented from acquiring ACME shares, it is better to add the new claim first before revoking the old one.
+
+<MultiCodeBlock>
+
+```typescript
+const nextYear: Date = new Date();
+nextYear.setFullYear(nextYear.getFullYear() + 1);
+const addClaimQueue: TransactionQueue<void> = await apiEzKyc.claims.addClaims({
+    "claims": [
+        {
+            "claim": {
+                "type": ClaimType.Jurisdiction,
+                "code": CountryCode.Fr,
+                "scope": {
+                    "type": ScopeType.Ticker,
+                    "value": "ACME"
+                }
+            },
+            "expiry": nextYear,
+            "target": bobDid
+        }
+    ]
+});
+await addClaimQueue.run();
+const revokeClaimQueue: TransactionQueue<void> = await apiEzKyc.claims.revokeClaims({
+    "claims": [
+        {
+            "claim": {
+                "type": ClaimType.Jurisdiction,
+                "code": CountryCode.Gb,
+                "scope": {
+                    "type": ScopeType.Ticker,
+                    "value": "ACME"
+                }
+            },
+            "target": bobDid
+        }
+    ]
+});
+await revokeClaimQueue.run();
+```
+
+```javascript
+const nextYear = new Date();
+nextYear.setFullYear(nextYear.getFullYear() + 1);
+const addClaimQueue = await apiEzKyc.claims.addClaims({
+    "claims": [
+        {
+            "claim": {
+                "type": "Jurisdiction",
+                "code": "Fr",
+                "scope": {
+                    "type": "Ticker",
+                    "value": "ACME"
+                }
+            },
+            "expiry": nextYear,
+            "target": bobDid
+        }
+    ]
+});
+await addClaimQueue.run();
+const revokeClaimQueue = await apiEzKyc.claims.revokeClaims({
+    "claims": [
+        {
+            "claim": {
+                "type": "Jurisdiction",
+                "code": "Gb",
+                "scope": {
+                    "type": "Ticker",
+                    "value": "ACME"
+                }
+            },
+            "target": bobDid
+        }
+    ]
+});
+await revokeClaimQueue.run();
+```
+
+</MultiCodeBlock>
+
 
 ## Inspect the Queue
 
