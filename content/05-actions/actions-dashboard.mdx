@@ -6,15 +6,15 @@ slug: /actions/dashboard
 
 import HighlightBox from "../../src/components/HighlightBox"
 
-## Execute a Distribution
+## Execute a distribution
 
 The ACME token has been trading for a while, and the company has had a very good quarter. The board has decided to distribute a dividend of US $5,000. Each shareholder will be entitled to receive a portion of the dividend in proportion to the number of shares they own. ACME will use Polymesh to execute the distribution.
 
-## Who can do it?
+## Permission
 
 Corporate actions can be initiated by the token owner itself, or by an appointed corporate action agent, or CAA. Only the token owner can appoint the CAA. Doing so allows ACME to outsource the implementation of their corporate actions if they want to. By default, ACME, the token owner is a corporate actions agent for the ACME equity tokens and therefore has permission to execute corporate actions. 
 
-## Where is the money?
+## On-Chain execution
 
 An on-chain distribution requires an on-chain asset. We can envisage a future in which a well-established token created by another party maintains a strong peg to the US dollar, has cleared regulatory hurdles and is widely used as a proxy for US dollars. ACME would require sufficient units of that asset in order to fund the distribution for the simple reason that one cannot spend funds that one doesn't have. Those funds would be allocated to the distribution so that it can proceed in an automated fashion. 
 
@@ -25,7 +25,7 @@ For the purpose of this exercise we will set some legitimate concerns aside to c
 - Choose a unique symbol, since DEEPUSD is probably already taken.
 
 
-## What's my share?
+## Checkpoint
 
 <!-- I'm not sure this is needed because the previous section claims that corporate actions create checkpoints. -->
 
@@ -75,13 +75,13 @@ Go to `Extrinsics`, `capitalDistribution`, `distribute(ca_id...)`.
 * balance: 5,000. It says POLYX at the right, but it is just an artefact of the "Balance" type that always thinks it is POLYX.
 * payment_at: make it a minute in the future, so that it is after the corporate action. This is also in milliseconds. 
 
-## Can ACME use those USD?
+## Funds locked
 
 The funds in ACME's portfolio are now locked. As ACME, return to the dashboard, `Portfolios` tab to see that the funds are locked. This is reversible, within limits. In a slightly more sophisticated (and realistic) scenario, ACME would include an expiry date in the `capitalDistribution`, afterwhich they would be able repatriate unclaimed dividends. This is useful in the case that shareholder is unable to claim their dividends in the next step (extenuating circumstances such as losing their wallet keys) as it provides an avenue for eventual resolution. 
 
 You can see that in ACME's portfolio there are 5k locked DEEPUSD in default portfolio.
 
-## Alice the individual gets her dividend
+## Beneficiary claims
 
 Now, Alice will receive her dividend. This uses a "pull" pattern rather than "push". Alice will draw from the capital distribution. 
 
