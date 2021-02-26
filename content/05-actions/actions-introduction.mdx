@@ -16,22 +16,16 @@ Polymesh offers ways to _implement_ such actions.
 
 Obviously the board of an organisation can take many kinds of actions and not all of them intersect with the scope of the Polymesh network. But many do, and Polymesh offers the means to execute the action. 
 
-Polymesh provides specialized extrinsic pallets that deal directly with the two most common types of corporate actions:
-
-- **Capital distributions**: Capital, usually in the form of another asset, is distributed to asset holders in proportion to their holdings. 
-- **Corporate ballots**: Asset holders are invited to vote on motions. 
-
-In addition to these specialized pallets, more generalized pallets support increased implementation flexibility. 
-
 - **Unpredictable benefits**: Benefits with variable amounts that are distributed equitably among asset holders and not known when the benefit is defined.
 - **Predictable benefits**: Fixed rate benefits where the amount is established, and does not change over time. 
 - **Issuer notice**: Announcements that the issuer wishes to record on chain for reasons of permanence. 
 - **Reorganization**: Reorganizing the shares such as in mergers and acquisitions and stock splits.
-
-Finally, a generic corporate actions pallet supports the creation of novel corporate actions:
-
 - **Other**: A generalized type that supports actions that are not addressed directly.
 
+Polymesh provides specialized extrinsic pallets that deal directly with the two most common types of corporate actions:
+
+- **Capital distributions**: Capital, usually in the form of another asset, is allocated for the purpose of distribution. In case that is unclear, the predictable and unpredicable benefits corporate actions define who is to receive capital and how their benefits are calculated. A capital distribution allocates funding. 
+- **Corporate ballots**: Asset holders are invited to vote on motions. 
 
 Polymesh supports high-level corporate actions, as well as specific ones, such as ballots and capital distribution. The CAs can be of a predictable benefit (i.e. bond payments) or unpredictable benefit (i.e. dividend payments) nature.
 
