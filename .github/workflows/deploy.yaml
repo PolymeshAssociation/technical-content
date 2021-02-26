@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - staging
+      - review
 
 jobs:
   cloudflare:
@@ -17,15 +18,8 @@ jobs:
       run: npm install
     - name: build static website
       run: npm run build
-    - name: Deployment to main
-      if: ${{ github.ref == 'refs/heads/main' }}
-      run: npm run wrangler:main:publish
-      env:
-        CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-        CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-    - name: Deployment to staging
-      if: ${{ github.ref == 'refs/heads/staging' }}
-      run: npm run wrangler:staging:publish
+    - name: Deployment to Cloudflare workers
+      run: npx wrangler publish --env ${GITHUB_REF#refs/heads/}
       env:
         CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
         CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}

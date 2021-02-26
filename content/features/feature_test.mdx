@@ -1,12 +1,15 @@
 ---
 title: Content Features
 description: Demonstrates Markdown and Component features
-slug: content-features
+slug: /features/content-features
 ---
 
-# Markdown styles
+import HighlightBox from "../../src/components/HighlightBox"
+
+This document illustrates the use of different styles and elements within the content. You can find this file in `content/features/feature_test.mdx`
 
 # Headline 1
+Do not use this headline (as it will not be picked up by the outline).
 
 ## Headline 2
 
@@ -19,16 +22,208 @@ Paragraph text inside with a bit of content.
 *Italic text*
 
 
-# Markdown elements
+## Basic Markdown elements
 
-## Images
+### Images
 ![Image alt text](images/test_image.png)
 
-## Links
+### Links
 [Link text](www.google.com)
 
-## Lists
+### Lists
 
 * List item 1
 * List item 2
 * List item 3
+
+## Highlight box
+
+<HighlightBox type="info">
+
+Info Highlight Box
+
+</HighlightBox>
+
+
+<HighlightBox type="tip">
+
+Tip Highlight Box
+
+</HighlightBox>
+
+<HighlightBox type="warn">
+
+Warning Highlight Box
+
+</HighlightBox>
+
+## Expansion Panel
+
+### Simple
+
+import {
+  ExpansionPanel,
+  ExpansionPanelList,
+  ExpansionPanelListItem
+} from 'gatsby-theme-apollo-docs';
+
+<ExpansionPanel title="Expansion Panel Component Title">
+
+### ExpansionPanel Content with inline markdown
+* list 1
+* list 2
+* list 3
+
+
+**must be wrapped in new lines to render markdown**
+
+</ExpansionPanel>
+
+### ExpansionPanel with ExpansionPanelList
+Allows to display a list of steps
+
+<ExpansionPanel title="How to use the ExpansionPanel component">
+&nbsp;
+
+<ExpansionPanelList>
+<ExpansionPanelListItem number="1">
+
+### List item 1
+
+Do something and run
+```
+print "hello world"
+```
+
+</ExpansionPanelListItem>
+<ExpansionPanelListItem number="2">
+
+### Verify install
+**Check the folder content** and ensure it looks like this:
+![A chain of blocks](images/test_image.png)
+
+</ExpansionPanelListItem>
+<ExpansionPanelListItem number="check">
+
+### Complete!
+You are done. Don't forget:
+> Mama said: Save often!
+
+</ExpansionPanelListItem>
+</ExpansionPanelList>
+
+</ExpansionPanel>
+
+### Expansion List without Panel
+
+(TODO: need to add extra padding to the top of the list).
+
+<ExpansionPanelList>
+<ExpansionPanelListItem number="1">
+
+### List item 1
+
+Do something and run
+```
+print "hello world"
+```
+
+</ExpansionPanelListItem>
+<ExpansionPanelListItem number="2">
+
+### Verify install
+**Check the folder content** and ensure it looks like this:
+![A chain of blocks](images/test_image.png)
+
+</ExpansionPanelListItem>
+<ExpansionPanelListItem number="check">
+
+### Complete!
+You are done. Don't forget:
+> Mama said: Save often!
+
+</ExpansionPanelListItem>
+</ExpansionPanelList>
+
+## Code Blocks
+
+### Simple
+[Supported languages](https://prismjs.com/#supported-languages)
+
+```java
+public class HelloWorld {
+}
+```
+
+
+### Highlighting Code
+
+You can use the following syntax to highlight inside the code:
+* highlight-line
+* highlight-next-line
+* highlight-start
+* highlight-range{1, 4-6} (relative to the position in code)
+
+**as a comment in your code!** It looks like this:
+
+```js
+	this.value = value; // highlight-line
+	this.lender = lender;
+	// highlight-next-line // highlight-next-line
+	this.borrower = borrower;
+	this.linearId = linearId;
+	this.borrower = borrower;
+	this.linearId = linearId;
+	// highlight-range{2,4-6}
+	this.borrower = borrower;
+	this.linearId = linearId;
+	this.borrower = borrower;
+	this.linearId = linearId;
+	this.borrower = borrower;
+	this.linearId = linearId;
+	this.borrower = borrower;
+	this.linearId = linearId;
+```
+
+Where the first line in markdown actually contains this:
+
+`this.value = value; // highlight-line`
+
+See the [documentation](https://www.gatsbyjs.org/packages/gatsby-remark-prismjs/#line-highlighting) for further details.
+
+### Multi language Code Block
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+<MultiCodeBlock>
+
+```js
+// a JavaScript code block
+let myVar = 42;
+```
+
+```ts
+// a TypeScript code block
+```
+
+```shell
+$ ls -al
+mkdir newfolder
+```
+
+</MultiCodeBlock>
+
+Notice how selecting a language propagates it.
+
+<MultiCodeBlock>
+
+```js
+// a JavaScript code block
+let myVar = 43;
+```
+
+```ts
+// another TypeScript code block
+```
+
+</MultiCodeBlock>

@@ -1,8 +1,8 @@
 {
-  "name": "polymath-developer-portal",
+  "name": "polymesh-developer-portal",
   "version": "1.0.0",
   "private": true,
-  "description": "Polymath Developer Portal",
+  "description": "Polymesh Developer Portal",
   "keywords": [
     "gatsby"
   ],
@@ -12,9 +12,7 @@
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "wrangler:preview": "npx wrangler preview",
-    "wrangler:main:publish": "npx wrangler publish --env main",
-    "wrangler:staging:publish": "npx wrangler publish --env staging"
+    "wrangler:preview": "npx wrangler preview"
   },
   "dependencies": {
     "@cloudflare/wrangler": "^1.13.0",
