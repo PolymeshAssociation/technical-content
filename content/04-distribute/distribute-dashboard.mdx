@@ -4,22 +4,135 @@ description: Distribute Assets with no code
 slug: /distribute/dashboard
 ---
 
+import HighlightBox from "../../src/components/HighlightBox"
+
 ## Exercise
 
-In the previous section, ACME originated an asset. Following this, all of the assets created belong to ACME and are in ACME's possession. For this exercise, let us say that ACME wishes to p
+In the [origination section](/originate/dashboard), ACME originated an asset. No shares exist yet.
 
-- place some of the tokens with a custodian.
-- transfer some of the tokens to executive team in advance of the planned IPO
-- something else
+In the [secondary keys section](/originate/secondary), we created distinct identities for Alice and ACME, and Alice created a secondary key to use when she signs on behalf of ACME as the CEO.
 
-TODO: Best storyline?
+Now, it's time to create some shares and distribute them. To keep matters simple, let us suppose that Alice will receive 20,000 shares of a planned 100,000. In practice, the distribution agent may be external to the company that issues the security tokens. Again, to keep matters simple, ACME will serve as its own distribution agent. When the shares are minted, they are initially sent to the distribution agent.
 
-## Connect to the Dashboard
+In summary:
 
-## Select the correct signing key
+1. ACME will issue 20,000 shares
+2. ACME will transfer them to Alice
 
-## Send the asset to the other party
+As we proceed, you will see how Polymesh assists with ensuring a compliant process.
 
-## KYC Requirement for the receiving party
+## Mint Tokens
 
-Normally, the user will simply wait for the KYC provider to work with the other party to complete the KYC process if it is not already completed. For this exercise, we will switch to ExKYC's point of view and verify the recipient, then return to ACME's perspective to observe the completed distribution.
+Open the wallet and select ACME's primary key. Then proceed to the dashboard, `Explore` and `Token Studio`. The token that was originated is displayed.
+
+![token studio](images/02-token.png)
+
+Click on `Manage token` to see the token details.
+
+![manage token](images/03-manage-token.png)
+
+Open the `Distribution tab`.
+
+![distribution](images/04-distribution.png)
+
+Click on `Mint tokens`. Alice is to receive 20,000 tokens, so we need to mint 20,000 tokens. If more are needed for other distributions we could, of course, mint them all now.
+
+![mint tokens](images/05-mint.png)
+
+Confirm minting and sign. For brevity's sake we will not include images of each signature request. You should be accustomed to signing on-chain transactions at this point or you may wish to opt for the "Don't ask me for the next 15 minutes" option that is available each time a signature is required.
+
+![confirm minting](images/06-confirm-mint.png)
+
+In few moments the minting operation is confirmed on the blockchain.
+
+![success](images/08-success.png)
+
+When the tokens have been issued, they will be in the custody of the distribution agent which defaults to the originator, so ACME.
+
+![agent balance](images/09-agents-balance.png)
+
+Now it is time for the distribution agent, which is ACME, to distribute the tokens. Click `Distribute`.
+
+Each investor has a unique uID scope which the system suggests for you. Click on `Create uID`.
+
+![create uID](images/10-investor-uid.png)
+
+In a few moments the process is confirmed.
+
+![uID scope success](images/11-success-uid.png)
+
+Now we will create a distribution event. Multiple distributions can be logically grouped into a single event, for example "Founder distributions". Since Alice and only Alice will receive shares, let us call this event "Alice's founder's shares". Click on `+ Add new distribution event`, give the event a name, and click `Add`.
+
+This distribution will be to a single Polymesh ID, Alice. Copy Alice's Polymesh ID (starts with 0x) from Alice's wallet. Be sure to choose Alice's personal account because that's where ACME should send the shares. Lastly, 20,000 is the amount to send.
+
+<HighlightBox type="tip">
+
+The distribution agent may receive a warning to indicate that Alice's identity is not compliant at this time. This will occur if the token has compliance rules because Alice has not completed KYC for ACME. As ACME, navigate to `Compliance` in the token studio and disable rules for primary distributions.
+
+</HighlightBox>
+
+![20,000 to alice](images/14-to-alice.png)
+
+As always, confirm the transaction and sign.
+
+![confirm distribution](images/15-confirm.png)
+
+After a few moments, the distribution confirms.
+
+![distribution success](images/16-pending.png)
+
+Now, when the transaction has confirmed, ACME will see a _pending_ distribution. Why is this if the transaction has confirmed?
+
+Unlike most blockchains where transfers are final, a security token cannot be transferred without the consent of the recipient because the receipt may have legal or tax implications and the recipient may not agree. Therefore, the system waits for Alice to _accept_ the distribution.
+
+Switch to Alice's personal Polymesh ID by bringing her personal primary key into focus in the wallet.
+
+Navigate to the dashboard `Portfolios` tab where Alice's incoming transfer is displayed.
+
+![incoming](images/18-incoming.png)
+
+Alice needs to create a uID Scope. Click `Manage uID scopes` and create a uID scope for the symbol you choose for the ACME shares. The Polymesh Unique ID system helps prevent Sybil attacks on tokens, such as creating multiple accounts under the control of a single entity for the purpose of evading reporting requirements.
+
+![create uid scope](images/26-scope.png)
+
+These shares are of upmost importance to Alice and she doesn't want to hold them in her default portfolio. Instead, she wants to create a special portfolio for them. Portfolios are logical containers that help manage permission or organize holdings.
+
+Below holdings, click `Create Portfolio`.
+
+![create portfolio](images/19-to-portolio.png)
+
+Create a new portfolio called cold store.
+
+![create cold store](images/20-create-cold-store.png)
+
+Alice can now accept or reject the incoming transfer. Select `Accept` next to the incoming transfer, confirm and sign.
+
+![accept](images/24-accepting.png)
+
+In a moment, the shares arrive in the default portfolio.
+
+![accepted](images/28-unassigned.png)
+
+Now, it is a simple matter of moving Alice's shares from her default portfolio to her cold store portfolio. Click the `Send` button and specify that 20,000 ACME shares should be moved to Alice's cold store portfolio. This happens without the accept/reject flow because there is no change of ownership.
+
+![to cold store](images/29-to-cold.png)
+
+## Success!
+
+Alice has 20,000 ACME shares in her cold store portfolio.
+
+![success](images/30-stored.png)
+
+## Summary
+
+1. Tokens are minted by originators and are distributed by distribution agents which can be the same organisation.
+2. Newly minted tokens are held by distribution agents until they are actually distributed.
+3. Compliance rules are enforced in the transfer process and transfers will remain in a pending state until either the receiver acheives compliance with the help of a KYC Service Provider, or the distribution agent cancels the transfer.
+4. Compliance rules can be disabled for primary distributions at the originator's discretion.
+4. Transfers require the consent of the receiving party.
+5. Users can transfer assets between their portfolios in one step. There is no need to accept the transfer because there is no change of ownership.
+
+## Links
+
+- Dashboard: https://dashboard.polymesh.live/
+- Token studio: https://tokenstudio.polymesh.live/

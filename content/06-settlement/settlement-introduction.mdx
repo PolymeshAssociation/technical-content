@@ -32,11 +32,11 @@ This is a valid leg description. It should be evident that Alice's approval is n
 
 > Bob sent 500 USD off-chain to Alice with reference `0x123bff`
 
-This is another valid leg description, called a signed receipt. Here again the approval of both parties is required, Bob may not want to give the impression that he has sent 500 USD off-chain, or 10 million, or that it was required of him. Alice may not want to let it be known that she has received cash, as she may be asked to return it.
+This is another valid leg description, called a signed receipt. Here again the approval of both parties is required, Bob may not want to give the impression that he has sent 500 USD off-chain, or 10 million, or that it was required of him. Alice may not want to let it be known that she has received cash, as she may be asked to return something she never received in the first place.
 
 ## Affirmations
 
-The approvals that legs require are called **affirmations**. A key associated with an identity indicates agreement by signing an affirmation for a leg. For a given leg to be affirmed, it needs to have received all required affirmations.
+The approvals that legs require are called **affirmations**. A key associated with an identity indicates agreement by signing an affirmation for a leg. For a given leg to be affirmed, it needs to have received all required affirmations from relevant identities.
 
 And yes, a secondary key or a sufficiently entrusted custodian can affirm on behalf of the main identity.
 
@@ -44,24 +44,28 @@ When the identity owning an asset has affirmed a leg, then the asset is _committ
 
 ## Instructions - Multiparty Transactions
 
-Sending shares to Bob or sending USD to Alice is all well and good, but, in our world, the overwhelming majority of securities transactions are trades. For instance:
+Sending shares to Bob or sending USD to Alice in isolation is all well and good, but, in our world, the overwhelming majority of securities transactions are trades. For instance:
 
 * Leg 1: Alice sends 100 of her ACME shares to Bob on the condition that she receives 500 USD.
 * Leg 2: Bob sends 500 USD to Alice on the condition that he receives 100 ACME shares.
 
 Explicit in this trade is that the 2 legs should happen in concert or none should happen at all. In computer jargon, this is called an atomic operation, a.k.a. a transaction. But because the word _transaction_ is already used in Polymesh to describe the serialised bits of information added to the blockchain, such an atomic securities trade is called an **instruction**.
 
-An instruction cannot be created without legs, and legs cannot be created outside of instructions. Also, after it has been created, an instruction cannot be modified. It should be obvious once you imagine that a party could modify the second leg after the other party has already affirmed the first leg.
+An instruction cannot be created without legs, and legs cannot be created outside of instructions. Also, after it has been created, an instruction cannot be modified. It should be obvious once you imagine what would happen if the first party could modify the second leg after the second party has already affirmed the first leg.
 
 ## KYC Requirements
 
-In Polymesh, nothing material happens until the compliance rules have to be met. This is true of instructions. So, in our 2-legged instruction example, the CDD claims attached to Alice's and Bob's identities should comply with ACME's sending and receiving rules. The instruction will remain in a pending state until ACME is satisfied.
+In Polymesh, nothing material happens until the compliance rules have to be met. This is true of instructions. So, in our 2-legged instruction example, the CDD claims attached to Alice's and Bob's identities should comply with ACME's sending and receiving rules, respectively. The instruction will remain in a pending state until ACME is satisfied.
 
 ## Atomic Execution
 
+Instructions execute completely, or not at all. For example, the above-mentioned instruction has two legs to send shares from Alice to Bob and funds from Bob to Alice. Alice and Bob both need to affirm that the entire instruction is agreeable and properly represents their agreement. Instructions contain other details such as when to actually execute, e.g. as soon as its affirmed or at a scheduled point of time in the future. Alice and Bob's affirmations indicate their agreement with all such details. 
+
+The actual execution is atomic, meaning that the instructions are always either completely executed or not executed at all. There is no case in which one leg of instruction has executed and the other has not. 
+
 ## Venue
 
-Finally, an instruction is not created in a void, but instead it is created inside a venue. Ultimately, an identity is responsible for each venue, for access rights and who can create instructions within it.
+Finally, an instruction is not created in a void, but instead it is created inside a venue. Ultimately, an identity is responsible for its own venues, for access rights and for who can create instructions within them.
 
 Once an instruction has been created inside a venue, it cannot be moved to another.
 
@@ -75,13 +79,13 @@ Three main roles are involved in a settlement:
 * the venue creator, and
 * the counterparties of the settlement.
 
-The **asset issuer** controls the set of identities allowed to create instructions referencing the asset they issued. Posting instructions can also be unrestricted, if prefered. The configuration allows for a non-restrictive policy, but restricting instruction creation brings regulatory safety.
+The **asset issuer** controls the set of identities allowed to create instructions referencing the asset they issued. Posting instructions can also be unrestricted, if preferred. The configuration allows for a non-restrictive policy, but restricting instruction creation brings regulatory safety.
 
 When it comes to the **venue creator**, only he/she is allowed to create instructions underneath a venue. The creator of a venue can also cancel pending instructions under the venue. Moreover, the venue creator has the control regarding the set of identities permissioned to sign payment receipts for instructions under the venue.
 
 **Counterparties** are relative to instructions, meaning they are always linked to a specific instruction or set of instructions. A counterparty can be defined as the identity referenced as receiver or sender/payer in a leg within an instruction.
 
-Each counterparty is required to authorisa any instruction involving them as counterparty before it is settled. Authorisation can be performed through an on-chain transaction or with signed data.
+Each counterparty is required to authorise any instruction involving them as counterparty before it is settled. Authorisation can be performed through an on-chain transaction or with signed data.
 
 When a counterparty authorises an instruction, the assets involved are locked or appropriate receipts must be provided. Once the instruction is authorised by all counterparties, the instruction settles, i.e. is automatically-executed. Authorisation can only be provided after the valid date and before an instruction expires; authorisations are provided during the specified time period of an instruction.
 
@@ -90,15 +94,15 @@ To execute an instruction, counterparty authorisation requires:
 * counterpartiees locking the relevant amount of assets to cover the obligations resulting from the instruction, or
 * counterparties providing signed receipts for an off-chain transaction, wich are then markes as locked globally.
 
-In case a **counterparty cancels** a pending instruction, the entire instruction is marked as canceled. All assets are then unlocked again. All counterparties have the right to reject an instruction by canceling it, or simply wiating for it to expire.
+In case a **counterparty cancels** a pending instruction, the entire instruction is marked as cancelled. All assets are then unlocked again. All counterparties have the right to reject an instruction by cancelling it, or simply waiting for it to expire.
 
-When instructions fail, are rejected or expire, all asset locks are removed and if receipts were used, they are marked as unused. If the **execution fails** for any reason, it is marked as **failed**. If it **succeeds**, assets are transfereed, the transfer is stamped with the time of successful execution, and all receipts are marked used.
+When instructions fail, are rejected or expire, all asset locks are removed and if receipts were used, they are marked as unused. If the **execution fails** for any reason, it is marked as **failed**. If it **succeeds**, assets are transferred, the transfer is stamped with the time of successful execution, and all receipts are marked used.
 
 How does a custodian work in this scenario?
 
-Briefly speaking, when a custodian has access to a users portfolio, the custodian can affirm any instructions referencing the portfolio. The token holder can let the custody service provider affirm instructions on behalf of them.
+Briefly speaking, when a custodian has access to a user's portfolio, the custodian can affirm any instructions referencing the portfolio. The token holder can let the custody service provider affirm instructions on behalf of them.
 
-Here the seperation of ownership between the token holder and custodian allows the latter to handle/manage the assets while ownership of the assets remains with the token holder identity.
+Here the separation of ownership between the token holder and custodian allows the latter to handle/manage the assets while ownership of the assets remains with the token holder identity.
 
 More on custody below. Let's first take a look at a settlement example!
 
@@ -188,7 +192,7 @@ Also, given sufficient liquidity, a given custodian can also act as an exchange 
 
 --> not 100% sure this is were it best fits but just went for it
 
-Linked to the inclusion of custody providers are the way assets are hold on Polymesh, and how portfolios are conceptualised and implemented. How is that? 
+Linked to the inclusion of custody providers are the way assets are hold on Polymesh, and how portfolios are conceptualised and implemented. How is that?
 
 All assets on Polymesh are held at the **identity-level**. This helps enforce compliance in real time. At the same time, it allows to organise assets under identities and assign key perrmissions and custody. Another value added for entities opting for Polymesh, because an identity can represent a whole organisation, which then can allow its employees access to the identity based on operative requirements, or an identity can represent a single person and provide for individual access.
 

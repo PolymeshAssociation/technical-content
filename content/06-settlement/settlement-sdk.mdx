@@ -1,5 +1,749 @@
 ---
 title: With the SDK
 description: Settlement with the Polymesh SDK
-slug: /settlement/settlement-sdk
+slug: /settlement/sdk
 ---
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+import HighlightBox from "../../src/components/HighlightBox"
+
+When distributing the ACME token, we used a settlement instruction. This is the proper Polymesh construct to allow a transfer of a security token. The instruction we used had a single leg, i.e. it had a single action. Here we are going to use the same construct, with more legs.
+
+## Participants
+
+Here, Alice, the individual, wants to start trading and exchange some of her ACME shares for US dollars. For that, she enlists the services of a broker named SafeHands who has access to an exchange named NextDaq. She plans on instructing SafeHands to list 1,000 of her shares for at least 5 USD apiece, and let them handle the reception of USD and the transfer execution in a timely manner.
+
+Like we saw before, each participant has an identity and a computer on which they can instantiate their Polymesh client. And inform each other off-chain of their respective `did` so they know how to identify, target and respond to each other.
+
+* Alice:
+    <MultiCodeBlock>
+
+    ```typescript
+    const apiAlice: Polymesh = await Polymesh.connect({
+        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "accountMnemonic": "word1 word2 ..."
+    });
+    const alice: CurrentIdentity = await apiAlice.getCurrentIdentity();
+    const aliceDid: string = alice.did; // For SafeHands
+    ```
+
+    ```javascript
+    const apiAlice = await Polymesh.connect({
+        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "accountMnemonic": "word1 word2 ..."
+    });
+    const alice = await apiAlice.getCurrentIdentity();
+    const aliceDid = alice.did; // For SafeHands
+    ```
+
+    </MultiCodeBlock>
+* SafeHands:
+    <MultiCodeBlock>
+
+    ```typescript
+    const apiSafeHands: Polymesh = await Polymesh.connect({
+        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "accountMnemonic": "word41 word42 ..."
+    });
+    const safeHands: CurrentIdentity = await apiSafeHands.getCurrentIdentity();
+    const safeHandsDid: string = safeHands.did; // For Alice and NextDaq
+    ```
+
+    ```javascript
+    const apiSafeHands = await Polymesh.connect({
+        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "accountMnemonic": "word41 word42 ..."
+    });
+    const safeHands = await apiSafeHands.getCurrentIdentity();
+    const safeHandsDid = safeHands.did; // For Alice and NextDaq
+    ```
+
+    </MultiCodeBlock>
+* NextDaq:
+    <MultiCodeBlock>
+
+    ```typescript
+    const apiNextDaq: Polymesh = await Polymesh.connect({
+        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "accountMnemonic": "word51 word52 ..."
+    });
+    const nextDaq: CurrentIdentity = await apiNextDaq.getCurrentIdentity();
+    const nextDaqDid: string = nextDaq.did; // For SafeHands
+    ```
+
+    ```javascript
+    const apiNextDaq = await Polymesh.connect({
+        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "accountMnemonic": "word51 word52 ..."
+    });
+    const nextDaq: CurrentIdentity = await apiNextDaq.getCurrentIdentity();
+    const nextDaqDid: string = nextDaq.did; // For SafeHands
+    ```
+
+    </MultiCodeBlock>
+
+## Alice's trading portfolio
+
+We saw earlier that Alice kept her ACME shares in her portfolio named _Cold store_, with id `coldStoreId`. It was not meant for trading. But since she wants to trade part of it, she is going to separate her concerns by creating a new _Trading_ portfolio.
+
+<MultiCodeBlock>
+
+```typescript
+const tradingFolioQueue: TransactionQueue<NumberedPortfolio> = await alice.portfolios.create({
+    "name": "Trading"
+});
+const tradingFolio: NumberedPortfolio = await tradingFolioQueue.run();
+```
+
+```javascript
+const tradingFolioQueue = await alice.portfolios.create({
+    "name": "Trading"
+});
+const tradingFolio = await tradingFolioQueue.run();
+```
+
+</MultiCodeBlock>
+
+Now, let her move 1,000 of her ACME tokens.
+
+<MultiCodeBlock>
+
+```typescript
+const coldStore: NumberedPortfolio = await alice.portfolios.getPortfolio({
+    "portfolioId": new BigNumber(coldStoreId)
+});
+const moveQueue: TransactionQueue<void> = await coldStore.moveFunds({
+    "items": [
+        {
+            "token": "ACME",
+            "amount": new BigNumber("1000")
+        }
+    ],
+    "to": tradingFolio
+});
+await moveQueue.run();
+```
+
+```javascript
+const coldStore = await alice.portfolios.getPortfolio({
+    "portfolioId": new BigNumber(coldStoreId)
+});
+const moveQueue = await coldStore.moveFunds({
+    "items": [
+        {
+            "token": "ACME",
+            "amount": new BigNumber("1000")
+        }
+    ],
+    "to": tradingFolio
+});
+await moveQueue.run();
+```
+
+</MultiCodeBlock>
+
+She did this, not for cosmetic reasons, but because she also intends to give SafeHands custodial rights on this Trading portfolio. And only this one.
+
+<MultiCodeBlock>
+
+```typescript
+const custodyQueue: TransactionQueue<void> = await tradingFolio.setCustodian({
+    "targetIdentity": safeHandsDid
+});
+await custodyQueue.run();
+```
+
+```javascript
+const custodyQueue = await tradingFolio.setCustodian({
+    "targetIdentity": safeHandsDid
+});
+await custodyQueue.run();
+```
+
+</MultiCodeBlock>
+
+She cannot just dump it on SafeHands, though. They have to accept the custodial relationship in return. So let's move to SafeHands computer system and accept it.
+
+<MultiCodeBlock>
+
+```typescript
+const pendingAuthorizations: AuthorizationRequest[] = await safeHands.authorizations.getReceived();
+const custodialAuthorization: AuthorizationRequest = pendingAuthorizations
+    .find((pendingAuthorization: AuthorizationRequest) => {
+        return pendingAuthorization.issuer.did === aliceDid;
+    });
+const acceptQueue: TransactionQueue<void> = await custodialAuthorization.accept();
+await acceptQueue.run();
+```
+
+```javascript
+const pendingAuthorizations = await safeHands.authorizations.getReceived();
+const custodialAuthorization = pendingAuthorizations
+    .find((pendingAuthorization) => {
+        return pendingAuthorization.issuer.did === aliceDid;
+    });
+const acceptQueue = await custodialAuthorization.accept();
+await acceptQueue.run();
+```
+
+</MultiCodeBlock>
+
+At this point, Alice can simply interact with SafeHands on their platform, and direct them to what she wants to achieve. Her broker could also choose to display in her account that she has entrusted them with 1,000 ACME shares, to keep her informed of the status of her account.
+
+## US dollar?
+
+We are going to use an on-chain representation of the US dollar. It can be as conceptually simple as another security token issued by a bank. Let's name our bank DeepPockets, and have them issue the token named DEEPUSD. DeepPockets happens to have a sterling reputation, so Polymesh network participants believe them when they claim that they will honour anyone wishing to redeem its DEEPUSD token against off-chain USD 1 for 1. This setup is convenient as, later on, it will allow the trade to have all its components on chain.
+
+Additionally, Alice is not interested in this DEEPUSD. This is a _detail_ that her broker is going to hide away from her. Instead, SafeHands will own the DEEPUSD on-chain while Alice's account will display that she owns USD. And if she decides to withdraw them, then she would quite naturally provide banking details to SafeHands _as per usual_.
+
+SafeHands will collect all DEEPUSD in its own identity's default portfolio.
+
+## Future compliance issue?
+
+We already know that when Alice eventually sells some ACME shares, the instruction will need for compliance to be satisfied on her side before it gets executed. One cannot predict the future. But SafeHands, mindful of maintaining its reputation with NextDaq still wants to confirm that, were it to happen today, Alice could send her shares.
+
+<MultiCodeBlock>
+
+```typescript
+const acmeToken: SecurityToken = await apiSafeHands.getSecurityToken({
+    "ticker": "ACME"
+});
+const isPossible: TransferStatus = await acmeToken.settlements.canSettle({
+    "amout": new BigNumber("1"),
+    "from": {
+        "did": aliceDid,
+        "id": tradingFolio.id.toString(10)
+    },
+    "to": aliceDid
+});
+assert(isPossible === "Success");
+```
+
+```javascript
+const acmeToken = await apiSafeHands.getSecurityToken({
+    "ticker": "ACME"
+});
+const isPossible = await acmeToken.settlements.canSettle({
+    "amout": new BigNumber("1"),
+    "from": {
+        "did": aliceDid,
+        "id": tradingFolio.id.toString(10)
+    },
+    "to": aliceDid
+});
+assert(isPossible === "Success");
+```
+
+</MultiCodeBlock>
+
+This test will unfortunately also test whether Alice can receive new ACME shares, which is one irrelevant hurdle SafeHands does not care about.
+
+If SafeHands, or any other custodian, have a customer who wants to acquire some ACME shares, they would have to make sure that they satisfy the _receive_ part of the compliance. If you recall, it was defined as:
+
+1. Have a KYC claim. As per the exercise from ACME itself, which is an artefact of keeping the exercise simpler, although it could be from any KYC service provider as per ACME's choice. Let's name it EzKyc. Presumably a provider that is tasked with verifying the customer's jurisdiction so as to meaningfully satisfy the second point.
+2. Not have a claimed jurisdiction of Liechtenstein.
+
+What would it look like if EzKyc were to publish a claim against Bob, with DID of `bobDid`, valid for 1 year, for the purpose of receiving ACME tokens?
+
+<MultiCodeBlock>
+
+```typescript
+const nextYear: Date = new Date();
+nextYear.setFullYear(nextYear.getFullYear() + 1);
+const claimQueue: TransactionQueue<void> = await apiEzKyc.claims.addClaims({
+    "claims": [
+        {
+            "claim": {
+                "type": ClaimType.Jurisdiction,
+                "code": CountryCode.Gb,
+                "scope": {
+                    "type": ScopeType.Ticker,
+                    "value": "ACME"
+                }
+            },
+            "expiry": nextYear,
+            "target": bobDid
+        }
+    ]
+});
+await claimQueue.run();
+```
+
+```javascript
+const nextYear = new Date();
+nextYear.setFullYear(nextYear.getFullYear() + 1);
+const claimQueue = await apiEzKyc.claims.addClaims({
+    "claims": [
+        {
+            "claim": {
+                "type": "Jurisdiction",
+                "code": "Gb",
+                "scope": {
+                    "type": "Ticker",
+                    "value": "ACME"
+                }
+            },
+            "expiry": nextYear,
+            "target": bobDid
+        }
+    ]
+});
+await claimQueue.run();
+```
+
+</MultiCodeBlock>
+
+This action is done by EzKyc, not by SafeHands or any other custodian. Although it is conceivable that said custodians would direct their customers to the actions they need to complete before they can move forward.
+
+## Further processes
+
+Ok, now Alice has set up her portfolio for trading, gave a green light to SafeHands and received one from them. Time to wave our hands about the next off-chain steps that take place:
+
+* Alice informs SafeHands that they should list her shares for 5 USD a piece.
+* SafeHands turn to NextDaq and list them for sale on her behalf. NextDaq return an order id to SafeHands, `aliceOrderId`, for both parties to keep as a reference.
+* There happens to be an interested buying party, Bob, for 200 shares at 5 USD a piece.
+* Bob is represented by his custodian OnTrust, who received the order id `bobOrderId` when they listed his order.
+* Bob has also prepared a trading portfolio.
+* NextDaq match SafeHands and OnTrust for a trade of 200 shares at 5 USD a piece.
+* NextDaq remove Bob's order and dock 200 ACME from Alice's standing order.
+* NextDaq send `aliceOrderId` to SafeHands off-chain, and ask them for the necessary information to include in the instruction. SafeHands answer off-chain with usable information, for instance a JSON like:
+    ```json
+    {
+        "ACME": {
+            "from": {
+                "identity": aliceDid,
+                "id": "tradingFolio.id.toString(10)
+            }
+        },
+        "DEEPUSD": {
+            "to": safeHandsDid
+        }
+    }
+    ```
+    When SafeHands simply send their `safeHandsDid`, it means that the DEEPUSD tokens will be received in SafeHands' default portfolio.
+* NextDaq send `bobOrderId` to OnTrust off-chain, and ask them for the necessary information to include in the instruction. OnTrust answer off-chain with usable information, for instance:
+    ```json
+    {
+        "ACME": {
+            "to": {
+                "identity": bobDid,
+                "id": bobTargetPortfolio.id.toString(10)
+            }
+        },
+        "DEEPUSD": {
+            "from": onTrustDid
+        }
+    }
+    ```
+
+With this information, and after some cross-checking, NextDaq is able to understand that the instruction legs are going to be as follows.
+
+```javascript
+const legs = [
+    {
+        "token": "ACME",
+        "amount": new BigNumber("200"),
+        "from": {
+            // This is the view from SafeHands. What NextDaq see is a string like "0x55678..."
+            "identity": aliceDid,
+            // This is the view from SafeHands. What NextDaq see is a string like "1"
+            "id": "tradingFolio.id.toString(10)
+        },
+        "to": {
+            // This is the view from OnTrust. What NextDaq see is a string like "0x39987..."
+            "identity": bobDid,
+            // This is the view from OnTrust. What NextDaq see is a string like "2"
+            "id": bobTargetPortfolio.id.toString(10)
+        }
+    },
+    {
+        "token": "DEEPUSD",
+        "amount": new BigNumber("1000"),
+        // This is the view from OnTrust. What NextDaq see is a string like "0x11907..."
+        "from": onTrustDid,
+        // This is the view from SafeHands. What NextDaq see is a string like "0x26061..."
+        "to": safeHandsDid
+    }
+];
+```
+
+## NextDaq create the instruction
+
+For the purpose of this exercise we assume that Alice and Bob are not customers of the same broker. If they actually were, it would be simpler as NextDaq could notify SafeHands that they should handle it on their own. SafeHands would just create a portfolio-to-portfolio move transaction and voila. It could even be the case that SafeHands would have identified the match on their own, modified the first standing order, and handled both of them internally even before NextDaq saw the matching order.
+
+Back to Alice and Bob working with **different brokers**. Let's reasonably assume that NextDaq has already created a venue where it sends all trade instructions: `tradeVenue`.
+
+<MultiCodeBlock>
+
+```typescript
+const tradeInstructionQueue: TransactionQueue<Instruction> = await tradeVenue.addInstruction({
+    "legs": legs
+});
+const tradeInstruction: Instruction = await tradeInstructionQueue.run();
+const tradeInstructionId: string = tradeInstruction.id.toString(10);
+```
+
+```javascript
+const tradeInstructionQueue = await tradeVenue.addInstruction({
+    "legs": legs
+});
+const tradeInstruction = await tradeInstructionQueue.run();
+const tradeInstructionId = tradeInstruction.id.toString(10);
+```
+
+</MultiCodeBlock>
+
+Now NextDaq can turn back to SafeHands with what they need to accept:
+
+```json
+{
+    "orderId": aliceOrderId,
+    "tradeId": tradeInstructionId
+}
+```
+
+And similarly to OnTrust with:
+
+```json
+{
+    "orderId": bobOrderId,
+    "tradeId": tradeInstructionId
+}
+```
+
+The instruction is out, the brokers have been informed. The onus is now on the brokers / custodians to affirm it. Additionally, NextDaq, with a view to monitoring the reliability of their brokers on the trading platform, stores `tradeInstructionId` so that it can later confirm that it has been executed.
+
+## The custodians approve
+
+Let's look at what it would look like from SafeHands point of view. Because Alice is not their only client, they would likely see a lot of activity, so, although they have a certain level of trust about `tradeVenue`, they need to make sure that there is no spam or fraud going on. They have already instantiated `tradeVenue` with `apiSafeHands`, as a matter of course.
+
+<MultiCodeBlock>
+
+```typescript
+const pendingInstructions: Instruction[] = await tradeVenue.getPendingInstructions();
+const aliceInstruction: Instruction = pendingInstructions.find((instruction: Instruction) => {
+    return instruction.id.isEqualTo(new BigNumber(tradeInstructionId));
+});
+```
+
+```javascript
+const pendingInstructions = await tradeVenue.getPendingInstructions();
+const aliceInstruction = pendingInstructions.find((instruction: Instruction) => {
+    return instruction.id.isEqualTo(new BigNumber(tradeInstructionId));
+});
+```
+
+</MultiCodeBlock>
+
+Let's wave our hands at how SafeHands has an internal system, `getPlacedOrder()` that keeps track of the orders they opened with NextDaq. They have this so they can cross-check when faced with a pending instruction.
+
+<MultiCodeBlock>
+
+```typescript
+const aliceOrder: SafeOrder = getPlacedOrder(aliceOrderId);
+```
+
+```javascript
+const aliceOrder = getPlacedOrder(aliceOrderId);
+```
+
+</MultiCodeBlock>
+
+It returns previously-known information about `aliceOrderId` in the shape of:
+
+```json
+{
+    "token": "ACME",
+    "amount": new BigNumber("1000"),
+    "from": {
+        "identity": aliceDid,
+        "id": "tradingFolio.id
+    },
+    "to": {
+        "identity": safeHandsDid,
+        "id": null
+    },
+    "price": {
+        "token": "DEEPUSD",
+        "amount": new BigNumber("5")
+    }
+}
+```
+
+Now, SafeHands need to live up to their name and only affirm the instruction if it is one they recognise. Polymesh, at the API level, allows one to affirm a single leg for a single portfolio. However the SDK finds the relevant legs and portfolios for you, and in turn adds all the necessary affirmations in the transaction queue. The flip side of this convenience is that SafeHands therefore has to make sure nothing untoward was slipped in.
+
+<MultiCodeBlock>
+
+```typescript
+const legs: ResultSet<Leg> = await aliceInstruction.getLegs();
+
+// Is the instruction's shape as expected?
+assert(legs.count === 2);
+
+const aliceLegs: Leg[] = legs.data.filter((leg: Leg) => {
+    return leg.from.did === aliceOrder.from.identity &&
+        leg.from.id.isEqualTo(aliceOrder.from.id) &&
+        leg.token.ticker === aliceOrder.token &&
+        leg.amount.isLessThanOrEqualTo(aliceOrder.amount);
+});
+// Is it even about Alice's shares?
+assert(aliceLegs.length === 1);
+const soldAmount: BigNumber = aliceLegs[0].amount;
+const expectedUsd: BigNumber = soldAmount.multipliedBy(aliceOrder.price.amount);
+
+const paymentLegs: Leg[] = legs.data.filter((leg: Leg) => {
+    return leg.to.did === aliceOrder.to.identity &&
+        leg.to.id.isEqualTo(aliceOrder.to.id) &&
+        leg.token.ticker === aliceOrder.price.token &&
+        leg.amount.isEqualTo(expectedUsd);
+});
+// Are we getting paid in our default portfolio?
+assert(payment.length === 1);
+
+const paymentLeg: Leg = paymentLegs[0];
+const payerFolio: Portfolio = new Portfolio({
+    "did": paymentLeg.from.did,
+    "id": paymentLeg.from.id
+});
+const payerCustodian: Identity = await payerFolio.getCustodian();
+// Is someone trying to pay us with our own money?
+// Or with money from one of our clients?
+if (paymentLeg.from.did === safeHandsDid || payerCustodian.did === safeHandsDid) {
+    const rejectQueue: TransactionQueue<Instruction> = await aliceInstruction.reject();
+    await rejectQueue.run();
+    // TODO keep a trace of this attempted fraud in a reputation system.
+} else {
+    const acceptQueue: TransactionQueue<Instruction> = await aliceInstruction.affirm();
+    await acceptQueue.run();
+}
+```
+
+```javascript
+const legs = await aliceInstruction.getLegs();
+
+// Is the instruction's shape as expected?
+assert(legs.count === 2);
+
+const aliceLegs = legs.data.filter((leg) => {
+    return leg.from.did === aliceOrder.from.identity &&
+        leg.from.id.isEqualTo(aliceOrder.from.id) &&
+        leg.token.ticker === aliceOrder.token &&
+        leg.amount.isLessThanOrEqualTo(aliceOrder.amount);
+});
+// Is it even about Alice's shares?
+assert(aliceLegs.length === 1);
+const soldAmount = aliceLegs[0].amount;
+const expectedUsd = soldAmount.multipliedBy(aliceOrder.price.amount);
+
+const paymentLegs = legs.data.filter((leg) => {
+    return leg.to.did === aliceOrder.to.identity &&
+        leg.to.id.isEqualTo(aliceOrder.to.id) &&
+        leg.token.ticker === aliceOrder.price.token &&
+        leg.amount.isEqualTo(expectedUsd);
+});
+// Are we getting paid in our default portfolio?
+assert(payment.length === 1);
+
+const paymentLeg = paymentLegs[0];
+const payerFolio = new Portfolio({
+    "did": paymentLeg.from.did,
+    "id": paymentLeg.from.id
+});
+const payerCustodian = await payerFolio.getCustodian();
+// Is someone trying to pay us with our own money?
+// Or with money from one of our clients?
+if (paymentLeg.from.did === safeHandsDid || payerCustodian.did === safeHandsDid) {
+    const rejectQueue = await aliceInstruction.reject();
+    await rejectQueue.run();
+    // TODO keep a trace of this attempted fraud in a reputation system.
+} else {
+    const acceptQueue = await aliceInstruction.affirm();
+    await acceptQueue.run();
+}
+```
+
+</MultiCodeBlock>
+
+As you have noticed, the code above acts suspicious about the instruction it is asked to affirm. In particular it does not allow the ACME buyer to be in a custodial relationship with SafeHands. This is justified in our example by the presumption that an internal trade match would be handled internally. On the other hand, if you want to handle such cases coming from the exchange, then you would need to relax this specific requirement.
+
+In parallel to SafeHands, OnTrust has to do the same. And provided KYC considerations are satisfied, the trade goes through. So we are done with the trade. But are we done with the exercise?
+
+## The exchange verifies
+
+NextDaq trust the brokers to do the deed, but they also verify **at the end of the day** that the brokers actually did it. NextDaq run a business partly based on the reputation that trades matched on their platform get eventually settled. Let see what they can do about it.
+
+They will collect affirmations on instructions they created. When they collect the affirmations, they always get all of them. Indeed, affirmations start their lifecycle as pending, and their status changes depending on the relevant identity's actions.
+
+<MultiCodeBlock>
+
+```typescript
+const pendingInstructions: Instruction[] = await tradeVenue.getPendingInstructions();
+const earlierInstruction: Instruction = pendingInstructions.find((instruction: Instruction) => {
+    return instruction.id.isEqualTo(new BigNumber(tradeInstructionId));
+});
+if (typeof earlierInstruction === "undefined") {
+    return; // All good
+}
+
+const affirmations: ResultSet‹InstructionAffirmation› = await earlierInstruction.getAffirmations();
+const safeHandsAffirmation: InstructionAffirmation = affirmations.data.find((affirmation: InstructionAffirmation) => {
+    return affirmation.identity.did === safeHandsDid;
+});
+const onTrustAffirmation: InstructionAffirmation = affirmations.data.find((affirmation: InstructionAffirmation) => {
+    return affirmation.identity.did === onTrustDid;
+});
+if (safeHandsAffirmation.status === "Pending") {
+    // Count 1 strike for SafeHands.
+} else if (safeHandsAffirmation.status === "Rejected") {
+    // Mmh, what could this mean?
+} else if (safeHandsAffirmation.status === "Unknown") {
+    // Status is unknown. What to do?
+}
+
+if (onTrustAffirmation.status === "Pending") {
+    // Count 1 strike for OnTrust.
+} else if (onTrustAffirmation.status === "Rejected") {
+    // Mmh, what could this mean?
+} else if (onTrustAffirmation.status === "Unknown") {
+    // Status is unknown. What to do?
+}
+
+if (safeHandsAffirmation.status === "Affirmed" && onTrustAffirmation.status === "Affirmed") {
+    // Do we have a situation with compliance?
+}
+```
+
+```javascript
+const pendingInstructions = await tradeVenue.getPendingInstructions();
+const earlierInstruction = pendingInstructions.find((instruction: Instruction) => {
+    return instruction.id.isEqualTo(new BigNumber(tradeInstructionId));
+});
+if (typeof earlierInstruction === "undefined") {
+    return; // All good
+}
+
+const affirmations = await earlierInstruction.getAffirmations();
+const safeHandsAffirmation = affirmations.data.find((affirmation: InstructionAffirmation) => {
+    return affirmation.identity.did === safeHandsDid;
+});
+const onTrustAffirmation = affirmations.data.find((affirmation: InstructionAffirmation) => {
+    return affirmation.identity.did === onTrustDid;
+});
+if (safeHandsAffirmation.status === "Pending") {
+    // Count 1 strike for SafeHands.
+} else if (safeHandsAffirmation.status === "Rejected") {
+    // Mmh, what could this mean?
+} else if (safeHandsAffirmation.status === "Unknown") {
+    // Status is unknown. What to do?
+}
+
+if (onTrustAffirmation.status === "Pending") {
+    // Count 1 strike for OnTrust.
+} else if (onTrustAffirmation.status === "Rejected") {
+    // Mmh, what could this mean?
+} else if (onTrustAffirmation.status === "Unknown") {
+    // Status is unknown. What to do?
+}
+
+if (safeHandsAffirmation.status === "Affirmed" && onTrustAffirmation.status === "Affirmed") {
+    // Do we have a situation with compliance?
+}
+```
+
+</MultiCodeBlock>
+
+## Custodian's risk
+
+Let's look back at the relationship between Alice and SafeHands. She puts her shares meant for trading in her _trading_ portfolio, with SafeHands as the custodian. This means that both Alice and SafeHands can move these shares out of the portfolio to anywhere else. We presume that Alice and SafeHands have entered into a legal constract where they agreed not to pull the rug on each other. In particular, that Alice would not move a single one of her 1,000 shares, while all 1,000 of them are listed on an exchange under the name of SafeHands. Otherwise that would expose SafeHands to a reputation risk, if it were not able to settle an agreed trade.
+
+On top of trusting Alice via a legal agreement, SafeHands can also verify, and monitor the transactions on the blockchain. If they simply look at the current balance after it has been done to adjust accordingly, it is about:
+
+<MultiCodeBlock>
+
+```typescript
+const alice: Identity = apiSafeHands.getIdentity(aliceDid);
+const tradingFolio: NumberedPortfolio = await alice.portfolios.getPortfolio({
+    "portfolioId": tradingFolio.id
+});
+const acmeTokenBalances: PortfolioBalance[] = await tradingFolio.getTokenBalances({
+    "tokens": [ "ACME" ]
+});
+const acmeTokenBalance: PortfolioBalance = acmeTokenBalances[0];
+
+if (acmeTokenBalance.total.isLessThan(new BigNumber("1000"))) {
+    // TODO update the order on NextDaq accordingly.
+}
+```
+
+```javascript
+const alice = apiSafeHands.getIdentity(aliceDid);
+const tradingFolio = await alice.portfolios.getPortfolio({
+    "portfolioId": tradingFolio.id
+});
+const acmeTokenBalances = await tradingFolio.getTokenBalances({
+    "tokens": [ "ACME" ]
+});
+const acmeTokenBalance = acmeTokenBalances[0];
+
+if (acmeTokenBalance.total.isLessThan(new BigNumber("1000"))) {
+    // TODO update the order on NextDaq accordingly.
+}
+```
+
+</MultiCodeBlock>
+
+On the other hand, if they want to preemptively change the order on NextDaq as soon as a conflicting pending instruction pops up, they have to go differently. There is an added difficulty around the fact that `.getLegs` is an `async` function, but `.filter` does not take `async` predicates. So we use an array of promises that yields an array of array, which can be flattened.
+
+<MultiCodeBlock>
+
+```typescript
+const pendingInstructions: Instruction[] = await alice.getPendingInstructions();
+const fromTradingPromises: Promise<Leg[]>[] = pendingInstructions.map(async(instruction: Instruction) => {
+    const legs: ResultSet<Leg> = await instruction.getLegs();
+    const outLegs: Leg[] = legs.data.filter((leg: Leg) => {
+        return leg.from.owner.did === aliceDid &&
+            typeof leg.from.id !== "undefined" &&
+            leg.from.id.isEqualTo(tradingFolio.id);
+    });
+    return outLegs;
+});
+const outLegs: Leg[] = (await Promise.all(fromTradingPromises)).flat();
+const outAmount: BigNumber = outLegs.reduce(
+    (amount: BigNumber, leg: Leg) => {
+        return amount.plus(leg.amount);
+    },
+    new BigNumber("0"));
+if (outAmount.isGreaterThan(new BigNumber("0"))) {
+    // TODO update the order on NextDaq accordingly.
+}
+```
+
+```javascript
+const pendingInstructions = await alice.getPendingInstructions();
+const fromTradingPromises = pendingInstructions.map(async(instruction) => {
+    const legs = await instruction.getLegs();
+    const outLegs = legs.data.filter((leg) => {
+        return leg.from.owner.did === aliceDid &&
+            typeof leg.from.id !== "undefined" &&
+            leg.from.id.isEqualTo(tradingFolio.id);
+    });
+    return outLegs;
+});
+const outLegs = (await Promise.all(fromTradingPromises)).flat();
+const outAmount = outLegs.reduce(
+    (amount, leg) => {
+        return amount.plus(leg.amount);
+    },
+    new BigNumber("0"));
+if (outAmount.isGreaterThan(new BigNumber("0"))) {
+    // TODO update the order on NextDaq accordingly.
+}
+```
+
+</MultiCodeBlock>
+
+At this point, depending on the relationship, SafeHands, can decide to update or pull the sell order on the exchange to reflect the future amount. They could also deem the isntruction fraudulent and reject it.
+
+## Conclusion
+
+We have seen how custodians, beneficiaries and an exchange can interact and transact while checking their steps along the way.

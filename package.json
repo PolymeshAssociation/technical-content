@@ -7,7 +7,7 @@
     "gatsby"
   ],
   "scripts": {
-    "develop": "gatsby develop",
+    "develop": "gatsby develop --host 0.0.0.0",
     "start": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
@@ -21,8 +21,15 @@
     "@fontsource/ibm-plex-mono": "~4.1.0",
     "@fontsource/inter": "~4.1.0",
     "gatsby": "2.31",
+    "gatsby-plugin-mdx": "^1.10.0",
+    "gatsby-plugin-sharp": "^2.14.1",
+    "gatsby-remark-embed-video": "^3.0.12",
+    "gatsby-remark-images": "^3.11.0",
+    "gatsby-remark-images-medium-zoom": "^1.7.0",
+    "gatsby-remark-katex": "^3.10.0",
     "gatsby-theme-apollo-docs": "4.5.12",
     "gatsby-transformer-remark": "~2.15.0",
+    "katex": "^0.12.0",
     "puppeteer": "^5.5.0",
     "react": "16.14.0",
     "react-dom": "16.14.0"
