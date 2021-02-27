@@ -12,13 +12,13 @@ The ACME token has been trading for a while, and the company has had a very good
 
 ## Permission
 
-Corporate actions can be initiated by the token owner itself, or by an appointed corporate action agent, or CAA. Only the token owner can appoint the CAA. Doing so allows ACME to outsource the implementation of their corporate actions if they want to. By default, ACME, the token owner is a corporate actions agent for the ACME equity tokens and therefore has permission to execute corporate actions. 
+Corporate actions can be initiated by the token owner itself, or by an appointed corporate action agent, or CAA. Only the token owner can appoint the CAA. Doing so allows ACME to outsource the implementation of their corporate actions if they want to. By default, ACME, the token owner is a corporate actions agent for the ACME equity tokens and therefore has permission to execute corporate actions.
 
 ## On-Chain execution
 
-An on-chain distribution requires an on-chain asset. We can envisage a future in which a well-established token created by another party maintains a strong peg to the US dollar, has cleared regulatory hurdles and is widely used as a proxy for US dollars. ACME would require sufficient units of that asset in order to fund the distribution for the simple reason that one cannot spend funds that one doesn't have. Those funds would be allocated to the distribution so that it can proceed in an automated fashion. 
+An on-chain distribution requires an on-chain asset. We can envisage a future in which a well-established token created by another party maintains a strong peg to the US dollar, has cleared regulatory hurdles and is widely used as a proxy for US dollars. ACME would require sufficient units of that asset in order to fund the distribution for the simple reason that one cannot spend funds that one doesn't have. Those funds would be allocated to the distribution so that it can proceed in an automated fashion.
 
-For the purpose of this exercise we will set some legitimate concerns aside to create a simple example. ACME (or Alice, the CEO) will create a pegged stable token called DEEPUSD and issue 5,000 of them to ACME's default portfolio. We will not dwell on regulatory concerns or the mechanism that maintains the peg. Instead, let us simply say that there is a credible redemption process, ample collateral and the market prices these tokens with no discount - the market agrees they are equivalent to US $1. 
+For the purpose of this exercise we will set some legitimate concerns aside to create a simple example. ACME (or Alice, the CEO) will create a pegged stable token called DEEPUSD and issue 5,000 of them to ACME's default portfolio. We will not dwell on regulatory concerns or the mechanism that maintains the peg. Instead, let us simply say that there is a credible redemption process, ample collateral and the market prices these tokens with no discount - the market agrees they are equivalent to US $1.
 
 - Return to the token studio as ACME.
 - Create DEEPUSD.
@@ -31,24 +31,24 @@ For the purpose of this exercise we will set some legitimate concerns aside to c
 
 > Each shareholder will be entitled to receive a portion of the dividend in proportion to the number of shares they own.
 
-This deceptively simple statement hides the fact that holdings change over time. A decision has to be made as to what point in time is the relevant one. A checkpoint snapshots user balances at a point in time so they can be used to calculate benefits and voting power in corporate actions. 
+This deceptively simple statement hides the fact that holdings change over time. A decision has to be made as to what point in time is the relevant one. A checkpoint snapshots user balances at a point in time so they can be used to calculate benefits and voting power in corporate actions.
 
-As ACME, proceed to the Polymesh Substrate App: https://app.polymesh.live 
+As ACME, proceed to the Polymesh Substrate App: https://app.polymesh.live
 
-1. In `Developer`, `Extrinsics`, select the `checkpoint` group, and `createCheckpoint(ticker)` on the right. 
-2. Enter "ACME" in the ticker field. You get a checkpoint id that you will reuse. 
+1. In `Developer`, `Extrinsics`, select the `checkpoint` group, and `createCheckpoint(ticker)` on the right.
+2. Enter "ACME" in the ticker field. You get a checkpoint id that you will reuse.
 
 In practice, the checkpoint may have been made earlier as the first decision of the board, before they even decided the dividend distribution, the idea being to avoid opportunistic price moves, and / or insider trading.
 
 ## Set up the action
 
-In practice, ACME would appoint someone with authority, possibly the CFO and possibly a service provider to actual administrate execution of their capital distribution. 
+In practice, ACME would appoint someone with authority, possibly the CFO and possibly a service provider to actual administrate execution of their capital distribution.
 
 Using an account with authority, for instance the CFO secondary key. In `Extrinsics`, select the `corporateAction` group, and `initiateCorporateAction(...)` on the right. Then complete the fields as follows:
 
 * ticker: "ACME" (Your symbol)
 * kind: "UnpredictableBenefit"
-* decl_date: Put a date now or a few minutes in the past but after the checkpoint. This is Unix time which are seconds past a certain time in the past. Tools like this https://www.epochconverter.com/ can help convert. You need to specify the time in milliseconds, so apend 000 because each second is 1,000 milliseconds. 
+* decl_date: Put a date now or a few minutes in the past but after the checkpoint. This is Unix time which are seconds past a certain time in the past. Tools like this https://www.epochconverter.com/ can help convert. You need to specify the time in milliseconds, so apend 000 because each second is 1,000 milliseconds.
 * record_date: click for option, choose Existing <!-- try for creating a new one on the fly -->
     * Existing: CheckpointId: enter the id created earlier.
 * details: quarter dividends
@@ -63,7 +63,7 @@ And `Submit transaction`. Note the id of the Corporate Action. <!-- how? -->
 
 ## Prepare the dividend
 
-This is a separate action from the record of the decision. In essence, we are providing the funding to support execution of the decision. 
+This is a separate action from the record of the decision. In essence, we are providing the funding to support execution of the decision.
 
 Go to `Extrinsics`, `capitalDistribution`, `distribute(ca_id...)`.
 
@@ -73,17 +73,17 @@ Go to `Extrinsics`, `capitalDistribution`, `distribute(ca_id...)`.
 * portfolio: leave empty
 * currency: DEEPUSD
 * balance: 5,000. It says POLYX at the right, but it is just an artefact of the "Balance" type that always thinks it is POLYX.
-* payment_at: make it a minute in the future, so that it is after the corporate action. This is also in milliseconds. 
+* payment_at: make it a minute in the future, so that it is after the corporate action. This is also in milliseconds.
 
 ## Funds locked
 
-The funds in ACME's portfolio are now locked. As ACME, return to the dashboard, `Portfolios` tab to see that the funds are locked. This is reversible, within limits. In a slightly more sophisticated (and realistic) scenario, ACME would include an expiry date in the `capitalDistribution`, afterwhich they would be able repatriate unclaimed dividends. This is useful in the case that shareholder is unable to claim their dividends in the next step (extenuating circumstances such as losing their wallet keys) as it provides an avenue for eventual resolution. 
+The funds in ACME's portfolio are now locked. As ACME, return to the dashboard, `Portfolios` tab to see that the funds are locked. This is reversible, within limits. In a slightly more sophisticated (and realistic) scenario, ACME would include an expiry date in the `capitalDistribution`, afterwhich they would be able repatriate unclaimed dividends. This is useful in the case that a shareholder is unable to claim their dividends in the next step (extenuating circumstances such as losing their wallet keys) as it provides an avenue for eventual resolution. 
 
 You can see that in ACME's portfolio there are 5k locked DEEPUSD in default portfolio.
 
 ## Beneficiary claims
 
-Now, Alice will receive her dividend. This uses a "pull" pattern rather than "push". Alice will draw from the capital distribution. 
+Now, Alice will receive her dividend. This uses a "pull" pattern rather than "push". Alice will draw from the capital distribution.
 
 As Alice, navigate to `Developer`, `Extrinsics`, `capitalDistribution`, `claim(ca_id)`.
 
@@ -91,21 +91,21 @@ As Alice, navigate to `Developer`, `Extrinsics`, `capitalDistribution`, `claim(c
     * ticker: "ACME" (Your symbol)
     * local_id: the capital distribution ID you saved earlier
 
-Astute readers will note that is an asset transfer. Therefore, it does not occur without Alice's consent. Also, any compliance rules attached to DEEPUSD apply. We did not define any compliance rules for DEEPUSD and Alice's consent is implied since she is explicitly requesting the dividend. 
+Astute readers will note that is an asset transfer. Therefore, it does not occur without Alice's consent. Also, any compliance rules attached to DEEPUSD apply. We did not define any compliance rules for DEEPUSD and Alice's consent is implied since she is explicitly requesting the dividend.
 
-There are no other possible obstacles so we expect Alice's dividend in her portfolio. We also expect that the funds have indeed left ACME's portfolio. 
+There are no other possible obstacles so we expect Alice's dividend in her portfolio. We also expect that the funds have indeed left ACME's portfolio.
 
 ## Confirm the transfer
 
-As ACME, navigate to the `Dashboard`, `Portfolio` tab and see that ____* locked DEEPUSD remain. As Alice, see that ____ DEEPUSD have arrived. 
+As ACME, navigate to the `Dashboard`, `Portfolio` tab and see that ____* locked DEEPUSD remain. As Alice, see that ____ DEEPUSD have arrived.
 
-Of course, you can also use the Polymesh Substrate App to discover this information through the SDK methods. 
+Of course, you can also use the Polymesh Substrate App to discover this information through the SDK methods.
 
 Navigate to `Developer`, `Chain State`, `portfolio`, `portfolioLockedAssets()` and provide ACME's DID.
 
 You can see that in ACME's portfolio there are ______ locked DEEPUSD in default portfolio
 
-Navigate to `portfolio`, `portfolioAssetBalances` and provide Alice's DID. 
+Navigate to `portfolio`, `portfolioAssetBalances` and provide Alice's DID.
 
 There are ____ unlocked USD. That's if she sent 200 shares to Bob if I am correct.
 
@@ -117,13 +117,12 @@ Alice's actual dividend amount depends on her balance at the time. Your amount m
 
 ## Summary
 
-Polymesh supports on-chain execution of corporate actions that address such concerns as capital distributions and voting. The flexible permission system accomodates outsourcing the execution of corporate actions to service providers, if desired. Corporate actions can be integrated into internal systems as will be unfolded in the following section, but they can also be executed in a no-code manner. Compliance rules apply to capital distributions. 
+Polymesh supports on-chain execution of corporate actions that address such concerns as capital distributions and voting. The flexible permission system accomodates outsourcing the execution of corporate actions to service providers, if desired. Corporate actions can be integrated into internal systems as will be unfolded in the following section, but they can also be executed in a no-code manner. Compliance rules apply to capital distributions.
 
 ## Links
 
 * Polymesh Substrate App https://app.polymesh.live
 * Dashboard https://dashboard.polymesh.live
-* Checkpoints: https://github.com/PolymathNetwork/polymesh_docs/blob/master/Polymesh/docs/assets.md#checkpoints 
-* Corporate Actions: https://developers.polymesh.live/corporate_actions/ 
-* Corporate action pallet distribution: https://docs.polymesh.live/pallet_corporate_actions/distribution/index.html 
-
+* Checkpoints: https://github.com/PolymathNetwork/polymesh_docs/blob/master/Polymesh/docs/assets.md#checkpoints
+* Corporate Actions: https://developers.polymesh.live/corporate_actions/
+* Corporate action pallet distribution: https://docs.polymesh.live/pallet_corporate_actions/distribution/index.html
