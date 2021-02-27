@@ -4,9 +4,11 @@ description: Originating Assets with Polymesh
 slug: /originate/originate-introduction
 ---
 
+import HighlightBox from "../../src/components/HighlightBox"
+
 Polymesh makes it exceptionally simple to originate a regulated security. There is more than one way to execute the process and your implementation decisions will usually be based on scale.
 
-For example, a business may only occasionally issue new securities in which case the intuitive manual approach will be sufficient. Service providers who routinely issue securities for their clients may wish to eliminate repetition. In this case, create an integration with internal systems and automate the process. The Token Foundry found in the Polymesh dashboard is an example of an integration created with the SDK.
+For example, a business may only occasionally issue new securities, in which case the intuitive manual approach will be sufficient. Service providers who routinely issue securities for their clients may wish to eliminate repetition. In this case, create an integration with internal systems and automate the process. The Token Foundry found in the Polymesh dashboard is an example of an integration created with the SDK.
 
 Before we dive in, let us explore the overal asset representation and the origination process.
 
@@ -38,11 +40,11 @@ Additional **external identifiers** can be used on Polymesh next to the ticker. 
 **Ownership** of an asset is determined through:
 
 * the total supply of tokens representing ownership in an asset, and
-* the individual investor balances of each identity invested in an asset.
+* the individual investor balances of each account invested in an asset.
 
 ## Asset origination
 
-The **issuer** of an asset is the identity that registered the ticker for the asset and created it. Ownership of an asset can be transfered to another identity through a ```TransferAsset``` authorisation. Once the target identity accepts the transfer, ownership changes.
+The **issuer** of an asset is the account that registered the ticker for the asset and created it. Ownership of an asset can be transfered to another account through a ```TransferAsset``` authorisation. Once the target account accepts the transfer, ownership changes.
 
 The asset issuer holds the permissions to:
 
@@ -50,17 +52,17 @@ The asset issuer holds the permissions to:
 * freeze and unfreeze asset transfers,
 * permission venues to conduct asset settlement,
 * add and remove compliance rules, and
-* conduct a forced transfers of ownership from any investor bacl to the primary issuance agent of the asset.
+* conduct a forced transfers of ownership from any investor back to the primary issuance agent of the asset.
 
 <HighlightBox type="info">
 
-The issuance agent is an idenitity responsible for treasury management and token distribution. The agent is elected by the asset issuer.
+The issuance agent is an account responsible for treasury management and token distribution. The agent is elected by the asset issuer.
 
 </HighlightBox>
 
 As mentioned before, asset origination requires a registered ticker. If a ticker isn't reserved, the registration is done automatically when an asset is created/originated by a user.
 
-To originate an asset not only a ticker is necessary but furthermore, the type of asset (equity, bond, fund) has to be specified. Every asset is initially created with zero total supply.
+To originate an asset, not only is a ticker necessary but, furthermore, the type of asset (equity, bond, fund) has to be specified. Every asset is initially created with zero total supply.
 
 **Associated documents** can be added to assets by the asset's issuer, which is also the only one that can update or modify the documentation. Hereby, the document is not stored on-chain. The reference for the associated document is stored on-chain to establish a link to the document off-chain. The reference includes:
 
@@ -68,13 +70,13 @@ To originate an asset not only a ticker is necessary but furthermore, the type o
 * URL, which for privacy and confidentiality reasons can be a permissioned URL with credentials for access,
 * document type (optional),
 * filing date, and
-* hash of the docuemnts content.
+* hash of the document's content.
 
-Compliance is established at the identity-level. Thus, receiving or paying with tokens requires that all involved identities must have claims matching the compliance rules for the asset. Those claims must be attested to by the asset's KYC Service Provider. The compliance rules are specified by the asset issuer. Asset compliance is, therefore, flexible within a standardised structure and enforced on-chain.
+Compliance is established at the account-level. Thus, receiving or paying with tokens requires that all involved accounts must have claims matching the compliance rules for the asset. Those claims must be attested to by the asset's appointed KYC service provider. The compliance rules are specified by the asset issuer. Asset compliance is, therefore, flexible within a standardised structure and enforced on-chain.
 
-Identities play a large role in asset origination, as every asset is **associated with two identities and one unique ticker**. The **asset issuer's and primary issuance agent's identity** are both linked to the asset. The identity that created the asset and the one responsible for distribution are linked to the asset. Both roles can be fulfilled by the same identity, and the asset issuer can change the primary issuance agent.
+Accounts play a large role in asset origination, as every asset is **associated with two accounts and one unique ticker**. The **asset issuer's and primary issuance agent's accounts** are both linked to the asset. The account that created the asset and the one responsible for distribution are linked to the asset. Both roles can be fulfilled by the same account, and the asset issuer can change the primary issuance agent.
 
-It is also possible for the asset issuer to opt for a primary issuance agent for the asset with a different identity. The new identity holder has to accept this role before the change can be effectuated.
+It is also possible for the asset issuer to opt for a primary issuance agent for the asset with a different account. The new account holder has to accept this role before the change can be effected.
 
 <HighlightBox type="info">
 
