@@ -70,6 +70,26 @@ As long as the distribution hasn't reached its payment date, ```remove_distribut
 
 ## KYC Process
 
+## Asset checkpoints - Permanent records
+
+During the life of a token, some actions require knowledge of the asset distribution. _Who owns how much?_ Examples include capital distribution and corporate ballots. Moreover this knowledge typically needs to be collected for a specific point in time, and available now and later. _Who owned how much on January 1st, 2021?_
+
+To achieve this, Polymesh implements a classic **lazy-checkpointing** mechanism. In effect, upon creation, the checkpoint only records:
+
+* the date at which it was issued
+* the total supply at the block height it was issued
+
+Note how "_who owns how much_" is missing from the record at creation. Since there is no limit to the number of investors, there would be no limit to the number of copy operations. Instead, to find out "_how much did Alice own?_", the system first looks into the checkpoint records for a value, and if missing that, picks Alice's balance now.
+
+To make it possible, Polymesh keeps an eye out and will record in the checkpoint the previous balances of parties before any transfer between said parties. Or any other action that changes balances for that matter.
+
+For the avoidance of doubt, if there are no transactions after the checkpoint's creation, then it will not record any held balance as, indeed, the current blockchain data is the same as the desired data at the checkpoint.
+
+One can create a checkpoint in 2 ways:
+
+* Create it immediately
+* Schedule future creation(s) at intervals
+
 ## Links
 
 * Corporate action - Capital distribution: https://developers.polymesh.live/corporate_actions/

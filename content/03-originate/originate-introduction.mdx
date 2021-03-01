@@ -8,112 +8,80 @@ import HighlightBox from "../../src/components/HighlightBox"
 
 Polymesh makes it exceptionally simple to originate a regulated security. There is more than one way to execute the process and your implementation decisions will usually be based on scale.
 
-For example, a business may only occasionally issue new securities, in which case the intuitive manual approach will be sufficient. Service providers who routinely issue securities for their clients may wish to eliminate repetition. In this case, create an integration with internal systems and automate the process. The Token Foundry found in the Polymesh dashboard is an example of an integration created with the SDK.
+For example, a business may only occasionally issue new securities, in which case the intuitive manual approach will be sufficient. Service providers who routinely issue securities for their clients may wish to eliminate repetition. In this case, create an integration with internal systems and automate the process. The Token Studio found in the Polymesh dashboard is an example of an integration created with the SDK.
 
-Before we dive in, let us explore the overal asset representation and the origination process.
+Before we go through a simple practical exercise, let us explore the overal asset representation and the origination process.
 
 ![security tokens](images/security_tokens.png)
 
 ## Security Token Design
 
-Any digitally-represented asset can be originated and managed through the asset base layer logic in Polymesh.
+### The token type
 
-Managing the full lifecycle of an asset on Polymesh includes:
+The type of a security token asset is represented on Polymesh by its **ticker** registration. This is a 12 character-long, and unique, identifier.  If the name reminds you of a ticker as found on a stockmarket, this is intentional. It is expected that certain names are more valuable than others, in the same way that `.com` domains are. Therefore, Polymesh implements an optional reservation mechanism, whereby one can reserve a ticker name for 6 months, as of the time of writing. At any time during these 6 months, the owner of this ticker reservation can cancel the reservation or create the token proper, i.e. **originate** it.
 
-* issuance of digital securities,
-* initial distribution of assets,
-* exchange of assets, and
-* corporate actions related to the asset (dividend payments, capital distributions, corporate ballots).
+At origination, there are some considerations available, among others:
 
-All these can be performed directly on the blockchain.
+* the asset type,
+* attached **documentation** and other metadata,
+* extra compliance requirements of eventual asset owners,
+* or even whether the represented **asset** can be sub-divided, or not, think one company share.
 
-### What type of assets can be issued?
+For added flexibility and cross-referencing, a token can also be identified by external identifiers such are ISINs, CUSIPs, CINs, LEIs, and DTIs, on top of its ticker.
 
-Assets issued on Polymesh can be either divisible or indivisible.
+### The token lifecycle
 
-All assets are differentiated by a **ticker registration**. The ticker is a 12 character identifier. Tickers can be registered by any user and the registration remains valid until their expiry date, currently six months after the initial registration. This usually occurs when asset origination is finalised. Once a ticker is registered and as long as the registration remains valid, no other user can issue an asset with that specific ticker. Additionally, transferring ticker registration to other identities is possible.
+The token reservation and origination are not the only available operations for security tokens. Here is a non-exhaustive list of other operations in the token's lifecycle:
 
-Additional **external identifiers** can be used on Polymesh next to the ticker. Example of such are ISINs, CUSIPs, CINs, LEIs, and DTIs. Polymesh validates the consistency of the external identifiers, i.e. control if the checksum match.
+* Update the token information
+* Token ownership transfer
+* Issuance of assets
+* Initial distribution of assets
+* Exchange of assets
+* Corporate actions related to the asset such as dividend payments, capital distributions, corporate ballots
 
-### Who does the asset belong to?
+All these can be managed through the asset base layer logic in Polymesh. Of note is that the documentation content, although referenced on the blockchain, by link or by content hash, is not actually stored on-chain.
 
-**Ownership** of an asset is determined through:
+### The token ownership
 
-* the total supply of tokens representing ownership in an asset, and
-* the individual investor balances of each account invested in an asset.
+The token is typically owned by its originator. Or by the account to which the ownership was transferred. Eventually, it is expected that such a consequential task, ownership of the token, will be held by a multi-signature account, which would be called upon for rare and important tasks, typically to delegate to other roles. Polymesh was built with such a vision in mind. See below for the first example, that of the primary issuance agent. A multi-signature account could, for instance, be the expression of a quorum of the board of directors of a company.
 
-## Asset origination
+## The underlying asset
 
-The **issuer** of an asset is the account that registered the ticker for the asset and created it. Ownership of an asset can be transfered to another account through a ```TransferAsset``` authorisation. Once the target account accepts the transfer, ownership changes.
+To assist you with disambiguation, and have a feel of what the point is, we shall peek ahead at what lies beyond origination.
 
-The asset issuer holds the permissions to:
+As seen above, the token represents the type of the asset, and is owned by its originator, or by whomever they transferred the ownership to. By contrast, the asset it represents is owned by individual investors' accounts.
 
-* update the documentation and identifiers of an asset,
-* freeze and unfreeze asset transfers,
-* permission venues to conduct asset settlement,
-* add and remove compliance rules, and
-* conduct a forced transfers of ownership from any investor back to the primary issuance agent of the asset.
+### Ownership of the asset
 
-<HighlightBox type="info">
+Two elements determine **ownership** of a token's underlying asset:
 
-The issuance agent is an account responsible for treasury management and token distribution. The agent is elected by the asset issuer.
+1. The sum of balances of an individual investor's account(s) of said asset. The numerator if you will.
+2. The total supply of tokens representing ownership of said asset. I.e. the denominator.
 
-</HighlightBox>
-
-As mentioned before, asset origination requires a registered ticker. If a ticker isn't reserved, the registration is done automatically when an asset is created/originated by a user.
-
-To originate an asset, not only is a ticker necessary but, furthermore, the type of asset (equity, bond, fund) has to be specified. Every asset is initially created with zero total supply.
-
-**Associated documents** can be added to assets by the asset's issuer, which is also the only one that can update or modify the documentation. Hereby, the document is not stored on-chain. The reference for the associated document is stored on-chain to establish a link to the document off-chain. The reference includes:
-
-* name of the document,
-* URL, which for privacy and confidentiality reasons can be a permissioned URL with credentials for access,
-* document type (optional),
-* filing date, and
-* hash of the document's content.
-
-Compliance is established at the account-level. Thus, receiving or paying with tokens requires that all involved accounts must have claims matching the compliance rules for the asset. Those claims must be attested to by the asset's appointed KYC service provider. The compliance rules are specified by the asset issuer. Asset compliance is, therefore, flexible within a standardised structure and enforced on-chain.
-
-Accounts play a large role in asset origination, as every asset is **associated with two accounts and one unique ticker**. The **asset issuer's and primary issuance agent's accounts** are both linked to the asset. The account that created the asset and the one responsible for distribution are linked to the asset. Both roles can be fulfilled by the same account, and the asset issuer can change the primary issuance agent.
-
-It is also possible for the asset issuer to opt for a primary issuance agent for the asset with a different account. The new account holder has to accept this role before the change can be effected.
+When the total supply of tokens increases, it is called issuance. And the account responsible for it is called the primary issuance agent (PIA). The PIA is by default the owner of the token itself, although this role can be delegated by the owner. As with so many actions in Polymesh, the targeted account needs to accept the role delegation for it to become effective.
 
 <HighlightBox type="info">
 
-Take a look at the asset pallet documentation at: [https://docs.polymesh.live/pallet_asset/index.html](https://docs.polymesh.live/pallet_asset/index.html)
+Whether an asset can be transferred, or owned at all is called **compliance** and is automatically enforced on-chain by Polymesh. In effect, for an action to take place, all involved accounts must have attestations that match with the rules defined by the token originator for that action.
 
 </HighlightBox>
 
-Issuance begins with the creation and configuration of the asset. The tokens are issued to the primary issuance agent. Once the tokens are issued, the agent can distribute the tokens to investors directly or through a security token offering. The distribution is conducted using the settlement engine.
+### The asset lifecycle
 
-This two-step approach **separates the issuance and distribution processes**. Issuance bypasses the compliance and settlement engines but compliance and settlement functionality is upheld because the tokens are **only** issued to the issuance agent.
+We have seen that the token has a lifecycle. The underlying asset has a lifecycle of its own. Here is the typical list of operations:
 
-## Asset checkpoints
+* Issuance to the PIA, i.e. changing the total supply
+* Transfer from the PIA to other accounts
+* Transfer between accounts, i.e. changing the distribution of the supply
 
-In Polymesh, an asset checkpoint is a compilation of the balances of an asset at a given point of time (in effect at a certain block height). The record of balances equal to the total balance of the asset and the balances held by the different identities.
+Those too are managed through the asset base layer logic in Polymesh. There are other rarer available actions, such as the forcible return of the asset to the primary issuance agent. For the avoidance of doubt, the issuance bypasses the compliance step.
 
-### Why do we need asset checkpoints?
+## Conclusion
 
-Asset checkpoints help us establish a record of the asset ownership at a point in time. This can then be used for capital distribution and corporate ballots.
-
-### How is a checkpoint created?
-
-If a checkpoint was actually making a copy of the blockchain data it would consume a lot of computing resources. Instead, a checkpoint is a marker, which is extremely quick to create and finalise in a block. This checkpoint-as-a-marker only records the total supply of the asset. Subsequently, after the checkpoint, if a transaction on the asset modifies an identity's held balance, a single record is added to the checkpoint with the values _before_ the change, i.e. the values that existed at the time of creation of the checkpoint. In computing terms, the process is called **lazy checkpointing**.
-
-There are two options to create a checkpoint:
-
-* Create it immediately
-* Schedule future creation(s) at intervals
-
-For the avoidance of doubt, if there are no transactions after the checkpoint's creation, then it will not record any held balance as, indeed, the current blockchain data is the same as the desired data at the checkpoint.
-
-### Scheduled checkpoints?
-
-Scheduled checkpoints are defined with a starting timestamp (in seconds) and a regular interval period. The period can be a multiple of seconds, minutes, hours, days, weeks, months, or years. If the period is of zero length, then the schedule is understood as non-recurring and a single checkpoint is created at the scheduled start.
-
-Scheduled checkpoints are also executed lazily, meaning work is performed as needed and just in time. There is no disadvantage in doing so since previous balances are valid in the context of a checkpoint when no balance-altering transaction has occured.
+You know that a ticker can be reserved, before the token be created with some parameters. Let's see how this looks in the Token Studio exercise, where you originate your very own ACME token.
 
 ## Links
 
-* Asset Documentation: https://developers.polymesh.live/assets/
-* Asset pallet documentation: https://docs.polymesh.live/pallet_asset/index.html
+* [Asset Documentation](https://developers.polymesh.live/assets/)
+* For developers, the [asset pallet documentation](https://docs.polymesh.live/pallet_asset/index.html)
