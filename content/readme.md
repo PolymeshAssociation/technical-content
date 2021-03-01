@@ -1,8 +1,8 @@
 ---
-title: Polymath Training Readme
+title: Polymesh Training Readme
 description: Page description
 ---
 
-# Polymath developer portal
+# Polymesh developer portal
 
 **do not remove this file or the header above.**

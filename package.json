@@ -1,8 +1,8 @@
 {
-  "name": "polymath-developer-portal",
+  "name": "polymesh-developer-portal",
   "version": "1.0.0",
   "private": true,
-  "description": "Polymath Developer Portal",
+  "description": "Polymesh Developer Portal",
   "keywords": [
     "gatsby"
   ],

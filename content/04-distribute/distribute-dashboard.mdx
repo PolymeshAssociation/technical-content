@@ -10,7 +10,7 @@ import HighlightBox from "../../src/components/HighlightBox"
 
 In the [origination section](/originate/dashboard), ACME originated an asset. No shares exist yet.
 
-In the [secondary keys section](/originate/secondary), we created distinct identities for Alice and ACME, and Alice created a secondary key to use when she signs on behalf of ACME as the CEO.
+In the [secondary keys section](/originate/secondary), we created distinct accounts for Alice and ACME, and Alice created a secondary key to use when she signs on behalf of ACME as the CEO.
 
 Now, it's time to create some shares and distribute them. To keep matters simple, let us suppose that Alice will receive 20,000 shares of a planned 100,000. In practice, the distribution agent may be external to the company that issues the security tokens. Again, to keep matters simple, ACME will serve as its own distribution agent. When the shares are minted, they are initially sent to the distribution agent.
 
@@ -35,7 +35,7 @@ Open the `Distribution tab`.
 
 ![distribution](images/04-distribution.png)
 
-Click on `Mint tokens`. Alice is to receive 20,000 tokens, so we need to mint 20,000 tokens. If more are needed for other distributions we could, of course, mint them all now.
+Click on `Mint tokens`. Alice is to receive 20,000 tokens, so we need to mint 20,000 tokens. If more are needed for other distributions or shareholders we could, of course, mint them all now.
 
 ![mint tokens](images/05-mint.png)
 
@@ -43,7 +43,7 @@ Confirm minting and sign. For brevity's sake we will not include images of each 
 
 ![confirm minting](images/06-confirm-mint.png)
 
-In few moments the minting operation is confirmed on the blockchain.
+In a few moments the minting operation is confirmed on the blockchain.
 
 ![success](images/08-success.png)
 
@@ -63,11 +63,11 @@ In a few moments the process is confirmed.
 
 Now we will create a distribution event. Multiple distributions can be logically grouped into a single event, for example "Founder distributions". Since Alice and only Alice will receive shares, let us call this event "Alice's founder's shares". Click on `+ Add new distribution event`, give the event a name, and click `Add`.
 
-This distribution will be to a single Polymesh ID, Alice. Copy Alice's Polymesh ID (starts with 0x) from Alice's wallet. Be sure to choose Alice's personal account because that's where ACME should send the shares. Lastly, 20,000 is the amount to send.
+This distribution will be to a single Polymesh account, Alice. Copy Alice's Polymesh account number (starts with 0x) from Alice's wallet. Be sure to choose Alice's personal account number because that's where ACME should send the shares. Lastly, 20,000 is the amount to send.
 
 <HighlightBox type="tip">
 
-The distribution agent may receive a warning to indicate that Alice's identity is not compliant at this time. This will occur if the token has compliance rules because Alice has not completed KYC for ACME. As ACME, navigate to `Compliance` in the token studio and disable rules for primary distributions.
+The distribution agent may receive a warning to indicate that Alice's account is not compliant at this time. This will occur if the token has compliance rules because Alice has not completed KYC for ACME. As ACME, navigate to `Compliance` in the token studio and disable rules for primary distributions.
 
 </HighlightBox>
 
@@ -85,7 +85,7 @@ Now, when the transaction has confirmed, ACME will see a _pending_ distribution.
 
 Unlike most blockchains where transfers are final, a security token cannot be transferred without the consent of the recipient because the receipt may have legal or tax implications and the recipient may not agree. Therefore, the system waits for Alice to _accept_ the distribution.
 
-Switch to Alice's personal Polymesh ID by bringing her personal primary key into focus in the wallet.
+Switch to Alice's personal Polymesh account by bringing her personal primary key into focus in the wallet.
 
 Navigate to the dashboard `Portfolios` tab where Alice's incoming transfer is displayed.
 
@@ -95,7 +95,7 @@ Alice needs to create a uID Scope. Click `Manage uID scopes` and create a uID sc
 
 ![create uid scope](images/26-scope.png)
 
-These shares are of upmost importance to Alice and she doesn't want to hold them in her default portfolio. Instead, she wants to create a special portfolio for them. Portfolios are logical containers that help manage permission or organize holdings.
+These shares are of upmost importance to Alice and she doesn't want to hold them in her default portfolio. Instead, she wants to create a special portfolio for them. Portfolios are logical containers that help manage permission or organise holdings.
 
 Below holdings, click `Create Portfolio`.
 
@@ -125,9 +125,9 @@ Alice has 20,000 ACME shares in her cold store portfolio.
 
 ## Summary
 
-1. Tokens are minted by originators and are distributed by distribution agents which can be the same organisation.
+1. Tokens are minted by originators and are distributed by distribution agents, which can be the same organisation.
 2. Newly minted tokens are held by distribution agents until they are actually distributed.
-3. Compliance rules are enforced in the transfer process and transfers will remain in a pending state until either the receiver acheives compliance with the help of a KYC Service Provider, or the distribution agent cancels the transfer.
+3. Compliance rules are enforced in the transfer process and transfers will remain in a pending state until either the receiver achieves compliance with the help of a KYC service provider, or the distribution agent cancels the transfer.
 4. Compliance rules can be disabled for primary distributions at the originator's discretion.
 4. Transfers require the consent of the receiving party.
 5. Users can transfer assets between their portfolios in one step. There is no need to accept the transfer because there is no change of ownership.

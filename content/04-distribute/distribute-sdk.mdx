@@ -13,7 +13,7 @@ As always, everything that can be done via the Token Studio dashboard can be int
 
 We assume that:
 
-* ACME, the company already has a Polymesh identity, `acme`.
+* ACME, the company already has a Polymesh account, `acme`.
 * Alice, ACME Co's CEO and acting agent, holds a secondary private key for `acme` that allows her to act on its behalf.
 * Alice the CEO can [instantiate](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#static-connect) a Polymesh client whenever she needs to act with:
     <MultiCodeBlock>
@@ -50,7 +50,7 @@ We assume that:
 
     </MultiCodeBlock>
 * `acme` is the owner of the ACME token. `acme` will also be the token's primary issuance agent.
-* Alice has another identity, `alice`, that represents her as an individual.
+* Alice has an account, `alice`, that represents her as an individual.
 * Alice the individual also can [instantiate](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#static-connect) a Polymesh client whenever she needs to act with:
     <MultiCodeBlock>
 
@@ -72,9 +72,9 @@ We assume that:
 
 ## Prepare the distribution
 
-Time for Alice to get her agreed amount of shares. As we mentioned in the previous chapter, implicit in `const token` is that the `context` is `apiCeo`, because we used `apiCeo` to retrieve its information. In other words, any action performed on a `token` instantiated by `apiCeo` will effectively be done by the `acme` identity.
+Time for Alice to get her agreed amount of shares. As we mentioned in the previous SDK chapter, implicit in `const token` is that the `context` is `apiCeo`, because we used `apiCeo` to retrieve its information. In other words, any action performed on a `token` instantiated by `apiCeo` will effectively be done by the `acme` account.
 
-At the time of its creation, the ACME token had a total supply of zero. Alice is personally entitled to 20,000 of the eventual 100,000 total supply of shares that the founders intend to issue. The primary issuance agent first issues, in effect mints, the shares to themselves, then sends them to their ultimate beneficiary(ies), like Alice. Sending securities to someone needs the consent of the recipient. The correct Polymesh structure to achieve that is to create a settlement instruction. And all settlement instructions are created in a venue. Therefore, we will create venue. 
+At the time of its creation, the ACME token had a total supply of zero. Alice is personally entitled to 20,000 of the eventual 100,000 total supply of shares that the founders intend to issue. The primary issuance agent first issues, in effect mints, the shares to themselves, then sends them to their ultimate beneficiary(ies), like Alice. Sending securities to someone needs the consent of the recipient. The correct Polymesh structure to achieve that is to create a settlement instruction. And all settlement instructions are created in a venue. Therefore, we will create a venue.
 
 Let's get started:
 
