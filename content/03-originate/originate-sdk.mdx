@@ -1,6 +1,6 @@
 ---
 title: With the SDK
-description: Originating Assets with the Polymesh SDK
+description: Originating assets with the Polymesh SDK
 slug: /originate/sdk
 ---
 
@@ -15,15 +15,15 @@ The Polymesh Dashboard is constructed with the SDK. The SDK supports every proce
 
 ## Familiar
 
-The SDK is a comprehensive set of business-level methods for inspecting and interacting with the Polymesh network using f Javascript or Typescript, at the developer's discretion.
+The SDK is a comprehensive set of business-level methods for inspecting and interacting with the Polymesh network using either Javascript or Typescript, at the developer's discretion.
 
 ## Preconditions
 
-If you went through the quick start, we can assume that you have created an account (a public / private key pair) on the Polymesh testnet, that you associated it with an identity, and that you credited it with POLYX. We shall call this personal account `aliceKey`, and the personal identity it represents `alice`. Here, we are going to follow along the Token Studio Dashboard exercise, and do the same _mistake_, whereby she creates the token with her personal account, and which we will eventually fix. The credible simple reason why Alice created the token with her personal account is that her and her co-founders wanted to act fast so as to have the ticker available before getting the company through CDD.
+If you went through the quick start, we can assume that you have created an account (a public / private key pair) on the Polymesh testnet, that you associated it with an account, and that you credited it with POLYX. We shall call this personal signing key `aliceKey`, and the personal account it represents `alice`. Here, we are going to follow along the Token Studio Dashboard exercise, and do the same _mistake_, whereby she creates the token with her personal account, and which we will eventually fix. The credible simple reason why Alice created the token with her personal account is that her and her co-founders wanted to act fast so as to have the ticker available before getting the company through CDD.
 
 To recap:
 
-* Alice, ACME's CEO and acting agent, already has an **individual** Polymesh identity, tied to a primary private key named `alice`.
+* Alice, ACME's CEO and acting agent, already has an **individual** Polymesh account, named `alice`, tied to a primary private key named `aliceKey`.
 * `aliceKey`'s private key is based on the `"word1 word2 ..."` mnemonic.
 * A Polymesh client has been [instantiated](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#static-connect) by Alice so she can do the next actions:
     <MultiCodeBlock>
@@ -67,7 +67,7 @@ const reservationQueue = await apiAlice.reserveTicker({
 The `TransactionQueue` type is just that, a queue. The transaction(s) in it have not been launched. Notice that:
 
 * It is a generic type parameterised with `TickerReservation`. This means that, eventually, the queue yields an instance of `TickerReservation`.
-* The constructor of `TransactionQueue` expects a [`context`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#constructor); it is in this `context` object that `apiAlice` is referenced so it is understood that `aliceKey` is the private key to use.
+* The constructor of `TransactionQueue` expects a [`context`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#constructor); it is in this `context` object that `apiAlice` is referenced so it is understood that `aliceKey` is the private key to use for signing.
 * Each transaction in the queue has its own status.
 * The queue itself has its own [status](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#status).
 
@@ -114,11 +114,11 @@ assert(owner.did === alice.did);
 
 </MultiCodeBlock>
 
-Something is not immediately apparent from the few lines of code above. It is nonetheless important to point it out. When we created `apiAlice` with `await Polymesh.connect()`, we passed an identifier `accountMnemonic` that allowed the SDK to recreate the `aliceKey` private key. At the risk of repeating what was covered in the introduction module, this private key is not the Polymesh identity proper, nor is it the public key. The public key is associated with an identity, whether as a primary key, like here, or a secondary one. And when the private key is used to sign a transaction, it is the **associated identity** that will be considered to be the one doing the action. This associated identity information is not embedded in the private key. It is an association that is stored on the blockchain, may change in the future, and as such, it needs to be retrieved to be known.
+Something is not immediately apparent from the few lines of code above. It is nonetheless important to point it out. When we created `apiAlice` with `await Polymesh.connect()`, we passed an identifier `accountMnemonic` that allowed the SDK to recreate the `aliceKey` private key. At the risk of repeating what was covered in the introduction module, this private key is not the Polymesh account proper, nor is it the public key. The public key is associated with an account, whether as a primary key, like here, or a secondary one. And when the private key is used to sign a transaction, it is the **associated account** that will be considered to be the one doing the action. This associated account information is not embedded in the private key. It is an association that is stored on the blockchain, may change in the future, and as such, it needs to be retrieved to be known.
 
 <HighlightBox type="info">
 
-So when we wrote `await` in `await apiAlice.getCurrentIdentity()`, this is no accident. We indeed need to do a round trip to the blockchain to know what identity our public key is associated with.
+So when we wrote `await` in `await apiAlice.getCurrentIdentity()`, this is no accident. We indeed need to do a round trip to the blockchain to know what account our public key is associated with.
 
 </HighlightBox>
 
@@ -130,23 +130,23 @@ Now that the ticker is reserved, it is time to issue the security token. Oh wait
 
 ```typescript
 const apiAlice: Polymesh = await Polymesh.connect({...});
-const reservation: TickerReservation = await apiCeo.getTickerReservation({
+const reservation: TickerReservation = await apiAlice.getTickerReservation({
     "ticker": "ACME"
 });
 ```
 
 ```javascript
 const apiAlice = await Polymesh.connect({...});
-const reservation = await apiCeo.getTickerReservation({
+const reservation = await apiAlice.getTickerReservation({
     "ticker": "ACME"
 });
 ```
 
 </MultiCodeBlock>
 
-You will note that the class `TickerReservation`, just like the transaction queue, keeps a [`protected context: Context`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/tickerreservation#properties-1). This `context` in turn keeps a [`polymeshApi`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/context#properties-1). It is in there that we find the implicit knowledge that it is `alice`'s identity that is asking for the next actions. If it were any other **identity** that had called `getTickerReservation`, this other identity would not be able to follow up with a `.createToken` command because it does not own the reservation.
+You will note that the class `TickerReservation`, just like the transaction queue, keeps a [`protected context: Context`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/tickerreservation#properties-1). This `context` in turn keeps a [`polymeshApi`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/context#properties-1). It is in there that we find the implicit knowledge that it is `alice`'s account that is asking for the next actions. If it were any other **account** that had called `getTickerReservation`, this other account would not be able to follow up with a `.createToken` command because it does not own the reservation.
 
-With our `reservation` in memory, and 10,000 POLYX in `alice`'s wallet, which is the cost of creation of 1 security token, we now can create it:
+With our `reservation` in memory, and 10,000 POLYX in `alice`'s wallet, which is the cost of creation of one security token, we now can create it:
 
 <MultiCodeBlock>
 
@@ -168,7 +168,7 @@ const tokenQueue = await reservation.createToken({
 
 </MultiCodeBlock>
 
-We have another queue, so as we did before:
+We have another queue, so, as we did before:
 
 <MultiCodeBlock>
 
@@ -189,18 +189,22 @@ This `token` instance will not always be in memory, so if we wanted to fetch it 
 <MultiCodeBlock>
 
 ```typescript
-const token: SecurityToken = await apiCeo.getSecurityToken({ "ticker": "ACME" });
+const token: SecurityToken = await apiAlice.getSecurityToken({
+    "ticker": "ACME"
+});
 ```
 
 ```javascript
-const token = await apiCeo.getSecurityToken({ "ticker": "ACME" });
+const token = await apiAlice.getSecurityToken({
+    "ticker": "ACME"
+});
 ```
 
 </MultiCodeBlock>
 
-## Secondary Keys
+## Secondary keys
 
-Now we assume that ACME has gone through CDD and has an account, complete with a mnemonic and an identity, which, in a mirror fashion of that of Alice gives us:
+Now we assume that ACME has gone through CDD and has an account, complete with a private key and its mnemonic, which, in a mirror fashion of that of Alice gives us:
 
 <MultiCodeBlock>
 
@@ -244,16 +248,16 @@ const apiCeo = await Polymesh.connect({
 
 </MultiCodeBlock>
 
-At this point, `apiCeo` has no associated identity. It is an account in search of an identity. Alice first needs to get her public key:
+At this point, `apiCeo` has no associated account. It is a signing key in search of an account. Alice first needs to get her public key:
 
 <MultiCodeBlock>
 
 ```typescript
-const pubCeo: string = apiCeo.key;
+const pubCeo: string = apiCeo.getAccount().address;
 ```
 
 ```javascript
-const pubCeo = apiCeo.key;
+const pubCeo = apiCeo.getAccount().address;
 ```
 
 </MultiCodeBlock>
@@ -278,7 +282,7 @@ await acme.inviteAccount({
 
 </MultiCodeBlock>
 
-With the invitation sent out, back at her computer, Alice, with knowledge of ACME identity's `acmeDid` can do:
+With the invitation sent out into the blockchain, back at her computer, Alice, with knowledge of ACME account's number, `acmeDid`, can do:
 
 <MultiCodeBlock>
 
@@ -306,9 +310,9 @@ await acmeAuthorization.accept();
 
 With this done, `apiCeo` now allows Alice to properly act as the CEO, on behalf of ACME.
 
-## Token Ownership Transfer
+## Token ownership transfer
 
-With the keys and identities finally set right, it is time for Alice to fix the token situation, and transfer its ownership to ACME. Since it is Alice the individual who owns the token, she has to go back to using her personal account.
+With the keys and accounts finally set right, it is time for Alice to fix the token situation, and transfer its ownership to ACME. Since it is Alice the individual who owns the token, she has to go back to using her personal account.
 
 <MultiCodeBlock>
 
@@ -316,23 +320,25 @@ With the keys and identities finally set right, it is time for Alice to fix the 
 const token: SecurityToken = await apiAlice.getSecurityToken({
     "ticker": "ACME"
 });
-await token.transferOwnership({
+const transferQueue: TransactionQueue<SecurityToken> = await token.transferOwnership({
     "target": acmeDid
 });
+await transferQueue.run();
 ```
 
 ```javascript
 const token = await apiAlice.getSecurityToken({
     "ticker": "ACME"
 });
-await token.transferOwnership({
+const transferQueue = await token.transferOwnership({
     "target": acmeDid
 });
+await transferQueue.run();
 ```
 
 </MultiCodeBlock>
 
-With the authorisation on the way, Alice can stay on the same computer and switch from her personal identity to her identity as the CEO of ACME to accept the authorisation. She first needs to recall her personal did.
+With the authorisation recorded in the blockchain, and on the way, Alice can stay on the same computer and switch from her personal identity to her identity as the CEO of ACME to accept the authorisation. She first needs to recall her personal account number, or `did`.
 
 <MultiCodeBlock>
 
@@ -348,7 +354,7 @@ const aliceDid string = alice.did;
 
 </MultiCodeBlock>
 
-So she can narrow down the authorisation.
+So she can narrow down the authorisation, instead of blindly accepting whatever is in the pipeline.
 
 <MultiCodeBlock>
 
@@ -358,7 +364,8 @@ const transferAuthorization: AuthorizationRequest = pendingAuthorizations
     .find((pendingAuthorization: AuthorizationRequest) => {
         return pendingAuthorization.issuer.did === aliceDid;
     });
-await transferAuthorization.accept();
+const acceptQueue: TransactionQueue<void> = await transferAuthorization.accept();
+await acceptQueue.run();
 ```
 
 ```javascript
@@ -367,7 +374,8 @@ const transferAuthorization = pendingAuthorizations
     .find((pendingAuthorization) => {
         return pendingAuthorization.issuer.did === aliceDid;
     });
-await transferAuthorization.accept();
+const acceptQueue = await transferAuthorization.accept();
+await acceptQueue.run();
 ```
 
 </MultiCodeBlock>
@@ -376,14 +384,14 @@ With this, the token is rightfully owned by ACME the company.
 
 ## Compliance
 
-We are not done yet with the token, though. As the CEO, Alice still needs to do one more step, that is, define the conditions of ownership. Namely, require anyone who acquires the token to not be a resident of Liechtenstein. An exception will be made of the primary issuance agent who is simply used as a conduit, and can send to anyone. We use the CEO's identity as the KYC service provider, but realistically, it should be another identity.
+We are not done yet with the token, though. As the CEO, Alice still needs to do one more step, that is, to define the conditions of ownership. Namely, require any account who acquires the token to not have a jurisdictional attestation of <span title="Elbonia does not appear in the CountryCode enum">Liechtenstein</span>. An exception will be made of the primary issuance agent who is simply used as a conduit, and can send to anyone. We use ACME's account as the KYC service provider, but realistically, it should be another account.
 
 <MultiCodeBlock>
 
 ```typescript
 const acmeCompliance: Compliance = token.compliance;
 const acmeRequirements: Requirements = acmeCompliance.requirements;
-const ceo: CurrentIdentity = await apiCeo.getCurrentIdentity();
+const acme: CurrentIdentity = await apiCeo.getCurrentIdentity();
 const setRequirementsQueue: TransactionQueue<SecurityToken> = await acmeRequirements.set({
     "requirements": [
         [
@@ -404,7 +412,7 @@ const setRequirementsQueue: TransactionQueue<SecurityToken> = await acmeRequirem
                     }
                 },
                 "trustedClaimIssuers": [{
-                    "identity": ceo.did,
+                    "identity": acme.did,
                     "trustedFor": [ClaimType.KnowYourCustomer]
                 }]
             },
@@ -420,7 +428,7 @@ const setRequirementsQueue: TransactionQueue<SecurityToken> = await acmeRequirem
                     }
                 },
                 "trustedClaimIssuers": [{
-                    "identity": ceo.did,
+                    "identity": acme.did,
                     "trustedFor": [ClaimType.Jurisdiction]
                 }]
             }
@@ -433,7 +441,7 @@ const updatedToken: SecurityToken = await setRequirementsQueue.run();
 ```javascript
 const acmeCompliance = token.compliance;
 const acmeRequirements = acmeCompliance.requirements;
-const ceo = await apiCeo.getCurrentIdentity();
+const acme = await apiCeo.getCurrentIdentity();
 const setRequirementsQueue = await acmeRequirements.set({
     "requirements": [
         [
@@ -454,7 +462,7 @@ const setRequirementsQueue = await acmeRequirements.set({
                     }
                 },
                 "trustedClaimIssuers": [{
-                    "identity": ceo.did,
+                    "identity": acme.did,
                     "trustedFor": ["KnowYourCustomer"]
                 }]
             },
@@ -470,7 +478,7 @@ const setRequirementsQueue = await acmeRequirements.set({
                     }
                 },
                 "trustedClaimIssuers": [{
-                    "identity": ceo.did,
+                    "identity": acme.did,
                     "trustedFor": ["Jurisdiction"]
                 }]
             }
@@ -482,7 +490,7 @@ const updatedToken: SecurityToken = await setRequirementsQueue.run();
 
 </MultiCodeBlock>
 
-With this, the token is _originated_. Alice, under her personal account, is not yet a holder of any amount of the security token, though, we remedy that in the next chapter "Distribution".
+With this, the token is _originated_. Nobody, including Alice under her personal account, is yet a holder of any amount of the security token, though, we remedy that in the next chapter "Distribution".
 
 ## Links
 

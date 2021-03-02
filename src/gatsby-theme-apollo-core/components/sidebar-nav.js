@@ -35,21 +35,21 @@ const ExpandAll = styled.button(smallCaps, {
 
 const StyledList = styled.ul({
   marginLeft: 0,
-  marginBottom: 32,
-  marginTop: '10px',
+  marginBottom: "16px",
+  marginTop: 0,
   listStyle: 'none'
 });
 
 const StyledListItem = styled.li({
   fontSize: '1rem',
-  lineHeight: 1.214,
-  marginBottom: '0.5rem',
+  lineHeight: 1.6,
+  marginBottom: '0.4rem',
   a: {
     color: 'inherit',
     textDecoration: 'none',
     ':hover': {
       opacity: colors.hoverOpacity,
-      color: "#1348E3"
+      color: "#1348E3",
     },
     ':first-child': {
       marginBottom: '10px'

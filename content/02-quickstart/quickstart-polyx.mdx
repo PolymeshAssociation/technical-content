@@ -6,13 +6,13 @@ slug: /quickstart/quickstart-polyx
 
 import HighlightBox from "../../src/components/HighlightBox"
 
-POLYX is the network transaction fees token as well as the governance token that helps decentralize network management.
+POLYX is the network transaction fees token as well as the governance token that helps decentralise network management.
 
 You will need POLYX to complete the exercises.
 
 ## Testnet POLYX
 
-Testnet is where you can practice using Polymesh without material consequences. As the name suggests, it is a fully functional Polymesh network. The main differences are:
+Testnet is where you can practise using Polymesh without material consequences. As the name suggests, it is a fully functional Polymesh network. The main differences are:
 
 - the funds and securities on the testnet aren't real and have no material value.
 - future testnets may be initialised in the future and the present testnet may be retired.
@@ -24,9 +24,9 @@ Since you will interact with the testnet while you pursue the suggested exercise
 
 It will be helpful to understand a little bit of history to understand how this process works and why it works the way it does. In summary, the original Polymath network and network token, POLY, was deployed on the Ethereum mainnet. Those POLY tokens do indeed have material value. Consequently, the conversion process is backward-compatible. Owners of POLY can convert their POLY to POLYX at a ratio of 1:1.
 
-This process works by locking POLY on the Ethereum network, which means sending them to a contract that takes them out of circulation. Without delving too deeply into the smart contract details, suffice it to say users send their POLY to the contract, then the POLYX is sent to the PID.
+This process works by locking POLY on the Ethereum network, which means sending them to a contract that takes them out of circulation. Without delving too deeply into the smart contract details, suffice it to say users send their POLY to the contract, then the POLYX is sent to the Polymesh signing key.
 
-The technical challenge is that these are separate blockchains. So, the bridge involves an off-chain process that monitors Ethereum for incoming POLY and releases POLYX on Polymesh in response to events observed on Ethereum. Also, since Ethereum and Polymesh use different account schemes, the UI will associate the sending Ethereum address with the receiving Polymesh ID.
+The technical challenge is that these are separate blockchains. So, the bridge involves an off-chain process that monitors Ethereum for incoming POLY and releases POLYX on Polymesh in response to events observed on Ethereum. Also, since Ethereum and Polymesh use different account schemes, the UI will associate the sending Ethereum address with the receiving Polymesh signing key.
 
 The preliminary conditions are familiar to POLY holders who are already accustomed to Ethereum tokens. And, the testnet implementation helps test and verify the conversion process. In order to get some free POLYX, you will first establish the initial conditions of a POLY holder on Ethereum.
 
@@ -67,7 +67,7 @@ Point your browser to the contract: https://kovan.etherscan.io/address/0xb347b9f
 
 If you see "Connect to Web3", press it. This will open MetaMask so you can confirm you wish it to talk to this web site. Select the account you wish to use. Choose the account that has testnet ETH. It should say "Connected - Web3" and your account.
 
-Now, scroll down to `getTokens` and expand it. Fill in the `_amount` with the number of POLY you would like. This uses 18 decimal places with no period (de facto standard for Ethereum tokens), so 50,000 POLY (suggested) is `50000000000000000000000`. 
+Now, scroll down to `getTokens` and expand it. Fill in the `_amount` with the number of POLY you would like. This uses 18 decimal places with no period (de facto standard for Ethereum tokens), so 50,000 POLY (suggested) is `50000000000000000000000`.
 
 The `_recipient` is you. Copy your address from MetaMask by opening the applet, hovering over your account and clicking the clipboard. Paste your address and press `write` to send this transaction to the contract.
 
@@ -91,15 +91,15 @@ MetaMask will not talk to this website unless you authorise it, so click `Connec
 
 ## Link your Polymesh ID
 
-The process begins by asking for your Polymesh ID.
+The process begins by asking for your Polymesh signing key.
 
 ![enter PID](images/bridge-enter-polymesh-address.png)
 
-Open your Polymesh Wallet and copy your ID, then paste it into `Your Polymesh ID`. This account will receive the POLYX.
+Open your Polymesh Wallet and copy your signing key, then paste it into `Your Polymesh Address`. This key will receive the POLYX.
 
 ![your address](images/bridge-get-your-address.png)
 
-If you completed [CDD](/02-quickstart/quickstart-cdd) (you should), then the site will indicate that your Polymesh ID is verified. If not, then you will be directed to Customer Due Diligence.
+If you completed [CDD](/02-quickstart/quickstart-cdd) (you should), then the site will indicate that your Polymesh Account is verified. If not, then you will be directed to Customer Due Diligence.
 
 ![convert poly](images/convert-poly-polyx.png)
 

@@ -1,13 +1,13 @@
 {
-  "name": "polymath-developer-portal",
+  "name": "polymesh-developer-portal",
   "version": "1.0.0",
   "private": true,
-  "description": "Polymath Developer Portal",
+  "description": "Polymesh Developer Portal",
   "keywords": [
     "gatsby"
   ],
   "scripts": {
-    "develop": "gatsby develop",
+    "develop": "gatsby develop --host 0.0.0.0",
     "start": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",

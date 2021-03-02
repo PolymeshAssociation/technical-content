@@ -1,18 +1,24 @@
 ---
 title: Governance
-description: On-Chain Governance
+description: On-Chain governance
 slug: /introduction/intro-governance
 ---
 
 import HighlightBox from "../../src/components/HighlightBox"
 
-_In blockchains, the word governance describes the rules, process management and decision-making responsibilities by which the developers and maintainers keep the chain evolving._
+import {
+  ExpansionPanel,
+  ExpansionPanelList,
+  ExpansionPanelListItem
+} from 'gatsby-theme-apollo-docs';
+
+_In blockchains, the word governance describes the rules, process management and decision-making responsibilities by which the network participants keep the chain evolving._
 
 It is always a challenging but important topic. This is especially true for blockchains on which participants issue security tokens, as the chain forms the source of truth, i.e. it establishes the state of facts and the rules of the network. A fundamental challenge is establishing a set of rules that provide assurance in an environment that is expected to evolve. A solution to this problem is to establish a strictly-enforced process that will govern the evolution of the rules.
 
 There are two distinct **types of governance** in blockchain networks:
 
-* On-chain governance, whereby rules and decisions are made on-chain, as in the case of Tezos, Cardano, Polkadot, and, you guessed it, Polymesh.
+* On-chain governance, whereby rules and decisions are made on-chain, as in the case of Tezos, Cardano, Polkadot, and, you guessed it, Polymesh;
 * Off-chain governance, whereby stakeholders debate on forums like Reddit, conferences, etc., as in the case of Ethereum and Bitcoin.
 
 ## Off-chain governance?
@@ -25,19 +31,19 @@ Next, even after stakeholders have reached consensus on a given change, node ope
 
 As opposed to off-chain governance, on-chain governance's benefits lie in its rules transparency, the provable inclusion of stakeholders in the decision-making process, and on-chain coordination.
 
-Governance is **on-chain** and upgrades unfold by a prescribed process that addresses both the decision-making stage and coordination problem at the deployment stage. The process is designed to be compatible with regulatory regimes and it provides a solution to the challenges general-built blockchains have in the areas of identity, accountability, confidentiality, system governance and evolution.
+Governance is **on-chain** and upgrades unfold by a prescribed process that addresses both the decision-making stage and coordination problem at the deployment stage. The process is designed to be compatible with regulatory regimes and it provides a solution to the challenges general-purpose blockchains have in the areas of identity, accountability, confidentiality, system governance and evolution.
 
 Governance covers the following areas:
 
-* The validation of existing operators.
-* Certain system primitives, such as inflation care, penalties, and bonding periods.
+* The permissioning of operators and CDD providers,
+* Certain system primitives, such as inflation and reward rates, fines, and bonding periods, and
 * Chain upgrades.
 
 This is a permissioned blockchain. Operators can join or leave the network and they are always known entities approved by the network users via the on-chain governance system.
 
-Chain **upgrades**, i.e. changes to the protocol are decided and implemented by certain stakeholders as delineated in the current governance system. Moreover, the node binary is stored directly on-chain. Meaning an upgrade leads to a change of the on-chain representation of the binary. Thus, each node checks if there is a new binary, and if there is, starts working with that new version automatically. The possibility of non-malicious hard forks is therefore highly unlikely.
+Chain **upgrades**, i.e. changes to the protocol, are decided and implemented by certain stakeholders as delineated in the current governance system. Moreover, the node runtime is stored directly on-chain. Meaning an upgrade leads to a change of the on-chain representation of the runtime. Thus, each node checks if there is a new runtime, and if there is, starts working with that new version automatically. The possibility of non-malicious hard forks is therefore highly unlikely.
 
-Another aspect of Polymesh that adds to the improbability of hard forks is the choice to use WebAssembly (WASM) for the protocol binary. WASM bytecode was initially conceived to enable high-performance applications on webpages. For this reason, large software companies maintain WASM compilers and virtual machines for various operating system platforms. This landscape makes the risk of hard forks caused by compiler or platform bugs highly unlikely.
+Another aspect of Polymesh that adds to the improbability of hard forks is the choice to use WebAssembly (WASM) for the protocol runtime. WASM bytecode was initially conceived to enable high-performance applications on webpages. For this reason, large software companies maintain WASM compilers and virtual machines for various operating system platforms. This landscape makes the risk of hard forks caused by compiler or platform bugs highly unlikely.
 
 Polymesh’s clear-structured governance mechanism assists in achieving the finality required for legal transfer and payment probability. This is a big added value compared to the offer of general blockchains.
 
@@ -47,7 +53,7 @@ Adding to a fork improbability, Polymesh is built on the [Substrate Framework](h
 
 Upgrades to the Polymesh blockchain can be submitted for review and approval through a Polymesh Improvement Proposal (PIP). Proposals are concrete, on-chain actions. Areas relating to the off-chain realm are not addressed by PIPs.
 
-Polymesh bases its governance on a **two chamber approach**. The first chamber consists of all POLYX utility token holders. Any POLYX holder has the right to submit a PIP by submitting detailed information regarding the change and bond POLYX to the PIP. The second chamber is the Polymesh Governing Council.
+Polymesh bases its governance on a **two chamber approach**. The first chamber consists of all POLYX token holders. Any POLYX holder has the right to submit a PIP by submitting detailed information regarding the change and bond POLYX to the PIP. The second chamber is the Polymesh Governing Council.
 
 Let’s take a closer look at the stakeholders involved in governance!
 
@@ -57,43 +63,79 @@ Governance in Polymesh includes **three stakeholders**:
 * the Committees, and
 * the Governing Council.
 
-The **Committees** are groups of individuals with 5 to 20 members. They are categorised by topics. Committees can submit PIPs, so-called community-curated PIPs. These are always considered by the Governing Council, the decision-making body.
+Any **POLYX token holder** can submit so-called _community-curated_ PIPs, and engage other holders so they signal their approval or disapproval of these PIPs.
 
-The **Governing Council** is a group of individuals or identities. It is the body responsible for decision-making. Currently, membership in the Committees and Governing Council is not mutually exclusive, i.e. members can be part of both at the same time. Membership for the Genesis block, i.e. the first block in the chain, is already set. The council’s composition can be changed in the future through a PIP. The primary role of the Governing Council is to manage the blockchain, find consensus, and chart the general direction of development for the blockchain. It can fast-track proposals to deal with emergency fixes.
+The **Committees** are groups of individuals with up to 20 members. They are categorised by topics. Committees can submit _committee_ PIPs. These are similar to community-curated PIPs but cannot be signalled on, and they can always be enacted at any time in any order by the Governing Council, the decision-making body.
 
-The governance process is comprised of the following **stages**:
+The **Governing Council** is a group of individuals or entities. It is the body responsible for decision-making. Currently, membership in the Committees and the Governing Council is not mutually exclusive, i.e. members can be part of both at the same time. Membership for a genesis block, i.e. the first block in the chain, is set ahead of time. The primary role of the Governing Council is to manage the blockchain, find consensus, and chart the general direction of development for the blockchain. It can fast-track proposals to deal with emergency fixes. Another role of the Governing Council is to manage the membership of Committees and of the Council itself.
 
-1. Proposal
-2. Signalling
-3. Voting
-4. Governing Council meeting
+<ExpansionPanel title="The stages of the governance process">
+&nbsp;
 
-![Governance Process](../features/images/governance-process.png)
+<ExpansionPanelList>
 
 Let’s take a more detailed look at the different stages of the governance process! How does a PIP become an upgrade to the Polymesh blockchain?
 
-To **propose** an upgrade a PIP has to be submitted. One can bond some POLYX to the proposal and add information specifying the proposal. When a PIP is submitted, the PIP is visible but cannot be voted upon during a cooling-off period. Still, the proposal can be amended or deleted.
+The governance process is comprised of the following **stages**:
 
-After the cooling-off period, the PIP is open for **support signalling**, so to say voting by the community of token holders: POLYX token holders can signal support or dissent with the PIP by bonding POLYX to it. The native token is used as an indicator of the proposal’s popularity.
+<ExpansionPanelListItem number="1">
 
- div box has to be included!
-Do you want to take a look at the last PIPs? LINK FOR GITHUB
+**Proposal**
+To **propose** an upgrade, one has to submit a PIP. One can bond some POLYX to the proposal and add information specifying the proposal. When a PIP is submitted, it becomes visible and **support signalling** by the community of token holders can start. That is, POLYX token holders can signal support or dissent with the PIP by bonding some of their POLYX to it. For this, the native token is used as an indicator of the proposal’s popularity.
+</ExpansionPanelListItem>
 
-The **voting** for the signalling phase depends on the number of POLYX tokens, where one POLYX equals one vote. This could be modified by a PIP. The number of POLYX tokens can be split, but at all times, one cannot use more POLYX than one holds at the time. During the bonding, the POLYX is locked. It can **only** be withdrawn. Staking of the bonded tokens is still possible. This conditions don’t make users opt between network security and the use of tokens. Once the proposal is through, i.e. the PIP reached enough support, or in case votes are withdrawn, the tokens are freed.
+<ExpansionPanelListItem number="2">
 
-After PIPs finalise the signalling stage, they are considered in a **Governing Council Meeting**. First, a snapshot of the proposals is taken and ordered by the number of "Yes" and "No" votes for each proposal. This determines the order in which the proposals are discussed by the council. The number of proposals revised during each session can be determined by the council.
+**Signalling on community-curated PIPs**
+The **signalling** during that phase comes down to the number of POLYX tokens bonded, where one POLYX equals one vote. Note that this 1-1 ratio could be modified by a PIP too. The number of POLYX tokens can be split, but at all times, one cannot use more POLYX than one holds at the time. During the bonding, the POLYX is locked, in that it cannot be spent but can **only** be withdrawn, and actually also be staked. This condition doesn’t make users opt between network security and the use of tokens. Once the proposal is through, i.e. the PIP reached enough support, or in case votes are withdrawn, the tokens are freed.
 
+</ExpansionPanelListItem>
+
+<ExpansionPanelListItem number="3">
+
+**Snapshot**
+After PIPs finalise the signalling stage, they are considered in a **Governing Council Meeting**. First, a snapshot of the proposals is taken and ordered by the number of "Yes" and "No" votes for each proposal.
+
+</ExpansionPanelListItem>
+
+<ExpansionPanelListItem number="4">
+
+**Governing Council meeting**
 How is the order of debate determined exactly? Does it go from most to least important proposal? The order of debate follows the order found in the snapshot.
 
-When considering the individual PIPs, council members can either "approve", "reject", or "skip" a proposal. With the caveat that there is only a fixed number of times a proposal can be skipped before it has to be approved or rejected, as a decision for each proposal is required.
+The number of proposals revised during each session can be determined by the council.
 
-Now, the signals come into play. The signals from the token holders are indications for the Governing Council to base their decisions on it in regard to support for a PIP as well as perceived importance. Signalling can be understood as a result of a compromise between managing the ecosystem while also investing a large amount of assets.
+</ExpansionPanelListItem>
 
-Once the Governing Council approves the PIPs, the so-called **Release Coordinator** executes the PIPs, i.e. schedules their implementation. The Release Coordinator is a member of the Governing Council, which can be replaced.
+<ExpansionPanelListItem number="5">
+
+**Voting**
+When considering each individual PIPs, council members can either "approve", "reject", or "skip" a proposal. With the caveat that there is only a fixed number of times a proposal can be skipped before it has to be approved or rejected, as a decision for each proposal is required.
+
+Now, the signals come into play. The signals from the token holders are indications for the Governing Council to base their decisions on it in regard to support for a PIP as well as perceived importance. Signalling can be understood as a result of a compromise between managing the ecosystem effectively whilst incorporating the views from the wider Polymesh community.
+
+</ExpansionPanelListItem>
+
+<ExpansionPanelListItem number="5">
+
+**Execution**
+Once the Governing Council has approved PIPs, the so-called **Release Coordinator** executes them, i.e. schedules their implementation. The Release Coordinator is a member of the Governing Council, is appointed by it and can be replaced too.
 
 The proposals are implemented on-chain, as PIPs and the snapshot are token-curated.
 
+</ExpansionPanelListItem>
+</ExpansionPanelList>
+</ExpansionPanel>
+
+![Governance Process](../features/images/governance-process.png)
+
 Transparency can be a tricky characteristic when it comes to voting procedures in general. In Polymesh, transparency is limited on voting records. Meaning, one cannot know who voted how, only the vote result as such.
+
+<HighlightBox type="info">
+
+Learn more and test-drive governance here [https://governance.polymesh.live/](https://governance.polymesh.live/).
+
+</HighlightBox>
 
 ## Step-by-step: Governance possibilities with the Dashboard
 
@@ -268,5 +310,4 @@ Congratulations on submitting a proposal!
 
 ## Links
 
-- Polymesh Network: Governance https://developers.polymesh.live/governance/ 
-
+- Polymesh Network: Governance https://developers.polymesh.live/governance/
