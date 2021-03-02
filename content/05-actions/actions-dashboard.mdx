@@ -12,7 +12,7 @@ The ACME token has been trading for a while, and the company has had a very good
 
 ## Permission
 
-Corporate actions can be initiated by the token owner itself, or by an appointed corporate action agent, or CAA. Only the token owner can appoint the CAA. Doing so allows ACME to outsource the implementation of their corporate actions if they want to. By default, ACME, the token owner is a corporate actions agent for the ACME equity tokens and therefore has permission to execute corporate actions.
+Corporate actions (CA) can be initiated by the token owner itself, or by an appointed corporate action agent, or CAA. Only the token owner can appoint the CAA. Doing so allows ACME to outsource the implementation of their corporate actions if they want to. By default, ACME, the token owner is a corporate actions agent for the ACME equity tokens and therefore has permission to execute corporate actions.
 
 ## On-Chain execution
 
@@ -21,15 +21,14 @@ An on-chain distribution requires an on-chain asset. We can envisage a future in
 For the purpose of this exercise we will set some legitimate concerns aside to create a simple example. ACME (or Alice, the CEO) will create a pegged stable token called DEEPUSD and issue 5,000 of them to ACME's default portfolio. We will not dwell on regulatory concerns or the mechanism that maintains the peg. Instead, let us simply say that there is a credible redemption process, ample collateral and the market prices these tokens with no discount - the market agrees they are equivalent to US $1.
 
 - Return to the token studio as ACME.
-- Create DEEPUSD. Choose a unique symbol to use whenever DEEPUSD is mentioned. 
-- Mint at least 5,000 tokens. You might want to mint considerably more so you have extra money to practice with. 
-- Choose a unique symbol, since DEEPUSD is probably already taken.
+- Create DEEPUSD. Choose a unique symbol to use whenever DEEPUSD is mentioned, since DEEPUSD is probably already taken.
+- Mint at least 5,000 tokens. You might want to mint considerably more so you have extra money to practice with.
 
-Newly minted tokens are always allocated to the distribution agent which is the token owner, ACME, by default. So, ACME will have a supply of DEEPUSD to work with in the next step. 
+Newly minted tokens are always allocated to the distribution agent, which is the token owner, ACME, by default. So, ACME will have a supply of DEEPUSD to work with in the next step.
 
 ![acme deep usd holdings](images/01-acme-deepusd.png)
 
-Return to the [Token Studio Dashboard](/originate/dashboard) example in the Originate Asset section for a detailed explanation of the origination process. 
+Return to the [Token Studio Dashboard](/originate/dashboard) example in the Originate Asset section for a detailed explanation of the origination process.
 
 
 ## Checkpoint
@@ -41,13 +40,13 @@ This deceptively simple statement hides the fact that holdings change over time.
 As ACME, proceed to the Polymesh Substrate App: https://app.polymesh.live
 
 1. In `Developer`, `Extrinsics`, select the `checkpoint` group, and `createCheckpoint(ticker)` on the right.
-2. Enter your ACME token symbol in the ticker field. 
+2. Enter your ACME token symbol in the ticker field.
 
 ![create checkpoint](images/02-create-checkpoint.png)
 
 The checkpoint you created has an id we will need later. You can use chain state queries to find this in the future. For our purposes, it should suffice to go to `Network`, `Explorer` to observe the recent transaction with the type `checkpoint.CheckpointCreated`. Expanding that reveals the checkpoint ID, which is `1` in this case.
 
-We will need to know the checkpoint for the next step, so locate your checkpoint creation transaction and note the ID that the network assigned. 
+We will need to know the checkpoint for the next step, so locate your checkpoint creation transaction and note the ID that the network assigned.
 
 ![checkpoint id](images/03-checkpointid.png)
 
@@ -55,9 +54,9 @@ In practice, the checkpoint may have been made earlier as the first decision of 
 
 <HighlightBox type="tip">
 
-If you are unsure about _which_ checkpoint transaction is yours (in case there are many), the ticker field should disambiguate it for you. The format is Hexadecimal. "ACME998" in ASCII is "0x41434d453939380000000000" in Hexadecimal. An [online Hex to ASCII converter](https://onlinehextools.com/convert-hex-to-ascii) can help you be sure. 
+If you are unsure about _which_ checkpoint transaction is yours (in case there are many), the ticker field should disambiguate it for you. The format is Hexadecimal. "ACME998" in ASCII is "0x41434d453939380000000000" in Hexadecimal. An [online Hex to ASCII converter](https://onlinehextools.com/convert-hex-to-ascii) can help you be sure.
 
-Tools like https://www.epochconverter.com/ can help convert the Moment shown into a human-readable time. Note that Polymesh times are in milliseconds, so truncate three digits from the end to make a time in seconds. You should see a time just a few minutes ago when your checkpoint was created. 
+Tools like https://www.epochconverter.com/ can help convert the Moment shown into a human-readable time. Note that Polymesh times are in milliseconds, so truncate three digits from the end to make a time in seconds. You should see a time just a few minutes ago when your checkpoint was created.
 
 </HighlightBox>
 
@@ -65,7 +64,7 @@ Tools like https://www.epochconverter.com/ can help convert the Moment shown int
 
 In practice, ACME would appoint someone with authority, possibly the CFO and possibly a service provider to actually administrate execution of their capital distribution. Granular controls are available to address, for example, tax withholdings that may apply depending on each investor's jurisdiction. This is one reason why ACME might opt to appoint a distribution agent to assist instead of performing the action themselves. For this example, we will set that concern aside except to mention that it is solved.
 
-Using an account with authority, for instance a CFO secondary key. In `Extrinsics`, select the `corporateAction` group, and `initiateCorporateAction(...)` on the right. Then complete the fields as follows:
+Use an account with authority, for instance a CFO secondary key. In `Extrinsics`, select the `corporateAction` group, and `initiateCorporateAction(...)` on the right. Then complete the fields as follows:
 
 <HighlightBox type="tip">
 
@@ -76,14 +75,14 @@ We have not created a CFO secondary key or assigned permission. While it would n
 
 * ticker: "ACME" (Your symbol)
 * kind: "UnpredictableBenefit"
-* decl_date: Put the same time as the checkpoint Moment. This is Unix time which are seconds past a certain time in the past. Tools like this https://www.epochconverter.com/ can help convert. You need to specify the time in milliseconds, so apend 000 because each second is 1,000 milliseconds.
+* decl_date: Put the same time as the checkpoint Moment. This is Unix time which are seconds past a certain time in the past. Tools like this https://www.epochconverter.com/ can help convert. You need to specify the time in milliseconds, so append 000 because each second is 1,000 milliseconds.
 * record_date: click for option, choose Existing <!-- try for creating a new one on the fly -->
-    * Existing: CheckpointId: enter the id created earlier.
+    * Existing: CheckpointId: enter the id of the checkpoint created earlier.
 * details: quarter dividends
 
-Note that there are options to include a list of targets and apply withholding tax. These options support the distribution agent's work when applying different withholding tax to lists of specific investors. Leave those options disabled. This will apply the distribution to all investors with no withholding tax. This approach will help keep this example simple, while we note that distribution agents have granular control that supports multi-jurisdictional tax withholding. 
+Note that there are options to include a list of targets and apply withholding tax. These options support the distribution agent's work when applying different withholding tax to lists of specific investors. Leave those options disabled. This will apply the distribution to all investors with no withholding tax. This approach will help keep this example simple, while we note that distribution agents have granular control that supports multi-jurisdictional tax withholding.
 
-And `Submit transaction`. **Note the id of the Corporate Action**. Copy it and keep it handy. 
+And `Submit transaction`. **Note the id of the Corporate Action**. Copy it and keep it handy.
 
 ![create corporate action](images/04-create-corporate-action.png)
 
@@ -113,13 +112,13 @@ Go to `Extrinsics`, `capitalDistribution`, `distribute(ca_id...)`.
 
 ![capital distribution](images/06-capital-distribution.png)
 
-If you need to recall the details, `Network`, `Explorer` or `Developer`, `Chain state`. 
+If you need to recall the details, `Network`, `Explorer` or `Developer`, `Chain state`.
 
 ![distribution created](images/07-distribution-created.png)
 
 ## Funds locked
 
-The funds in ACME's portfolio are now locked. As ACME, return to the dashboard, `Portfolios` tab to see that the funds are locked. This is reversible, within limits. In a slightly more sophisticated (and realistic) scenario, ACME would include an expiry date in the `capitalDistribution`, afterwhich they would be able repatriate unclaimed dividends. This is useful in the case that a shareholder is unable to claim their dividends in the next step (extenuating circumstances such as losing their wallet keys) as it provides an avenue for eventual resolution. 
+The funds in ACME's portfolio are now locked. As ACME, return to the dashboard, `Portfolios` tab to see that the funds are locked. This is reversible, within limits. In a slightly more sophisticated (and realistic) scenario, ACME would include an expiry date in the `capitalDistribution`, afterwhich they would be able repatriate unclaimed dividends. This is useful in the case that a shareholder is unable to claim their dividends in the next step (extenuating circumstances such as losing their wallet keys) as it provides an avenue for eventual resolution.
 
 You can see that in ACME's portfolio there are 5k locked DEEPUSD in default portfolio.
 
