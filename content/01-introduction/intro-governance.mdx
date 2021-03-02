@@ -6,13 +6,19 @@ slug: /introduction/intro-governance
 
 import HighlightBox from "../../src/components/HighlightBox"
 
+import {
+  ExpansionPanel,
+  ExpansionPanelList,
+  ExpansionPanelListItem
+} from 'gatsby-theme-apollo-docs';
+
 _In blockchains, the word governance describes the rules, process management and decision-making responsibilities by which the network participants keep the chain evolving._
 
 It is always a challenging but important topic. This is especially true for blockchains on which participants issue security tokens, as the chain forms the source of truth, i.e. it establishes the state of facts and the rules of the network. A fundamental challenge is establishing a set of rules that provide assurance in an environment that is expected to evolve. A solution to this problem is to establish a strictly-enforced process that will govern the evolution of the rules.
 
 There are two distinct **types of governance** in blockchain networks:
 
-* On-chain governance, whereby rules and decisions are made on-chain, as in the case of Tezos, Cardano, Polkadot, and, you guessed it, Polymesh.
+* On-chain governance, whereby rules and decisions are made on-chain, as in the case of Tezos, Cardano, Polkadot, and, you guessed it, Polymesh;
 * Off-chain governance, whereby stakeholders debate on forums like Reddit, conferences, etc., as in the case of Ethereum and Bitcoin.
 
 ## Off-chain governance?
@@ -29,13 +35,13 @@ Governance is **on-chain** and upgrades unfold by a prescribed process that addr
 
 Governance covers the following areas:
 
-* The permissioning of operators and CDD providers.
-* Certain system primitives, such as inflation and reward rates, fines, and bonding periods.
+* The permissioning of operators and CDD providers,
+* Certain system primitives, such as inflation and reward rates, fines, and bonding periods, and
 * Chain upgrades.
 
 This is a permissioned blockchain. Operators can join or leave the network and they are always known entities approved by the network users via the on-chain governance system.
 
-Chain **upgrades**, i.e. changes to the protocol are decided and implemented by certain stakeholders as delineated in the current governance system. Moreover, the node runtime is stored directly on-chain. Meaning an upgrade leads to a change of the on-chain representation of the runtime. Thus, each node checks if there is a new runtime, and if there is, starts working with that new version automatically. The possibility of non-malicious hard forks is therefore highly unlikely.
+Chain **upgrades**, i.e. changes to the protocol, are decided and implemented by certain stakeholders as delineated in the current governance system. Moreover, the node runtime is stored directly on-chain. Meaning an upgrade leads to a change of the on-chain representation of the runtime. Thus, each node checks if there is a new runtime, and if there is, starts working with that new version automatically. The possibility of non-malicious hard forks is therefore highly unlikely.
 
 Another aspect of Polymesh that adds to the improbability of hard forks is the choice to use WebAssembly (WASM) for the protocol runtime. WASM bytecode was initially conceived to enable high-performance applications on webpages. For this reason, large software companies maintain WASM compilers and virtual machines for various operating system platforms. This landscape makes the risk of hard forks caused by compiler or platform bugs highly unlikely.
 
@@ -63,13 +69,38 @@ The **Committees** are groups of individuals with up to 20 members. They are cat
 
 The **Governing Council** is a group of individuals or entities. It is the body responsible for decision-making. Currently, membership in the Committees and the Governing Council is not mutually exclusive, i.e. members can be part of both at the same time. Membership for a genesis block, i.e. the first block in the chain, is set ahead of time. The primary role of the Governing Council is to manage the blockchain, find consensus, and chart the general direction of development for the blockchain. It can fast-track proposals to deal with emergency fixes. Another role of the Governing Council is to manage the membership of Committees and of the Council itself.
 
+<ExpansionPanel title="The stages of the governance process">
+&nbsp;
+
+<ExpansionPanelList>
+
 The governance process is comprised of the following **stages**:
 
-1. Proposal
-2. Signalling on community-curated PIPs
-3. Snapshot
-4. Governing Council meeting
-5. Voting
+<ExpansionPanelListItem number="1">
+Proposal
+
+</ExpansionPanelListItem>
+
+<ExpansionPanelListItem number="2">
+Signalling on community-curated PIPs
+
+</ExpansionPanelListItem>
+
+<ExpansionPanelListItem number="3">
+Snapshot
+
+</ExpansionPanelListItem>
+
+<ExpansionPanelListItem number="4">
+Governing Council meeting
+
+</ExpansionPanelListItem>
+
+<ExpansionPanelListItem number="5">
+Voting
+</ExpansionPanelListItem>
+</ExpansionPanelList>
+</ExpansionPanel>
 
 ![Governance Process](../features/images/governance-process.png)
 

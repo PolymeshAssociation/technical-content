@@ -12,7 +12,7 @@ You may have noticed that Alice originated a security token. In all probability 
 
 Let us resolve this.
 
-## Secondary Keys
+## Secondary keys
 
 The goal is that ACME should be an identified organisation that has passed customer due diligence and Alice has, in addition to her personal wallet, a signing key to use when she represents ACME in her capacity as CEO.
 
@@ -26,7 +26,7 @@ Alice could dismiss the preceding suggestion and do it all from one wallet, i.e.
 
 Let us instead proceed as though ACME and Alice are indeed separate entities. Possibly ACME existed before Alice became CEO and ACME's keys are managed by separate personnel. How would that work?
 
-## Use Another Computer or Browser
+## Use another computer or browser
 
 Let us suppose that the ACME account is managed by someone other than Alice. We can simulate by using a different computer. This procedure closely matches a real-world scenario where these activities would indeed occur separately.
 
@@ -38,7 +38,7 @@ Below, ACME has been verified and has some POLYX.
 
 ![assign key](images/01-assign-key.png)
 
-## Create a Secondary Key
+## Create a secondary key
 
 ACME can assign a key but Alice will have to supply it to them. More precisely, Alice will provide the public information but not the private signing key, which means that ACME cannot sign on her behalf. ACME can determine the scope of the CEO's (Alice) permission within ACME but only Alice can actually sign as CEO.
 
@@ -86,7 +86,7 @@ She can change context by clicking on the little blue circle to the left of ACME
 
 ![ceo context](images/04-ACME-context.png)
 
-## Transfer Token Ownership
+## Transfer token ownership
 
 Alice and ACME are established as separate identities and Alice's wallet gives her access to her personal accounts as well as the key she uses to sign as ACME's CEO when she needs to. Now would be a good time for her to issue the security as ACME's CEO.
 
@@ -104,7 +104,7 @@ Paste ACME's account number into the new owner field and click Transfer ownershi
 
 When you click transfer, the site will explain that ACME's consent is required before the transfer will be executed. Confirm the transaction and sign, as Alice, in the usual way. After a few moments the option will change to Cancel ownership transfer which you can still do until ACME accepts the transfer. The pending status is indicated.
 
-## ACME Accepts Ownership
+## ACME accepts ownership
 
 Use the computer with ACME's Primary Key and navigate to the Token Studio.
 
