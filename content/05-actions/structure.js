@@ -4,6 +4,6 @@ module.exports = [
     `${here}landingpage`,
     `${here}actions-introduction`,
     `${here}actions-dashboard`,
-    // `${here}actions-sdk`,
+    `${here}actions-sdk`,
     `${here}actions-quiz`
 ];
