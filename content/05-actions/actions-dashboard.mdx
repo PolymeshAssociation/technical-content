@@ -21,13 +21,18 @@ An on-chain distribution requires an on-chain asset. We can envisage a future in
 For the purpose of this exercise we will set some legitimate concerns aside to create a simple example. ACME (or Alice, the CEO) will create a pegged stable token called DEEPUSD and issue 5,000 of them to ACME's default portfolio. We will not dwell on regulatory concerns or the mechanism that maintains the peg. Instead, let us simply say that there is a credible redemption process, ample collateral and the market prices these tokens with no discount - the market agrees they are equivalent to US $1.
 
 - Return to the token studio as ACME.
-- Create DEEPUSD.
+- Create DEEPUSD. Choose a unique symbol to use whenever DEEPUSD is mentioned. 
+- Mint at least 5,000 tokens. You might want to mint considerably more so you have extra money to practice with. 
 - Choose a unique symbol, since DEEPUSD is probably already taken.
+
+Newly minted tokens are always allocated to the distribution agent which is the token owner, ACME, by default. So, ACME will have a supply of DEEPUSD to work with in the next step. 
+
+![acme deep usd holdings](images/01-acme-deepusd.png)
+
+Return to the [Token Studio Dashboard](/originate/dashboard) example in the Originate Asset section for a detailed explanation of the origination process. 
 
 
 ## Checkpoint
-
-<!-- I'm not sure this is needed because the previous section claims that corporate actions create checkpoints. -->
 
 > Each shareholder will be entitled to receive a portion of the dividend in proportion to the number of shares they own.
 
@@ -36,15 +41,38 @@ This deceptively simple statement hides the fact that holdings change over time.
 As ACME, proceed to the Polymesh Substrate App: https://app.polymesh.live
 
 1. In `Developer`, `Extrinsics`, select the `checkpoint` group, and `createCheckpoint(ticker)` on the right.
-2. Enter "ACME" in the ticker field. You get a checkpoint id that you will reuse.
+2. Enter your ACME token symbol in the ticker field. 
+
+![create checkpoint](images/02-create-checkpoint.png)
+
+The checkpoint you created has an id we will need later. You can use chain state queries to find this in the future. For our purposes, it should suffice to go to `Network`, `Explorer` to observe the recent transaction with the type `checkpoint.CheckpointCreated`. Expanding that reveals the checkpoint ID, which is `1` in this case.
+
+We will need to know the checkpoint for the next step, so locate your checkpoint creation transaction and note the ID that the network assigned. 
+
+![checkpoint id](images/03-checkpointid.png)
 
 In practice, the checkpoint may have been made earlier as the first decision of the board, before they even decided the dividend distribution, the idea being to avoid opportunistic price moves, and / or insider trading.
 
+<HighlightBox type="tip">
+
+If you are unsure about _which_ checkpoint transaction is yours (in case there are many), the ticker field should disambiguate it for you. The format is Hexadecimal. "ACME998" in ASCII is "0x41434d453939380000000000" in Hexadecimal. An [online Hex to ASCII converter](https://onlinehextools.com/convert-hex-to-ascii) can help you be sure. 
+
+Tools like https://www.epochconverter.com/ can help convert the Moment shown into a human-readable time. Note that Polymesh times are in milliseconds, so truncate three digits from the end to make a time in seconds. You should see a time just a few minutes ago when your checkpoint was created. 
+
+</HighlightBox>
+
 ## Set up the action
 
-In practice, ACME would appoint someone with authority, possibly the CFO and possibly a service provider to actual administrate execution of their capital distribution.
+In practice, ACME would appoint someone with authority, possibly the CFO and possibly a service provider to actually administrate execution of their capital distribution. Granular controls are available to address, for example, tax withholdings that may apply depending on each investor's jurisdiction. This is one reason why ACME might opt to appoint a distribution agent to assist instead of performing the action themselves. For this example, we will set that concern aside except to mention that it is solved.
 
-Using an account with authority, for instance the CFO secondary key. In `Extrinsics`, select the `corporateAction` group, and `initiateCorporateAction(...)` on the right. Then complete the fields as follows:
+Using an account with authority, for instance a CFO secondary key. In `Extrinsics`, select the `corporateAction` group, and `initiateCorporateAction(...)` on the right. Then complete the fields as follows:
+
+<HighlightBox type="tip">
+
+We have not created a CFO secondary key or assigned permission. While it would not be good security practice to rely on ACME's primary key for routine operations, it is a valid choice for this exercise.
+
+</HighlightBox>
+
 
 * ticker: "ACME" (Your symbol)
 * kind: "UnpredictableBenefit"
@@ -52,14 +80,18 @@ Using an account with authority, for instance the CFO secondary key. In `Extrins
 * record_date: click for option, choose Existing <!-- try for creating a new one on the fly -->
     * Existing: CheckpointId: enter the id created earlier.
 * details: quarter dividends
-* targets: click for option: Not sure if we leave this unchecked. <!-- should default to "everyone", so "leave alone" -->
-    * identities:
-        * enter aliceDid
-        * enter bobDid
-    * treatment: Include
-* No tax lol <!-- keep it simple -->
 
-And `Submit transaction`. Note the id of the Corporate Action. <!-- how? -->
+Note that there are options to include a list of targets and apply withholding tax. These options support the distribution agent's work when applying different withholding tax to lists of specific investors. Leave those options disabled. This will apply the distribution to all investors with no withholding tax. This approach will help keep this example simple, while we note that distribution agents have granular control that supports multi-jurisdictional tax withholding. 
+
+And `Submit transaction`. **Note the id of the Corporate Action**. Copy it and keep it handy. 
+
+![create corporate action](images/04-create-corporate-action.png)
+
+<HighlightBox type="tip">
+
+How can you find the id of the corporate action? The id is recorded in the transaction. You can use `Network`, `Explorer` to spot the recent transaction. Chain state queries can help you, or automated processes, find relevant information.
+
+</HighlightBox>
 
 ## Prepare the dividend
 
@@ -69,7 +101,7 @@ Go to `Extrinsics`, `capitalDistribution`, `distribute(ca_id...)`.
 
 * ca_id:
     * ticker: "ACME" (Your symbol)
-    * local_id: The corporate action ID you saved earlier
+    * local_id: The corporate action id you saved earlier
 * portfolio: leave empty
 * currency: DEEPUSD
 * balance: 5,000. It says POLYX at the right, but it is just an artefact of the "Balance" type that always thinks it is POLYX.
@@ -89,7 +121,7 @@ As Alice, navigate to `Developer`, `Extrinsics`, `capitalDistribution`, `claim(c
 
 * ca_id:
     * ticker: "ACME" (Your symbol)
-    * local_id: the capital distribution ID you saved earlier
+    * local_id: the capital distribution id you saved earlier
 
 Astute readers will note that is an asset transfer. Therefore, it does not occur without Alice's consent. Also, any compliance rules attached to DEEPUSD apply. We did not define any compliance rules for DEEPUSD and Alice's consent is implied since she is explicitly requesting the dividend.
 
