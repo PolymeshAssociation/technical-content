@@ -35,9 +35,9 @@ Governance is **on-chain** and upgrades unfold by a prescribed process that addr
 
 Governance covers the following areas:
 
-* The permissioning of operators and CDD providers,
-* Certain system primitives, such as inflation and reward rates, fines, and bonding periods, and
-* Chain upgrades.
+* the permissioning of operators and CDD providers,
+* certain system primitives, such as inflation and reward rates, fines, and bonding periods, and
+* chain upgrades.
 
 This is a permissioned blockchain. Operators can join or leave the network and they are always known entities approved by the network users via the on-chain governance system.
 
@@ -81,12 +81,14 @@ The governance process is comprised of the following **stages**:
 <ExpansionPanelListItem number="1">
 
 **Proposal**
+
 To **propose** an upgrade, one has to submit a PIP. One can bond some POLYX to the proposal and add information specifying the proposal. When a PIP is submitted, it becomes visible and **support signalling** by the community of token holders can start. That is, POLYX token holders can signal support or dissent with the PIP by bonding some of their POLYX to it. For this, the native token is used as an indicator of the proposal’s popularity.
 </ExpansionPanelListItem>
 
 <ExpansionPanelListItem number="2">
 
 **Signalling on community-curated PIPs**
+
 The **signalling** during that phase comes down to the number of POLYX tokens bonded, where one POLYX equals one vote. Note that this 1-1 ratio could be modified by a PIP too. The number of POLYX tokens can be split, but at all times, one cannot use more POLYX than one holds at the time. During the bonding, the POLYX is locked, in that it cannot be spent but can **only** be withdrawn, and actually also be staked. This condition doesn’t make users opt between network security and the use of tokens. Once the proposal is through, i.e. the PIP reached enough support, or in case votes are withdrawn, the tokens are freed.
 
 </ExpansionPanelListItem>
@@ -94,6 +96,7 @@ The **signalling** during that phase comes down to the number of POLYX tokens bo
 <ExpansionPanelListItem number="3">
 
 **Snapshot**
+
 After PIPs finalise the signalling stage, they are considered in a **Governing Council Meeting**. First, a snapshot of the proposals is taken and ordered by the number of "Yes" and "No" votes for each proposal.
 
 </ExpansionPanelListItem>
@@ -101,6 +104,7 @@ After PIPs finalise the signalling stage, they are considered in a **Governing C
 <ExpansionPanelListItem number="4">
 
 **Governing Council meeting**
+
 How is the order of debate determined exactly? Does it go from most to least important proposal? The order of debate follows the order found in the snapshot.
 
 The number of proposals revised during each session can be determined by the council.
@@ -110,6 +114,7 @@ The number of proposals revised during each session can be determined by the cou
 <ExpansionPanelListItem number="5">
 
 **Voting**
+
 When considering each individual PIPs, council members can either "approve", "reject", or "skip" a proposal. With the caveat that there is only a fixed number of times a proposal can be skipped before it has to be approved or rejected, as a decision for each proposal is required.
 
 Now, the signals come into play. The signals from the token holders are indications for the Governing Council to base their decisions on it in regard to support for a PIP as well as perceived importance. Signalling can be understood as a result of a compromise between managing the ecosystem effectively whilst incorporating the views from the wider Polymesh community.
@@ -119,6 +124,7 @@ Now, the signals come into play. The signals from the token holders are indicati
 <ExpansionPanelListItem number="5">
 
 **Execution**
+
 Once the Governing Council has approved PIPs, the so-called **Release Coordinator** executes them, i.e. schedules their implementation. The Release Coordinator is a member of the Governing Council, is appointed by it and can be replaced too.
 
 The proposals are implemented on-chain, as PIPs and the snapshot are token-curated.
@@ -141,7 +147,7 @@ Learn more and test-drive governance here [https://governance.polymesh.live/](ht
 
 Now that we have a clear understanding of the governance process itself, let’s take a look at how this translates to our Dashboard.
 
-First, open up your browser and check that you are logged into your Polymesh Wallet. Open the dashboard by going to [https://dashboard.polymesh.live/](https://dashboard.polymesh.live/).
+First, open up your browser and check that you are logged into your Polymesh Wallet. Open the dashboard by going to: [https://dashboard.polymesh.live/](https://dashboard.polymesh.live/).
 
 If it’s your first time, you will probably see the following:
 
@@ -150,6 +156,8 @@ If it’s your first time, you will probably see the following:
 Click on `Connect Polymesh Wallet`. Your wallet will then ask you for an authorisation.
 
 ![Dashboard Access](../features/images/dashboard-authorisation.png)
+
+!--> Obfuscate name of wallet owner -->
 
 Click on `Authorize`.
 
@@ -173,7 +181,7 @@ Once you have connected the wallet or if you don’t see the above, the redirect
 
 ![Governance Dashboard Overview](../features/images/governance-dashboard.png)
 
-Welcome to the governance dashboard!
+**Welcome to the Governance Dashboard!**
 
 The dashboard also includes a short overview of your Polymesh ID, keys, and account balance.
 
@@ -245,7 +253,7 @@ In your browser, you should see:
 
 ![Notification Successful Voting](../features/images/poll-submission-successful.png)
 
-Congratulations! You just voted.
+**Congratulations! You just voted.**
 
 Now that we have explored the Dashboard. Let’s just go for it and create a proposal!
 
