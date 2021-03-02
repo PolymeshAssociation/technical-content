@@ -124,7 +124,7 @@ You can see that in ACME's portfolio that 5k DEEPUSD in the default portfolio ha
 
 ## Beneficiary claims
 
-Now, Alice will receive her dividend. This uses a "pull" pattern rather than "push". Alice will draw from the capital distribution.
+Now, Alice will receive her dividend. This can be done using a "pull" or "push" pattern, meaning either ACME can _push_ distributions to recipients, or recipients can _pull_ distributions from the capital distribution. Let us use the "pull" pattern. Alice will draw from the capital distribution.
 
 As Alice, navigate to `Developer`, `Extrinsics`, `capitalDistribution`, `claim(ca_id)`.
 
@@ -132,9 +132,7 @@ As Alice, navigate to `Developer`, `Extrinsics`, `capitalDistribution`, `claim(c
     * ticker: "ACME" (Your symbol)
     * local_id: the capital distribution id you saved earlier
 
-Astute readers will note that is an asset transfer. Therefore, it does not occur without Alice's consent. Also, any compliance rules attached to DEEPUSD apply. We did not define any compliance rules for DEEPUSD and Alice's consent is implied since she is explicitly requesting the dividend. Everyone who holds a given asset needs a unique ID scope, so Alice will create a uID scope for DEEPUSD. Return to the asset [distribution section](/distribute/dashboard) for a more complete description of this process. 
-
-There are no other possible obstacles so we expect Alice's dividend in her portfolio. We also expect that the funds have indeed left ACME's portfolio.
+We also expect that the funds have indeed left ACME's portfolio.
 
 ## Confirm the transfer
 
@@ -148,7 +146,7 @@ Alice's actual dividend amount depends on her balance at the time. Your amount m
 
 ## Summary
 
-Polymesh supports on-chain execution of corporate actions that address such concerns as capital distributions and voting. The flexible permission system accomodates outsourcing the execution of corporate actions to service providers, if desired. Corporate actions can be integrated into internal systems as will be unfolded in the following section, but they can also be executed in a no-code manner. Compliance rules apply to capital distributions.
+Polymesh supports on-chain execution of corporate actions that address such concerns as capital distributions and voting. The flexible permission system accomodates outsourcing the execution of corporate actions to service providers, if desired. Corporate actions can be integrated into internal systems as will be unfolded in the following section, but they can also be executed in a no-code manner.
 
 ## Links
 
