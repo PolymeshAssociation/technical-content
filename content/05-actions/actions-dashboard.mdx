@@ -120,7 +120,7 @@ If you need to recall the details, `Network`, `Explorer` or `Developer`, `Chain 
 
 The funds in ACME's portfolio are now locked. As ACME, return to the dashboard, `Portfolios` tab to see that the funds are locked. This is reversible, within limits. In a slightly more sophisticated (and realistic) scenario, ACME would include an expiry date in the `capitalDistribution`, afterwhich they would be able repatriate unclaimed dividends. This is useful in the case that a shareholder is unable to claim their dividends in the next step (extenuating circumstances such as losing their wallet keys) as it provides an avenue for eventual resolution.
 
-You can see that in ACME's portfolio there are 5k locked DEEPUSD in default portfolio.
+You can see that in ACME's portfolio that 5k DEEPUSD in the default portfolio have been locked.
 
 ## Beneficiary claims
 
@@ -132,23 +132,13 @@ As Alice, navigate to `Developer`, `Extrinsics`, `capitalDistribution`, `claim(c
     * ticker: "ACME" (Your symbol)
     * local_id: the capital distribution id you saved earlier
 
-Astute readers will note that is an asset transfer. Therefore, it does not occur without Alice's consent. Also, any compliance rules attached to DEEPUSD apply. We did not define any compliance rules for DEEPUSD and Alice's consent is implied since she is explicitly requesting the dividend.
+Astute readers will note that is an asset transfer. Therefore, it does not occur without Alice's consent. Also, any compliance rules attached to DEEPUSD apply. We did not define any compliance rules for DEEPUSD and Alice's consent is implied since she is explicitly requesting the dividend. Everyone who holds a given asset needs a unique ID scope, so Alice will create a uID scope for DEEPUSD. Return to the asset [distribution section](/distribute/dashboard) for a more complete description of this process. 
 
 There are no other possible obstacles so we expect Alice's dividend in her portfolio. We also expect that the funds have indeed left ACME's portfolio.
 
 ## Confirm the transfer
 
-As ACME, navigate to the `Dashboard`, `Portfolio` tab and see that ____* locked DEEPUSD remain. As Alice, see that ____ DEEPUSD have arrived.
-
-Of course, you can also use the Polymesh Substrate App to discover this information through the SDK methods.
-
-Navigate to `Developer`, `Chain State`, `portfolio`, `portfolioLockedAssets()` and provide ACME's DID.
-
-You can see that in ACME's portfolio there are ______ locked DEEPUSD in default portfolio
-
-Navigate to `portfolio`, `portfolioAssetBalances` and provide Alice's DID.
-
-There are ____ unlocked USD. That's if she sent 200 shares to Bob if I am correct.
+Using the dashboard as ACME and Alice, confirm that the funds have left ACME's default portfolio they have arrived in Alice's default portfolio. 
 
 <HighlightBox type="info">
 
