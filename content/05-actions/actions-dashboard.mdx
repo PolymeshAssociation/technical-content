@@ -76,7 +76,7 @@ We have not created a CFO secondary key or assigned permission. While it would n
 
 * ticker: "ACME" (Your symbol)
 * kind: "UnpredictableBenefit"
-* decl_date: Put a date now or a few minutes in the past but after the checkpoint. This is Unix time which are seconds past a certain time in the past. Tools like this https://www.epochconverter.com/ can help convert. You need to specify the time in milliseconds, so apend 000 because each second is 1,000 milliseconds.
+* decl_date: Put the same time as the checkpoint Moment. This is Unix time which are seconds past a certain time in the past. Tools like this https://www.epochconverter.com/ can help convert. You need to specify the time in milliseconds, so apend 000 because each second is 1,000 milliseconds.
 * record_date: click for option, choose Existing <!-- try for creating a new one on the fly -->
     * Existing: CheckpointId: enter the id created earlier.
 * details: quarter dividends
@@ -89,9 +89,13 @@ And `Submit transaction`. **Note the id of the Corporate Action**. Copy it and k
 
 <HighlightBox type="tip">
 
-How can you find the id of the corporate action? The id is recorded in the transaction. You can use `Network`, `Explorer` to spot the recent transaction. Chain state queries can help you, or automated processes, find relevant information.
+How can you find the id of the corporate action? The id is recorded in the transaction. You can use `Network`, `Explorer` to spot the recent transaction. What if it is not recent? Chain state queries can help you or automated processes find relevant information.
 
 </HighlightBox>
+
+The corporate action created with local id 0:
+
+![corporate action id 1](images/05-action-id.png)
 
 ## Prepare the dividend
 
@@ -103,9 +107,15 @@ Go to `Extrinsics`, `capitalDistribution`, `distribute(ca_id...)`.
     * ticker: "ACME" (Your symbol)
     * local_id: The corporate action id you saved earlier
 * portfolio: leave empty
-* currency: DEEPUSD
+* currency: DEEPUSD (Your symbol)
 * balance: 5,000. It says POLYX at the right, but it is just an artefact of the "Balance" type that always thinks it is POLYX.
 * payment_at: make it a minute in the future, so that it is after the corporate action. This is also in milliseconds.
+
+![capital distribution](images/06-capital-distribution.png)
+
+If you need to recall the details, `Network`, `Explorer` or `Developer`, `Chain state`. 
+
+![distribution created](images/07-distribution-created.png)
 
 ## Funds locked
 
