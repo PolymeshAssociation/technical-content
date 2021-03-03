@@ -44,11 +44,11 @@ We just saw that, depending on the situation, legs require approvals from releva
 
 And yes, a secondary key, or a custodian (see below) entrusted with sufficient rights, can affirm on behalf of a relevant account.
 
-When the account owning an asset has affirmed a leg, then the asset's relevant quantity is _committed_, a.k.a. docked. This commitment prevents double-booking in another instruction's leg, by mistake or malice. Failing to do so would eventually cause one of the two competing instructions to fail much later, at execution.
+When the account owning an asset has affirmed a leg, then the asset's relevant quantity is _committed_. This commitment prevents double-booking in another instruction's leg, by mistake or malice. Failing to do so would eventually cause one of the two competing instructions to fail much later, at execution.
 
-If a leg mentions a signed receipt for an off-chain action, this signed receipt is docked too.
+If a leg mentions a signed receipt for an off-chain action, this signed receipt is committed too.
 
-For the avoidance of doubt, a party can reject a leg, thereby cancelling the whole instruction, and releasing all previously committed assets and signed receipts. A party can also _not_ affirm a leg, i.e. play for time, which would leave the instruction in limbo until some other resolution, like a cancellation, or hitting of the instruction's expiry date.
+For the avoidance of doubt, a party can reject a leg, thereby cancelling the whole instruction, and releasing all previously committed assets and signed receipts. A party can also _not_ affirm a leg, i.e. play for time, which would leave the instruction in limbo until some other resolution, like a cancellation or the instruction's expiry date.
 
 ### Instructions - Multiparty Transactions
 
@@ -69,7 +69,7 @@ In Polymesh, nothing material happens until the compliance rules have been met. 
 
 For the avoidance of doubt, yes, an instruction can have been affirmed by all parties, and still stay in a pending state while the KYC requirements are being resolved. As expected, it is also possible to cancel the whole instruction while it is pending compliance.
 
-Additionally, the securities token issuer can also restrict which accounts are allowed to create instructions transferring _their_ token. Although it is expected that this facility will be seldom used.
+Additionally, the securities token issuer can also restrict which accounts are allowed to create instructions transferring _their_ token. Although it is expected that this facility will seldom be used.
 
 ### Atomic Execution
 
@@ -110,7 +110,7 @@ An instruction is the vehicle for a settlement on Polymesh. It has many moving p
 
 Putting signature to an instruction is not the only way to affirm it. There is another construct, that of the pre-authorisation. In effect, a signature that validates one, and only one, future instruction. Not unlike a blank cheque.
 
-So if Bob signed a pre-authorisation, Alice can include it when creating the instruction. The pre-authorisation will be docked before execution, and marked as consumed when the instruction executes.
+So if Bob signed a pre-authorisation, Alice can include it when creating the instruction. The pre-authorisation will be committed before execution, and marked as consumed when the instruction executes.
 
 This could also be used by an exchange, which would collect pre-authorisations from the brokers that list on it. A new instruction would therefore be authorised as soon as it is created, potentially leading to an instant settlement.
 
@@ -169,17 +169,17 @@ Very important in this regard is the **portfolio** concept in Polymesh. One can 
 
 Portfolios are especially interesting when it comes to custody. Any assets in a portfolio can be assigned to a custodian, who then manages them exclusively. Each portfolio can **only** be assigned to a single custodian at the same time. And any new assets transferred into a portfolio managed by a custodian are also included in the custody.
 
-When a user assigns custodianship to a portfolio, the custodial ownership is transferred to a different identity. This form of permission separates beneficial ownership from custodial ownership.
+When a user assigns custodianship to a portfolio, the custodial control is transferred to a different identity. This form of permission separates beneficial ownership from custodial control.
 
 What is the difference between both?
 
 **Beneficial ownership** means the control over an asset or legal entity. Following the United States of America _Securities Exchange Act_ (1934), beneficial ownership, when it comes to securities, is understood as any person holding vosting or investment power. Translating into Polymesh, beneficial ownership is **always** held by the beneficiaries account and is the base criteria to participate in corporate actions.
 
-**Custodial ownership** gives another entity, i.e. account, the right to manage assets on behalf of the beneficiary. This is where custody service providers come into play on Polymesh.
+**Custodial control** gives another entity, i.e. account, the right to manage assets on behalf of the beneficiary. This is where custody service providers come into play on Polymesh.
 
 Performing actions for the beneficiaries, i.e. token holders, is possible for the custodian through authorisations. If another user is involved in an action, an _invitation to action_ becomes necessary. The authorisation system remains on-chain at all times.
 
-Custodians with access to a portfolio are able to affirm instructions referencing the portfolio and given on behalf of the beneficial owner, token holder. Thus, beneficial ownership records are maintained consistently and ownership remains in the hands of the token holder, while allowing custodial ownership.
+Custodians with access to a portfolio are able to affirm instructions referencing the portfolio and given on behalf of the beneficial owner, token holder. Thus, beneficial ownership records are maintained consistently and ownership remains in the hands of the token holder, while allowing custodial control.
 
 Why are authorisations necessary when dealing with custody services?
 
@@ -191,14 +191,14 @@ Then, what services can a custodian perform on-chain?
 
 Once assigned, a custodian is able to:
 
-* affirm or reject instructions - as long as they relate to a portfolio managed by the custodian on behalf of the beneficiary, and
+* affirm or reject instructions regarding custodial assets on behalf of the beneficial asset holder, and
 * revoke the custodianship over a portfolio.
 
 A custodian can settle instructions only, but has full-autonomy to affirm these.
 
 <HighlightBox type="tip">
 
-If you are feeling unsure about accounts, signing keys and permissions, take a look at the identity introduction section!
+If you are feeling unsure about accounts, signing keys and permissions, take a look at the [identity section](/introduction/intro-identity)!
 
 </HighlightBox>
 
