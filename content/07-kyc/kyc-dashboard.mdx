@@ -4,7 +4,9 @@ description: KYC Actions with the Polymesh Dashboard
 slug: /kyc/kyc-dashboard
 ---
 
-## Dashboard
+import HighlightBox from "../../src/components/HighlightBox"
+
+## No Code KYC Process
 
 It is possible to validate a KYC for a given Polymesh Identity (PID) using the Polymesh Dashboard. For reasons of scaleability, Polymath expects that most KYC Service Providers will integrate Polymesh's on-chain attestations with their established business processes and automated systems using the SDK.
 
@@ -12,13 +14,15 @@ Even so, let us walk through the process using the Polymesh Dashboard to get acq
 
 ## Trigger a KYC requirement
 
-It is obviously possible for a person or entity to independently start a KYC process with a given KYC provider. It is also possible a dashboard, or another integrated system, prompts a user to complete a KYC process before stepping forward. Such a KYC prompt may be triggered by a trade settlement or distribution that requires that all owners verify their identity.
+Security tokens enforce compliance rules defined at the token level. Consequently, incoming transfers can trigger KYC processes. For example, Alice trades with Bob and Bob is to receive ACME shares, but ACME has a compliance rule that states that holders must not be residents of Liechtenstein. It is incumbant on Bob to show that this is not the case, and to show it in a way that will be acceptable to ACME. 
+
+ACME can appoint a KYC service provider or attend to the communication and back-office process in house. In either case, ACME recognizes the signature of the appointed KYC service provider. How does Bob know what to do? Recall that this process was kicked off by a trade, so we can infer that there is a trading system external to Polymesh itself. The SDK offers methods to signal that the receiver, Bob, needs to complete KYC process with ACME's appointed KYC service provider, so this concern is external to Polymesh. Polymesh will simply hold the transfer in a pending state until ACME's compliance needs are addressed. 
 
 ## Off-chain processes
 
-The originator establishes the KYC requirement and the process used to verify attestations. The KYC Service Provider generally offers a suite of services the originator can purchase, rather than an absolute assurance that the attestions are truthful.
+The asset owner, usually the originator, establishes the compliance rules, KYC requirements and the process used to verify attestations. The KYC Service Provider generally offers a suite of services the originator can purchase, rather than an absolute assurance that the attestions are factual.
 
-To understand how this works, consider a simple matter of someone's first name. Let us say the person claims their name is Alice. The originator's task is to establish a process that will let them be in regulatory compliance and then find a way to execute the process consistently, which is how the KYC Service Provider can help.
+To understand how this works, consider a simple matter of someone's first name. Let us say the person claims their name is Alice. The originator's task is to establish a process that will ensure regulatory compliance and then find a way to execute the process consistently. Consistent execution is how the KYC Service Provider can help.
 
 There are many ways to verify such a claim. One method has already been hinted at. We might call this a self-attestation because the person has informally stated their name. To _verify_ that claim, the originator needs _evidence_.
 
@@ -39,28 +43,71 @@ The result is something approximating:
     validUntil: March 1, 2022
 }
 ```
-Since this is signed by the KYC Provider, it becomes a virtually inarguable fact that the KYC Service Provider did indeed attest to the facts on a certain day after following a well-defined process. This is subtly different from imagining that the blockchain cannot possibly be in error about Alice's name. The information about Alice is as good as EzKyc's process to determine it.
+Since this is signed by the KYC Provider, it becomes a virtually inarguable fact that the KYC Service Provider did indeed attest to the facts on a certain day after following a well-defined process. This is subtly different from imagining that the blockchain cannot possibly be in error about Alice's name. The information about Alice is as good as the process that determined it.
 
 ## On-Chain Enforcement
 
-Polymesh allows originators to bind their KYC requirements to the assets they create. The system will not allow a transfer to someone who is not properly verified. It is therefore possible to assert that all owners of a given asset have indeed passed the KYC process, and it is simultaneously possible to assert that every asset on Polymesh can have a unique KYC policy.
+Polymesh allows originators to bind their KYC requirements to the assets they create. The system will not allow a transfer to someone who is not properly verified. It is therefore possible to assert that all owners of a given asset passed the KYC process that was in force at the time, and it is simultaneously possible to assert that every asset on Polymesh can have a unique KYC policy.
 
 Trade and settlement may be stalled while the receiver completes the needed KYC Process with the KYC Service Provider that provides the service.
 
 Since the process details are actually off-chain, the on-chain concerns are reduced approximately to a simple true/false response to identity claims.
 
-## Reuseable Attestions
+## The KYC Provider
 
-## Exercise
+Asset originators are KYC service providers, by default. That is to say, ACME is its own KYC service provider unless they appointed a third party such as EzKYC. If you are unsure which Polymesh DID, exactly, is ACME's KYC service provider at this time, return to the [token studio](https://tokenstudio.polymesh.live/) as ACME and check the `Compliance` tab for your ACME token. 
 
-## Open the Dashboard
+![KYC service provider](images/03-kyc-provider.png)
 
-## Request KYC Verification
+## Create an Attestation
 
-## KYC Service Provider Inbox
+Let us create an attestion for Alice that will claim her jurisdiction is Great Britain. 
 
-## Verify the Attestation
+As the KYC service provider (ACME or EzKYC), open the [Polymesh API Explorer](https://app.polymesh.live/). 
 
-## Observe as the User
+Navigate to `Developer`, `Extrinsic`. Then, select `identity`, `addClaim(...)`. 
+
+Complete the form fields:
+
+<MultiCodeBlock>
+
+```
+target: Alice's personal Polymesh DID. The claim is about Alice.
+claim: Jurisdiction. The topic is Alice's jurisdiction.
+Country Code: GB (near the bottom). The claim is her jurisdiction is Great Britain.
+Scope: Ticker. This attestation applies to a security token.
+Ticker: Your ACME token symbol
+Expiry: Pick a time about 1 year in the future.
+```
+
+</MultiCodeBlock>
+
+<HighlightBox type="tip">
+
+Use a tool like EpochConverter to create Unix time stamps for future dates. Use the time in milliseconds with the extra three zeros. https://www.epochconverter.com/
+
+</HighlightBox>
+
+`Submit Transaction`, confirm the action and sign the transaction in the usual way. 
+
+![sign attestation](images/01-create-claim.png)
+
+## Observe Attestation
+
+As you might expect, Alice now has an attestation, signed by ACME's KYC service provider and she can see it on her `Account` tab in the dashboard. 
+
+As Alice, visit the [dashboard Accounts tab](https://dashboard.polymesh.live/account).
+
+The attestation is displayed and it shows her jurisdiction is Great Britain and this was signed by the KYC service provider ACME happens to be using. 
+
+![alice's attestions](images/02-alice-claim.png)
+
+## Re-enable Compliance rules
+
+You can now return to the [dashboard exercise in the distribution section](/distribute/dashboard) for a suggested compliance policy for the ACME token. Re-enable this policy now. Experiment with transfers between Alice, Bob and new identities you create, with and without the required jurisdiction attestations. 
 
 ## Links
+
+- Token Studio https://tokenstudio.polymesh.live/ 
+- API Explorer https://app.polymesh.live/
+- EpochConverter: https://www.epochconverter.com/ 

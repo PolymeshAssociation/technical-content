@@ -18,7 +18,9 @@ Remember when Alice the CEO set up the conditions for receiving ACME shares; the
 * have a KYC claim by the designated KYC provider.
 * the jurisdiction in this claim must not be of Liechtenstein.
 
-However we briefly saw only briefly in the settlement module how you would add a claim that would allow someone to receive ACME shares. Let's repeat it here.
+For some exercises, we simply disabled compliance rules for simplicity's sake. What if compliance rules are in effect? How can Alice show that she is not in Liechtenstein?
+
+In the settlement SDK module, we briefly saw how you would add a claim that would allow someone to receive ACME shares. Let's repeat it here.
 
 <MultiCodeBlock>
 
@@ -68,7 +70,7 @@ await claimQueue.run();
 
 </MultiCodeBlock>
 
-Any identity can add an attestation to another identity. This is very different from CDD providers, which are permissioned. This means that it is potentially open to abuse, and ACME's compliance cannot rely on _any_ jurisdictional attestation. This is why the compliance needs to mention the identity of the KYC service provider.
+Any identity can add an attestation to another identity. This is very different from CDD providers, which are permissioned through network governance. This means that it is potentially open to abuse, and ACME's compliance cannot rely on _any_ jurisdictional attestation. This is why the compliance policy specifies the identity of the KYC service provider. The KYC service provider is the signer ACME trusts for compliance purposes. 
 
 ## Change the jurisdiction claim
 
@@ -154,11 +156,6 @@ await revokeClaimQueue.run();
 
 </MultiCodeBlock>
 
-
-## Inspect the Queue
-
-## Report the Attestation
-
-## Link
+## Links
 
 - SDK: https://developers.polymath.network/classic-sdk/globals
