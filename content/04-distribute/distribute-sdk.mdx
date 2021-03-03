@@ -106,11 +106,13 @@ We are going to show the code for ACME, but doing it for Alice would be the same
 <MultiCodeBlock>
 
 ```typescript
-const uID: string = "21d18606-5971-4136-90c1-decdef95fc1e"; // For example
+const uIDv4: string = "21d18606-5971-4136-90c1-decdef95fc1e"; // For example
+const uID: string = `0x${uIDv4.replace(/-/g, '')}`; // Results in 0x21d186065971413690c1decdef95fc1e
 ```
 
 ```javascript
-const uID = "21d18606-5971-4136-90c1-decdef95fc1e"; // For example
+const uIDv4 = "21d18606-5971-4136-90c1-decdef95fc1e"; // For example
+const uID = `0x${uIDv4.replace(/-/g, '')}`; // Results in 0x21d186065971413690c1decdef95fc1e
 ```
 
 </MultiCodeBlock>
@@ -164,7 +166,7 @@ const acmeHex: string = Array.prototype.map.call(
     )
     .join("")
     .padEnd(24, "0");
-const scopeDid: string = `0x${acmeHex}`; // 0x41434d450000000000000000
+const acmeScopeDid: string = `0x${acmeHex}`; // 0x41434d450000000000000000
 ```
 
 ```javascript
@@ -176,7 +178,7 @@ const acmeHex = Array.prototype.map.call(
     )
     .join("")
     .padEnd(24, "0");
-const scopeDid = `0x${acmeHex}`; // 0x41434d450000000000000000
+const acmeScopeDid = `0x${acmeHex}`; // 0x41434d450000000000000000
 ```
 
 </MultiCodeBlock>
@@ -192,7 +194,7 @@ const iuProofAsString: string = confidential_identity.process_create_claim_proof
         "investor_unique_id": Array.from(hexToU8a(uID))
     }),
     JSON.stringify({
-        "scope_did": Array.from(hexToU8a(scopeDid)),
+        "scope_did": Array.from(hexToU8a(acmeScopeDid)),
         "investor_unique_id": Array.from(hexToU8a(uID))
     })
 );
@@ -208,7 +210,7 @@ const iuProofAsString = confidential_identity.process_create_claim_proof(
         "investor_unique_id": Array.from(hexToU8a(uID))
     }),
     JSON.stringify({
-        "scope_did": Array.from(hexToU8a(scopeDid)),
+        "scope_did": Array.from(hexToU8a(acmeScopeDid)),
         "investor_unique_id": Array.from(hexToU8a(uID))
     })
 );
@@ -231,9 +233,9 @@ const uniquenessQueue: TransactionQueue<void> = await apiCeo.claims.addInvestorU
     "proof": proof,
     "scope": {
         "type": ScopeType.Ticker,
-        "value": scopeDid // Note: Did
+        "value": "ACME"
     },
-    "scopeId": scopeId // Note: Id
+    "scopeId": scopeId
 });
 await uniquenessQueue.run();
 ```
@@ -244,9 +246,9 @@ const uniquenessQueue = await apiCeo.claims.addInvestorUniquenessClaim({
     "proof": proof,
     "scope": {
         "type": "Ticker",
-        "value": scopeDid // Note: Did
+        "value": "ACME"
     },
-    "scopeId": scopeId // Note: Id
+    "scopeId": scopeId
 });
 await uniquenessQueue.run();
 ```
@@ -254,6 +256,40 @@ await uniquenessQueue.run();
 </MultiCodeBlock>
 
 With this, the investor uniqueness claim is saved on-chain and ACME can receive ACME shares. Do the same for Alice, and Alice will be able to get ACME shares too.
+
+### Confirmation
+
+Of course, there needs to be only one such valid investor uniqueness claim per account-ticker pair. It could well be that an investor has already done it. How to confirm? Easy. Alice the CEO may check this status of ACME, as it could have been done by another founder already.
+
+<MultiCodeBlock>
+
+```typescript
+const uniquenessClaims: ClaimData<InvestorUniquenessClaim>[] = await apiCeo.claims.getInvestorUniquenessClaims({
+    "includeExpired": false
+});
+const acmeUniquenessClaims: ClaimData<InvestorUniquenessClaim>[] = uniquenessClaims
+    .filter((claimData: ClaimData<InvestorUniquenessClaim>) => {
+        const scope = claimData.claim.scope;
+        return scope.type === ScopeType.Ticker &&
+            scope.value === "ACME";
+    });
+assert(acmeUniquenessClaims.length > 0);
+```
+
+```javascript
+const uniquenessClaims = await apiCeo.claims.getInvestorUniquenessClaims({
+    "includeExpired": false
+});
+const acmeUniquenessClaims = uniquenessClaims
+    .filter((claimData) => {
+        const scope = claimData.claim.scope;
+        return scope.type === ScopeType.Ticker &&
+            scope.value === "ACME";
+    });
+assert(acmeUniquenessClaims.length > 0);
+```
+
+</MultiCodeBlock>
 
 ## Prepare the distribution
 
