@@ -74,6 +74,187 @@ We assume that:
 
 Now that we went throught the preconditions, let's continue preparing the distribution.
 
+## Publish the investor uniqueness claims
+
+### The what?
+
+This part is heavier in terms of cryptography. If in doubt about some elements, please refer to the [Identity chapter](/introduction/intro-identity). As mentioned in the identity introduction, Polymesh enables a way for asset originators to ascertain the uniqueness of the investors in their asset. This is achieved by publishing on-chain a commitment. This is this commitment that we are going to publish for both ACME and Alice. We are going to inspire ourselves from this [example script](https://github.com/PolymathNetwork/CDD-Scripts/blob/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/index.js#L305-L330).
+
+Let's first clearly identify what is off-chain and what is on-chain:
+
+* Off-chain:
+    * investor's uID, which is ACME's, or Alice's, unique identifier in the PUIS system.
+    * investor's private key, obviously.
+* On-chain:
+    * Did: the account number the CDD provider created to identify (one of) ACME's, or Alice's, account on-chain.
+    * CddId: the identifier the CDD provider published when going through due diligence for ACME, or Alice.
+    * Investor's address, or primary public key for the account.
+    * ACME, the name of the token.
+
+Each investor is going to publish on-chain an attestation that is called an _investor uniqueness claim_, by using all the elements listed above.
+
+### Prepare your code
+
+We need some extra work because, at its base, the [confidential identity](https://github.com/PolymathNetwork/cryptography/tree/afed507/confidential-identity) library is coded in Rust, like the rest of Polymesh's codebase, and compiled in WebAssembly, for use in NodeJs. So go ahead:
+
+* Copy the [whole library folder](https://github.com/PolymathNetwork/CDD-Scripts/tree/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/pkg).
+* [Import it](https://github.com/PolymathNetwork/CDD-Scripts/blob/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/index.js#L10) in your file.
+* And also [import some Polkadot utilities](https://github.com/PolymathNetwork/CDD-Scripts/blob/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/index.js#L11).
+
+We are going to show the code for ACME, but doing it for Alice would be the same. ACME already have their uID, it was either saved on file or in the Polymesh Wallet at the time of CDD:
+
+<MultiCodeBlock>
+
+```typescript
+const uID: string = "21d18606-5971-4136-90c1-decdef95fc1e"; // For example
+```
+
+```javascript
+const uID = "21d18606-5971-4136-90c1-decdef95fc1e"; // For example
+```
+
+</MultiCodeBlock>
+
+ACME's **Did** is in the identity:
+
+<MultiCodeBlock>
+
+```typescript
+const acme: CurrentIdentity = await apiCeo.getCurrentIdentity();
+```
+
+```javascript
+const acme = await apiCeo.getCurrentIdentity();
+```
+
+</MultiCodeBlock>
+
+Now we need the **CddId**, a.k.a. the currently valid CDD claim's id.
+
+<MultiCodeBlock>
+
+```typescript
+const acmeCddClaims: CddClaim[] = await apiCeo.claims.getCddClaims({
+    "includeExpired": false
+});
+assert(acmeCddClaims.length > 0);
+const acmeCddClaim: CddClaim = acmeCddClaims[0];
+```
+
+```javascript
+const acmeCddClaims = await apiCeo.claims.getCddClaims({
+    "includeExpired": false
+});
+assert(acmeCddClaims.length > 0);
+const acmeCddClaim = acmeCddClaims[0];
+```
+
+</MultiCodeBlock>
+
+The ACME ticker has to be transformed into a 12 bytes hexadecimal number to get what we call the **scopeDid**.
+
+<MultiCodeBlock>
+
+```typescript
+const acmeHex: string = Array.prototype.map.call(
+        "ACME",
+        (_, index: number, whole: string) => {
+            return whole.charCodeAt(index).toString(16);
+        }
+    )
+    .join("")
+    .padEnd(24, "0");
+const scopeDid: string = `0x${acmeHex}`; // 0x41434d450000000000000000
+```
+
+```javascript
+const acmeHex = Array.prototype.map.call(
+        "ACME",
+        (_, index, whole) => {
+            return whole.charCodeAt(index).toString(16);
+        }
+    )
+    .join("")
+    .padEnd(24, "0");
+const scopeDid = `0x${acmeHex}`; // 0x41434d450000000000000000
+```
+
+</MultiCodeBlock>
+
+With those in hand, let's prepare our proof. The proof is generated off-chain, and then published on-chain. Using the imports mentioned above:
+
+<MultiCodeBlock>
+
+```typescript
+const iuProofAsString: string = confidential_identity.process_create_claim_proof(
+    JSON.stringify({
+        "investor_did": Array.from(hexToU8a(acme.did)),
+        "investor_unique_id": Array.from(hexToU8a(uID))
+    }),
+    JSON.stringify({
+        "scope_did": Array.from(hexToU8a(scopeDid)),
+        "investor_unique_id": Array.from(hexToU8a(uID))
+    })
+);
+const iuProof: JSON = JSON.parse(iuProofAsString);
+const proof: string = `0x${createHexString(iuProof.proof)}`;
+const scopeId: string = `0x${createHexString(iuProof.scope_id)}`;
+```
+
+```javascript
+const iuProofAsString = confidential_identity.process_create_claim_proof(
+    JSON.stringify({
+        "investor_did": Array.from(hexToU8a(acme.did)),
+        "investor_unique_id": Array.from(hexToU8a(uID))
+    }),
+    JSON.stringify({
+        "scope_did": Array.from(hexToU8a(scopeDid)),
+        "investor_unique_id": Array.from(hexToU8a(uID))
+    })
+);
+const iuProof = JSON.parse(iuProofAsString);
+const proof = `0x${createHexString(iuProof.proof)}`;
+const scopeId = `0x${createHexString(iuProof.scope_id)}`;
+```
+
+</MultiCodeBlock>
+
+### Send the claim proper
+
+This was a lengthy preparation to have all parameters we need for the final on-chain publishing.
+
+<MultiCodeBlock>
+
+```typescript
+const uniquenessQueue: TransactionQueue<void> = await apiCeo.claims.addInvestorUniquenessClaim({
+    "cddId": acmeCddClaim.id,
+    "proof": proof,
+    "scope": {
+        "type": ScopeType.Ticker,
+        "value": scopeDid // Note: Did
+    },
+    "scopeId": scopeId // Note: Id
+});
+await uniquenessQueue.run();
+```
+
+```javascript
+const uniquenessQueue = await apiCeo.claims.addInvestorUniquenessClaim({
+    "cddId": acmeCddClaim.id,
+    "proof": proof,
+    "scope": {
+        "type": "Ticker",
+        "value": scopeDid // Note: Did
+    },
+    "scopeId": scopeId // Note: Id
+});
+await uniquenessQueue.run();
+```
+
+</MultiCodeBlock>
+
+With this, the investor uniqueness claim is saved on-chain and ACME can receive ACME shares. Do the same for Alice, and Alice will be able to get ACME shares too.
+
 ## Prepare the distribution
 
 Time for Alice to get her agreed amount of shares.
@@ -84,12 +265,11 @@ At the time of its creation, the ACME token had a total supply of zero. Alice is
 
 Sending securities to someone needs the consent of the recipient. The correct Polymesh structure to achieve that is to create a settlement instruction. All settlement instructions are created in a venue. Therefore, we will **create a venue**.
 
-Let's get started:
+Let's get started. We fetched ACME's identity in the previous step:
 
 <MultiCodeBlock>
 
 ```typescript
-const acme: CurrentIdentity = await apiCeo.getCurrentIdentity();
 const distributionVenueQueue: TransactionQueue<Venue> = await acme.createVenue({
     "type": VenueType.Distribution,
     "details": "For ACME Co"
@@ -99,7 +279,6 @@ const distributionVenueId: string = distributionVenue.id.toString();
 ```
 
 ```javascript
-const acme = await apiCeo.getCurrentIdentity();
 const distributionVenueQueue = await acme.createVenue({
     "type": "Distribution",
     "details": "For ACME Co"
