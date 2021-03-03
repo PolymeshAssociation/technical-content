@@ -5,7 +5,7 @@ module.exports = [
     `${here}originate-introduction`,
     `${here}originate-dashboard`,
     `${here}secondary-keys`,
-    `${here}compliance`,    
+    `${here}compliance`,
     `${here}originate-sdk`,
     `${here}originate-quiz`
 ];
