@@ -95,9 +95,9 @@ Each investor is going to publish on-chain an attestation that is called an _inv
 
 ### Prepare your code
 
-We need some extra work because, at its base, the [confidential identity](https://github.com/PolymathNetwork/cryptography/tree/afed507/confidential-identity) library is coded in Rust, like the rest of Polymesh's codebase, and compiled in WebAssembly, for use in NodeJs. So go ahead:
+We need some extra work because, at its base, the [confidential identity](https://github.com/PolymathNetwork/cryptography/tree/afed507/confidential-identity) library is coded in Rust, like the rest of Polymesh's codebase, and compiled in WebAssembly (WASM), for use in NodeJs. So go ahead:
 
-* Copy the [whole library folder](https://github.com/PolymathNetwork/CDD-Scripts/tree/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/pkg).
+* Copy the [whole library folder](https://github.com/PolymathNetwork/CDD-Scripts/tree/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/pkg). This includes the external declarations for NodeJs.
 * [Import it](https://github.com/PolymathNetwork/CDD-Scripts/blob/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/index.js#L10) in your file.
 * And also [import some Polkadot utilities](https://github.com/PolymathNetwork/CDD-Scripts/blob/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/index.js#L11).
 
@@ -117,7 +117,9 @@ const uID = `0x${uIDv4.replace(/-/g, '')}`; // Results in 0x21d186065971413690c1
 
 </MultiCodeBlock>
 
-ACME's **Did** is in the account:
+Because of this delegation to WebAssembly, we have to painstakingly format parameters in hexadecimal. This explains the convoluted lines above and below.
+
+ACME's **Did** is in the account, and already comes formatted as `0x123...`:
 
 <MultiCodeBlock>
 
@@ -131,29 +133,7 @@ const acme = await apiCeo.getCurrentIdentity();
 
 </MultiCodeBlock>
 
-Now we need the **CddId**, a.k.a. the currently valid CDD claim's id.
-
-<MultiCodeBlock>
-
-```typescript
-const acmeCddClaims: CddClaim[] = await apiCeo.claims.getCddClaims({
-    "includeExpired": false
-});
-assert(acmeCddClaims.length > 0);
-const acmeCddClaim: CddClaim = acmeCddClaims[0];
-```
-
-```javascript
-const acmeCddClaims = await apiCeo.claims.getCddClaims({
-    "includeExpired": false
-});
-assert(acmeCddClaims.length > 0);
-const acmeCddClaim = acmeCddClaims[0];
-```
-
-</MultiCodeBlock>
-
-The ACME ticker has to be transformed into a 12 bytes hexadecimal number to get what we call the **scopeDid**.
+The ACME ticker (maximum 12 characters) has to be transformed into a 12 bytes hexadecimal number to get what we call the **acmeScopeDid**.
 
 <MultiCodeBlock>
 
@@ -221,9 +201,33 @@ const scopeId = `0x${createHexString(iuProof.scope_id)}`;
 
 </MultiCodeBlock>
 
+This thankfully concludes the preparation of the proof.
+
 ### Send the claim proper
 
-This was a lengthy preparation to have all parameters we need for the final on-chain publishing.
+This was a lengthy proof preparation. We need one more value, the **CddId**, a.k.a. the currently valid CDD claim's id.
+
+<MultiCodeBlock>
+
+```typescript
+const acmeCddClaims: CddClaim[] = await apiCeo.claims.getCddClaims({
+    "includeExpired": false
+});
+assert(acmeCddClaims.length > 0);
+const acmeCddClaim: CddClaim = acmeCddClaims[0];
+```
+
+```javascript
+const acmeCddClaims = await apiCeo.claims.getCddClaims({
+    "includeExpired": false
+});
+assert(acmeCddClaims.length > 0);
+const acmeCddClaim = acmeCddClaims[0];
+```
+
+</MultiCodeBlock>
+
+With all parameters we need, let's go for the final on-chain publishing.
 
 <MultiCodeBlock>
 
@@ -255,7 +259,7 @@ await uniquenessQueue.run();
 
 </MultiCodeBlock>
 
-With this, the investor uniqueness claim is saved on-chain and ACME can receive ACME shares. Do the same for Alice, and Alice will be able to get ACME shares too.
+With this, the investor uniqueness claim is saved on-chain, attached to ACME's account, and ACME can receive ACME shares. Do the same for Alice, and Alice will be able to get ACME shares too.
 
 ### Confirmation
 
