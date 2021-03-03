@@ -1,0 +1,671 @@
+---
+title: With the SDK
+description: Distribute assets with the Polymesh SDK
+slug: /distribute/sdk
+---
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+import HighlightBox from "../../src/components/HighlightBox"
+
+As always, everything that can be done via the Token Studio Dashboard can be integrated with internal systems using the SDK. Use this to automate and scale repetitive processes.
+
+Let's see how ACME's share distribution would be performed using methods in the SDK. What we want to achieve is for ACME to issue 20,000 shares of ACME Corp to Alice the individual. As CEO, Alice will act for ACME.
+
+## Preconditions
+
+We assume that:
+
+* ACME, the company, already has a Polymesh account, `acme`;
+* Alice, ACME Co's CEO and acting agent, holds a secondary private key for `acme` that allows her to act on its behalf;
+* Alice the CEO can [instantiate](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#static-connect) a Polymesh client whenever she needs to act with:
+    <MultiCodeBlock>
+
+    ```typescript
+    const apiCeo: Polymesh = await Polymesh.connect({
+        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "accountMnemonic": "word31 word32 ..."
+    });
+    ```
+
+    ```javascript
+    const apiCeo = await Polymesh.connect({
+        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "accountMnemonic": "word31 word32 ..."
+    });
+    ```
+
+    </MultiCodeBlock>
+* The ACME token has already been created and has been retrieved and instantiated with the following:
+    <MultiCodeBlock>
+
+    ```typescript
+    const token: SecurityToken = await apiCeo.getSecurityToken({
+        "ticker" :"ACME"
+    });
+    ```
+
+    ```javascript
+    const token = await apiCeo.getSecurityToken({
+        "ticker" :"ACME"
+    });
+    ```
+
+    </MultiCodeBlock>
+* `acme` is the owner of the ACME token. `acme` will also be the token's primary issuance agent;
+* Alice has an account, `alice`, that represents her as an individual;
+* Alice the individual also can [instantiate](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#static-connect) a Polymesh client whenever she needs to act with:
+    <MultiCodeBlock>
+
+    ```typescript
+    const apiAlice: Polymesh = await Polymesh.connect({
+        "nodeUrl": "wss://alcyone-rpc.polymesh.live",
+        "accountMnemonic": "word1 word2 ..."
+    });
+    ```
+
+    ```javascript
+    const apiAlice = await Polymesh.connect({
+        "nodeUrl": "wss://alcyone-rpc.polymesh.live",
+        "accountMnemonic": "word1 word2 ..."
+    });
+    ```
+
+    </MultiCodeBlock>
+
+Now that we went throught the preconditions, let's continue preparing the distribution.
+
+## Publish the investor uniqueness claims
+
+### The what?
+
+This part is heavier in terms of cryptography. If in doubt about some elements, please refer to the [Identity chapter](/introduction/intro-identity). As mentioned in the identity introduction, Polymesh enables a way for asset originators to ascertain the uniqueness of the investors in their asset. This is achieved by publishing on-chain a commitment. This is this commitment that we are going to publish for both ACME and Alice. We are going to inspire ourselves from this [example script](https://github.com/PolymathNetwork/CDD-Scripts/blob/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/index.js#L305-L330).
+
+Let's first clearly identify what is off-chain and what is on-chain:
+
+* Off-chain:
+    * investor's uID, which is ACME's, or Alice's, unique identifier in the PUIS system.
+    * investor's private key, obviously.
+* On-chain:
+    * Did: the account number the CDD provider created to identify (one of) ACME's, or Alice's, account on-chain.
+    * CddId: the identifier the CDD provider published when going through due diligence for ACME, or Alice.
+    * Investor's address, or primary public key for the account.
+    * ACME, the name of the token.
+
+Each investor is going to publish on-chain an attestation that is called an _investor uniqueness claim_, by using all the elements listed above.
+
+### Prepare your code
+
+We need some extra work because, at its base, the [confidential identity](https://github.com/PolymathNetwork/cryptography/tree/afed507/confidential-identity) library is coded in Rust, like the rest of Polymesh's codebase, and compiled in WebAssembly (WASM), for use in NodeJs. So go ahead:
+
+* Copy the [whole library folder](https://github.com/PolymathNetwork/CDD-Scripts/tree/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/pkg). This includes the external declarations for NodeJs.
+* [Import it](https://github.com/PolymathNetwork/CDD-Scripts/blob/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/index.js#L10) in your file.
+* And also [import some Polkadot utilities](https://github.com/PolymathNetwork/CDD-Scripts/blob/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/index.js#L11).
+
+We are going to show the code for ACME, but doing it for Alice would be the same. ACME already have their uID, it was either saved on file or in the Polymesh Wallet at the time of CDD:
+
+<MultiCodeBlock>
+
+```typescript
+const uIDv4: string = "21d18606-5971-4136-90c1-decdef95fc1e"; // For example
+const uID: string = `0x${uIDv4.replace(/-/g, '')}`; // Results in 0x21d186065971413690c1decdef95fc1e
+```
+
+```javascript
+const uIDv4 = "21d18606-5971-4136-90c1-decdef95fc1e"; // For example
+const uID = `0x${uIDv4.replace(/-/g, '')}`; // Results in 0x21d186065971413690c1decdef95fc1e
+```
+
+</MultiCodeBlock>
+
+Because of this delegation to WebAssembly, we have to painstakingly format parameters in hexadecimal. This explains the convoluted lines above and below.
+
+ACME's **Did** is in the account, and already comes formatted as `0x123...`:
+
+<MultiCodeBlock>
+
+```typescript
+const acme: CurrentIdentity = await apiCeo.getCurrentIdentity();
+```
+
+```javascript
+const acme = await apiCeo.getCurrentIdentity();
+```
+
+</MultiCodeBlock>
+
+The ACME ticker (maximum 12 characters) has to be transformed into a 12 bytes hexadecimal number to get what we call the **acmeScopeDid**.
+
+<MultiCodeBlock>
+
+```typescript
+const acmeHex: string = Array.prototype.map.call(
+        "ACME",
+        (_, index: number, whole: string) => {
+            return whole.charCodeAt(index).toString(16);
+        }
+    )
+    .join("")
+    .padEnd(24, "0");
+const acmeScopeDid: string = `0x${acmeHex}`; // 0x41434d450000000000000000
+```
+
+```javascript
+const acmeHex = Array.prototype.map.call(
+        "ACME",
+        (_, index, whole) => {
+            return whole.charCodeAt(index).toString(16);
+        }
+    )
+    .join("")
+    .padEnd(24, "0");
+const acmeScopeDid = `0x${acmeHex}`; // 0x41434d450000000000000000
+```
+
+</MultiCodeBlock>
+
+With those in hand, let's prepare our proof. The proof is generated off-chain, and then published on-chain. Using the imports mentioned above:
+
+<MultiCodeBlock>
+
+```typescript
+const iuProofAsString: string = confidential_identity.process_create_claim_proof(
+    JSON.stringify({
+        "investor_did": Array.from(hexToU8a(acme.did)),
+        "investor_unique_id": Array.from(hexToU8a(uID))
+    }),
+    JSON.stringify({
+        "scope_did": Array.from(hexToU8a(acmeScopeDid)),
+        "investor_unique_id": Array.from(hexToU8a(uID))
+    })
+);
+const iuProof: JSON = JSON.parse(iuProofAsString);
+const proof: string = `0x${createHexString(iuProof.proof)}`;
+const scopeId: string = `0x${createHexString(iuProof.scope_id)}`;
+```
+
+```javascript
+const iuProofAsString = confidential_identity.process_create_claim_proof(
+    JSON.stringify({
+        "investor_did": Array.from(hexToU8a(acme.did)),
+        "investor_unique_id": Array.from(hexToU8a(uID))
+    }),
+    JSON.stringify({
+        "scope_did": Array.from(hexToU8a(acmeScopeDid)),
+        "investor_unique_id": Array.from(hexToU8a(uID))
+    })
+);
+const iuProof = JSON.parse(iuProofAsString);
+const proof = `0x${createHexString(iuProof.proof)}`;
+const scopeId = `0x${createHexString(iuProof.scope_id)}`;
+```
+
+</MultiCodeBlock>
+
+This thankfully concludes the preparation of the proof.
+
+### Send the claim proper
+
+This was a lengthy proof preparation. We need one more value, the **CddId**, a.k.a. the currently valid CDD claim's id.
+
+<MultiCodeBlock>
+
+```typescript
+const acmeCddClaims: CddClaim[] = await apiCeo.claims.getCddClaims({
+    "includeExpired": false
+});
+assert(acmeCddClaims.length > 0);
+const acmeCddClaim: CddClaim = acmeCddClaims[0];
+```
+
+```javascript
+const acmeCddClaims = await apiCeo.claims.getCddClaims({
+    "includeExpired": false
+});
+assert(acmeCddClaims.length > 0);
+const acmeCddClaim = acmeCddClaims[0];
+```
+
+</MultiCodeBlock>
+
+With all parameters we need, let's go for the final on-chain publishing.
+
+<MultiCodeBlock>
+
+```typescript
+const uniquenessQueue: TransactionQueue<void> = await apiCeo.claims.addInvestorUniquenessClaim({
+    "cddId": acmeCddClaim.id,
+    "proof": proof,
+    "scope": {
+        "type": ScopeType.Ticker,
+        "value": "ACME"
+    },
+    "scopeId": scopeId
+});
+await uniquenessQueue.run();
+```
+
+```javascript
+const uniquenessQueue = await apiCeo.claims.addInvestorUniquenessClaim({
+    "cddId": acmeCddClaim.id,
+    "proof": proof,
+    "scope": {
+        "type": "Ticker",
+        "value": "ACME"
+    },
+    "scopeId": scopeId
+});
+await uniquenessQueue.run();
+```
+
+</MultiCodeBlock>
+
+With this, the investor uniqueness claim is saved on-chain, attached to ACME's account, and ACME can receive ACME shares. Do the same for Alice, and Alice will be able to get ACME shares too.
+
+### Confirmation
+
+Of course, there needs to be only one such valid investor uniqueness claim per account-ticker pair. It could well be that an investor has already done it. How to confirm? Easy. Alice the CEO may check this status of ACME, as it could have been done by another founder already.
+
+<MultiCodeBlock>
+
+```typescript
+const uniquenessClaims: ClaimData<InvestorUniquenessClaim>[] = await apiCeo.claims.getInvestorUniquenessClaims({
+    "includeExpired": false
+});
+const acmeUniquenessClaims: ClaimData<InvestorUniquenessClaim>[] = uniquenessClaims
+    .filter((claimData: ClaimData<InvestorUniquenessClaim>) => {
+        const scope = claimData.claim.scope;
+        return scope.type === ScopeType.Ticker &&
+            scope.value === "ACME";
+    });
+assert(acmeUniquenessClaims.length > 0);
+```
+
+```javascript
+const uniquenessClaims = await apiCeo.claims.getInvestorUniquenessClaims({
+    "includeExpired": false
+});
+const acmeUniquenessClaims = uniquenessClaims
+    .filter((claimData) => {
+        const scope = claimData.claim.scope;
+        return scope.type === ScopeType.Ticker &&
+            scope.value === "ACME";
+    });
+assert(acmeUniquenessClaims.length > 0);
+```
+
+</MultiCodeBlock>
+
+## Prepare the distribution
+
+Time for Alice to get her agreed amount of shares.
+
+As we mentioned in the previous SDK chapter, implicit in `const token` is that the `context` is `apiCeo`, because we used `apiCeo` to retrieve its information. In other words, any action performed on a `token` instantiated by `apiCeo` will effectively be done by the `acme` account.
+
+At the time of its creation, the ACME token had a total supply of zero. Alice is personally entitled to 20,000 of the eventual 100,000 total supply of shares that the founders intend to issue. The primary issuance agent first issues, in effect mints, the shares to themselves, then sends them to their ultimate beneficiary(ies), like Alice.
+
+Sending securities to someone needs the consent of the recipient. The correct Polymesh structure to achieve that is to create a settlement instruction. All settlement instructions are created in a venue. Therefore, we will **create a venue**.
+
+Let's get started. We fetched ACME's account in the previous step:
+
+<MultiCodeBlock>
+
+```typescript
+const distributionVenueQueue: TransactionQueue<Venue> = await acme.createVenue({
+    "type": VenueType.Distribution,
+    "details": "For ACME Co"
+});
+const distributionVenue: Venue = await distributionVenueQueue.run();
+const distributionVenueId: string = distributionVenue.id.toString();
+```
+
+```javascript
+const distributionVenueQueue = await acme.createVenue({
+    "type": "Distribution",
+    "details": "For ACME Co"
+});
+const distributionVenue = await distributionVenueQueue.run();
+const distributionVenueId = distributionVenue.id.toString();
+```
+
+</MultiCodeBlock>
+
+We keep `distributionVenueId`, the string id of the venue, for later as this is information that will need to be shared with the ultimate recipient.
+
+Now that we have the venue, let's have the CEO [issue](https://developers.polymath.network/polymesh-sdk-api-reference/v/docs%2Falpha/classes/issuance#issue) enough shares to later transfer to Alice. Of course, if the CEO planned on issuing shares for all founders of ACME Corp, she would issue more.
+
+<MultiCodeBlock>
+
+```typescript
+const token: SecurityToken = await apiCeo.getSecurityToken({
+    "ticker": "ACME"
+});
+const issuance: Issuance = token.issuance;
+```
+
+```javascript
+const token = await apiCeo.getSecurityToken({
+    "ticker": "ACME"
+});
+const issuance = token.issuance;
+```
+
+</MultiCodeBlock>
+
+Here too, in `issuance`, the context is still `apiCeo`. In fact, its [`parent`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/issuance#properties-1) is the `token` itself.
+
+<MultiCodeBlock>
+
+```typescript
+const issueQueue: TransactionQueue<SecurityToken> = await issuance.issue({
+    "amount": new BigNumber("20000")
+});
+await issueQueue.run();
+```
+
+```javascript
+const issueQueue = await issuance.issue({
+    "amount": new BigNumber("20000")
+});
+await issueQueue.run();
+```
+
+</MultiCodeBlock>
+
+<HighlightBox type="tip">
+
+There is no beneficiary to mention because an `issue` command sends the shares to the issuance agent, which, at this point is `acme`. Additionally, it sends the shares to the account's default portfolio.
+
+</HighlightBox>
+
+At this point, ACME, has 20,000 received shares. We still need to send them over to Alice the individual.
+
+## In which portfolio?
+
+Now, Alice does not want to receive her ACME shares into her default portfolio. Instead, she wants to have them sent to a new "cold store" portfolio, she first needs to [create](https://developers.polymath.network/polymesh-sdk-api-reference/classes/portfolios#create) the portfolio.
+
+Here we are talking about Alice, the eventual owner, not the CEO, so we are going to use _her_ Polymesh client instance:
+
+<MultiCodeBlock>
+
+```typescript
+const alice: CurrentIdentity = await apiAlice.getCurrentIdentity();
+const portfolios: Portfolios = alice.portfolios;
+const portfolioQueue: TransactionQueue<NumberedPortfolio> = await portfolios.create({
+    "name": "Cold store"
+});
+const coldStore: NumberedPortfolio = await portfolioQueue.run();
+```
+
+```javascript
+const alice = await apiAlice.getCurrentIdentity();
+const portfolios = alice.portfolios;
+const portfolioQueue = await portfolios.create({
+    "name": "Cold store"
+});
+const coldStore = await portfolioQueue.run();
+```
+
+</MultiCodeBlock>
+
+To [retrieve](https://developers.polymath.network/polymesh-sdk-api-reference/classes/portfolios#getportfolio) the portfolio at a later date, anyone can use the string `coldStore.id`, or find the portfolio by name.
+
+Time to [move](https://developers.polymath.network/polymesh-sdk-api-reference/classes/portfolio#movefunds) the shares.
+
+Now that Alice has created the portfolio in which she wishes to receive her shares, she needs to prepare some information for her alter ego, the CEO:
+
+<MultiCodeBlock>
+
+```typescript
+const aliceDid: string = alice.did;
+const coldStoreId: string = coldStore.id.toString(10);
+```
+
+```javascript
+const aliceDid = alice.did;
+const coldStoreId = coldStore.id;
+```
+
+</MultiCodeBlock>
+
+## Moving the shares, finally
+
+Who creates the settlement instruction to move the shares? Alice the CEO, on behalf of ACME, so let's flip back to the proper context: `apiCeo`.
+
+On her end, she needs to re-instantiate some instances given the previous information:
+
+<MultiCodeBlock>
+
+```typescript
+const acme: CurrentIdentity = await apiCeo.getCurrentIdentity();
+const acmeDefaultPortfolio: DefaultPortfolio = await acme.portfolios.getPortfolio();
+const acmeDid: string = acme.did;
+
+const alice: Identity = await apiCeo.getIdentity({
+    "did": aliceDid
+});
+const aliceColdStore: Portfolio = await alice.portfolios.getPortfolio({
+    "portfolioId": new BigNumber(coldStoreId)
+});
+```
+
+```javascript
+const acme = await apiCeo.getCurrentIdentity();
+const acmeDefaultPortfolio = await acme.portfolios.getPortfolio();
+const acmeDid = acme.did;
+
+const alice = await apiCeo.getIdentity({
+    "did": aliceDid
+});
+const aliceColdStore = await alice.portfolios.getPortfolio({
+    "portfolioId": new BigNumber(coldStoreId)
+});
+```
+
+</MultiCodeBlock>
+
+Now to the settlement instruction:
+
+<MultiCodeBlock>
+
+```typescript
+const distributionInstructionQueue: TransactionQueue<Instruction> = await distributionVenue.addInstruction({
+    "legs": [{
+        "amount": new BigNumber(20000),
+        "from": acmeDefaultPortfolio,
+        "to": aliceColdStore,
+        "token": token
+    }]
+});
+const distributionInstruction: Instruction = await distributionInstructionQueue.run();
+const distributionInstructionId: string = distributionInstruction.id.toString(10);
+```
+
+```javascript
+const distributionInstructionQueue = await distributionVenue.addInstruction({
+    "legs": [{
+        "amount": new BigNumber(20000),
+        "from": acmeDefaultPortfolio,
+        "to": aliceColdStore,
+        "token": token
+    }]
+});
+const distributionInstruction = await distributionInstructionQueue.run();
+const distributionInstructionId = distributionInstruction.id.toString(10);
+```
+
+</MultiCodeBlock>
+
+This instruction is now recorded in the blockchain as pending. Alice the CEO is satisfied with it. She does not need to affirm it as the SDK identified her affirmation would have been required anyway, and so used the relevant [`add_and_affirm_instruction` extrinsic](https://docs.polymesh.live/pallet_settlement/enum.Call.html#variant.add_and_affirm_instruction) right away.
+
+## Does Alice agree?
+
+Let's return to Alice, the future share owner, and seek her affirmation.
+
+Since she is most likely on another computer or system, we need once more to reinstantiate the instruction from Alice's point of view. For that to happen, Alice the CEO needs to send, or copy-paste, `acmeDid`, `distributionVenueId` and `distributionInstructionId` to Alice's system:
+
+<MultiCodeBlock>
+
+```typescript
+const acme: Identity = await apiAlice.getIdentity({
+    "did": acmeDid
+});
+const venue: Venue = (await acme.getVenues()).find((venue: Venue) => {
+    return venue.id.isEqualTo(new BigNumber(distributionVenueId));
+});
+const pendingInstructions: Instruction[] = await venue.getPendingInstructions();
+const aliceInstruction: Instruction = pendingInstructions.find((instruction: Instruction) => {
+    return instruction.id.isEqualTo(distributionInstructionId);
+});
+```
+
+```javascript
+const acme = await apiAlice.getIdentity({
+    "did": acmeDid
+});
+const venue = (await acme.getVenues()).find((venue) => {
+    return venue.id.isEqualTo(new BigNumber(distributionVenueId));
+});
+const pendingInstructions = await venue.getPendingInstructions();
+const aliceInstruction = pendingInstructions.find((instruction) => {
+    return instruction.id.isEqualTo(distributionInstructionId);
+});
+```
+
+</MultiCodeBlock>
+
+Alice could also have chosen to retrieve all the pending instructions associated with her `CurrentIdentity`. That would have included all instructions, not just that one from the distribution venue she knows about. With a view to reduce the possibility of spam, she chose to use the venue to retrieve the instructions.
+
+Now, it is just a matter of affirming the instruction:
+
+<MultiCodeBlock>
+
+```typescript
+const updatedInstructionQueue: TransactionQueue<Instruction> = await aliceInstruction.affirm();
+const updatedInstruction: Instruction = await updatedInstructionQueue.run();
+```
+
+```javascript
+const updatedInstructionQueue = await aliceInstruction.affirm();
+const updatedInstruction = await updatedInstructionQueue.run();
+```
+
+</MultiCodeBlock>
+
+And with this, **Alice got her 20,000 shares**.
+
+## Can Alice confirm she received the shares?
+
+Well, she can check what's inside her portfolio:
+
+<MultiCodeBlock>
+
+```typescript
+const coldStore: NumberedPortfolio = await alice.portfolios.getPortfolio({
+    "portfolioId": new BigNumber(coldStoreId)
+});
+const acmeTokenBalances: PortfolioBalance[] = await coldStore.getTokenBalances({
+    "tokens": [ "ACME" ]
+});
+const acmeTokenBalance: PortfolioBalance = acmeTokenBalances[0];
+assert(acmeTokenBalance.total.isEqualTo(new BigNumber("20000")));
+```
+
+```javascript
+const coldStore = await alice.portfolios.getPortfolio({
+    "portfolioId": new BigNumber(coldStoreId)
+});
+const acmeTokenBalances = await coldStore.getTokenBalances({
+    "tokens": [ "ACME" ]
+});
+const acmeTokenBalance = acmeTokenBalances[0];
+assert(acmeTokenBalance.total.isEqualTo(new BigNumber("20000")));
+```
+
+</MultiCodeBlock>
+
+
+## How can Alice issue the shares of other founders?
+
+As the primary issuance agent, she can repeat the steps to create one instruction per founder.
+
+On the other hand, if the founders have decided that they should all receive their shares in a single atomic instruction, then, Alice would have to create a single instruction with all the legs:
+
+<MultiCodeBlock>
+
+```typescript
+const issueQueue: TransactionQueue<SecurityToken> = await issuance.issue({
+    "amount": new BigNumber("100000")
+});
+await issueQueue.run();
+const distributionInstructionQueue: TransactionQueue<Instruction> = await distributionVenue.addInstruction({
+    "legs": [
+        {
+            "amount": new BigNumber(20000),
+            "from": acmeDefaultPortfolio,
+            "to": aliceColdStore,
+            "token": token
+        },
+        {
+            "amount": new BigNumber(30000),
+            "from": acmeDefaultPortfolio,
+            "to": bobTargetPortfolio,
+            "token": token
+        },
+        {
+            "amount": new BigNumber(50000),
+            "from": acmeDefaultPortfolio,
+            "to": carolTargetPortfolio,
+            "token": token
+        }
+    ]
+});
+const distributionInstruction: Instruction = await distributionInstructionQueue.run();
+const distributionInstructionId: string = distributionInstruction.id.toString(10);
+```
+
+```javascript
+const issueQueue = await issuance.issue({
+    "amount": new BigNumber("100000")
+});
+await issueQueue.run();
+const distributionInstructionQueue = await distributionVenue.addInstruction({
+    "legs": [
+        {
+            "amount": new BigNumber(20000),
+            "from": acmeDefaultPortfolio,
+            "to": aliceColdStore,
+            "token": token
+        },
+        {
+            "amount": new BigNumber(30000),
+            "from": acmeDefaultPortfolio,
+            "to": bobTargetPortfolio,
+            "token": token
+        },
+        {
+            "amount": new BigNumber(50000),
+            "from": acmeDefaultPortfolio,
+            "to": carolTargetPortfolio,
+            "token": token
+        }
+    ]
+});
+const distributionInstruction = await distributionInstructionQueue.run();
+const distributionInstructionId = distributionInstruction.id.toString(10);
+```
+
+</MultiCodeBlock>
+
+or whichever distribution was agreed between the parties.
+
+The advantage of this single operation is that all parties can see in one go whether the eventual outcome is as per previously agreed.
+
+## When all is done
+
+Assuming all parties have received their shares, it could be advantageous for the company to create a checkpoint. This post-issuance checkpoint would provide visibility about what was achieved during the issuance.
+
+<!-- TODO when SDK exposes that -->
+
+## Links
+
+- SDK: https://developers.polymath.network/classic-sdk/globals

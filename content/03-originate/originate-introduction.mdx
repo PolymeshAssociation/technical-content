@@ -1,0 +1,99 @@
+---
+title: Origination Process
+description: Originating assets with Polymesh
+slug: /originate/originate-introduction
+---
+
+import HighlightBox from "../../src/components/HighlightBox"
+
+Polymesh makes it exceptionally simple to originate a regulated security. There is more than one way to execute the process and your implementation decisions will usually be based on scale.
+
+For example, a business may only occasionally issue new securities, in which case the intuitive manual approach will be sufficient. Service providers who routinely issue securities for their clients may wish to eliminate repetition. In this case, create an integration with internal systems and automate the process. The Token Studio found in the Polymesh Dashboard is an example of an integration created with the SDK.
+
+Before we go through a simple practical exercise, let us explore the overal asset representation and the origination process.
+
+![security tokens](images/security_tokens.png)
+
+## Security token design
+
+### The token type
+
+The type of a security token asset is represented on Polymesh by its **ticker** registration. This is a 12 character-long, and unique, identifier.  If the name reminds you of a ticker as found on a stockmarket, this is intentional. It is expected that certain names are more valuable than others, in the same way that `.com` domains are. Therefore, Polymesh implements an optional reservation mechanism, whereby one can reserve a ticker name for 60 days, as of the time of writing. At any time during these 60 days, the owner of this ticker reservation can cancel the reservation or create the token proper, i.e. **originate** it.
+
+At origination, there are some considerations available, among others:
+
+* the asset type,
+* attached **documentation** and other metadata,
+* **extra compliance requirements** of eventual asset owners, and
+* whether the represented **asset** can be sub-divided, or not, think one company share.
+
+For added flexibility and cross-referencing, a token can also be identified by **external identifiers**. Such are ISINs, CUSIPs, CINs, LEIs, and DTIs, on top of the ticker.
+
+### The token lifecycle
+
+The token reservation and origination are not the only available operations for security tokens. Here is a non-exhaustive **list of other operations** in the token's lifecycle:
+
+* Update the token information;
+* Token ownership transfer;
+* Issuance of assets;
+* Initial distribution of assets;
+* Exchange of assets;
+* Corporate actions related to the asset such as dividend payments, capital distributions, and corporate ballots.
+
+All these can be **managed through the asset base layer logic in Polymesh**. Of note is that the documentation content, although referenced on the blockchain by link or by content hash, is not actually stored on-chain.
+
+### The token ownership
+
+The token is typically owned by its originator, or by the account to which the ownership was transferred. Eventually, it is expected that such a consequential task, ownership of the token, will be held by a multi-signature account, which would be called upon for rare and important tasks, typically to delegate to other roles. Polymesh was built with such a vision in mind. A multi-signature account could, for instance, be the expression of a quorum of the board of directors of a company.
+
+<HighlightBox type="info">
+
+Below, you can find a first example, that of the primary issuance agent.
+
+</HighlightBox>
+
+## The underlying asset
+
+To assist you with disambiguation, and have a feel of what the point is, we shall peek ahead at what lies beyond origination.
+
+As seen above, the token represents the type of the asset, and is owned by its originator, or by whomever they transferred the ownership to. By contrast, the asset it represents is owned by individual investors' accounts.
+
+### Ownership of the asset
+
+Two elements determine **ownership** of a token's underlying asset:
+
+* The sum of balances of an individual investor's account(s) of said asset. The **numerator** if you will;
+* The total supply of tokens representing ownership of said asset. i.e. the **denominator**.
+
+When the total supply of tokens increases, it is called **issuance**. The account responsible for it is called the **primary issuance agent (PIA)**. The PIA is by default the owner of the token itself, although this role can be delegated by the owner.
+
+As with so many actions in Polymesh, the targeted account needs to accept the role delegation for it to become effective.
+
+<HighlightBox type="info">
+
+Whether an asset can be transferred, or owned at all, is called **compliance** and is automatically enforced on-chain by Polymesh. In effect, for an action to take place, all involved accounts must have attestations that match with the rules defined by the token originator for that action.
+
+</HighlightBox>
+
+### The asset lifecycle
+
+We have seen that the token has a lifecycle. The **underlying asset has a lifecycle of its own**. Here is the typical list of operations:
+
+* Issuance to the PIA, or minting, i.e. changing the total supply;
+* Transfer from the PIA to other accounts;
+* Transfer between accounts, i.e. changing the distribution of the supply.
+
+Those too are managed through the asset base layer logic in Polymesh.
+
+There are other rarer available actions, such as the forcible return of the asset to the primary issuance agent. For the avoidance of doubt, the issuance bypasses the compliance step.
+
+## Conclusion
+
+You know that a ticker can be reserved, before the token be created with some parameters.
+
+Let's see how this looks in the Token Studio exercise, where you originate your very own ACME token.
+
+## Links
+
+* [Asset Documentation](https://developers.polymesh.live/assets/)
+* For developers, the [asset pallet documentation](https://docs.polymesh.live/pallet_asset/index.html)

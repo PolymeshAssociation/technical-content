@@ -1,77 +1,93 @@
 ---
-title: Technical Stack
+title: The Technical Stack
 description: What is Polymesh made of
 slug: /introduction/intro-stack
 ---
 
 import HighlightBox from "../../src/components/HighlightBox"
 
-## Division of Concerns
+## Division of concerns
 
 Polymesh is a unique blockchain technology. As a blockchain, the design differs considerably from a server-based architecture. It shares many properties with other blockchains, but Polymesh accomplishes with ease what can be very challenging to accomplish on general-purpose blockchains.
 
 Developers who are new to distributed ledger technology may find the following comparisons helpful:
 
-* A blockchain is **similar to a transaction replay log** that can, in theory, recreate the system state by replaying the transactions in order. The transaction log is an **append-only** structure that contains everything that has ever happened in the system. A _transaction_ is the name of the smallest indivisible unit of state change added to the blockchain.
+* A blockchain is **similar to a transaction replay log** that can, in theory, recreate the system state by replaying the transactions in order. The transaction log is an **append-only** structure that contains everything that has ever happened in the system. A **transaction** _is the name of the smallest indivisible unit of state change added to the blockchain_.
 * Blockchains are **stateful protocols**, meaning anywhere there is connectivity there is the possibility of inspecting or interacting with the on-chain protocol.
 * Blockchains are **deterministic**. Logic that would traditionally exist on servers often exists as smart contracts. These self-enforcing programs create inviolable rules that can be used to create application-layer solutions. Smart contracts are usually published by deployment transactions so that their existence is an inarguable fact on the chain. Since their functions are deterministic, there is always only one correct interpretation of the effect of any input.
-* Correct operation of the chain is assured by **distributed consensus**, as nodes independently ascertain what the result of a transaction _must be_ given the preceding state of the chain. Malfunctioning or Byzantine nodes are simply ignored by the rest of the network. Consensus-mechanism logic is a differentiating factor among competing blockchains, since each presents different performance, finality, and fault-tolerance assurances.
+* Correct operation of the chain is assured by **distributed consensus**, as nodes independently ascertain what the result of a transaction _must be_, given the preceding state of the chain. Malfunctioning or Byzantine nodes are simply ignored by the rest of the network. Consensus-mechanism logic is a differentiating factor among competing blockchains, since each presents different performance, finality, and fault-tolerance assurances.
 * **Every input to a blockchain is a signed transaction** so other nodes can be certain that any proposed payload was signed by particular participant(s) before evaluating what the transaction does at the protocol level and in the context of any smart contract logic that might be involved.
 
 Developers who are new to Polymesh but experienced with other blockchains such as Bitcoin, Ethereum, or the Hyperledger projects may find the following comparisons helpful:
 
-- Polymesh is a public, permissioned network using Nominated Proof-of-Stake.
-- Polymesh is purpose-built for a particular application, not the execution of general-purpose smart contracts.
+- Polymesh is a **public, permissioned network using Nominated Proof-of-Stake**.
+- Polymesh is purpose-built for a **particular application**, not the execution of general-purpose smart contracts.
 - **Polymesh models an industry rather than a Virtual Machine**. Its primitives address application-level concerns that other blockchains are agnostic about. For example, asset definition, identity, trade settlement, and custody are all defined at the Polymesh network-level. Don't worry, there is considerable flexibility built into the system-wide standardised approach.
 
 ## Substrate
 
-In their own words, "Substrate is a modular framework that enables you to create purpose-built blockchains by composing custom or pre-built components". [Substrate](https://www.substrate.io/) is the result of years of research into blockchain technology and, more particularly, foundational technology that addresses core concerns. Substrate provides a **modular solution** for creating a bespoke blockchain using well-solved components for such concerns as consensus, governance, upgrades, and the method of creating protocol rules - or blockchain-speak for "don't reinvent the wheel".
+In their own words:
+
+> "Substrate is a modular framework that enables you to create purpose-built blockchains by composing custom or pre-built components."
+
+[Substrate](https://www.substrate.io/) is the result of years of research into blockchain technology and, more particularly, foundational technology that addresses core concerns. Substrate provides a **modular solution** for creating a bespoke blockchain using well-solved components for such concerns as consensus, governance, upgrades, and the method of creating protocol rules - or blockchain-speak for "don't reinvent the wheel".
 
 Polymesh is built on Substrate. As such, Substrate tools are useable for low-level inspection of the chain state. At this level, the transactions appear relatively raw, compared to the Polymesh SDK and Dashboard where data is parsed and presented in a more-readable form.
 
 ## Consensus
 
-Polymesh uses a Nominated Proof-of-Stake [consensus](https://developers.polymesh.live/consensus/) mechanism, in which operators create and validate blocks. It is a high-speed protocol compared to other proof-of-work systems. The operators themselves are appointed by network participants who signal support through the on-chain governance process, which includes staking POLYX and sharing in network rewards for doing so.
+Polymesh uses a **Nominated Proof-of-Stake** [consensus](https://developers.polymesh.live/consensus/) mechanism, in which operators create and validate blocks. It is a **high-speed protocol** compared to other proof-of-work systems. The operators themselves are appointed by network participants who signal support through the on-chain governance process, which includes staking POLYX and sharing in network rewards for doing so.
 
 ## Governance
 
-Certain system parameters, as well as the operators, and system upgrades are controlled by a **sophisticated on-chain governance system**. In summary, sensitive functions that control the evolution of the network are managed by on-chain decision-making and deterministic execution. The governance system itself can be upgraded via a system upgrade. This is only possible by consensus achieved through the prevailing governance system. The protocol prevents forks, provides an unambiguous description of the current rules, and a precise description of the process that must unfold before any change to those rules would be possible.
+Certain system parameters, as well as the operators, and system upgrades are controlled by a **sophisticated on-chain governance system**. In summary, sensitive functions that control the evolution of the network are managed by **on-chain decision-making and deterministic execution**.
+
+The governance system itself can be upgraded via a system upgrade. This is only possible by consensus achieved through the prevailing governance system.
+
+The protocol prevents forks, provides an unambiguous description of the current rules, and a precise description of the process that must unfold before any change to those rules would be possible.
 
 <HighlightBox type="tip">
 
-We will take a closer look at Polymesh's governance system at a later point of time. In case you want to dive right into it, just go to the section on [governance](/introduction/governance)
+We will take a closer look at Polymesh's governance system at a later point of time. In case you want to dive right into it, just go to the section on [governance](/introduction/intro-governance)
 
 </HighlightBox>
 
-## Extrinsics and Smart Extensions
+## Extrinsics and smart extensions
 
-Let's drop a bit of new terminology on top of already known concepts. Borrowing from [Substrate](https://substrate.dev/docs/en/knowledgebase/learn-substrate/extrinsics), the term **extrinsics** describes any outside information that enters the blockchain, typically user-signed transactions submitted to the blockchain. So you may come across wording like the "create token extrinsic", which is none other than a properly formatted transaction that expresses the intent to create a token. Polymesh exposes a number of extrinsics, which constitute the base-layer business logic of the blockchain, in, for instance, identity, assets and governance. As a side-note, extrinsics may also be so-called _inherents_, the term used for non-signed transactions usually written by operators of the chain, such as block timestamps.
+Let's drop a bit of new terminology on top of already known concepts.
 
-Not to be confused with **smart extensions**, which are smart-contract that developers can create for narrow use cases, for example, to extend an asset with a custom logic restricting transfers in a way that is not anticipated by the existing network.
+Borrowing from [Substrate](https://substrate.dev/docs/en/knowledgebase/learn-substrate/extrinsics), the term **extrinsics** describes _any outside information that enters the blockchain_, typically user-signed transactions submitted to the blockchain. So you may come across wording like the "create token extrinsic", which is none other than a properly formatted transaction that expresses the intent to create a token.
+
+Polymesh exposes a number of extrinsics, which constitute the **base-layer business logic of the blockchain**, in, for instance, identity, assets, and governance. As a side-note, extrinsics may also be so-called _inherents_, the term used for non-signed transactions usually written by operators of the chain, such as block timestamps.
+
+Not to be confused with **smart extensions**, which are smart contracts that developers can create for narrow use cases, for example, to extend an asset with a custom logic restricting transfers in a way that is not anticipated by the existing network.
 
 ## Wallet
 
-Blockchain transactions are always signed, and a so-called wallet's purpose is to hold the signing keys and sign on behalf of the user. Given the flexibility of public-private key encryption, there are always multiple ways to sign a transaction - some are more human-friendly and some are more machine-friendly. The **Polymesh Wallet** is a human-friendly browser extension that holds secret signing keys and asks for confirmation from a human user before signing transactions.
+Blockchain transactions are always signed, and a so-called wallet's purpose is to **hold the signing keys and sign on behalf of the user**. Given the flexibility of public-private key encryption, there are always multiple ways to sign a transaction - some are more human-friendly and some are more machine-friendly.
+
+The **Polymesh Wallet** is a human-friendly browser extension that holds secret signing keys and asks for confirmation from a human user before signing transactions.
 
 <HighlightBox type="tip">
 
-You want to know more about the Polymesh Wallet? Take a look at our section on the [Wallet](/introduction/wallet)!
+You want to know more about the Polymesh Wallet? Take a look at our section on the [Wallet](/introduction/quickstart-wallet)!
 
 </HighlightBox>
 
 ## Dashboard
 
-The **Polymesh Dashboard** is a multi-faceted Web-based application that is in many ways like a blockchain explorer. Again, we see the advantage of a purpose-built chain as compared to a generalised chain.
+The **Polymesh Dashboard** is a multi-faceted, web-based application that is in many ways like a blockchain explorer. Again, we see the advantage of a purpose-built chain as compared to a generalised chain.
 
 The Polymesh Dashboard knows precisely what the application is about and effortlessly interprets every transaction. Many activities that would require specialised application-layer user-interfaces are seamlessly integrated into this unified application. The interface is built using the SDK, which gives developers a hint of what is possible using the SDK.
 
 <HighlightBox type="info">
 
-We will go through a number of example exercise scenarios in the following sections, but just in case: You can access the Polymesh Dashboard at:
+We will go through a number of example exercise scenarios in the following sections, but just in case:
+
+You can access the Polymesh Dashboard at:
 [https://dashboard.polymesh.live/](https://dashboard.polymesh.live/).
 
-For a step-by-step on how to setup everything, so that you can start playing around with the Dashboard, take a look at [Quick Start](/quick-start/landingpage).
+For a step-by-step on how to setup everything, so that you can start playing around with the Dashboard, take a look at [Quick Start](/quick-start/quickstart-landingpage).
 
 </HighlightBox>
 
