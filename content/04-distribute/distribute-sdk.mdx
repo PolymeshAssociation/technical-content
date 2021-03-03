@@ -117,7 +117,7 @@ const uID = `0x${uIDv4.replace(/-/g, '')}`; // Results in 0x21d186065971413690c1
 
 </MultiCodeBlock>
 
-ACME's **Did** is in the identity:
+ACME's **Did** is in the account:
 
 <MultiCodeBlock>
 
@@ -301,7 +301,7 @@ At the time of its creation, the ACME token had a total supply of zero. Alice is
 
 Sending securities to someone needs the consent of the recipient. The correct Polymesh structure to achieve that is to create a settlement instruction. All settlement instructions are created in a venue. Therefore, we will **create a venue**.
 
-Let's get started. We fetched ACME's identity in the previous step:
+Let's get started. We fetched ACME's account in the previous step:
 
 <MultiCodeBlock>
 
@@ -369,7 +369,7 @@ await issueQueue.run();
 
 <HighlightBox type="tip">
 
-There is no beneficiary to mention because an `issue` command sends the shares to the issuance agent, which, at this point is `acme`. Additionally, it sends the shares to the identity's default portfolio.
+There is no beneficiary to mention because an `issue` command sends the shares to the issuance agent, which, at this point is `acme`. Additionally, it sends the shares to the account's default portfolio.
 
 </HighlightBox>
 
