@@ -7,5 +7,5 @@ module.exports = [
     `${here}secondary-keys`,
     `${here}compliance`,
     `${here}originate-sdk`,
-//    `${here}originate-quiz`
+    // `${here}originate-quiz`
 ];

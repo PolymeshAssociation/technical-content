@@ -5,5 +5,5 @@ module.exports = [
     `${here}actions-introduction`,
     `${here}actions-dashboard`,
     `${here}actions-sdk`,
-//    `${here}actions-quiz`
+    // `${here}actions-quiz`
 ];

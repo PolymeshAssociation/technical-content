@@ -6,5 +6,5 @@ module.exports = [
     `${here}kyc-dashboard`,
     `${here}kyc-sdk`,
     `${here}cdd-sdk`,
-    //`${here}kyc-quiz`
+    // `${here}kyc-quiz`
 ];

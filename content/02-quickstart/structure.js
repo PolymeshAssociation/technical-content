@@ -5,5 +5,5 @@ module.exports = [
     `${here}quickstart-wallet`,
     `${here}quickstart-cdd`,
     `${here}quickstart-polyx`,
-//    `${here}quickstart-quiz`
+    // `${here}quickstart-quiz`
 ];
