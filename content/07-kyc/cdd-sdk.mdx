@@ -39,7 +39,7 @@ const apiEzCdd = await Polymesh.connect({
 
 ## How to create a new account
 
-This part only applies if the user, Bob say, is brand new to Polymesh, or if Bob wants to create another account for himself. In that case, the CDD provider needs to create an account. This is a privileged operation, too, one that only a CDD service provider can accomplish. The CDD provider needs to ask Bob for the public key, or address, he wishes to associate with the account.
+This part only applies if the user, say Bob, is brand new to Polymesh, or if Bob wants to create another account for himself. In that case, the CDD provider needs to create an account. This is a privileged operation, too, one that only a CDD service provider can accomplish. The CDD provider needs to ask Bob for the public key, or address, he wishes to associate with the account.
 
 ### Information collection
 
@@ -142,14 +142,14 @@ Now that Bob has an account on Polymesh, the CDD provider needs to add a CDD att
     * CDD service provider's private key, obviously.
 * On-chain:
     * `bob.did`: the account number the CDD provider created to identify (one of) Bob's account on-chain.
-    * CddId: the identifier the CDD provider will publish after Bob went through due diligence.
+    * CddId: the identifier the CDD provider will publish after Bob has completed the CDD process.
     * CDD service provider's address, or primary public key for the service provider's account.
 
-The difficulty here is how to calculate the CddId really.
+The difficulty here is how to actually calculate the CddId.
 
 ### Prepare your code
 
-We need some extra work because, at its base, the [confidential identity](https://github.com/PolymathNetwork/cryptography/tree/afed507/confidential-identity) library is coded in Rust, like the rest of Polymesh's codebase, and compiled in WebAssembly (WASM), for use in NodeJs. So go ahead:
+We need to do some extra work because, at its base, the [confidential identity](https://github.com/PolymathNetwork/cryptography/tree/afed507/confidential-identity) library is coded in Rust, like the rest of Polymesh's codebase, and compiled in WebAssembly (WASM), for use in NodeJs. So go ahead:
 
 * Copy the [whole library folder](https://github.com/PolymathNetwork/CDD-Scripts/tree/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/pkg). This includes the external declarations for NodeJs.
 * [Import it](https://github.com/PolymathNetwork/CDD-Scripts/blob/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/index.js#L10) in your file.
@@ -205,7 +205,7 @@ const cddId = `0x${createHexString(cddIdOutput.cdd_id)}`;
 
 </MultiCodeBlock>
 
-Not excessively difficult. We have all the arguments we need to go and publish the lot.
+Not excessively difficult. We have all the arguments we need to go ahead and publish the result.
 
 ### Publish the CDD attestation
 
@@ -251,7 +251,7 @@ await cddClaimQueue.run();
 
 </MultiCodeBlock>
 
-With this Bob is now _CDD'd_ and can transact in materially significant ways, including, as mentioned earlier by accepting the authorisation request.
+With this Bob is now _CDD'd_ and can transact in materially-significant ways, including, as mentioned earlier by accepting the authorisation request.
 
 ## Transact in ACME
 
