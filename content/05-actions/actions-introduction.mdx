@@ -4,7 +4,9 @@ description: Corporate actions in Polymesh
 slug: /actions/introduction
 ---
 
-Generally speaking, a corporate action is a change initiated by a public company (i.e. a company with ownership organised by shares of tradeable stock) that directly impacts the securities and/or the shareholders. This is not limited to companies, which stock is traded on a stock exchange or over-the-counter (OTC). Examples include stock splits, coupon payments, merger and acquisitions, ballots for annual general meetings, and dividend distributions.
+import HighlightBox from "../../src/components/HighlightBox"
+
+Generally speaking, a corporate action (CA) is a change initiated by a public company (i.e. a company with ownership organised by shares of tradeable stock) that directly impacts the securities and/or the shareholders. This is not limited to companies, which stock is traded on a stock exchange or over-the-counter (OTC). Examples include stock splits, coupon payments, merger and acquisitions, ballots for annual general meetings, and dividend distributions.
 
 Corporate actions traditionally are agreed by a company's board of directors and authorised by its shareholders.
 
@@ -14,12 +16,16 @@ Polymesh offers ways to _implement_ such actions.
 
 Obviously the board of an organisation can take many kinds of actions and not all of them intersect with the scope of the Polymesh network. But many do, and Polymesh offers the means to execute the action.
 
-In Polymesh, you can:
+- **Unpredictable benefits**: Benefits with variable amounts that are distributed equitably among asset holders and not known when the benefit is defined.
+- **Predictable benefits**: Fixed rate benefits where the amount is established, and does not change over time.
+- **Issuer notice**: Announcements that the issuer wishes to record on chain for reasons of permanence.
+- **Reorganisation**: Reorganising the shares such as in mergers and acquisitions and stock splits.
+- **Other**: A generalised type that supports actions that are not addressed directly.
 
-- Distribute a dividend or royalty payment to asset owners
-- Address a rights issue such as issuing shares to existing shareholders at a discount
-- Executing a stock split
-**- TODO: keep going, list supported only**
+Polymesh provides specialised extrinsic pallets that deal directly with the two most common types of corporate actions:
+
+- **Capital distributions**: Capital, usually in the form of another asset, is allocated for the purpose of distribution. In case that is unclear, the predictable and unpredicable benefits corporate actions define who is to receive capital and how their benefits are calculated. A capital distribution allocates funding.
+- **Corporate ballots**: Asset holders are invited to vote on motions.
 
 Polymesh supports high-level corporate actions, as well as specific ones, such as ballots and capital distribution. The CAs can be of a predictable benefit (i.e. bond payments) or unpredictable benefit (i.e. dividend payments) nature.
 
@@ -31,119 +37,132 @@ Once ACME has digitised/tokenised its assets, three different pallets allow to p
 
 * the [capital distribution pallet](https://docs.polymesh.live/pallet_corporate_actions/distribution/index.html),
 * the [ballot pallet](https://docs.polymesh.live/pallet_corporate_actions/ballot/index.html), and
-* of course, the [corporate action pallet](https://docs.polymesh.live/pallet_corporate_actions/index.html),
+* of course, the [corporate action pallet](https://docs.polymesh.live/pallet_corporate_actions/index.html), which encapsulates the others.
 
-The capital distribution pallet is the base layer to handle setups, CA initiation, document lining and removal. With the ballot pallet, corporate ballots for annual general meetings (AGMs) can be performed. The capital distribution pallet assists with distributing benefits.
+The corporate actions pallet is the base layer, while capital distribution and ballets are specialised layers that leverage the base later.
 
-### Initiating CAs
+Documents such as related announcements and reports can be linked to corporate actions.
 
-All begins with ```initiate_corporate_action```. This dispatchable function creates a CA. When initiating a CA, the following is included:
+## Corporate Actions Agent ##
+
+<!--- We have been unable to locate the extrinsic for assigning the CAA -->
+
+Corporate actions can only be executed by a corporate actions agent which is set by the asset originator. By default, the corporate actions agent is the originator, so ACME is the corporate actions agent for the ACME shares. This is sufficient for our purposes here and now, but note that ACME can at any time appoint a service provider to attend to the actual execution of their corporate actions. Indeed, it is expected that most corporate actions such as dividend distributions will, in practice, be executed by service providers.
+
+At scale, a corporate actions service provider will want to integrate their internal systems and business processes using the SDK. Methods of doing so are introduced in the [SDK](/actions/sdk) section that follows. We will use the [Polymesh Substrate App](https://app.polymesh.live) which supports manual interaction with any SDK method.
+
+### Initiating Corporate Actions (CA)
+
+All begins with ```initiate_corporate_action```. This dispatchable function creates a corporate action. The following is included:
 
 * an associated asset's ticker,
-* a free-form text, and
-* a CA type specification, i.e. the kind of CA being initiated.
+* free-form text, and
+* a corporate action type specification.
 
-Additional information can be provided in regard to the record date, targets of the CA, and taxe witholdings.
+Additional information can be provided in regard to the record date, targets of the corporate actions, and tax witholdings.
 
 <HighlightBox type="info">
 
-The record date can be changed after CA initiation with the dispatchable function ```change_record_date```.
+The record date can be changed after the corporate action initiation with the dispatchable function ```change_record_date```.
 
 </HighlightBox>
 
-```initiate_corporate_action``` must be called by the **corporate action agent (CAA)**. The default for the CAA is the asset owner. The CAA can be changed through the asset authorisation systema and be reseted with ```reset_caa```.
+```initiate_corporate_action``` must be called by the **corporate action agent (CAA)**, which defaults to the asset owner. The CAA can be changed through the asset authorisation system and be reset with ```reset_caa```.
 
-The CAA can initiate CAs, change the setup, implement ballots, and initiate distributions.
+The CAA can initiate corporate actions and change the setup, including implementing ballots and initiating distributions.
 
-Additionally, every CA on Polymesh uses so-called checkpoints. Checkpoints help create specific time points at which the ownership of token holders is assessed. A checkpoint can be specified by:
+Additionally, every corporate action on Polymesh uses so-called checkpoints. Checkpoints help create specific time points at which the ownership of token holders is assessed. A checkpoint can be specified by:
 
 * the timestamp,
-* an exsiting checkpoint, and
+* an existing checkpoint, and
 * a shared checkpoint.
 
-Checkpoints can be establsihed for a point of time in the past, at a scheduled time, or for irremovable schedules.
+Corporate actions rely on checkpoints to establish balances at specific points in time. Corporate actions that specify an execution time automatically create the checkpoints that provide the balance information, at the specified time, that is used to calculate benefits, compute voting power, etc. that the corporate action depends on.
 
 <HighlightBox type="tip">
 
-A conceptual description of what checkpoints are, how their setup functions, and the different specification possibilities, can be found in the introductory overview on asset origination --> INCLUDE LINK TO SECTION
+For efficiency, checkpoints use a "lazy update" algorithm. Consider Alice's current balance and a scheduled checkpoint executing now. It follows that Alice's balance at the checkpoint time is equal to her current balance. The algorithm can report her balance at the checkpoint with no further work. It is necessary to record Alice's previous balance at the checkpoint time when something occurs that changes Alice balance. When this happens, Alice's previous balance is written to the checkpoint in the past before her current balance is adjusted. In this way, balances at previous checkpoints are always recoverable.
 
 </HighlightBox>
 
-Corporate actions rely on checkpoints to exactly know the benefit entitlement in case of distribution for each investor, i.e. token holder. Checkpoints are also used to determine voting powers for all token holders in case of ballots. Thus, checkpoints are used when a consistent set of balances at a specific time (i.e. block height) is needed.
-
-Another, value added from Polymesh is the possibility to account for tax regulations.
-
-Now, let's take a look at some regulatory specification possibilities with Polymesh: witholding taxes, defining the targeted token holders, and linking associated documentation.
+Now, let's take a look at regulatory specification possibilities with Polymesh: witholding taxes, defining the targeted token holders, and linking associated documentation.
 
 ### Taxes and corporate actions
 
-Tax regulation varies between jursidictions. Sometimes the issuer of an asset or the CAA have the regulatory rresponsability to deduct taxes from dividends and transfer them to the relevant government agency. To reflect possible taxable components, Polymesh allows to withold taxes.
+Tax regulation varies between jurisdictions. Sometimes the issuer of an asset or the CAA have the regulatory responsibility to deduct taxes from dividends and transfer them to the relevant government agency. Polymesh supports witholding of taxes.
 
-Witholding taxes is performed natively on Polymesh. Thus, one can specify how many percent of an asset distribution is witheld.
+Witholding taxes is performed natively on Polymesh. One can specify a percentage of an asset distribution to withhold.
 
-This can be set up for either all investors as a generall specification, or tailored to a certain group of individual investors. With ```set_default_witholding_tax``` a general tax witholding is implemented. A specified tax witholding is conducted with ```set_did_witholding_tax```. The latter is DID-specific.
+Such rules can apply to all investors as a general specification or to groups of individual investors.
+
+- ```set_default_witholding_tax``` creates a general tax witholding rule.
+- ```set_did_witholding_tax``` creates rules that apply to specific investors.
 
 ### Specifying the token holders targeted
 
-Who is allowed to participate in corporate actions can be tailored with Polymesh. This can be helpful when a corporate action targets only a specifc group of investors.
+Corporate action participants can be specified. This can be helpful when a corporate action targets only a specifc group of investors.
 
-The default setting is set at targeting every investor with the CA. This can be set with ```set_default_targets```, the asset-level default. In case identites have to be excluded, the target set can be specified in the CA initiation.
+The default setting includes (targets) every investor in the corporate action. Each corporate action can include a list of investors to include or exclude. In the case where this becomes repetitive, a new asset-level default can be set with ```set_default_targets```.
 
-The CA target group can either be specified inclusively or exclusively. In the latter, the group of identities targeted by a corporate action is explicitly defined by excluding certain indetities. For the former, the same applies by inluding individual identities.
+Target groups can be specified inclusively or exclusively, i.e. "only these investors" or "everyone except these investors".
 
 ### Linking CA-relevant documentation
 
-Sometimes free-form text is insufficient, i.e. more relevant documents exist. With Polymesh asset documentation can be linked to the CA.
-
-In case the CA was initiated, the asset's documentation can be related by using ```link_ca_doc```. This links the CA to a list of documents.
+Free-form text provides a succinct human-readable description of the corporate action. This is useful in contexts such as browsing the corporate actions to find a specific action of interest. The text is not expected to provide a comprehensive description in all cases. Relevant documentation such as documentation to satisfy reporting requirements can be linked to a corporate action with```link_ca_doc```.
 
 ### Corporate ballots
 
-During the annual general meetings votes by the shareholders are conducted. These and other instances requiring corporate ballots can be conducted on-chain using Polymesh.
+Shareholder votes are generally canvassed at Annual General Meetings and other events. These and other instances requiring corporate ballots can be conducted on-chain using Polymesh. Voting power is calculated by the tokens owned by the targeted investors at the time of the vote checkpoint.
 
-Eeach ballot has a start and an end date. Between start and end, investors (i.e. the token holders) can vote on all motions included in the ballot.
+Motions, the decisions voters weigh in on, present voters with a list of preferences for the asset holders to choose from. The simplest such list of preferences is "aye" and "nay". This can be elaborated with "abstain" at the motion creator's discretion. The choices on the ballot can also express preferences, such as choosing between candidates for an important decision.
 
-What is a motion? A motion is a set of choices to which weights can be assigned. Usually motions can be confirmed ("aye"), declined ("nay"), or amended ("aye with X amendment"). The weight of a vote is limited by the maximum amount of tokens an identity holds. It is limited by total token amount, but token amounts, i.e. weight, can be split for the whole decision.
+Each ballot has a start and an end date. Between start and end, targeted investors (i.e. the token holders) vote on the motions included in the ballot. Investor voting power is proportional to the tokens they hold. Investors can split their voting power between two or more choices. Such a split would not be sensible in the "aye" or "nay" context, but it can be useful for motions where the investor wants to express a first choice, second choice, and so on.
 
 For example, an investor (i.e. token holder), Alice, of ACME tokens is asked to vote on a motion to distribute benefits. Alice holds 100 tokens.
 
-The preference of the investor, Alice, is to accept the motion with an amend, then to not accept the motion withoud amends. Alice doesn't want to accept the motion in its current form.
+The preference of the investor, Alice, is to accept the motion with an amendment, then to not accept the motion without amendments. Alice doesn't want to accept the motion in its current form.
 
-Alice weighs its vote in the following manner:
+Alice weighs her vote in the following manner:
 
-* amend the motion to distribute at later point - weigh of 75 tokens,
-* decline the motion - weigh of 25 tokens, and
-* accept the motion - weigh of 0 tokens.
+* amend the motion to distribute at later point - weight of 75 tokens,
+* decline the motion - weight of 25 tokens, and
+* accept the motion - weight of 0 tokens.
 
-All motions aree independent of each other. This means that the whole token amount can be used to weigh each motion seperately.
+Motions are independent of each other. The whole voting power of the tokens can be used to weigh each motion separately.
 
-What does that mean in the context of our example.
+What does that mean in the context of our example?
 
 There are two motions: one to distribute capital now and one to elect a new CAA. Alice weighs motion 1 in the following way:
 
-* amend the motion to distribute at later point - weigh of 75 tokens,
-* decline the motion - weigh of 25 tokens, and
-* accept the motion - weigh of 0 tokens.
+* amend the motion to distribute at later point - weight of 75 tokens,
+* decline the motion - weight of 25 tokens, and
+* accept the motion - weight of 0 tokens.
 
 Motion 2 is weighed:
 
-* amend the motion to establish a different CAA - weigh of 25 tokens,
-* decline the motion - weigh of 25 tokens, and
-* accept the motion - weigh of 50 tokens.
+* amend the motion to establish a different CAA - weight of 25 tokens,
+* decline the motion - weight of 25 tokens, and
+* accept the motion - weight of 50 tokens.
 
-Alice was able to use all 100 tokens for weighing for each motion seperately.
+Alice was able to use all 100 tokens to weigh in on each motion seperately.
 
-Is there another option to configure a ballot?
+<HighlightBox type="tip">
+
+Alice's 100 tokens could represent 100% ownership or an extremely small holding. The voting power Alice receives from her 100 tokens considers her tokens as a portion of the total voting power of all tokens, which is always 100%. In this context, "weight of" is way of summarising that Alice will receive her fair share of voting power.
+
+</HighlightBox>
+
+## Ranked Choice Ballots
 
 Ballot configuration can be done with so-called **ranked-choice voting (RCV)**. RCV is an voting system in which voters rank their ballot by candidate - one can select more than one candidate and rank all candidates based on preference.
 
-Through RCV, users can make a statement regarding their preferences, in case their most prefered candidate/decision result doesn't come through.
+Through RCV, users can make a statement regarding their preferences, in case their most preferred candidate/decision result doesn't come through.
 
 Let's take our example with ACME tokens.
 
 Again, Alice holds 100 ACME tokens. There are 3 options on the floor regarding one motion.
 
-The preference order is:
+Her preference order is:
 
 1. Option A
 2. Option C
@@ -155,31 +174,30 @@ The weights for each option are:
 * Option B - 5 tokens
 * Option C - 20 tokens
 
-Making the vote casted for Alice:
+Making the vote cast by Alice:
 
-* Option A: 75 votes, fallback to Option c
+* Option A: 75 votes, fallback to Option C
 * Option B: 5 votes, no fallback
-* Option C: 20 votes, fallback to Option b
+* Option C: 20 votes, fallback to Option B
 
-Option A is the most weight one. If Option A doesn't have enough votes to be adopted and is discarded, the 75 votes of Option A would fall to Option C. This changes the voting results to: Option B has 5 votes, Option C has 95 votes. Option C would be adopted.
+Option A is the most preferred. If Option A doesn't have enough votes to be adopted and is discarded, then the 75 votes of Option A would fall to Option C. This changes Alice's vote to:
 
-This of course is only true, if there are no other token holders voting.
+* Option B: 5 votes
+* Option C: 95 votes
 
-How are ballots implemented on Polymesh?
+RCV ballots are an efficient method of implementing a process that emulates multiple rounds of voting since the voters are able to define contingencies with a single vote.
 
-It all beginns with a corporate action. A CA of the notice kind is created. The ballot is attached with ```attach_ballot```. Before the voting starts, the ballot can also be removed using ```remove_ballot```.
+## Implementation
 
-Once the ballot is created, ballot configuration can be amended - **only as long as voting hasn't started**. Ballots can be amended by:
+It all begins with a corporate action. A corporate action of type notice is created with a ballot attached using ```attach_ballot```. A ballot can be removed with ```remove_ballot``` if voting hasn't started.
 
-* ```change_end```
-* ```change_meta```
-* ```change_rcv```
+Ballot configurations can be amended - **as long as voting hasn't started**:
 
-```change_end``` changes the deadline until when votes are accepted. With ```change_meta``` the title and motions of a ballot can be changed, and ```change_rcv``` helps determine whether RCV is supported or not.
+* ```change_end```: Changes the voting deadline.
+* ```change_meta```: Changes the title and motions to vote on.
+* ```change_rcv```: Specifies the use of, or not, of RCV.
 
-How are votes then assigned? Votes can be submited by any token holdere using ```vote```. This function helps with assigning votes to all available choices.
-
-Until the voting ends, token holders can vote as often as they wish - Choices aren't set in stone until voting resumes.
+Token holders vote using ```vote```.
 
 # Links
 
