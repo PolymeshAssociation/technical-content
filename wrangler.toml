@@ -13,3 +13,6 @@ name = "technical-content-main"
 
 [env.staging]
 name = "technical-content-staging"
+
+[env.review]
+name = "technical-content-review"
