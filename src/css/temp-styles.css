@@ -33,6 +33,7 @@
 
 .box-overview-card-dyn .inline-image-float-right {
 	width: 35%;
+	max-height: 200px;
 	float: right;
 	margin-left: 15px;
 }
@@ -63,8 +64,8 @@
 }
 
 .box-action-cards .content-wrapper .action-card .action-icon {
-  height: 30px;
-  margin: 40px auto 40px auto;
+  height: 50px;
+  margin: 30px auto 30px auto;
 }
 
 a.action-link {
@@ -107,6 +108,10 @@ a.action-link img {
 	border: 1px solid #cbcbcb;
 }
 
+.box-action-cards .content-wrapper .action-card-large .intro-text {
+	min-height: 130px;
+}
+
 .box-action-cards .content-wrapper .action-card-large .action-card-table {
 	border: 0;
 	width: 100%;
@@ -124,6 +129,7 @@ a.action-link img {
 
 .box-action-cards .content-wrapper .action-card-large .action-card-table td.left {
 	width: 40%;
+	padding-right: 10px;
 }
 
 .box-action-cards .content-wrapper .action-card-large .action-card-table a.main-link {
@@ -142,4 +148,28 @@ a.action-link img {
 
 .box-action-cards .content-wrapper .action-card-large .action-card-table a.sub-link:hover {
 	color: #1348E3;
+}
+
+@media only screen and (max-width: 998px) {
+	.box-action-cards .content-wrapper {
+		display: block;
+	}
+}
+
+@media only screen and (max-width: 1610px) {
+	.box-action-cards .content-wrapper .action-card-large .intro-text {
+		min-height: 180px;
+	}
+}
+
+@media only screen and (max-width: 1390px) {
+	.box-action-cards .content-wrapper .action-card-large .intro-text {
+		min-height: 200px;
+	}
+}
+
+@media only screen and (max-width: 1300px) {
+	.box-action-cards .content-wrapper .action-card-large .intro-text {
+		min-height: 280px;
+	}
 }
