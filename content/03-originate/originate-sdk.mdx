@@ -314,7 +314,8 @@ const acmeAuthorization: AuthorizationRequest = pendingAuthorizations
     .find((pendingAuthorization: AuthorizationRequest) => {
         return pendingAuthorization.issuer.did === acmeDid;
     });
-await acmeAuthorization.accept();
+const acceptQueue: TransactionQueue<void> = await acmeAuthorization.accept();
+await acceptQueue.run();
 ```
 
 ```javascript
@@ -324,7 +325,8 @@ const acmeAuthorization = pendingAuthorizations
     .find((pendingAuthorization) => {
         pendingAuthorization.issuer.did === acmeDid;
     });
-await acmeAuthorization.accept();
+const acceptQueue = await acmeAuthorization.accept();
+await acceptQueue.run();
 ```
 
 </MultiCodeBlock>
