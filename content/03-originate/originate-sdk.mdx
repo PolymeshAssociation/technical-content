@@ -7,24 +7,31 @@ slug: /originate/sdk
 import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
 import HighlightBox from "../../src/components/HighlightBox"
 
-In the previous exercise, we originated a simple asset, ACME Co equity. As we did so, we discovered that there are many more configurable properties available to address common business requirements.
+In the previous exercise, we originated a simple asset, ACME Corp equity. As we did so, we discovered that there are many more **configurable properties** available to address common business requirements.
 
 The Polymesh Dashboard is constructed with the SDK. The SDK supports every process you see there, and more. Use the SDK to build integrations with internal systems. Fortunately, the SDK's methods are intelligible when you know what it is you intend to do.
 
-[SDK documentation](https://developers.polymath.network/classic-sdk/globals).
+<HighlightBox type="tip">
 
-## Familiar
+If you want to take a closer look at the SDK, a peek into the
+[SDK documentation](https://developers.polymath.network/classic-sdk/globals) is recommendable.
+
+</HighlightBox>
 
 The SDK is a comprehensive set of business-level methods for inspecting and interacting with the Polymesh network using either Javascript or Typescript, at the developer's discretion.
 
+You can find it here [@polymathnetwork/polymesh-sdk](https://www.npmjs.com/package/@polymathnetwork/polymesh-sdk)
+
 ## Preconditions
 
-If you went through the quick start, we can assume that you have created an account (a public / private key pair) on the Polymesh testnet, that you associated it with an account, and that you credited it with POLYX. We shall call this personal signing key `aliceKey`, and the personal account it represents `alice`. Here, we are going to follow along the Token Studio Dashboard exercise, and do the same _mistake_, whereby she creates the token with her personal account, and which we will eventually fix. The credible simple reason why Alice created the token with her personal account is that her and her co-founders wanted to act fast so as to have the ticker available before getting the company through CDD.
+If you went through the Quick Start, we can assume that you have created an account (a public-private key pair) on the Polymesh testnet, that you associated it with an account, and that you credited it with POLYX. We shall call this personal signing key `aliceKey`, and the personal account it represents `alice`.
+
+Here, we are going to follow along the Token Studio Dashboard exercise, and do the same _mistake_. whereby she creates the token with her personal account, and which we will eventually fix. The credible simple reason why Alice created the token with her personal account is that her and her co-founders wanted to act fast so as to have the ticker available before getting the company through CDD.
 
 To recap:
 
-* Alice, ACME's CEO and acting agent, already has an **individual** Polymesh account, named `alice`, tied to a primary private key named `aliceKey`.
-* `aliceKey`'s private key is based on the `"word1 word2 ..."` mnemonic.
+* Alice, ACME's CEO and acting agent, already has an **individual** Polymesh account, named `alice`, tied to a primary private key named `aliceKey`;
+* `aliceKey`'s private key is based on the `"word1 word2 ..."` mnemonic;
 * A Polymesh client has been [instantiated](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#static-connect) by Alice so she can do the next actions:
     <MultiCodeBlock>
 
@@ -66,12 +73,18 @@ const reservationQueue = await apiAlice.reserveTicker({
 
 The `TransactionQueue` type is just that, a queue. The transaction(s) in it have not been launched. Notice that:
 
-* It is a generic type parameterised with `TickerReservation`. This means that, eventually, the queue yields an instance of `TickerReservation`.
-* The constructor of `TransactionQueue` expects a [`context`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#constructor); it is in this `context` object that `apiAlice` is referenced so it is understood that `aliceKey` is the private key to use for signing.
-* Each transaction in the queue has its own status.
+* It is a generic type parameterised with `TickerReservation`. This means that, eventually, the queue yields an instance of `TickerReservation`;
+* The constructor of `TransactionQueue` expects a [`context`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#constructor); it is in this `context` object that `apiAlice` is referenced so it is understood that `aliceKey` is the private key to use for signing;
+* Each transaction in the queue has its own status;
 * The queue itself has its own [status](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#status).
 
-Of note, the reservation cost, at the time of writing, is of **2,500 POLYX**, before network fees. Let's [run](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#run) it.
+<HighlightBox type="info">
+
+Of note, the reservation cost, at the time of writing, is of **2,500 POLYX**, before network fees.
+
+</HighlightBox>
+
+Let's [run](https://developers.polymath.network/polymesh-sdk-api-reference/classes/transactionqueue#run) it.
 
 <MultiCodeBlock>
 
@@ -85,7 +98,7 @@ const reservation = await reservationQueue.run();
 
 </MultiCodeBlock>
 
-It is at this point that the necessary signatures are collected for the transactions. `apiAlice` was created straight with the mnemonic, so the signature will be affixed automatically. However, if this was taking place in the browser, for instance in the Token Studio dashboard and with the Polymesh Wallet extension, then there is a possibility that Alice will refuse to sign when prompted.
+It is at this point that the necessary signatures are collected for the transactions. `apiAlice` was created straight with the mnemonic, so the signature will be affixed automatically. However, if this was taking place in the browser, for instance in the Token Studio Dashboard and with the Polymesh Wallet extension, then there is a possibility that Alice will refuse to sign when prompted.
 
 <HighlightBox type="tip">
 
@@ -114,7 +127,11 @@ assert(owner.did === alice.did);
 
 </MultiCodeBlock>
 
-Something is not immediately apparent from the few lines of code above. It is nonetheless important to point it out. When we created `apiAlice` with `await Polymesh.connect()`, we passed an identifier `accountMnemonic` that allowed the SDK to recreate the `aliceKey` private key. At the risk of repeating what was covered in the introduction module, this private key is not the Polymesh account proper, nor is it the public key. The public key is associated with an account, whether as a primary key, like here, or a secondary one. And when the private key is used to sign a transaction, it is the **associated account** that will be considered to be the one doing the action. This associated account information is not embedded in the private key. It is an association that is stored on the blockchain, may change in the future, and as such, it needs to be retrieved to be known.
+Something is not immediately apparent from the few lines of code above. It is nonetheless important to point it out.
+
+When we created `apiAlice` with `await Polymesh.connect()`, we passed an identifier `accountMnemonic` that allowed the SDK to recreate the `aliceKey` private key. At the risk of repeating what was covered in the introduction module, this private key is not the Polymesh account proper, nor is it the public key. The public key is associated with an account, whether as a primary key, like here, or a secondary one. When the private key is used to sign a transaction, it is the **associated account** that will be considered to be the one doing the action.
+
+This associated account information is **not embedded in the private key**. It is an association that is stored on the blockchain, may change in the future, and as such, it needs to be retrieved to be known.
 
 <HighlightBox type="info">
 
@@ -124,7 +141,11 @@ So when we wrote `await` in `await apiAlice.getCurrentIdentity()`, this is no ac
 
 ## Ticker creation
 
-Now that the ticker is reserved, it is time to issue the security token. Oh wait! The reservation may have happened some time ago. After all a reservation remains valid for 60 days, for instance. And your `const reservation: TickerReservation` instance might no longer be in memory. How do you get it back? Use [`getTickerReservation`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#gettickerreservation):
+Now that the ticker is reserved, it is time to issue the security token.
+
+Oh wait! The reservation may have happened some time ago. After all a reservation remains valid for 60 days, for instance. And your `const reservation: TickerReservation` instance might no longer be in memory.
+
+How do you get it back? Use [`getTickerReservation`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#gettickerreservation):
 
 <MultiCodeBlock>
 
@@ -182,7 +203,7 @@ const token = await tokenQueue.run();
 
 </MultiCodeBlock>
 
-Implicit in the creation of this token is that Alice, as a private individual, is both the token's owner and its primary issuance agent (PIA). We were satisfied with this situation only up to this point. Now this needs to change.
+Implicit in the creation of this token is that Alice, as a private individual, is **both the token's owner and its primary issuance agent (PIA)**. We were satisfied with this situation only up to this point. Now this needs to change.
 
 This `token` instance will not always be in memory, so if we wanted to fetch it at a later date, we would do:
 
@@ -312,7 +333,9 @@ With this done, `apiCeo` now allows Alice to properly act as the CEO, on behalf 
 
 ## Token ownership transfer
 
-With the keys and accounts finally set right, it is time for Alice to fix the token situation, and transfer its ownership to ACME. Since it is Alice the individual who owns the token, she has to go back to using her personal account.
+With the keys and accounts finally set right, it is time for Alice to fix the token situation, and transfer its ownership to ACME.
+
+Since it is Alice the individual who owns the token, she has to go back to using her personal account.
 
 <MultiCodeBlock>
 
@@ -338,7 +361,9 @@ await transferQueue.run();
 
 </MultiCodeBlock>
 
-With the authorisation recorded in the blockchain, and on the way, Alice can stay on the same computer and switch from her personal identity to her identity as the CEO of ACME to accept the authorisation. She first needs to recall her personal account number, or `did`.
+With the authorisation recorded in the blockchain, and on the way, Alice can stay on the same computer and switch from her personal identity to her identity as the CEO of ACME to accept the authorisation.
+
+She first needs to recall her personal account number, or `did`.
 
 <MultiCodeBlock>
 
@@ -384,7 +409,11 @@ With this, the token is rightfully owned by ACME the company.
 
 ## Compliance
 
-We are not done yet with the token, though. As the CEO, Alice still needs to do one more step, that is, to define the conditions of ownership. Namely, require any account who acquires the token to not have a jurisdictional attestation of <span title="Elbonia does not appear in the CountryCode enum">Liechtenstein</span>. An exception will be made of the primary issuance agent who is simply used as a conduit, and can send to anyone. We use ACME's account as the KYC service provider, but realistically, it should be another account.
+We are not done yet with the token, though.
+
+As the CEO, Alice still needs to do one more step, that is, to define the conditions of ownership. Namely, require any account who acquires the token to not have a jurisdictional attestation of <span title="Elbonia does not appear in the CountryCode enum">Liechtenstein</span>. An exception will be made for the primary issuance agent, who is simply used as a conduit and can send to anyone.
+
+We use ACME's account as the KYC service provider, but realistically, it should be another account.
 
 <MultiCodeBlock>
 
@@ -490,7 +519,7 @@ const updatedToken: SecurityToken = await setRequirementsQueue.run();
 
 </MultiCodeBlock>
 
-With this, the token is _originated_. Nobody, including Alice under her personal account, is yet a holder of any amount of the security token, though, we remedy that in the next chapter "Distribution".
+With this, the token is _originated_. Nobody, including Alice under her personal account, is yet a holder of any amount of the security token, though, we remedy that in the next chapter when we tackle **distribution**.
 
 ## Links
 
