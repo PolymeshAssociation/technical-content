@@ -8,15 +8,15 @@ import HighlightBox from "../../src/components/HighlightBox"
 
 ## No Code KYC Process
 
-It is possible to validate a KYC for a given Polymesh Identity (PID) using the Polymesh Dashboard. For reasons of scaleability, Polymath expects that most KYC Service Providers will integrate Polymesh's on-chain attestations with their established business processes and automated systems using the SDK.
+It is possible to attach KYC attestations to a given Polymesh account using the Polymesh Dashboard. For reasons of scaleability, Polymath expects that most KYC Service Providers will integrate Polymesh's on-chain attestations with their established business processes and automated systems using the SDK.
 
 Even so, let us walk through the process using the Polymesh Dashboard to get acquainted with the process.
 
 ## Trigger a KYC requirement
 
-Security tokens enforce compliance rules defined at the token level. Consequently, incoming transfers can trigger KYC processes. For example, Alice trades with Bob and Bob is to receive ACME shares, but ACME has a compliance rule that states that holders must not be residents of Liechtenstein. It is incumbant on Bob to show that this is not the case, and to show it in a way that will be acceptable to ACME. 
+Security tokens enforce compliance rules defined at the token level. Consequently, incoming transfers can trigger KYC processes. For example, Alice trades with Bob and Bob is to receive ACME shares, but ACME has a compliance rule that states that holders must not be residents of Liechtenstein. It is incumbent on Bob to show that this is not the case, and to show it in a way that will be acceptable to ACME.
 
-ACME can appoint a KYC service provider or attend to the communication and back-office process in house. In either case, ACME recognizes the signature of the appointed KYC service provider. How does Bob know what to do? Recall that this process was kicked off by a trade, so we can infer that there is a trading system external to Polymesh itself. The SDK offers methods to signal that the receiver, Bob, needs to complete KYC process with ACME's appointed KYC service provider, so this concern is external to Polymesh. Polymesh will simply hold the transfer in a pending state until ACME's compliance needs are addressed. 
+ACME can appoint a KYC service provider or attend to the communication and back-office process in house. In either case, ACME recognises the signature of the appointed KYC service provider. How does Bob know what to do? Recall that this process was kicked off by a trade, so we can infer that there is a trading system external to Polymesh itself. The SDK offers methods to signal that the receiver, Bob, needs to complete KYC process with ACME's appointed KYC service provider, so this concern is external to Polymesh. Polymesh will simply hold the transfer in a pending state until ACME's compliance needs are addressed.
 
 ## Off-chain processes
 
@@ -28,7 +28,7 @@ There are many ways to verify such a claim. One method has already been hinted a
 
 The evidence can include examining identification documents, cross-checking other databases and in many cases includes facial recognition and other technologies. The originator determines what their process will be and the KYC Service Provider offers a buffet of options to choose from, usually in flexible combinations.
 
-The agreement between the originator and the KYC Service Provider is an off-chain artifact. The decisions about what to do and how thorough the process should be is an off-chain concern. What is left?
+The agreement between the originator and the KYC Service Provider is an off-chain artefact. The decisions about what to do and how thorough the process should be is an off-chain concern. What is left?
 
 In essence, the KYC Provider attests they followed the agreed procedure, whatever it happens to be, and found that the claim is valid or invalid.
 
@@ -54,21 +54,19 @@ Since the process details are actually off-chain, the on-chain concerns are redu
 
 ## The KYC Provider
 
-Asset originators are KYC service providers, by default. That is to say, ACME is its own KYC service provider unless they appointed a third party such as EzKYC. If you are unsure which Polymesh DID, exactly, is ACME's KYC service provider at this time, return to the [token studio](https://tokenstudio.polymesh.live/) as ACME and check the `Compliance` tab for your ACME token. 
+Asset originators are KYC service providers, by default. That is to say, ACME is its own KYC service provider unless they appointed a third party such as EzKYC. If you are unsure which Polymesh account, exactly, is ACME's KYC service provider at this time, return to the [token studio](https://tokenstudio.polymesh.live/) as ACME and check the `Compliance` tab for your ACME token.
 
 ![KYC service provider](images/03-kyc-provider.png)
 
 ## Create an Attestation
 
-Let us create an attestion for Alice that will claim her jurisdiction is Great Britain. 
+Let us create an attestion for Alice that will claim her jurisdiction is Great Britain.
 
-As the KYC service provider (ACME or EzKYC), open the [Polymesh API Explorer](https://app.polymesh.live/). 
+As the KYC service provider (ACME or EzKYC), open the [Polymesh API Explorer](https://app.polymesh.live/).
 
-Navigate to `Developer`, `Extrinsic`. Then, select `identity`, `addClaim(...)`. 
+Navigate to `Developer`, `Extrinsic`. Then, select `identity`, `addClaim(...)`.
 
 Complete the form fields:
-
-<MultiCodeBlock>
 
 ```
 target: Alice's personal Polymesh DID. The claim is about Alice.
@@ -79,34 +77,32 @@ Ticker: Your ACME token symbol
 Expiry: Pick a time about 1 year in the future.
 ```
 
-</MultiCodeBlock>
-
 <HighlightBox type="tip">
 
-Use a tool like EpochConverter to create Unix time stamps for future dates. Use the time in milliseconds with the extra three zeros. https://www.epochconverter.com/
+Use a tool like [EpochConverter](https://www.epochconverter.com/) to create Unix time stamps for future dates. Use the time in milliseconds with the extra three zeros.
 
 </HighlightBox>
 
-`Submit Transaction`, confirm the action and sign the transaction in the usual way. 
+`Submit Transaction`, confirm the action and sign the transaction in the usual way.
 
 ![sign attestation](images/01-create-claim.png)
 
 ## Observe Attestation
 
-As you might expect, Alice now has an attestation, signed by ACME's KYC service provider and she can see it on her `Account` tab in the dashboard. 
+As you might expect, Alice now has an attestation, signed by ACME's KYC service provider and she can see it on her `Account` tab in the dashboard.
 
 As Alice, visit the [dashboard Accounts tab](https://dashboard.polymesh.live/account).
 
-The attestation is displayed and it shows her jurisdiction is Great Britain and this was signed by the KYC service provider ACME happens to be using. 
+The attestation is displayed and it shows her jurisdiction is Great Britain and this was signed by the KYC service provider ACME happens to be using.
 
 ![alice's attestions](images/02-alice-claim.png)
 
 ## Re-enable Compliance rules
 
-You can now return to the [dashboard exercise in the distribution section](/distribute/dashboard) for a suggested compliance policy for the ACME token. Re-enable this policy now. Experiment with transfers between Alice, Bob and new identities you create, with and without the required jurisdiction attestations. 
+You can now return to the [dashboard exercise in the distribution section](/distribute/dashboard) for a suggested compliance policy for the ACME token. Re-enable this policy now. Experiment with transfers between Alice, Bob and new identities you create, with and without the required jurisdiction attestations.
 
 ## Links
 
-- Token Studio https://tokenstudio.polymesh.live/ 
+- Token Studio https://tokenstudio.polymesh.live/
 - API Explorer https://app.polymesh.live/
-- EpochConverter: https://www.epochconverter.com/ 
+- EpochConverter: https://www.epochconverter.com/
