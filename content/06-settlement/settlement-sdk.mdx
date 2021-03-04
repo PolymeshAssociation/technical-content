@@ -6,6 +6,10 @@ slug: /settlement/sdk
 
 import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
 import HighlightBox from "../../src/components/HighlightBox"
+import {
+  ExpansionPanelList,
+  ExpansionPanelListItem
+} from 'gatsby-theme-apollo-docs';
 
 When distributing the ACME token, we used a settlement instruction. This is the proper Polymesh construct to allow a transfer of a security token. The instruction we used had a single leg, i.e. it had a single action. Here we are going to use the same construct, with more legs.
 
@@ -86,6 +90,9 @@ Like we saw before, each participant has an identity and a computer on which the
 
 We saw earlier that Alice kept her ACME shares in her portfolio named _Cold store_, with id `coldStoreId`. It was not meant for trading. But since she wants to trade part of it, she is going to separate her concerns by creating a new _Trading_ portfolio.
 
+<ExpansionPanelList>
+<ExpansionPanelListItem number="1">
+
 <MultiCodeBlock>
 
 ```typescript
@@ -103,6 +110,9 @@ const tradingFolio = await tradingFolioQueue.run();
 ```
 
 </MultiCodeBlock>
+
+</ExpansionPanelListItem>
+<ExpansionPanelListItem number="2">
 
 Now, let her move 1,000 of her ACME tokens.
 
@@ -142,6 +152,9 @@ await moveQueue.run();
 
 </MultiCodeBlock>
 
+</ExpansionPanelListItem>
+<ExpansionPanelListItem number="3">
+
 She did this, not for cosmetic reasons, but because she also intends to give SafeHands custodial rights on this Trading portfolio. And only this one.
 
 <MultiCodeBlock>
@@ -161,6 +174,9 @@ await custodyQueue.run();
 ```
 
 </MultiCodeBlock>
+
+</ExpansionPanelListItem>
+<ExpansionPanelListItem number="4">
 
 She cannot just dump it on SafeHands, though. They have to accept the custodial relationship in return. So let's move to SafeHands computer system and accept it.
 
@@ -188,7 +204,13 @@ await acceptQueue.run();
 
 </MultiCodeBlock>
 
+</ExpansionPanelListItem>
+<ExpansionPanelListItem number="check">
+
 At this point, Alice can simply interact with SafeHands on their platform, and direct them to what she wants to achieve. Her broker could also choose to display in her account that she has entrusted them with 1,000 ACME shares, to keep her informed of the status of her account.
+
+</ExpansionPanelListItem>
+</ExpansionPanelList>
 
 ## US dollar?
 

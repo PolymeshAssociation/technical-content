@@ -4,7 +4,9 @@ description: Settlement and custody in Polymesh
 slug: /settlement/settlement-introduction
 ---
 
-Settlement is where an action that was agreed beforehand is effectively acted upon. It is a term often found in finance. In the case of Polymesh, the prior agreement is that of an exchange or transfer of securities between identities. Regulatory requirements and compliance are both important aspects of modern settlements.
+import HighlightBox from "../../src/components/HighlightBox"
+
+Settlement is where an action that was agreed beforehand is effectively acted upon. It is a term often found in finance. In the case of Polymesh, the prior agreement is that of an exchange or transfer of securities between accounts. Regulatory requirements and compliance are both important aspects of modern settlements.
 
 When looking at current settlement processes, for example in case of post-trade security clearing, one can notice:
 
@@ -16,230 +18,189 @@ When looking at current settlement processes, for example in case of post-trade 
 
 As you can guess, there is potential for efficiency and cost-saving.
 
-Important terminology:
+## Deconstructing settlements
+
+Let's introduce some important Polymesh terminology that we will use throughout:
 
 * a **leg** is the smallest action of a settlement. This could be 1 transfer of securities from Alice to Bob or the recognition of an off-chain payment. Creating legs does not execute them immediately but they describe what is meant to happen after compliance and other concerns are satisfied. Legs cannot exist by themselves. One or more legs of a settlement need to be part of:
-* an **instruction**, which aggregates related legs to create an indivisible action, an atomic transaction in computer parlance. This means that when an instruction is executed, all its legs are executed concurrently. There is no situation where only some of an instruction's legs have executed. This also means that a single unconfirmed leg can hold up the whole instruction. Additionally, an instruction cannot exist by itself. Instructions are created and executed when _housed_ in:
+* an **instruction**, which aggregates related legs to create an indivisible action, an atomic transaction in computer parlance. This means that when an instruction is executed, all its legs are executed concurrently. There is no situation where only some of an instruction's legs have executed. This also means that a single unconfirmed leg can hold up the whole instruction's execution. Additionally, an instruction cannot exist by itself. Instructions are created and executed when _housed_ in:
 * a **venue**, which is a logical object meant for the purpose of collecting instructions. It is also associated with certain access rights such as who can add an instruction to it.
 
-Let's review these separately
+Let's review these terms separately and in greater detail.
 
-## Legs
+### Legs
 
 > Alice sends 100 ACME shares from her _trading_ portfolio to Bob's default portfolio
 
-This is a valid leg description. It should be evident that Alice's approval is necessary here for the action to eventually take place; we are talking about _her_ shares here. It also necessary for Bob's approval to be collected as, despite Alice's generosity, receiving securities has tax implications that he may not want to shoulder.
+This is a valid leg description. It should be evident that Alice's approval is necessary here for the action to eventually take place; we are talking about _her_ shares here. It is also necessary for Bob's approval to be collected as, despite Alice's generosity, receiving securities has tax implications that he may not want to shoulder.
 
-> Bob sent 500 USD off-chain to Alice with reference `0x123bff`
+> Bob sent 10 USD off-chain to Alice with reference `0x123bff`
 
-This is another valid leg description, called a signed receipt. Here again the approval of both parties is required, Bob may not want to give the impression that he has sent 500 USD off-chain, or 10 million, or that it was required of him. Alice may not want to let it be known that she has received cash, as she may be asked to return something she never received in the first place.
+This is another valid leg description, called a signed receipt. Here again the approval of both parties is required, Bob may not want to give the impression that he has sent 10 USD off-chain, or 10 million, or that it was required of him. Alice may not want to let it be known that she has received cash, as she may be asked to return something she never received in the first place.
 
-## Affirmations
+### Affirmations
 
-The approvals that legs require are called **affirmations**. A key associated with an identity indicates agreement by signing an affirmation for a leg. For a given leg to be affirmed, it needs to have received all required affirmations from relevant identities.
+We just saw that, depending on the situation, legs require approvals from relevant accounts. These approvals are called **affirmations**. At the risk of repeating, it is a relevant account that affirms a leg. Affirming a leg is, in effect, placing a signature that is valid for the account concerned. So a key associated with an account indicates agreement by signing an affirmation for a leg. For a given leg to be affirmed, it needs to have received the required affirmations from all relevant accounts.
 
-And yes, a secondary key or a sufficiently entrusted custodian can affirm on behalf of the main identity.
+And yes, a secondary key, or a custodian (see below) entrusted with sufficient rights, can affirm on behalf of a relevant account.
 
-When the identity owning an asset has affirmed a leg, then the asset is _committed_ so it cannot be affirmed concurrently in another instruction's leg, by mistake or malice.
+When the account owning an asset has affirmed a leg, then the asset's relevant quantity is _committed_. This commitment prevents double-booking in another instruction's leg, by mistake or malice. Failing to do so would eventually cause one of the two competing instructions to fail much later, at execution.
 
-## Instructions - Multiparty Transactions
+If a leg mentions a signed receipt for an off-chain action, this signed receipt is committed too.
 
-Sending shares to Bob or sending USD to Alice in isolation is all well and good, but, in our world, the overwhelming majority of securities transactions are trades. For instance:
+For the avoidance of doubt, a party can reject a leg, thereby cancelling the whole instruction, and releasing all previously committed assets and signed receipts. A party can also _not_ affirm a leg, i.e. play for time, which would leave the instruction in limbo until some other resolution, like a cancellation or the instruction's expiry date.
 
-* Leg 1: Alice sends 100 of her ACME shares to Bob on the condition that she receives 500 USD.
-* Leg 2: Bob sends 500 USD to Alice on the condition that he receives 100 ACME shares.
+### Instructions - Multiparty Transactions
 
-Explicit in this trade is that the 2 legs should happen in concert or none should happen at all. In computer jargon, this is called an atomic operation, a.k.a. a transaction. But because the word _transaction_ is already used in Polymesh to describe the serialised bits of information added to the blockchain, such an atomic securities trade is called an **instruction**.
+Sending shares to Bob or sending USD to Alice in isolation, as a gift for instance, is all well and good, but, in our world, the overwhelming majority of securities transactions are trades. For instance:
+
+* Leg 1: Alice sends 100 of her ACME shares to Bob on the condition that she receives 10 USD.
+* Leg 2: Bob sends 10 USD to Alice on the condition that he receives 100 ACME shares.
+
+Explicit in this trade is that the 2 legs should happen in concert or none should happen at all. In computer jargon, this is called an atomic operation, a.k.a. a transaction. But because the word _transaction_ is already used in Polymesh to describe the serialised bits of information added to the blockchain -itself an atomic operation- such an atomic securities trade is called an **instruction**.
+
+![Transfer with an Exchange](images/exchange-mediated-transfer.png)
 
 An instruction cannot be created without legs, and legs cannot be created outside of instructions. Also, after it has been created, an instruction cannot be modified. It should be obvious once you imagine what would happen if the first party could modify the second leg after the second party has already affirmed the first leg.
 
-## KYC Requirements
+### Asset issuer requirements
 
-In Polymesh, nothing material happens until the compliance rules have to be met. This is true of instructions. So, in our 2-legged instruction example, the CDD claims attached to Alice's and Bob's identities should comply with ACME's sending and receiving rules, respectively. The instruction will remain in a pending state until ACME is satisfied.
+In Polymesh, nothing material happens until the compliance rules have been met. This is true of instructions. So, in our 2-legged instruction example, the KYC attestations attached to Alice's and Bob's accounts should comply with ACME's sending and receiving rules, respectively. The instruction will remain in a pending state until ACME's compliance rules are satisfied.
 
-## Atomic Execution
+For the avoidance of doubt, yes, an instruction can have been affirmed by all parties, and still stay in a pending state while the KYC requirements are being resolved. As expected, it is also possible to cancel the whole instruction while it is pending compliance.
 
-Instructions execute completely, or not at all. For example, the above-mentioned instruction has two legs to send shares from Alice to Bob and funds from Bob to Alice. Alice and Bob both need to affirm that the entire instruction is agreeable and properly represents their agreement. Instructions contain other details such as when to actually execute, e.g. as soon as its affirmed or at a scheduled point of time in the future. Alice and Bob's affirmations indicate their agreement with all such details.
+Additionally, the securities token issuer can also restrict which accounts are allowed to create instructions transferring _their_ token. Although it is expected that this facility will seldom be used.
 
-The actual execution is atomic, meaning that the instructions are always either completely executed or not executed at all. There is no case in which one leg of instruction has executed and the other has not.
+### Atomic Execution
 
-## Venue
+Instructions execute completely, or not at all, another way of saying they are atomic. For example, the above-mentioned instruction has two legs to send shares from Alice to Bob and funds from Bob to Alice. Alice and Bob both need to affirm that the entire instruction is agreeable and properly represents their agreement. Instructions contain other details such as when to actually execute, e.g. as soon as its affirmed or at a scheduled point of time in the future. Alice and Bob's affirmations indicate their agreement with all such details.
 
-Finally, an instruction is not created in a void, but instead it is created inside a venue. Ultimately, an identity is responsible for its own venues, for access rights and for who can create instructions within them.
+The actual execution is atomic, meaning that the instructions are always either completely executed or not executed at all. There is no case in which one leg of an instruction has executed and the other has not.
 
-Once an instruction has been created inside a venue, it cannot be moved to another.
+With our example, after the instruction has executed:
 
-## How do these concepts translate into a settlement on Polymesh
+* Alice has 100 fewer shares of ACME, and 10 more USD.
+* Bob has 100 more shares of ACME, and 10 fewer USD.
 
-A (multiparty) settlement requires all counterparties of a transaction to affirm/agree on an instruction (i.e. a set of asset transfers) before the instruction settles/completes.
+And if the instruction had a signed receipt for an off-chain action, that receipt would be permanently marked as _used_.
 
-Three main roles are involved in a settlement:
+### Custody
 
-* the asset issuer,
-* the venue creator, and
-* the counterparties of the settlement.
+Having to keep track and affirm instructions that are relevant to you can be tedious business. It also does not map well with today's world of securities. Today, securities holders, or beneficiaries, are typically represented by other parties that broadly act in the beneficiaries' interest with some guidance. These other parties are called **custodians**. You may know them as brokers too.
 
-The **asset issuer** controls the set of identities allowed to create instructions referencing the asset they issued. Posting instructions can also be unrestricted, if preferred. The configuration allows for a non-restrictive policy, but restricting instruction creation brings regulatory safety.
+Polymesh provides a way to mirror this off-chain world with the use of custody on-chain. In this setup, a beneficiary account can designate another account as their custodian in one or more of their portfolios. After the custodian account accepts the responsibility, they can act on behalf of the beneficiary for matters related to settlement. Assumed in the foregoing is that the beneficiary and the custodian entered into a legally binding contract, whose Polymesh custodial relationship is just the on-chain expression of it. Belabouring the point, a custodian does not own the securities on-chain, the beneficiary still does, and a custodial relationship can be revoked.
 
-When it comes to the **venue creator**, only he/she is allowed to create instructions underneath a venue. The creator of a venue can also cancel pending instructions under the venue. Moreover, the venue creator has the control regarding the set of identities permissioned to sign payment receipts for instructions under the venue.
+It is therefore incumbent on the beneficiary to partition their portfolios and assets, and designate their custodian(s), so as to reflect the desired mix of responsibilities. See below for more.
 
-**Counterparties** are relative to instructions, meaning they are always linked to a specific instruction or set of instructions. A counterparty can be defined as the identity referenced as receiver or sender/payer in a leg within an instruction.
+### Venue
 
-Each counterparty is required to authorise any instruction involving them as counterparty before it is settled. Authorisation can be performed through an on-chain transaction or with signed data.
+Finally, an instruction is not created in a void, but instead it is created inside a venue. Ultimately, an account is responsible for its own venues, for access rights and for who can create, cancel and remove, instructions within them. Once an instruction has been created inside a venue, it cannot be moved to another.
 
-When a counterparty authorises an instruction, the assets involved are locked or appropriate receipts must be provided. Once the instruction is authorised by all counterparties, the instruction settles, i.e. is automatically-executed. Authorisation can only be provided after the valid date and before an instruction expires; authorisations are provided during the specified time period of an instruction.
+An advantage of this setup is that the account owning the venue lends its reputation to the instructions that are published in it. A concrete example might be a securities exchange platform, let's name it NextDaq, publishing matched trades on its _trade settlement_ venue. All brokers who have open positions with NextDaq can expect instructions relevant to themselves or their customers. What does a broker do when they see an instruction mentioning a customer of theirs sending funds or shares to an unknown account? Well, since it appeared in NextDaq's settlement venue, they assume that it is a valid matched trade and that the unknown recipient is the counterpart of the trade. As long as the broker can see that the price is right, according to their own records, they can reasonably proceed with the affirmations.
 
-To execute an instruction, counterparty authorisation requires:
+In fact, the venue creator can also restrict the list of accounts allowed to affirm instructions in its venue. You could for instance imagine that NextDaq would only allow the custodians it has knowledge of, and disallow the actual beneficiaries from affirming instructions.
 
-* counterpartiees locking the relevant amount of assets to cover the obligations resulting from the instruction, or
-* counterparties providing signed receipts for an off-chain transaction, wich are then markes as locked globally.
+### Synopsis
 
-In case a **counterparty cancels** a pending instruction, the entire instruction is marked as cancelled. All assets are then unlocked again. All counterparties have the right to reject an instruction by cancelling it, or simply waiting for it to expire.
+An instruction is the vehicle for a settlement on Polymesh. It has many moving parts, all of which have to align for the instruction to be executed. Namely, the securities holders, their potential custodians, the asset issuer's requirements, the venue and its creator.
 
-When instructions fail, are rejected or expire, all asset locks are removed and if receipts were used, they are marked as unused. If the **execution fails** for any reason, it is marked as **failed**. If it **succeeds**, assets are transferred, the transfer is stamped with the time of successful execution, and all receipts are marked used.
+## Lateral concerns
 
-How does a custodian work in this scenario?
+### Pre-authorisation
 
-Briefly speaking, when a custodian has access to a user's portfolio, the custodian can affirm any instructions referencing the portfolio. The token holder can let the custody service provider affirm instructions on behalf of them.
+Putting signature to an instruction is not the only way to affirm it. There is another construct, that of the pre-authorisation. In effect, a signature that validates one, and only one, future instruction. Not unlike a blank cheque.
 
-Here the separation of ownership between the token holder and custodian allows the latter to handle/manage the assets while ownership of the assets remains with the token holder identity.
+So if Bob signed a pre-authorisation, Alice can include it when creating the instruction. The pre-authorisation will be committed before execution, and marked as consumed when the instruction executes.
 
-More on custody below. Let's first take a look at a settlement example!
+This could also be used by an exchange, which would collect pre-authorisations from the brokers that list on it. A new instruction would therefore be authorised as soon as it is created, potentially leading to an instant settlement.
 
-## Some examples
+### Netting process
 
-To make the concepts and the relations between them easier to grasp, let's take a look at a couple of possible settlement scenarios.
+Our trade example between Alice and Bob was simple, 2 legs, 2 parties. Now, we can imagine a busy exchange platform agreeing with its brokers that it will emit fewer instructions that in effect batch trades, or express the net effect of a collection of trades that took place.
 
-<HighlightBox type="info">
+For instance, instead of 3 instructions that would see:
 
-We will only sketch out some scenarios were roughly, you can find an in-depth look at an example and how it applies to the Dashboard and SDK here. --> ADD LINK TO SECTION
+* Alice selling 100 ACME to Bob for 10 USD.
+* Bob selling 40 ACME to Carol for 5 USD.
+* Alice selling 20 ACME to Carol for 2 USD.
 
-</HighlightBox>
+There could be a single instruction with 4 legs that would see:
 
-### Peer-to-peer transfer
+* Alice sending 60 ACME to Bob.
+* Alice sending 60 ACME to Carol.
+* Bob sending 5 USD to Alice.
+* Carol sending 7 USD to Alice.
 
-Let's say a token holder, Alice, wants to transfer 100 ACME tokens to Bob. It is meant as a birthday gift.
+In both situations, the net effect is that:
 
-Alica can use a previously created venue or her "default venue" for the instruction. It is an instruction with a single leg.
+* Alice has 120 fewer ACME and 12 more USD.
+* Bob has 60 more ACME and 5 fewer USD.
+* Carol has 60 more ACME and 7 fewer USD.
 
-As Alice already told Bob that he is getting a present, Bob provides his pre-authorisation with signed data.
+So there is reason to believe that all 3 parties, or their respective custodians, would be agreeable to the single larger instruction. The instruction is still atomic so it would not be possible for Alice to send her shares without full compensation, for instance. A potential downside is that with more parties whose affirmation, and proper attestations, are required, there is a higher chance of a hold-up. Which is why an exchange would be expected to do this only with parties with higher trust.
 
-Alice submits the authorisation from Bob along with the transaction. As she created the instruction, her authorisation is implicitly given.
+### Chain of Responsibility
 
-What if the gift is a surprise for Bob's birthday?
+A settlement is interesting for the parties who directly benefit from it, like Alice and Bob in our trading example. However, they are not the only parties that wish to see settlements unfold without problems.
 
-Bob wouldn't have provided a pre-authorisation. But this is no problem at all.
-
-Alice can still create a venue and with it provide her authorisation. Her ACME tokens are locked. The only thing changing is that Bob needs to authorise the instruction.
-
-As soon as the authorisation for the instructions are given by Alice and Bob in any form, the instruction is fully authorised. This also occurs as soon as it is created, if pre-authorisation was given by Bob.
-
-The instruction is settled, the tokens are unlocked, Bob now owns 100 ACME tokens more (i.e. beneficial ownership is transfereed), and the 100 tokens are removed from Alice's balance and added to Bob's.
-
-![Peer-to-Peer Transfer](../features/images/peer-to-peer-transfer.png)
-
---> IMAGE HAS TO BE DESIGNED, change parameters in regard to expiration date
-
-### Transfer with an exchange
-
-Now, let's take a look at a transfer involving an exchange.
-
-Again, Alice wants to sell 100 ACME tokens. Bob, the buyer, wants to buy 100 ACME tokens for 10 USDC. Both are looking for a trade match on the exchange NextDaq.
-
-NextDaq matches Alice with Bob. After coordinating the aggreed price, i.e. 100 ACME tokens for 10 USDC, NextDaq creates a venue.
-
-The venue has one single instruction with two legs. The time of expiration is 24 hours from the venue creation.
-
-![Transfer with an Exchange](../features/images/exchange-mediated-transfer.png)
-
---> IMAGE HAS TO BE DESIGNED, change parameters in regard to expiration date
-
-The transfer cannot be settled until all counterparties have provided authorisation for the instruction. This has to be achieved before the venue expires.
-
-Bob authorises the instruction. Thus, his 10 USDC are locked. In the meantime, Alice authorises the instruction and her 100 ACME tokens are locked.
-
-With authorisation provided, it's time for instruction execution. Alice receives 10 USDC and Bob his 100 ACME tokens.
-
-**How would this transfer look with pre-given authorisation?**
-
-Alice still wants to sell 100 ACME tokens and Bob wants to buy them for 10 USDC. NextDaq again matches Alice and Bob, and coordinates the agreed price.
-
-NextDaq receives signed authorisations from Alice and Bob. The authorisations represent the approval of both counterparties on the specific instruction for the transfer. Whereas, Bob provides authorisation using a signed receipt of a fund of transfer of 10 USDC to Alice. As Bob transfered the 10 USDC, there is no lock on additional funds from Bob. Bob's rreceipt signed data is marked as locked instead.
-
-NextDaq creates a venue with a single instruction and two legs. The time of expiration is 24 hours from the venue creation. The authorisations from Alice and Bob are provided for the venue.
-
-The instruction is created and at the same time, it is authorised. This leads to an instant settlement of the instruction. Also, Bob's receipt is marked used. Alice receives 10 USDC and Bob 100 ACME tokens.
-
-## Chain of Responsibility
-
-A settlement is interesting for the parties who directly benefit from it, like Alice and Bob in our trading example. However, they are not the only parties that wish to see settlement unfold without problems.
-
-To reflect the realities of capital markets and leverage Decentralised Finance (DeFi) models, Polymesh integrates multiparty transactions and provides a network that can include third parties such as exchanges and custodians.
+To reflect the realities of capital markets and leverage Decentralised Finance (DeFi) models, Polymesh integrates multiparty transactions and provides a network that can include third parties such as exchanges and custodians, as seen earlier.
 
 Let's take a closer look at these two stakeholders and how Polymesh integrates their roles.
 
-### Seen from exchanges
+#### Seen from exchanges
 
 An exchange matches parties for a trade to which they agreed in principle. When the exchange has a match, the parties are legally bound to complete the trade, i.e. settle it. If a trading party fails to complete the trade, the reputational risk would jump back at the exchange, raising questions about the honesty of its traders. So exchanges have a vested interest in making sure that all their matched trades settle.
 
 To achieve this, they monitor their participants' reputation, and they make sure to collect adequate information before creating a fully-descriptive instruction.
 
-### Seen from custodians
+#### Seen from custodians
 
 Custodians can represent a security beneficiary, for instance on an exchange. They may represent more than one beneficiary on an exchange too, and, from the point of view of an exchange, the _trader_ is the custodian. So the exchange is in effect keeping track of the custodians' reputations. In turn, when it comes to a given settlement, a custodian cannot override a beneficiary's failing compliance. This is a reputational risk for custodians. Therefore, custodians are compelled to monitor the compliance of their customers before they represent them on an exchange.
 
 Also, given sufficient liquidity, a given custodian can also act as an exchange between parties when it is possible to create such matches. In this case , as well, custodians have a vested interest in ensuring that settlement instructions complete.
 
---> not 100% sure this is were it best fits but just went for it
+### On custodians and portfolios
 
-Linked to the inclusion of custody providers are the way assets are hold on Polymesh, and how portfolios are conceptualised and implemented. How is that?
+Linked to the inclusion of custody providers are the way assets are held on Polymesh, and how portfolios are conceptualised and implemented. How is that?
 
-All assets on Polymesh are held at the **identity-level**. This helps enforce compliance in real time. At the same time, it allows to organise assets under identities and assign key perrmissions and custody. Another value added for entities opting for Polymesh, because an identity can represent a whole organisation, which then can allow its employees access to the identity based on operative requirements, or an identity can represent a single person and provide for individual access.
+All assets on Polymesh are held at the **account level**. This helps enforce compliance in real time. At the same time, it allows to organise assets under accounts and assign key permissions and custody. Another value added for entities opting for Polymesh, because an account can represent a whole organisation, which then can allow its employees access to the account based on operative requirements, or an account can represent a single person and provide for individual access.
 
-Very important in this regard is the **portfolio** concept in Polymesh. One can partition assets into logical portfolios within a single identity. With this way of partitioning, assets across portfolios can have different balances while being connected to the same identity. Asset partitioning into logical portfolios facilitates good asset management.
+Very important in this regard is the **portfolio** concept in Polymesh. One can partition assets into logical portfolios within a single account. With this way of partitioning, assets across portfolios can have different balances while being connected to the same account. Asset partitioning into logical portfolios facilitates good asset management.
 
-Portfolios are especially interesting when it comes to custody. Any assets in a portfolio can be assigned to a custodian, who then manages them exclusively. Each portfolio can **only** be assigned to a single custodian at the same time. Any new assets transferred into a portfolio managed by a custodian are also included in the custody.
+Portfolios are especially interesting when it comes to custody. Any assets in a portfolio can be assigned to a custodian, who then manages them exclusively. Each portfolio can **only** be assigned to a single custodian at the same time. And any new assets transferred into a portfolio managed by a custodian are also included in the custody.
 
-When a user assigns custodianship to a portfolio, the custodial ownership is transferred to a different identity. This form of permission seperayes beneficial ownership from custodial ownership.
+When a user assigns custodianship to a portfolio, the custodial control is transferred to a different identity. This form of permission separates beneficial ownership from custodial control.
 
 What is the difference between both?
 
-**Beneficial ownership** means the control over an asset or legal entity. Following the United States of America _Securities Exchange Act_ (1934), beneficial ownership, when it comes to securities, is understood as any person holding vosting or investment power. Translating into Polymesh, beneficial ownership is **always** hold by the beneficiaries identity and is the base criteria to participate in corporate actions.
+**Beneficial ownership** means the control over an asset or legal entity. Following the United States of America _Securities Exchange Act_ (1934), beneficial ownership, when it comes to securities, is understood as any person holding voting or investment power. Translating into Polymesh, beneficial ownership is **always** held by the beneficiaries account and is the base criteria to participate in corporate actions.
 
-**Custodial ownership** gives another entity, i.e. identity, the right to manage assets on beehalf of the beneficiary. This is where custody service provider come into play on Polymesh.
+**Custodial control** gives another entity, i.e. account, the right to manage assets on behalf of the beneficiary. This is where custody service providers come into play on Polymesh.
 
-Performing actions for the beneficials, i.e. token holders, is possible for the custodian through authorisations. If another user is involved in an action, an _invitation to action_ becomes necessar. The authorisation system remains on-chain at all times.
+Performing actions for the beneficiaries, i.e. token holders, is possible for the custodian through authorisations. If another user is involved in an action, an _invitation to action_ becomes necessary. The authorisation system remains on-chain at all times.
 
-Custodians with access to a portfolio are able to affirm instructions referencing the portfolio and given on behalf of the beneficial owner, token holder. Thus, beneficial ownership records are maintained consistently and ownership remains in hand of the token holder, while allowing custodial ownership.
+Custodians with access to a portfolio are able to affirm instructions referencing the portfolio and given on behalf of the beneficial owner, token holder. Thus, beneficial ownership records are maintained consistently and ownership remains in the hands of the token holder, while allowing custodial control.
 
 Why are authorisations necessary when dealing with custody services?
 
 First, it ensures that custodians act in the beneficials interest. On-chain authorisations make everything transparent and provide on-chain tracking of authorisations. In addition, human errors are reduced by this process, i.e. a typo cannot pass unnoticed and result in an unintended consequence. Last but not least, it makes _dumps of toxicity_ less possible, thus improving regulatory compliance.
 
-Custody management is simplified on Polymesh. For example, a custodian doesn't need to generate one key for every single client. Identities use keys internally while keys/identities are used externally for custody. Custody can be understood as a form of proprietary key managegement. This gives the setup  flexibility, due to which a custodian can maintain their key management concept and process structure when migrating to the network.
+Custody management is simplified on Polymesh. For example, a custodian doesn't need to generate one key for every single client. Accounts use keys internally while keys/accounts are used externally for custody. Custody can be understood as a form of proprietary key managegement. This gives the setup  flexibility, due to which a custodian can maintain their key management concept and process structure when migrating to the network.
 
 Then, what services can a custodian perform on-chain?
 
 Once assigned, a custodian is able to:
 
-* affirm or reject instructions - as long as they relate to a portfolio managed by the custodian on behalf of the beneficial, and
+* affirm or reject instructions regarding custodial assets on behalf of the beneficial asset holder, and
 * revoke the custodianship over a portfolio.
 
 A custodian can settle instructions only, but has full-autonomy to affirm these.
 
 <HighlightBox type="tip">
 
-If you are feeling unsure about identity, signing keys and permissions, take a look at the identity section!
-
---> ADD LINK TO SECTION
-
-For a good overview on instructions, just scroll to _Instructions - Multipart Transactions_ in this section.
+If you are feeling unsure about accounts, signing keys and permissions, take a look at the [identity section](/introduction/intro-identity)!
 
 </HighlightBox>
-
-## Links
-
-Also, given enough liquidity, a given custodian can also act as an exchange between parties when it is possible to create such matches. In this case too, the custodians have a vested interest in making sure that a settlement instruction completes.
 
 ## Links
 
