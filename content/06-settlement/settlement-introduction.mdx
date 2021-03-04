@@ -1,6 +1,6 @@
 ---
 title: Settlement Process
-description: Settlement and Custody in Polymesh
+description: Settlement and custody in Polymesh
 slug: /settlement/settlement-introduction
 ---
 
@@ -58,6 +58,10 @@ An instruction cannot be created without legs, and legs cannot be created outsid
 In Polymesh, nothing material happens until the compliance rules have to be met. This is true of instructions. So, in our 2-legged instruction example, the CDD claims attached to Alice's and Bob's identities should comply with ACME's sending and receiving rules, respectively. The instruction will remain in a pending state until ACME is satisfied.
 
 ## Atomic Execution
+
+Instructions execute completely, or not at all. For example, the above-mentioned instruction has two legs to send shares from Alice to Bob and funds from Bob to Alice. Alice and Bob both need to affirm that the entire instruction is agreeable and properly represents their agreement. Instructions contain other details such as when to actually execute, e.g. as soon as its affirmed or at a scheduled point of time in the future. Alice and Bob's affirmations indicate their agreement with all such details.
+
+The actual execution is atomic, meaning that the instructions are always either completely executed or not executed at all. There is no case in which one leg of instruction has executed and the other has not.
 
 ## Venue
 

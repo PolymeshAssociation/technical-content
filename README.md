@@ -1,4 +1,4 @@
-# Polymath Developer Portal
+# Polymesh Developer Portal
 
 ## Staging server
 `main` and `staging` branches are deployed automatically

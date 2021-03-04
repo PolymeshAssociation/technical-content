@@ -20,9 +20,9 @@ const apolloDocsOptions = {
   ...themeOptions,
   root: __dirname,
   contentDir: './content/',
-  description: 'Polymath Developer Portal description',
+  description: 'Polymesh Developer Portal description',
   githubRepo: 'PolymathNetwork/technical-content',
-  siteName: 'Polymath Developer Portal',
+  siteName: 'Polymesh Developer Portal',
   sidebarCategories: getSidebarConfig(),
 }
 
@@ -60,10 +60,10 @@ let remarkPluginConfig = [
   {
     resolve: "gatsby-remark-images",
     options: {
-      maxWidth: 736, // page max container width
+      maxWidth: 936, // page max container width
       linkImagesToOriginal: false,
-      showCaptions: true,
-      quality: 7
+      showCaptions: false,
+      quality: 70
     }
   },
   {

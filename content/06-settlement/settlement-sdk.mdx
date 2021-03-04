@@ -11,7 +11,7 @@ When distributing the ACME token, we used a settlement instruction. This is the 
 
 ## Participants
 
-Here, Alice, the individual, wants to start trading and exchange some of her ACME shares in exchange of US dollars. For that, she enlists the services of a broker named SafeHands who has access to an exchange named NextDaq. She plans on instructing SafeHands to list 1,000 of her shares for at least 5 USD apiece, and let them handle the reception of USD and the transfer execution in a timely manner.
+Here, Alice, the individual, wants to start trading and exchange some of her ACME shares for US dollars. For that, she enlists the services of a broker named SafeHands who has access to an exchange named NextDaq. She plans on instructing SafeHands to list 1,000 of her shares for at least 5 USD apiece, and let them handle the reception of USD and the transfer execution in a timely manner.
 
 Like we saw before, each participant has an identity and a computer on which they can instantiate their Polymesh client. And inform each other off-chain of their respective `did` so they know how to identify, target and respond to each other.
 
@@ -190,7 +190,7 @@ await acceptQueue.run();
 
 At this point, Alice can simply interact with SafeHands on their platform, and direct them to what she wants to achieve. Her broker could also choose to display in her account that she has entrusted them with 1,000 ACME shares, to keep her informed of the status of her account.
 
-## USD dollar?
+## US dollar?
 
 We are going to use an on-chain representation of the US dollar. It can be as conceptually simple as another security token issued by a bank. Let's name our bank DeepPockets, and have them issue the token named DEEPUSD. DeepPockets happens to have a sterling reputation, so Polymesh network participants believe them when they claim that they will honour anyone wishing to redeem its DEEPUSD token against off-chain USD 1 for 1. This setup is convenient as, later on, it will allow the trade to have all its components on chain.
 
@@ -237,6 +237,63 @@ assert(isPossible === "Success");
 </MultiCodeBlock>
 
 This test will unfortunately also test whether Alice can receive new ACME shares, which is one irrelevant hurdle SafeHands does not care about.
+
+If SafeHands, or any other custodian, have a customer who wants to acquire some ACME shares, they would have to make sure that they satisfy the _receive_ part of the compliance. If you recall, it was defined as:
+
+1. Have a KYC claim. As per the exercise from ACME itself, which is an artefact of keeping the exercise simpler, although it could be from any KYC service provider as per ACME's choice. Let's name it EzKyc. Presumably a provider that is tasked with verifying the customer's jurisdiction so as to meaningfully satisfy the second point.
+2. Not have a claimed jurisdiction of Liechtenstein.
+
+What would it look like if EzKyc were to publish a claim against Bob, with DID of `bobDid`, valid for 1 year, for the purpose of receiving ACME tokens?
+
+<MultiCodeBlock>
+
+```typescript
+const nextYear: Date = new Date();
+nextYear.setFullYear(nextYear.getFullYear() + 1);
+const claimQueue: TransactionQueue<void> = await apiEzKyc.claims.addClaims({
+    "claims": [
+        {
+            "claim": {
+                "type": ClaimType.Jurisdiction,
+                "code": CountryCode.Gb,
+                "scope": {
+                    "type": ScopeType.Ticker,
+                    "value": "ACME"
+                }
+            },
+            "expiry": nextYear,
+            "target": bobDid
+        }
+    ]
+});
+await claimQueue.run();
+```
+
+```javascript
+const nextYear = new Date();
+nextYear.setFullYear(nextYear.getFullYear() + 1);
+const claimQueue = await apiEzKyc.claims.addClaims({
+    "claims": [
+        {
+            "claim": {
+                "type": "Jurisdiction",
+                "code": "Gb",
+                "scope": {
+                    "type": "Ticker",
+                    "value": "ACME"
+                }
+            },
+            "expiry": nextYear,
+            "target": bobDid
+        }
+    ]
+});
+await claimQueue.run();
+```
+
+</MultiCodeBlock>
+
+This action is done by EzKyc, not by SafeHands or any other custodian. Although it is conceivable that said custodians would direct their customers to the actions they need to complete before they can move forward.
 
 ## Further processes
 
@@ -594,6 +651,98 @@ if (safeHandsAffirmation.status === "Affirmed" && onTrustAffirmation.status === 
 ```
 
 </MultiCodeBlock>
+
+## Custodian's risk
+
+Let's look back at the relationship between Alice and SafeHands. She puts her shares meant for trading in her _trading_ portfolio, with SafeHands as the custodian. This means that both Alice and SafeHands can move these shares out of the portfolio to anywhere else. We presume that Alice and SafeHands have entered into a legal constract where they agreed not to pull the rug on each other. In particular, that Alice would not move a single one of her 1,000 shares, while all 1,000 of them are listed on an exchange under the name of SafeHands. Otherwise that would expose SafeHands to a reputation risk, if it were not able to settle an agreed trade.
+
+On top of trusting Alice via a legal agreement, SafeHands can also verify, and monitor the transactions on the blockchain. If they simply look at the current balance after it has been done to adjust accordingly, it is about:
+
+<MultiCodeBlock>
+
+```typescript
+const alice: Identity = apiSafeHands.getIdentity(aliceDid);
+const tradingFolio: NumberedPortfolio = await alice.portfolios.getPortfolio({
+    "portfolioId": tradingFolio.id
+});
+const acmeTokenBalances: PortfolioBalance[] = await tradingFolio.getTokenBalances({
+    "tokens": [ "ACME" ]
+});
+const acmeTokenBalance: PortfolioBalance = acmeTokenBalances[0];
+
+if (acmeTokenBalance.total.isLessThan(new BigNumber("1000"))) {
+    // TODO update the order on NextDaq accordingly.
+}
+```
+
+```javascript
+const alice = apiSafeHands.getIdentity(aliceDid);
+const tradingFolio = await alice.portfolios.getPortfolio({
+    "portfolioId": tradingFolio.id
+});
+const acmeTokenBalances = await tradingFolio.getTokenBalances({
+    "tokens": [ "ACME" ]
+});
+const acmeTokenBalance = acmeTokenBalances[0];
+
+if (acmeTokenBalance.total.isLessThan(new BigNumber("1000"))) {
+    // TODO update the order on NextDaq accordingly.
+}
+```
+
+</MultiCodeBlock>
+
+On the other hand, if they want to preemptively change the order on NextDaq as soon as a conflicting pending instruction pops up, they have to go differently. There is an added difficulty around the fact that `.getLegs` is an `async` function, but `.filter` does not take `async` predicates. So we use an array of promises that yields an array of array, which can be flattened.
+
+<MultiCodeBlock>
+
+```typescript
+const pendingInstructions: Instruction[] = await alice.getPendingInstructions();
+const fromTradingPromises: Promise<Leg[]>[] = pendingInstructions.map(async(instruction: Instruction) => {
+    const legs: ResultSet<Leg> = await instruction.getLegs();
+    const outLegs: Leg[] = legs.data.filter((leg: Leg) => {
+        return leg.from.owner.did === aliceDid &&
+            typeof leg.from.id !== "undefined" &&
+            leg.from.id.isEqualTo(tradingFolio.id);
+    });
+    return outLegs;
+});
+const outLegs: Leg[] = (await Promise.all(fromTradingPromises)).flat();
+const outAmount: BigNumber = outLegs.reduce(
+    (amount: BigNumber, leg: Leg) => {
+        return amount.plus(leg.amount);
+    },
+    new BigNumber("0"));
+if (outAmount.isGreaterThan(new BigNumber("0"))) {
+    // TODO update the order on NextDaq accordingly.
+}
+```
+
+```javascript
+const pendingInstructions = await alice.getPendingInstructions();
+const fromTradingPromises = pendingInstructions.map(async(instruction) => {
+    const legs = await instruction.getLegs();
+    const outLegs = legs.data.filter((leg) => {
+        return leg.from.owner.did === aliceDid &&
+            typeof leg.from.id !== "undefined" &&
+            leg.from.id.isEqualTo(tradingFolio.id);
+    });
+    return outLegs;
+});
+const outLegs = (await Promise.all(fromTradingPromises)).flat();
+const outAmount = outLegs.reduce(
+    (amount, leg) => {
+        return amount.plus(leg.amount);
+    },
+    new BigNumber("0"));
+if (outAmount.isGreaterThan(new BigNumber("0"))) {
+    // TODO update the order on NextDaq accordingly.
+}
+```
+
+</MultiCodeBlock>
+
+At this point, depending on the relationship, SafeHands, can decide to update or pull the sell order on the exchange to reflect the future amount. They could also deem the isntruction fraudulent and reject it.
 
 ## Conclusion
 
