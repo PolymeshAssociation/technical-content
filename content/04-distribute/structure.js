@@ -5,5 +5,5 @@ module.exports = [
     `${here}distribute-introduction`,
     `${here}distribute-dashboard`,
     `${here}distribute-sdk`,
-    `${here}distribute-quiz`
+    // `${here}distribute-quiz`
 ];

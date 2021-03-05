@@ -165,7 +165,7 @@ const reservation = await apiAlice.getTickerReservation({
 
 </MultiCodeBlock>
 
-You will note that the class `TickerReservation`, just like the transaction queue, keeps a [`protected context: Context`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/tickerreservation#properties-1). This `context` in turn keeps a [`polymeshApi`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/context#properties-1). It is in there that we find the implicit knowledge that it is `alice`'s account that is asking for the next actions. If it were any other **account** that had called `getTickerReservation`, this other account would not be able to follow up with a `.createToken` command because it does not own the reservation.
+You will note that the class `TickerReservation`, just like the transaction queue, keeps a [`protected context: Context`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/tickerreservation#properties-1). This `context` in turn keeps a [`polymeshApi`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/context#properties-1). It is in there that we find the implicit knowledge that it is `alice`'s account that is asking for the next actions. If it were any other **account** that had called `getTickerReservation`, this other account would not be able to follow up with a `.createToken` command because it doesn't own the reservation.
 
 With our `reservation` in memory, and 10,000 POLYX in `alice`'s wallet, which is the cost of creation of one security token, we now can create it:
 
@@ -314,7 +314,8 @@ const acmeAuthorization: AuthorizationRequest = pendingAuthorizations
     .find((pendingAuthorization: AuthorizationRequest) => {
         return pendingAuthorization.issuer.did === acmeDid;
     });
-await acmeAuthorization.accept();
+const acceptQueue: TransactionQueue<void> = await acmeAuthorization.accept();
+await acceptQueue.run();
 ```
 
 ```javascript
@@ -324,7 +325,8 @@ const acmeAuthorization = pendingAuthorizations
     .find((pendingAuthorization) => {
         pendingAuthorization.issuer.did === acmeDid;
     });
-await acmeAuthorization.accept();
+const acceptQueue = await acmeAuthorization.accept();
+await acceptQueue.run();
 ```
 
 </MultiCodeBlock>
@@ -411,7 +413,7 @@ With this, the token is rightfully owned by ACME the company.
 
 We are not done yet with the token, though.
 
-As the CEO, Alice still needs to do one more step, that is, to define the conditions of ownership. Namely, require any account who acquires the token to not have a jurisdictional attestation of <span title="Elbonia does not appear in the CountryCode enum">Liechtenstein</span>. An exception will be made for the primary issuance agent, who is simply used as a conduit and can send to anyone.
+As the CEO, Alice still needs to do one more step, that is, to define the conditions of ownership. Namely, require any account who acquires the token to not have a jurisdictional attestation of <span title="Elbonia doesn't appear in the CountryCode enum">Liechtenstein</span>. An exception will be made for the primary issuance agent, who is simply used as a conduit and can send to anyone.
 
 We use ACME's account as the KYC service provider, but realistically, it should be another account.
 

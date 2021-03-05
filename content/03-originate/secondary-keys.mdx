@@ -22,6 +22,8 @@ The goal is that ACME should be an **identified organisation** that has passed c
 
 There is more than one way to do this. Alice, can, for example, create another key for ACME. With that key in focus (click the blue circle to the left of the unassigned key), complete [customer due diligence](/quickstart/quickstart-cdd). This will create a new primary key and a new account. Then, create a secondary key for the CEO and assign it to the new account.
 
+![Alice and secondary keys](/images/primary_secondary_keys.png)
+
 Why would you do that? Key management policy is unique to each organisation, but it is anticipated that organisations will not want to use their primary keys for ordinary operations even for the CEO. That is to say, the CEO should use a secondary key known only to the CEO, and not the primary key that can assign and unassign secondary keys to the account and set permissions.
 
 Alice could dismiss the preceding suggestion and do it all from one wallet, i.e. wearing all of the hats and the end result would look approximately like the illustration below, which is perfectly acceptable for practice and learning. Alice has primary keys for herself, for ACME Corp, and a CEO key she would use for most ACME-related activities.
@@ -46,13 +48,13 @@ Below, you can see ACME has been verified and has some POLYX.
 
 ACME can assign a key but Alice will have to supply it to them. More precisely, Alice will provide the public information but not the private signing key, which means that ACME cannot sign on her behalf. ACME can determine the scope of the CEO's, Alice, permission within ACME but only Alice can actually sign as CEO.
 
-Returning to Alice's wallet, simply click `Add a key` and follow the usual procedure. Give the key a name that will help Alice remember what the key is for, e.g. ACME CEO. The result will be that Alice has a second, unassigned key. **Do not** assign this key.
+Returning to Alice's wallet, simply click `Add a key` and follow the usual procedure. Give the key a name that will help Alice remember what the key is for, e.g. ACME CEO. The result will be that Alice has a second, unassigned key. **don't** assign this key.
 
 There is nothing Alice can do to associate the key she just made with ACME, an account she doesn't control. Instead, let's say that Alice provides the public key to ACME through an off-chain communication channel and ACME adds it to _their account_ on their own authority.
 
 <HighlightBox type="tip">
 
-You can create the ACME primary in the same wallet Alice uses. Add a key, and **do not** assign the key to Alice's account. Instead, bring the new key into focus, proceed to the dashboard, and create a new account.
+You can create the ACME primary in the same wallet Alice uses. Add a key, and **don't** assign the key to Alice's account. Instead, bring the new key into focus, proceed to the dashboard, and create a new account.
 
 </HighlightBox>
 
