@@ -77,7 +77,18 @@ let remarkPluginConfig = [
 module.exports = {
   pathPrefix: pathPrefix,
   siteMetadata: {
+    title: "Polymesh Developer Portal",
     siteUrl: themeOptions.siteUrl,
+    topMenu: [
+      {
+        name: "portal",
+        link: "/"
+      },
+      {
+        name: "portal2",
+        link: "/test"
+      }
+    ]
   },
   plugins: [
     {
