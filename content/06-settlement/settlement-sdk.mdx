@@ -11,13 +11,13 @@ import {
   ExpansionPanelListItem
 } from 'gatsby-theme-apollo-docs';
 
-When distributing the ACME token, we used a settlement instruction. This is the proper Polymesh construct to allow a transfer of a security token. The instruction we used had a single leg, i.e. it had a single action. Here we are going to use the same construct, with more legs.
+When distributing the ACME token, we used a **settlement instruction**. This is the proper Polymesh construct to allow a transfer of a security token. The instruction we used had a single leg, i.e. it had a single action. Here we are going to use the same construct, with more legs.
 
 ## Participants
 
 Here, Alice, the individual, wants to start trading and exchange some of her ACME shares for US dollars. For that, she enlists the services of a broker named SafeHands who has access to an exchange named NextDaq. She plans on instructing SafeHands to list 1,000 of her shares for at least 5 USD apiece, and let them handle the reception of USD and the transfer execution in a timely manner.
 
-Like we saw before, each participant has an identity and a computer on which they can instantiate their Polymesh client. And inform each other off-chain of their respective `did` so they know how to identify, target and respond to each other.
+Like we saw before, each participant has an identity and a computer on which they can instantiate their Polymesh client. And inform each other off-chain of their respective `did` so they know how to identify, target, and respond to each other.
 
 * Alice:
     <MultiCodeBlock>
@@ -214,7 +214,9 @@ At this point, Alice can simply interact with SafeHands on their platform, and d
 
 ## US dollar?
 
-We are going to use an on-chain representation of the US dollar. It can be as conceptually simple as another security token issued by a bank. Let's name our bank DeepPockets, and have them issue the token named DEEPUSD. DeepPockets happens to have a sterling reputation, so Polymesh network participants believe them when they claim that they will honour anyone wishing to redeem its DEEPUSD token against off-chain USD 1 for 1. This setup is convenient as, later on, it will allow the trade to have all its components on chain.
+We are going to use an on-chain representation of the US dollar. It can be as conceptually simple as another security token issued by a bank. Let's name our bank DeepPockets, and have them issue the token named DEEPUSD.
+
+DeepPockets happens to have a sterling reputation, so Polymesh network participants believe them when they claim that they will honour anyone wishing to redeem its DEEPUSD token against off-chain USD 1 for 1. This setup is convenient as, later on, it will allow the trade to have all its components on chain.
 
 Additionally, Alice is not interested in this DEEPUSD. This is a _detail_ that her broker is going to hide away from her. Instead, SafeHands will own the DEEPUSD on-chain while Alice's account will display that she owns USD. And if she decides to withdraw them, then she would quite naturally provide banking details to SafeHands _as per usual_.
 
@@ -222,7 +224,7 @@ SafeHands will collect all DEEPUSD in its own identity's default portfolio.
 
 ## Future compliance issue?
 
-We already know that when Alice eventually sells some ACME shares, the instruction will need for compliance to be satisfied on her side before it gets executed. One cannot predict the future. But SafeHands, mindful of maintaining its reputation with NextDaq still wants to confirm that, were it to happen today, Alice could send her shares.
+We already know that when Alice eventually sells some ACME shares, the instruction will need for compliance to be satisfied on her side before it gets executed. One cannot predict the future. But SafeHands, mindful of maintaining its reputation with NextDaq, still wants to confirm that, were it to happen today, Alice could send her shares.
 
 <MultiCodeBlock>
 
@@ -258,11 +260,11 @@ assert(isPossible === "Success");
 
 </MultiCodeBlock>
 
-This test will unfortunately also test whether Alice can receive new ACME shares, which is one irrelevant hurdle SafeHands does not care about.
+This test will unfortunately also test whether Alice can receive new ACME shares, which is one irrelevant hurdle SafeHands doesn't care about.
 
 If SafeHands, or any other custodian, have a customer who wants to acquire some ACME shares, they would have to make sure that they satisfy the _receive_ part of the compliance. If you recall, it was defined as:
 
-1. Have a KYC claim. As per the exercise from ACME itself, which is an artefact of keeping the exercise simpler, although it could be from any KYC service provider as per ACME's choice. Let's name it EzKyc. Presumably a provider that is tasked with verifying the customer's jurisdiction so as to meaningfully satisfy the second point.
+1. Have a KYC claim. As per the exercise from ACME itself, which is an artefact of keeping the exercise simpler, although it could be from any KYC service provider as per ACME's choice. Let's name it EzKyc. Presumably a provider that is tasked with verifying the customer's jurisdiction so as to meaningfully satisfy the second point;
 2. Not have a claimed jurisdiction of Liechtenstein.
 
 What would it look like if EzKyc were to publish a claim against Bob, with DID of `bobDid`, valid for 1 year, for the purpose of receiving ACME tokens?
@@ -321,13 +323,13 @@ This action is done by EzKyc, not by SafeHands or any other custodian. Although 
 
 Ok, now Alice has set up her portfolio for trading, gave a green light to SafeHands and received one from them. Time to wave our hands about the next off-chain steps that take place:
 
-* Alice informs SafeHands that they should list her shares for 5 USD a piece.
-* SafeHands turn to NextDaq and list them for sale on her behalf. NextDaq return an order id to SafeHands, `aliceOrderId`, for both parties to keep as a reference.
-* There happens to be an interested buying party, Bob, for 200 shares at 5 USD a piece.
-* Bob is represented by his custodian OnTrust, who received the order id `bobOrderId` when they listed his order.
-* Bob has also prepared a trading portfolio.
-* NextDaq match SafeHands and OnTrust for a trade of 200 shares at 5 USD a piece.
-* NextDaq remove Bob's order and dock 200 ACME from Alice's standing order.
+* Alice informs SafeHands that they should list her shares for 5 USD a piece;
+* SafeHands turn to NextDaq and list them for sale on her behalf. NextDaq return an order id to SafeHands, `aliceOrderId`, for both parties to keep as a reference;
+* There happens to be an interested buying party, Bob, for 200 shares at 5 USD a piece;
+* Bob is represented by his custodian OnTrust, who received the order id `bobOrderId` when they listed his order;
+* Bob has also prepared a trading portfolio;
+* NextDaq match SafeHands and OnTrust for a trade of 200 shares at 5 USD a piece;
+* NextDaq remove Bob's order and dock 200 ACME from Alice's standing order;
 * NextDaq send `aliceOrderId` to SafeHands off-chain, and ask them for the necessary information to include in the instruction. SafeHands answer off-chain with usable information, for instance a JSON like:
     ```json
     {
@@ -342,7 +344,7 @@ Ok, now Alice has set up her portfolio for trading, gave a green light to SafeHa
         }
     }
     ```
-    When SafeHands simply send their `safeHandsDid`, it means that the DEEPUSD tokens will be received in SafeHands' default portfolio.
+    When SafeHands simply send their `safeHandsDid`, it means that the DEEPUSD tokens will be received in SafeHands' default portfolio;
 * NextDaq send `bobOrderId` to OnTrust off-chain, and ask them for the necessary information to include in the instruction. OnTrust answer off-chain with usable information, for instance:
     ```json
     {
@@ -358,7 +360,7 @@ Ok, now Alice has set up her portfolio for trading, gave a green light to SafeHa
     }
     ```
 
-With this information, and after some cross-checking, NextDaq is able to understand that the instruction legs are going to be as follows.
+With this information, and after some cross-checking, NextDaq is able to understand that the instruction legs are going to be as follows:
 
 ```javascript
 const legs = [
@@ -433,7 +435,7 @@ And similarly to OnTrust with:
 }
 ```
 
-The instruction is out, the brokers have been informed. The onus is now on the brokers / custodians to affirm it. Additionally, NextDaq, with a view to monitoring the reliability of their brokers on the trading platform, stores `tradeInstructionId` so that it can later confirm that it has been executed.
+The instruction is out, the brokers have been informed. The onus is now on the brokers/custodians to affirm it. Additionally, NextDaq, with a view to monitoring the reliability of their brokers on the trading platform, stores `tradeInstructionId` so that it can later confirm that it has been executed.
 
 ## The custodians approve
 
@@ -586,7 +588,7 @@ if (paymentLeg.from.did === safeHandsDid || payerCustodian.did === safeHandsDid)
 
 </MultiCodeBlock>
 
-As you have noticed, the code above acts suspicious about the instruction it is asked to affirm. In particular it does not allow the ACME buyer to be in a custodial relationship with SafeHands. This is justified in our example by the presumption that an internal trade match would be handled internally. On the other hand, if you want to handle such cases coming from the exchange, then you would need to relax this specific requirement.
+As you have noticed, the code above acts suspicious about the instruction it is asked to affirm. In particular, it doesn't allow the ACME buyer to be in a custodial relationship with SafeHands. This is justified in our example by the presumption that an internal trade match would be handled internally. On the other hand, if you want to handle such cases coming from the exchange, then you would need to relax this specific requirement.
 
 In parallel to SafeHands, OnTrust has to do the same. And provided KYC considerations are satisfied, the trade goes through. So we are done with the trade. But are we done with the exercise?
 
@@ -676,7 +678,7 @@ if (safeHandsAffirmation.status === "Affirmed" && onTrustAffirmation.status === 
 
 ## Custodian's risk
 
-Let's look back at the relationship between Alice and SafeHands. She puts her shares meant for trading in her _trading_ portfolio, with SafeHands as the custodian. This means that both Alice and SafeHands can move these shares out of the portfolio to anywhere else. We presume that Alice and SafeHands have entered into a legal constract where they agreed not to pull the rug on each other. In particular, that Alice would not move a single one of her 1,000 shares, while all 1,000 of them are listed on an exchange under the name of SafeHands. Otherwise that would expose SafeHands to a reputation risk, if it were not able to settle an agreed trade.
+Let's look back at the relationship between Alice and SafeHands. She puts her shares meant for trading in her _trading_ portfolio, with SafeHands as the custodian. This means that both Alice and SafeHands can move these shares out of the portfolio to anywhere else. We presume that Alice and SafeHands have entered into a legal contract where they agreed not to pull the rug on each other. In particular, that Alice would not move a single one of her 1,000 shares, while all 1,000 of them are listed on an exchange under the name of SafeHands. Otherwise that would expose SafeHands to a reputation risk, if it were not able to settle an agreed trade.
 
 On top of trusting Alice via a legal agreement, SafeHands can also verify, and monitor the transactions on the blockchain. If they simply look at the current balance after it has been done to adjust accordingly, it is about:
 
@@ -714,7 +716,7 @@ if (acmeTokenBalance.total.isLessThan(new BigNumber("1000"))) {
 
 </MultiCodeBlock>
 
-On the other hand, if they want to preemptively change the order on NextDaq as soon as a conflicting pending instruction pops up, they have to go differently. There is an added difficulty around the fact that `.getLegs` is an `async` function, but `.filter` does not take `async` predicates. So we use an array of promises that yields an array of array, which can be flattened.
+On the other hand, if they want to pre-emptively change the order on NextDaq as soon as a conflicting pending instruction pops up, they have to go differently. There is an added difficulty around the fact that `.getLegs` is an `async` function, but `.filter` doesn't take `async` predicates. So we use an array of promises that yields an array of array, which can be flattened.
 
 <MultiCodeBlock>
 
