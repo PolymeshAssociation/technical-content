@@ -4,79 +4,83 @@ description: KYC and CDD in Polymesh
 slug: /kyc/kyc-introduction
 ---
 
-KYC is short for Know Your Customer and describes a set of processes that aim to verify identity. A KYC service provider is a company that performs such processes to help verify customer identity on behalf of their client, such as a security issuer that needs to verify the identities of the holders of the asset in order to comply with regulatory requirements.
+KYC is short for **know your customer** and describes a set of processes that aim to verify identity. A **KYC service provider** is a company that performs such processes _to help verify customer identity on behalf of their client_, such as a security issuer that needs to verify the identities of the holders of the asset in order to comply with regulatory requirements.
 
 Polymesh also has a customer due diligence process (CDD), which every user must complete before they can transact with security tokens. **CDD is a minimal KYC** process that is enforced at the network level, while **KYC** usually refers to a **bespoke process** that each security token owner tailors to their own requirements.
 
-## Approach to Identity and Compliance
+## Approach to identity and compliance
 
 Be sure to review the conceptual [overview of identity in Polymesh in the introduction section](/introduction/intro-identity) to understand the foundations of the system. The following is a brief and incomplete recap of some important concepts.
 
-1. Polymesh has a unique id system, the Polymesh uID system, that aims to identify when a single natural or legal person is using multiple accounts.
-2. Accounts, known by developers as Polymesh DIDs (distributed identifiers), represent on-chain users, which can be natural persons or legal entities.
-3. Primary and secondary keys sign on behalf of accounts. This is particularly important when employees or agents act on behalf of legal entities such as corporations.
-4. Attestations are signed declarations _about_ the identities. These are analogous to the information contained in official documents. _Who_ issues an attestation is important because the issuer's verification process and their reputation gives weight to the claims laid out in the attestation. The more stringent the process and the more credible the reputation of the attestor, the more confidence one can place in the attestation's claims.
+1. Polymesh has a unique id system, the Polymesh uID system, that aims to identify when a single natural or legal person is using multiple accounts;
+2. Accounts, known by developers as Polymesh DIDs (distributed identifiers), represent on-chain users, which can be natural persons or legal entities;
+3. Primary and secondary keys sign on behalf of accounts. This is particularly important when employees or agents act on behalf of legal entities such as corporations;
+4. Attestations are signed declarations _about_ the identities. These are analogous to the information contained in official documents. _Who_ issues an attestation is important because the issuer's verification process and their reputation gives weight to the claims laid out in the attestation. The more stringent the process and the more credible the reputation of the attestor, the more confidence one can place in the attestation's claims;
 5. Claims are the individual pieces of information that are stated in an attestation.
 
 The following comparison might help in case this is not clear.
 
-An attestation never takes the form `name: Alice`.
+An attestation never takes the form `name: Alice`. Instead, similar information would be recorded as (approximately), `BigBank says name: Alice`. This difference is important. While the former is merely a few bytes of data with no lineage (we don't know where it came from), the latter implies that BigBank has executed their process, _concluded_ that the name is Alice. BigBank has _signed_ the attestation and thus staked their reputation, in part, on the reliability of the statement. The signature, and thus the lineage of the attestation is a fact on the blockchain.
 
-Instead, similar information would be recorded as (approximately), `BigBank says name: Alice`. This difference is important. While the former is merely a few bytes of data with no lineage (we don't know where it came from), the latter implies that BigBank has executed their process, _concluded_ that the name is Alice. BigBank has _signed_ the attestation and thus staked their reputation, in part, on the reliability of the statement. The signature, and thus the lineage of the attestation is a fact on the blockchain.
+## Customer due diligence service providers
 
-## Customer Due Diligence Service Providers
+Anonymous parties are unable to receive or send security tokens on Polymesh. Instead, each user is required to complete a customer due diligence process (CDD) that links their account to an identifiable person. At the time of writing, on the Alcyone testnetwork, this process involves receiving a text message on a phone and responding with the code that was sent. This linkage goes some distance to unmasking anonymous users.
 
-Anonymous parties are unable to receive or send security tokens on Polymesh. Instead, each user is required to complete a customer due diligence process (CDD) that links their account to an identifiable person. At the time of writing, on the Alcyone test network, this process involves receiving a text message on a phone and responding with the code that was sent. This linkage goes some distance to unmasking anonymous users.
+The process itself will evolve over time and we can expect a more stringent process to emerge on mainnet. The _result_ of the process, regardless of the process details, is that the user receives a **customer due diligence attestation**. This is the minimal level of KYC required to transact regulated securities on Polymesh.
 
-The process itself will evolve over time and we can expect a more stringent process to emerge on mainnet. The _result_ of the process, regardless of the process details, is that the user receives a **customer due diligence attestation**. This is the minimal level of KYC required to transact regulated securities on Polymesh. Refer to the quick start to [learn how to complete CDD](/quickstart/quickstart-cdd).
+<HighlightBox type="tip">
 
-A CDD Service Provider is a privileged KYC organisation that has been authorised to sign CDD attestions for Polymesh. This separation of concerns means that CDD can be a decentralised service, possibly offering users a choice of the process they prefer or specialists who operate in niche regions. Also, since KYC and CDD attestations have expiry dates, holding more than one such attestation is a way of safeguarding continuous access to the network. The network rule is simple. Polymesh ensures that each user has at least one valid CDD attestation from an authorised signer before the pertinent actions can be performed.
+Refer to the quick start to [learn how to complete CDD](/quickstart/quickstart-cdd).
 
-## KYC Service Providers
+</HighlightBox>
 
-It's important to understand the relationship between asset owners and KYC Service Providers. Asset owners, e.g. the issuer, are responsible for their own compliance. By extension, they are responsible for the processes that maintain that compliance. Procedures for identifying asset holders are inseparable from those concerns. Therefore, asset originators design their KYC processes, which, in summary establish what they know about their asset holders, and _how they know_.
+A CDD service provider is a privileged KYC organisation that has been **authorised to sign CDD attestations** for Polymesh. This separation of concerns means that CDD can be a decentralised service, possibly offering users a choice of the process they prefer or specialists who operate in niche regions. Also, since KYC and CDD attestations have expiry dates, holding more than one such attestation is a way of safeguarding continuous access to the network. The network rule is simple. Polymesh ensures that each user has at least one valid CDD attestation from an authorised signer before the pertinent actions can be performed.
 
-How they know will usually involve asking for _evidence_ in one form or another. Familiar processes include presenting documents such as government issued photo id, facial-recognition (send a selfie holding your passport). Back-office processes can include database checks such as verifying passport numbers, credit bureau checks, criminal record checks, and so on. The reason for all of this activity is to establish _how they know_. More precisely, why they believe that their information about the asset holders is accurate.
+## KYC service providers
 
-A KYC Service Provider performs these activities on behalf of their client. At the risk of over-simplifying the range of options available, an asset owner engages a KYC Service Provider to perform a set of steps that attempt to verify the identities (and jurisdictions, and any other information that is pertinent) of the asset holders, and recipients, for the asset owner so that the asset originator will have accurate information, and so that Polymesh can automatically enforce a defined compliance policy.
+It's important to understand **the relationship between asset owners and KYC service providers**. Asset owners, e.g. the issuer, are responsible for their own compliance. By extension, they are responsible for the processes that maintain that compliance. Procedures for identifying asset holders are inseparable from those concerns. Therefore, asset originators design their KYC processes, which, in summary establish what they know about their asset holders, and _how they know_.
 
-As a simple example, consider that ACME identified an embargo country, Liechtenstein, where their security tokens are not to be sold. For this explanation, we are not concerned about why that is. The compliance team has a reason. In order to enforce this policy, ACME will need the country of residence of each asset holder. It follows that they need a way to establish that and it is probably indefensible to simply ask the users where they live. ACME could establish a KYC process that involves determining country of residence from certain documents, e.g. a passport. Having established such a policy, ACME could engage a KYC Service Provider with the task of collecting and verifying the passports - a specialist with the software and business processes to execute the plan efficiently.
+How they know will usually involve **asking for _evidence_** in one form or another. Familiar processes include presenting documents such as government issued photo ID, facial-recognition (send a selfie holding your passport). Back-office processes can include database checks such as verifying passport numbers, credit bureau checks, criminal record checks, and so on. The reason for all of this activity is to establish _how they know_. More precisely, why they believe that their information about the asset holders is accurate.
 
-Suppose ACME chose EzKYZ to perform this service. The agreement would likely specify how EzKYC will perform their duties. The _result_ of that process would be that EzKYC will _sign_ an _attestation_ along these lines (not as implemented):
+A KYC service provider performs these activities on behalf of their client. At the risk of over-simplifying the range of options available, an asset owner engages a KYC service provider to perform a set of steps that attempt to verify the identities (and jurisdictions, and any other information that is pertinent) of the asset holders, and recipients, for the asset owner so that the asset originator will have accurate information, and so that Polymesh can automatically enforce a defined compliance policy.
+
+As a simple example, consider that ACME identified an **embargo country**, Liechtenstein, where their security tokens are not to be sold. For this explanation, we are not concerned about why that is. The compliance team has a reason. In order to enforce this policy, ACME will need the country of residence of each asset holder. It follows that they need a way to establish that and it is probably indefensible to simply ask the users where they live. ACME could establish a KYC process that involves determining country of residence from certain documents, e.g. a passport. Having established such a policy, ACME could engage a KYC service provider with the task of collecting and verifying the passports - a specialist with the software and business processes to execute the plan efficiently.
+
+Suppose ACME chose EzKyc to perform this service. The agreement would likely specify how EzKyc will perform their duties. The _result_ of that process would be that EzKyc will _sign_ an _attestation_ along these lines (not as implemented):
 
 ```
 {
     account: Alice
     jurisdiction: United States of America
-    signed: EzKYC
+    signed: EzKyc
     signature: 0xFE1A...
 }
 ```
-Each time EzKYC signs such an attestation, they would be also be implictly attesting that they followed the process described in the service agreement. This gives ACME knowledge of how this information was established.
+Each time EzKyc signs such an attestation, they would be also be implicitly attesting that they followed the process described in the service agreement. This gives ACME knowledge of how this information was established.
 
-Interestingly, this attestation is attached to Alice's Polymesh account. Alice can use it again in the future if, by chance, another asset originator will accept EzKYC's attestation. From Alice's perspective, **before she accepts a transfer of security tokens**, she must comply with the originator's KYC process, which means acquiring any missing attestations that _she doesn't already have_.
+Interestingly, this attestation is attached to Alice's Polymesh account. Alice can use it again in the future if, by chance, another asset originator will accept EzKyc's attestation. From Alice's perspective, **before she accepts a transfer of security tokens**, she must comply with the originator's KYC process, which means acquiring any missing attestations that _she doesn't already have_.
 
-From ACME's perspective, compliance is checked _before assets are transferred_. There is no case in which a user who does not conform to the compliance policy at the time can possibly acquire the tokens. Do not be alarmed, because it is not overly restrictive or destructive. Non-conforming transfers are not rejected. Instead, they simply remain in a pending state, until the recipient completes the necessary KYC process.
+From ACME's perspective, compliance is checked _before assets are transferred_. There is no case in which a user who doesn't conform to the compliance policy at the time can possibly acquire the tokens. don't be alarmed, because it is not overly restrictive or destructive. Non-conforming transfers are not rejected. Instead, they simply remain in a pending state, until the recipient completes the necessary KYC process.
 
-## Future Outlook
+## Future outlook
 
-Standardising distributed id and attestations is an active area of global dialog and collaboration. At the time of writing, there are few widely-accepted universal id or id providers. We can envisage the emergence of such standards and imagine that users will appreciate completing one or a handful of KYC processes periodically so they can provide reliable information where and when it's needed, without the repetitiveness and security concerns that arise from the prevailing process, which is, in essence, starting from zero and addressing KYC for each and every important relationship.
+Standardising distributed ID and attestations is an active area of global dialog and collaboration. At the time of writing, there are few widely-accepted universal ID or ID providers. We can envisage the emergence of such standards and imagine that users will appreciate completing one or a handful of KYC processes periodically so they can provide reliable information where and when it's needed, without the repetitiveness and security concerns that arise from the prevailing process, which is, in essence, starting from zero and addressing KYC for each and every important relationship.
 
-The Polymesh account-and-attestation design anticipates the eventual emergence of normalised, re-useable claims. The issuers of such re-useable attestations would be KYC Service Providers on the network. Acceptance would be a factor of asset owners that recognise a common set of attestations.
+The Polymesh account-and-attestation design anticipates the eventual emergence of normalised, re-useable claims. The issuers of such re-useable attestations would be KYC service providers on the network. Acceptance would be a factor of asset owners that recognise a common set of attestations.
 
 ## Conclusion
 
-In summary, asset owners determine their compliance policy which helps determine their KYC requirements, then establish a process for establishing the facts about asset holders. The process can be executed by a KYC Service Provider, but it can also be done in-house. That is, the originator can act as its own KYC Service Provider. The output of the KYC Process is signed attestations that Polymesh uses to confirm harmony with the compliance policy. Non-compliant transfers are not permitted. Non-compliant recipients will see incoming transfers in a pending state until KYC requirements are satisfied.
+In summary, asset owners determine their compliance policy which helps determine their KYC requirements, then establish a process for establishing the facts about asset holders. The process can be executed by a KYC service provider, but it can also be done in-house. That is, the originator can act as its own KYC service provider. The output of the KYC Process is signed attestations that Polymesh uses to confirm harmony with the compliance policy. Non-compliant transfers are not permitted. Non-compliant recipients will see incoming transfers in a pending state until KYC requirements are satisfied.
 
 For the avoidance of doubt, in the case that a security token has no compliance rules defined (and therefore no KYC requirements), customer due diligence still applies.
 
-## Becoming a KYC Service Provider or CDD Service Provider
+## Becoming a KYC service provider or CDD service provider
 
 <!-- TODO: This is an opportunity to include a procedure or point of contact to direct businesses that want to explore becoming a KYC provider. -->
 
-CDD providers are admitted to the network via the [governance](/introduction/intro-governance) process. In summary, any organisation can become a CDD provider by achieving the support needed to carry a motion. In practice, this is expected to mean that a concensus forms around allowing the organisation to perform the service in the manner in which they propose to perform it. Such consensus would reflect a belief that it will strengthen the network overall.
+CDD providers are admitted to the network via the [governance](/introduction/intro-governance) process. In summary, any organisation can become a CDD provider by achieving the support needed to carry a motion. In practice, this is expected to mean that a consensus forms around allowing the organisation to perform the service in the manner in which they propose to perform it. Such consensus would reflect a belief that it will strengthen the network overall.
 
-_Any_ organisation can participate as a KYC Service Provider. The agreement between an asset owner and the KYC Service Provider they rely upon to provide the information is bi-lateral. An asset owner can appoint another identity as the KYC Service Provider at their own discretion.
+_Any_ organisation can participate as a KYC service provider. The agreement between an asset owner and the KYC service provider they rely upon to provide the information is bi-lateral. An asset owner can appoint another identity as the KYC service provider at their own discretion.
 
 ## Links
 
