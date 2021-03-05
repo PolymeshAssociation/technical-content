@@ -71,7 +71,7 @@ For the avoidance of doubt, yes, an instruction can have been affirmed by all pa
 
 Additionally, the securities token issuer can also restrict which accounts are allowed to create instructions transferring _their_ token. Although it is expected that this facility will seldom be used.
 
-### Atomic Execution
+### Atomic execution
 
 Instructions execute completely, or not at all - another way of saying they are atomic. For example, the above-mentioned instruction has two legs to send shares from Alice to Bob and funds from Bob to Alice. Alice and Bob both need to affirm that the entire instruction is agreeable and properly represents their agreement. Instructions contain other details such as when to actually execute, e.g. as soon as its affirmed or at a scheduled point of time in the future. Alice and Bob's affirmations indicate their agreement with all such details.
 
@@ -149,7 +149,7 @@ In both situations, the net effect is that:
 
 So there is reason to believe that all three parties, or their respective custodians, would be agreeable to the single larger instruction. The instruction is still atomic so it would not be possible for Alice to send her shares without full compensation, for instance. A potential downside is that with more parties whose affirmation, and proper attestations, are required, there is a higher chance of a hold-up. Which is why an exchange would be expected to do this only with parties with higher trust.
 
-### Chain of Responsibility
+### Chain of responsibility
 
 A settlement is interesting for the parties who directly benefit from it, like Alice and Bob in our trading example. However, they are not the only parties that wish to see settlements unfold without problems.
 
