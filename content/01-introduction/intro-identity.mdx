@@ -20,7 +20,7 @@ Let's avoid confusion about fundamental concepts by deconstructing what was said
 
 ## Polymesh uID: "Who are you?"
 
-![natural person](/placeholder-image.png)
+![natural person](images/16_polymath_uid.png)
 
 One of the first challenges we face when unpacking this topic is that some of the common terms are overloaded with too many meanings in different contexts. Let's make the first distinction.
 
@@ -30,25 +30,17 @@ Intuitively, you know that someone wrote the words, possibly a team of people. B
 
 In the legal and corporate world, corporations are "persons" meaning (approximately) that organisations can own things and do things. Thus, organisations and business entities are often referred to as a **juridical person**, a legal entity that is not an individual **natural person**. The people who work for organisations are generally not individually responsible for things the organisation does. They work within the organisation and they usually have limited authority to act on the organisation's behalf. Indeed, given that an organisation is a legal construct, we can surmise that whenever an organisation acts, it is probably executed by one or more people acting on its behalf or possibly an automated system, that is owned by the organisation and operated by the people who work there.
 
-A **Polymesh "uID"** (user ID) can be an individual or an organisation. Organisations always act through the people and automations that are authorised to act on their behalf.
+A **Polymesh "DID"** (user ID) can be an individual or an organisation. Organisations always act through the people and automations that are authorised to act on their behalf.
 
 This brings us to the first important pillar that will support our understanding of Polymesh Identities:
 
-> A **uID** represents an individual or an organisation. There may be one or more actors with unique signatures and defined permissions who act on behalf of the uID.
+> A **DID** represents an individual or an organisation. There may be one or more actors with unique signatures and defined permissions who act on behalf of the DID.
 
 ## Polymesh account: "What is/are your username(s)?"
 
-You, as a person, already use several online services, it could be emails, social networks, banks, etc.. For each of those services, you happen to have chosen a username. It might be your first and last names. It might as well be "petrolhead1980". You might in fact have two distinct usernames on the same platform, email say, which you use for different purposes. You are in control of these usernames and they represent you digitally. But they are not you the person.
+You, as a person, already use several online services. These could include email, social networks, banks, etc.. For each of those services, you chose or were assigned a username or account. It might be your first and last names. It might be "petrolhead1980". You might in fact have two distinct usernames on the same platform which you use for different purposes. You are in control of these usernames and they represent you digitally. But they are not you the person.
 
-The corresponding on-chain concept in Polymesh is the **Polymesh "account"**, implemented as a large number. You may not choose "petrolhead1980", but it is sufficiently obfuscated that you can keep a good level of privacy.
-
-Certain services, banks say, do not entertain the idea of having each customer create more than one username. In similar fashion, certain securities require reporting of holdings per person and entity. Per uID if you will. While Polymesh allows you to have multiple accounts on the network, there is also a cryptographic mechanism that lets you self-report any relevant link between your Polymesh accounts to selected third parties.
-
-<HighlightBox type="tip">
-
-Take a look at **PUIS** lower down for a description of the implementation.
-
-</HighlightBox>
+The corresponding on-chain concept in Polymesh is the **Polymesh "distributed ID" (DID)**, implemented as a large number. You may not choose "petrolhead1980", but it is sufficiently obfuscated that you can keep a good level of privacy.
 
 To express these concepts, we thereafter represent a Polymesh account as someone coyly hiding behind a party mask.
 
@@ -98,11 +90,11 @@ The KYC service provider that contributes the attestation is testifying that the
 
 This arrangement maps well to an intuitive understanding of the actual material and legal worlds.
 
-Let's consider ACME Corp, an entity with a Polymesh uID and a Polymesh account. We can know the true legal name of the corporation behind a Polymesh account because a KYC service provider attests that they have reviewed the pertinent documentation, for example, the certificate of incorporation.
+Let's consider ACME Corp, an entity with a Polymesh DID. We can know the true legal name of the corporation behind a Polymesh account because a KYC service provider attests that they have reviewed the pertinent documentation, for example, the certificate of incorporation.
 
-The organisation can own things and do things. Let's say that Alice works for ACME Corp. Alice is an individual who can own things and do things for herself (via her Polymesh account) as well as for ACME Corp, being an employee of the organisation. When she is acting on behalf of ACME Corp, within the limits of her authority, she signs, on behalf of ACME Corp, with one of her signing keys that was associated with, and authorised by, ACME Corp's account. When she is acting on her own behalf, she uses another one of her signing keys, this time associated with her personal Polymesh account.
+The organisation can own things and do things. Let's say that Alice works for ACME Corp. Alice is an individual who can own things and do things for herself (via her Polymesh DID) as well as for ACME Corp, being an employee of the organisation. When she is acting on behalf of ACME Corp, within the limits of her authority, she signs, on behalf of ACME Corp, with one of her signing keys that was associated with, and authorised by, ACME Corp. When she is acting on her own behalf, she uses another one of her signing keys, this time associated with her personal Polymesh DID.
 
-Adding just a little bit of precision to the foregoing description, an entity has its own Polymesh account, has zero or more secondary keys, and a primary key that can create and remove secondary keys. Secondary keys have well-defined permissions outlining what they can do on behalf of the account. Permissions are managed by the primary key.
+Adding just a little bit of precision to the foregoing description, an entity has its own Polymesh DID, has zero or more secondary keys, and a primary key. Secondary keys have well-defined permissions outlining what they can do on behalf of the account. Secondary keys and prmissions are managed by the primary key.
 
 ![signing keys](images/signing_keys.png)
 
@@ -117,9 +109,9 @@ Lastly, both primary and/or secondary signing keys may be one of several types:
 
 ## Portfolios
 
-![portfolios](/placeholder-image.png)
+![portfolios](images/17_portfolios.png)
 
-Polymesh accounts optionally organise owned assets into **portfolios**. Portfolios are **logical containers** that provide a way to define permission boundaries as well as organise reporting.
+Polymesh DIDs optionally organise owned assets into **portfolios**. Portfolios are **logical containers** that provide a way to define permission boundaries as well as organise reporting.
 
 For example, Alice might have complete control over the assets in the portfolio she is employed to manage, some control over specific assets in other portfolios or all of the assets in specific portfolios, and no control over other assets beyond her permission boundaries.
 
@@ -149,13 +141,15 @@ Of particular importance in the world of regulated securities is the repelling o
 
 An example of a Sybil attack in the realm of regulated securities could be a single entity accumulating a sizeable stake in the security with the use of multiple Polymesh accounts, while avoiding reporting requirements. The **Polymesh Unique Identity System (PUIS)** is designed to repel this type of attack.
 
-The PUIS is an off-chain process which allows CDD providers to coordinate and determine a **unique identifier** for each entity (individual or organisation) that is onboarded to Polymesh. This database can only be accessed by CDD providers. CDD providers can insert new customers, or query for existing ones by using so-called identity _fingerprints_ unique to their customer. In this PUIS, the CDD customer's unique identifier, or uID, is a v4 UUID generated once when the customer is on-boarded for the first time. It is by this uID that customers are indexed in the PUIS system, and uIDs too always remain off-chain.
+There is no prohibition against operating multiple Polymesh accounts with distinct Polymesh DIDs. There are, however, regulatory compliance obligations that fall on investors, depending on jurisdiction. Suffice it say that it is generally not permissible to use multiple accounts to obfuscate reportable holdings of a regulated security. Polymesh provides a mechanism of self-reporting linkage between multiple accounts as well a means of detection.
 
-Only a Pedersen (cryptographic) commitment of the uID is published on-chain as part of the CDD claim. Polymesh users do know their uID and can use this knowledge to reveal to asset issuers if they are investing in a single asset under multiple Polymesh accounts. Asset issuers can enforce that a user does this for all identities investing in their asset.
+The PUIS is an off-chain process which allows CDD providers to coordinate and determine a **unique identifier** for each entity (individual or organisation) that is onboarded to Polymesh. This database can only be accessed by CDD providers. CDD providers can insert new customers, or query for existing ones by using so-called identity _fingerprints_ unique to their customer. In this PUIS, the CDD customer's unique identifier, or uID, is a v4 UUID generated once when the customer is onboarded for the first time. It is by this uID that customers are indexed in the PUIS system which is off-chain.
 
-In this way, the PUIS and CDD process lets investors use multiple Polymesh accounts, for privacy reasons say, while providing compliance for asset issuers that rely on knowing the unique entities that are invested in their asset.
+Only a Pedersen (cryptographic hash) commitment of the uID is published on-chain as part of the CDD claim. Polymesh users do know their uID and can use this knowledge to reveal to asset issuers if they, the unique entity are investing in an asset under multiple Polymesh DIDs. 
 
-![PUIS](/placeholder-image.png)
+In this way, the PUIS and CDD process lets investors use multiple Polymesh accounts and maintain a high level of confidentiality while supporting compliance for asset issuers that rely on knowing the unique entities that are invested in their asset.
+
+![PUIS](images/18_polymesh_unique_id_system.png)
 
 <HighlightBox type="tip">
 
@@ -169,11 +163,11 @@ While efforts are underway to establish a worldwide standard, there is no univer
 
 As such, each originator establishes their own policy covering the information they must know about each investor (or counterparty) and how they must know it, i.e. the process.
 
-KYC service providers offer suites of services that implement such policies. Each check has corresponding procedures. For example, individual checks include measures such as consuming/interpreting an image of a passport or driver's license, facial recognition, criminal database checks, etc., or checks dealing with an organisation include collecting incorporation documents and signing officer signatures. KYC service providers can attest to such matters as investor accreditation, legal name, place of residence, or the legally incorporated status of an organisation.
+KYC service providers offer suites of services that implement such policies. Each check has corresponding procedures. For example, individual checks include measures such as consuming/interpreting an image of a passport or driver's license, facial recognition, criminal database checks, etc.. Checks dealing with an organisation include collecting incorporation documents and signing officer signatures. KYC service providers can attest to such matters as investor accreditation, legal name, place of residence, or the legally incorporated status of an organisation.
 
 While each originator sets their own policy, considerable overlap is expected. Attestations associated with an investor's Polymesh account can be re-used in other contexts, provided the attestations have not expired and the attestation the account already has is acceptable in terms of form and source.
 
-![know your customer](/placeholder-image.png)
+![know your customer](images/19_kyc.png)
 
 Polymesh is designed to welcome existing KYC service providers into the Polymesh network. The SDK integrates easily with existing systems, which allows KYC service providers to **issue on-chain attestations**.
 
