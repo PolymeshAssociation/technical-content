@@ -76,6 +76,8 @@ Now that we went throught the preconditions, let's continue preparing the distri
 
 ## Publish the investor uniqueness claims
 
+![The investor uniqueness claim process](images/12_uniqueness.png)
+
 ### The what?
 
 This part is heavier in terms of cryptography. If in doubt about some elements, please refer to the [Identity chapter](/introduction/intro-identity). As mentioned in the identity introduction, Polymesh enables a way for asset originators to ascertain the uniqueness of the investors in their asset. This is achieved by publishing on-chain a commitment. This is this commitment that we are going to publish for both ACME and Alice. We are going to inspire ourselves from this [example script](https://github.com/PolymathNetwork/CDD-Scripts/blob/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/index.js#L305-L330).
@@ -381,7 +383,7 @@ At this point, ACME, has 20,000 received shares. We still need to send them over
 
 ## In which portfolio?
 
-Now, Alice does not want to receive her ACME shares into her default portfolio. Instead, she wants to have them sent to a new "cold store" portfolio, she first needs to [create](https://developers.polymath.network/polymesh-sdk-api-reference/classes/portfolios#create) the portfolio.
+Now, Alice doesn't want to receive her ACME shares into her default portfolio. Instead, she wants to have them sent to a new "cold store" portfolio, she first needs to [create](https://developers.polymath.network/polymesh-sdk-api-reference/classes/portfolios#create) the portfolio.
 
 Here we are talking about Alice, the eventual owner, not the CEO, so we are going to use _her_ Polymesh client instance:
 
@@ -495,7 +497,7 @@ const distributionInstructionId = distributionInstruction.id.toString(10);
 
 </MultiCodeBlock>
 
-This instruction is now recorded in the blockchain as pending. Alice the CEO is satisfied with it. She does not need to affirm it as the SDK identified her affirmation would have been required anyway, and so used the relevant [`add_and_affirm_instruction` extrinsic](https://docs.polymesh.live/pallet_settlement/enum.Call.html#variant.add_and_affirm_instruction) right away.
+This instruction is now recorded in the blockchain as pending. Alice the CEO is satisfied with it. She doesn't need to affirm it as the SDK identified her affirmation would have been required anyway, and so used the relevant [`add_and_affirm_instruction` extrinsic](https://docs.polymesh.live/pallet_settlement/enum.Call.html#variant.add_and_affirm_instruction) right away.
 
 ## Does Alice agree?
 

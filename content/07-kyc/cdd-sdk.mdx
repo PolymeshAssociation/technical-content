@@ -1,21 +1,39 @@
 ---
 title: CDD with the SDK
-description: Provide Customer due diligence with the Polymesh SDK
+description: Provide customer due diligence with the Polymesh SDK
 slug: /kyc/cdd-sdk
 ---
 
 import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
 import HighlightBox from "../../src/components/HighlightBox"
 
+<HighlightBox type="tip">
+
 You ought to look at the previous chapter on _KYC with the SDK_ first.
 
-Although, a CDD service provider is a privileged KYC service provider, adding a CDD claim is an entirely different proposition. A CDD service provider has access to the Polymesh Unique Identity System (PUIS) and is entrusted with publishing cryptographic commitments. See the [Identity introduction](/introduction/intro-identity) for a refresher. In particular:
+</HighlightBox>
 
-1. For brand new users of Polymesh, the CDD provider needs to:
-    1. record a new entry in the PUIS, and return to the user their unique off-chain identifier, or **uID**.
-    2. create a new account controlled by the primary key asked by the user, and return the **Did** to the user.
-2. For existing users that need a new CDD attestation, the CDD provider needs to ask or retrieve the user's uID in the PUIS.
-3. When the CDD service provider publishes a CDD attestation associated with an account, the attached **CddId** needs to be cryptographically calculated using the user's uID and the account's Did. This is needed so that an account can later on self-publish an investor uniqueness claim. See [distribute with the SDK](/distribute/sdk) for a reminder of the process.
+Although, a CDD service provider is a privileged KYC service provider, adding a CDD claim is an entirely different proposition. A CDD service provider has access to the Polymesh Unique Identity System (PUIS) and is entrusted with publishing cryptographic commitments.
+
+<HighlightBox type="tip">
+
+See the [introduction on identity](/introduction/intro-identity) for a refresher.
+
+</HighlightBox>
+
+In particular:
+
+1. For **brand new users** of Polymesh, the CDD provider needs to:
+    1. Record a new entry in the PUIS, and return to the user their unique off-chain identifier, or **uID**;
+    2. Create a new account controlled by the primary key asked by the user, and return the **Did** to the user;
+2. For **existing users** that need a new CDD attestation, the CDD provider needs to ask or retrieve the user's uID in the PUIS;
+3. When the CDD service provider publishes a CDD attestation associated with an account, the attached **CddId** needs to be cryptographically calculated using the user's uID and the account's DID. This is needed so that an account can later on self-publish an investor uniqueness claim.
+
+<HighlightBox type="tip">
+
+See [distribute with the SDK](/distribute/sdk) for a reminder of the process.
+
+</HighlightBox>
 
 We assume the CDD service provider is named EzCdd and has a way to instantiate a Polymesh client.
 
@@ -39,7 +57,9 @@ const apiEzCdd = await Polymesh.connect({
 
 ## How to create a new account
 
-This part only applies if the user, say Bob, is brand new to Polymesh, or if Bob wants to create another account for himself. In that case, the CDD provider needs to create an account. This is a privileged operation, too, one that only a CDD service provider can accomplish. The CDD provider needs to ask Bob for the public key, or address, he wishes to associate with the account.
+This part only applies if the user, say Bob, is brand new to Polymesh, or if Bob wants to create another account for himself.
+
+In that case, the CDD provider needs to create an account. This is a privileged operation, too, one that only a CDD service provider can accomplish. The CDD provider needs to ask Bob for the public key, or address, he wishes to associate with the account.
 
 ### Information collection
 
@@ -81,7 +101,7 @@ assert(bob === null);
 
 ### Create the account
 
-With the certainty that the key is not associated with any existing account, it is time to create a new account with this key:
+With the certainty that **the key is not associated with any existing account**, it is time to create a new account with this key:
 
 <MultiCodeBlock>
 
@@ -101,7 +121,9 @@ const bob = await newAccountQueue.run();
 
 </MultiCodeBlock>
 
-So does Bob have a new account on-chain? Not yet, sadly. Or rather, fortunately. You see, it is worth repeating that all actions of consequence need approval on both ends, and this is no different here. Bob needs to use his private key to approve having it associated with this new account. So, either Bob goes to his dashboard, and looks for incoming authorisation requests, or Bob fires up his own `apiBob` and uses the SDK. We assume that EzCdd gave him their `const ezCddDid: string`.
+So does Bob have a new account on-chain? Not yet, sadly. Or rather, fortunately. You see, it is worth repeating that all actions of consequence need approval on both ends, and this is no different here. Bob needs to use his private key to approve having it associated with this new account.
+
+So, either Bob goes to his dashboard, and looks for incoming authorisation requests, or Bob fires up his own `apiBob` and uses the SDK. We assume that EzCdd gave him their `const ezCddDid: string`.
 
 <MultiCodeBlock>
 
@@ -138,11 +160,11 @@ Additionally, the address needs some POLYX to pay for transaction fees. Bob can 
 Now that Bob has an account on Polymesh, the CDD provider needs to add a CDD attestation to the account. To calculate the cryptographic CddId to include in the attestation, we are going to inspire ourselves from this [example script](https://github.com/PolymathNetwork/CDD-Scripts/blob/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/index.js#L72-L77). Let's first clearly identify what is off-chain and what is on-chain:
 
 * Off-chain:
-    * investor's uID, which is Bob's, unique identifier in the PUIS system.
+    * investor's uID, which is Bob's, unique identifier in the PUIS system, and
     * CDD service provider's private key, obviously.
 * On-chain:
-    * `bob.did`: the account number the CDD provider created to identify (one of) Bob's account on-chain.
-    * CddId: the identifier the CDD provider will publish after Bob has completed the CDD process.
+    * `bob.did`: the account number the CDD provider created to identify (one of) Bob's account on-chain,
+    * CddId: the identifier the CDD provider will publish after Bob has completed the CDD process, and
     * CDD service provider's address, or primary public key for the service provider's account.
 
 The difficulty here is how to actually calculate the CddId.
@@ -151,8 +173,8 @@ The difficulty here is how to actually calculate the CddId.
 
 We need to do some extra work because, at its base, the [confidential identity](https://github.com/PolymathNetwork/cryptography/tree/afed507/confidential-identity) library is coded in Rust, like the rest of Polymesh's codebase, and compiled in WebAssembly (WASM), for use in NodeJs. So go ahead:
 
-* Copy the [whole library folder](https://github.com/PolymathNetwork/CDD-Scripts/tree/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/pkg). This includes the external declarations for NodeJs.
-* [Import it](https://github.com/PolymathNetwork/CDD-Scripts/blob/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/index.js#L10) in your file.
+* Copy the [whole library folder](https://github.com/PolymathNetwork/CDD-Scripts/tree/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/pkg). This includes the external declarations for NodeJs;
+* [Import it](https://github.com/PolymathNetwork/CDD-Scripts/blob/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/index.js#L10) in your file;
 * And also [import some Polkadot utilities](https://github.com/PolymathNetwork/CDD-Scripts/blob/83ff952ab88b0aeaeaaed9cda35556dc1cc79f74/index.js#L11).
 
 ### Calculate off-chain
@@ -261,8 +283,8 @@ If Bob wants to transact with ACME securities, have a look at his adding an [inv
 
 We have seen how a CDD service provider needs to:
 
-* access the PUIS and generate a uID.
-* create new accounts on Polymesh.
+* access the PUIS and generate a uID,
+* create new accounts on Polymesh, and
 * publish carefully crafted CDD attestations.
 
 ## Links

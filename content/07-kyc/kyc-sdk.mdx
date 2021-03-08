@@ -7,15 +7,15 @@ slug: /kyc/kyc-sdk
 import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
 import HighlightBox from "../../src/components/HighlightBox"
 
-Using the Polymesh dashboard for KYC is all well and good but it does not scale well.
+Using the Polymesh Dashboard for KYC is all well and good but it doesn't scale well. A KYC service provider may want to scale their business by integrating with existing internal systems.
 
-A KYC Service provider may want to scale their business by integrating with existing internal systems. Consider a queue of KYC requests, user-facing onboarding systems and other methods of gathering information followed by evaluation and a decision. The decision itself can be optionally committed to Polymesh in the form of an attestation.
+Consider a queue of KYC requests, user-facing onboarding systems and other methods of gathering information followed by evaluation and a decision. The decision itself can be optionally committed to Polymesh in the form of an **attestation**.
 
-A level-0 integration of an existing KYC system with Polymesh would be to keep the Polymesh dashboard open and have an operator copy paste addresses from one system to another and press buttons repeatedly. Beside the risk of error, it lets operators have access to the KYC company's private keys, which could potentially be used for other purposes.
+A level-0 integration of an existing KYC system with Polymesh would be to keep the Polymesh Dashboard open and have an operator copy paste addresses from one system to another and press buttons repeatedly. Beside the risk of error, it lets operators have access to the KYC company's private keys, which could potentially be used for other purposes.
 
 Remember when Alice the CEO set up the conditions for receiving ACME shares:
 
-* The future holder must have a KYC attestation by the appointed KYC provider.
+* The future holder must have a KYC attestation by the appointed KYC provider;
 * The claimed jurisdiction in this attestation must not be of Liechtenstein.
 
 For some exercises, we simply disabled compliance rules for simplicity's sake. What if compliance rules are in effect? How can Alice prove that she is not in Liechtenstein?
@@ -72,11 +72,13 @@ await claimQueue.run();
 
 </MultiCodeBlock>
 
-Any identity can add an attestation to another identity. This is very different from CDD providers, which are permissioned through network governance. This means that it is potentially open to abuse, and ACME's compliance cannot rely on _any_ jurisdictional attestation. This is why the compliance policy specifies the identity of the KYC service provider. The KYC service provider is the signer ACME trusts for compliance purposes.
+**Any identity can add an attestation to another identity.** This is very different from CDD providers, which are permissioned through network governance. This means that it is potentially open to abuse, and ACME's compliance cannot rely on _any_ jurisdictional attestation. This is why the compliance policy specifies the identity of the KYC service provider. The KYC service provider is the signer ACME trusts for compliance purposes.
 
 ## Change the jurisdiction claim
 
-What happens if Bob moves from the United Kingdom to France? His jurisdiction claim ought to change alongside. However you cannot just modify an attestation. You would have to revoke it. And since there is no identifier associated to the attestation added to Bob earlier, to revoke it, you need to call the revoke function with the same parameters you used to add the attestation, minus the `expiry`. Other than that, you would have to issue a brand new attestation too. Noting that if you revoked first Bob may be prevented from acquiring ACME shares in the interim, it is better to add the new attestation, first, before revoking the old one.
+What happens if Bob moves from the United Kingdom to France? His jurisdiction claim ought to change alongside.
+
+However you cannot just modify an attestation. You would have to revoke it. And since there is no identifier associated to the attestation added to Bob earlier, to revoke it, you need to call the revoke function with the same parameters you used to add the attestation, minus the `expiry`. Other than that, you would have to issue a brand new attestation too. Noting that if you revoked first Bob may be prevented from acquiring ACME shares in the interim, it is better to add the new attestation, first, before revoking the old one.
 
 <MultiCodeBlock>
 
