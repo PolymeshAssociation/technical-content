@@ -17,9 +17,14 @@ const Container = styled.div({
 });
 
 const MenuButton = styled.a({
-  minWidth: 200,
+  minWidth: 160,
+  height: 40,
+  padding: 8,
+  textDecoration: "none",
+  textAlign: "center",
+  color: "#6C7D88",
   ':hover': {
-    color: "#ff0000"
+    backgroundColor: "#f1f1f1"
   }
 });
 

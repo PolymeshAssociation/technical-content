@@ -91,14 +91,14 @@ module.exports = {
     siteUrl: themeOptions.siteUrl,
     topMenu: [
       {
-        category: "portal1",
-        name: "portal",
+        category: null,
+        name: "Developer Portal",
         link: "/"
       },
       {
-        category: "portal2",
-        name: "portal2",
-        link: "/test"
+        category: "old-portal",
+        name: "Old Portal",
+        link: "/old-docs/network/polyx"
       }
     ]
   },

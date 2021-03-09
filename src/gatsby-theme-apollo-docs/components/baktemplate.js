@@ -14,7 +14,8 @@ import {MDXProvider} from '@mdx-js/react';
 import {graphql, navigate} from 'gatsby';
 
 const StyledContentWrapper = styled(ContentWrapper)({
-  paddingBottom: 0
+  paddingBottom: 0,
+  width: "100%"
 });
 
 const CustomLinkContext = createContext();

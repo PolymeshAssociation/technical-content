@@ -31,6 +31,22 @@ import {groupBy} from 'lodash';
 import {size} from 'polished';
 import {trackCustomEvent} from 'gatsby-plugin-google-analytics';
 
+const TopBarWrapper = styled.div({
+  height: 72,
+  width: "100%",
+  position: "fixed",
+  backgroundColor: "red",
+  zIndex: 1
+});
+
+const MainContentWrapper = styled.div({
+  paddingTop: 72
+});
+
+const InsideContentWrapper = styled.div({
+  width: "100%"
+})
+
 const Main = styled.main({
   flexGrow: 1
 });
@@ -200,114 +216,129 @@ export default function PageLayout(props) {
           content="width=device-width, initial-scale=1, maximum-scale=1"
         />
       </Helmet>
-      <FlexWrapper onClick={handleWrapperClick}>
-        <Sidebar
-          responsive
-          className="sidebar"
-          open={sidebarOpen}
-          ref={sidebarRef}
-          title={siteName}
-          logoLink={logoLink}
+      
+      <TopBarWrapper>
+        <Header
+          beforeContent={
+            versionDifference !== 0 && (
+              <Eyebrow>
+                You&apos;re viewing documentation for a{' '}
+                {versionDifference > 0
+                  ? 'version of this software that is in development'
+                  : 'previous version of this software'}
+                . <Link to="/">Switch to the latest stable version</Link>
+              </Eyebrow>
+            )
+          }
         >
-          <HeaderInner>
-            {hasNavItems ? (
-              <ButtonWrapper ref={buttonRef}>
-                <StyledButton
-                  feel="flat"
-                  color={colors.primary}
-                  size="small"
-                  onClick={openMenu}
-                  style={{display: 'flex'}}
-                >
-                  {sidebarTitle}
-                  <StyledIcon />
-                </StyledButton>
-              </ButtonWrapper>
-            ) : (
-              sidebarTitle
-            )}
-            {versions && versions.length > 0 && (
-              <Select
-                feel="flat"
-                size="small"
-                value={versionDifference ? versionBasePath : '/'}
-                onChange={navigate}
-                style={{marginLeft: 8}}
-                options={versions.reduce(
-                  (acc, version) => ({
-                    ...acc,
-                    [getVersionBasePath(version)]: getVersionLabel(version)
-                  }),
-                  {
-                    '/': defaultVersion
-                      ? getVersionLabel(defaultVersion)
-                      : 'Latest'
-                  }
-                )}
-              />
-            )}
-          </HeaderInner>
-          {sidebarContents && (
-            <SidebarNav
-              contents={sidebarContents}
-              pathname={pathname}
-              onToggleAll={handleToggleAll}
-              onToggleCategory={handleToggleCategory}
-              onLinkClick={handleSidebarNavLinkClick}
+          <MobileNav>
+            <MenuButton onClick={openSidebar} />
+            <MobileLogo width={32} fill="currentColor" />
+          </MobileNav>
+          {algoliaApiKey && algoliaIndexName && (
+            <Search
+              siteName={siteName}
+              apiKey={algoliaApiKey}
+              indexName={algoliaIndexName}
             />
           )}
-        </Sidebar>
+          <HeaderButton />
+          <HeaderMenu 
+            topMenu={topMenu}
+          />
+        </Header>
+        
+      </TopBarWrapper>
+
+      <MainContentWrapper>
         <Main>
-          <Header
-            beforeContent={
-              versionDifference !== 0 && (
-                <Eyebrow>
-                  You&apos;re viewing documentation for a{' '}
-                  {versionDifference > 0
-                    ? 'version of this software that is in development'
-                    : 'previous version of this software'}
-                  . <Link to="/">Switch to the latest stable version</Link>
-                </Eyebrow>
-              )
-            }
-          >
-            <MobileNav>
-              <MenuButton onClick={openSidebar} />
-              <MobileLogo width={32} fill="currentColor" />
-            </MobileNav>
-            {algoliaApiKey && algoliaIndexName && (
-              <Search
-                siteName={siteName}
-                apiKey={algoliaApiKey}
-                indexName={algoliaIndexName}
-              />
-            )}
-            <HeaderButton />
-            <HeaderMenu 
-              topMenu={topMenu}
-            />
-          </Header>
-          <SelectedLanguageContext.Provider value={selectedLanguageState}>
-            <NavItemsContext.Provider value={navItems}>
-              {props.children}
-            </NavItemsContext.Provider>
-          </SelectedLanguageContext.Provider>
+
+
+
+          <FlexWrapper onClick={handleWrapperClick}>
+            <Sidebar
+              responsive
+              className="sidebar"
+              open={sidebarOpen}
+              ref={sidebarRef}
+              title={siteName}
+              logoLink={logoLink}
+            >
+              <HeaderInner>
+                {hasNavItems ? (
+                  <ButtonWrapper ref={buttonRef}>
+                    <StyledButton
+                      feel="flat"
+                      color={colors.primary}
+                      size="small"
+                      onClick={openMenu}
+                      style={{display: 'flex'}}
+                    >
+                      {sidebarTitle}
+                      <StyledIcon />
+                    </StyledButton>
+                  </ButtonWrapper>
+                ) : (
+                  sidebarTitle
+                )}
+                {versions && versions.length > 0 && (
+                  <Select
+                    feel="flat"
+                    size="small"
+                    value={versionDifference ? versionBasePath : '/'}
+                    onChange={navigate}
+                    style={{marginLeft: 8}}
+                    options={versions.reduce(
+                      (acc, version) => ({
+                        ...acc,
+                        [getVersionBasePath(version)]: getVersionLabel(version)
+                      }),
+                      {
+                        '/': defaultVersion
+                          ? getVersionLabel(defaultVersion)
+                          : 'Latest'
+                      }
+                    )}
+                  />
+                )}
+              </HeaderInner>
+              {sidebarContents && (
+                <SidebarNav
+                  contents={sidebarContents}
+                  pathname={pathname}
+                  onToggleAll={handleToggleAll}
+                  onToggleCategory={handleToggleCategory}
+                  onLinkClick={handleSidebarNavLinkClick}
+                />
+              )}
+            </Sidebar>
+
+            <InsideContentWrapper>
+              <SelectedLanguageContext.Provider value={selectedLanguageState}>
+                <NavItemsContext.Provider value={navItems}>
+                  {props.children}
+                </NavItemsContext.Provider>
+              </SelectedLanguageContext.Provider>
+            </InsideContentWrapper>
+            
+          
+          </FlexWrapper>
         </Main>
-      </FlexWrapper>
-      {hasNavItems && (
-        <DocsetSwitcher
-          siteName={menuTitle || siteName}
-          spectrumUrl={spectrumHandle && getSpectrumUrl(spectrumHandle)}
-          twitterUrl={twitterHandle && `https://twitter.com/${twitterHandle}`}
-          youtubeUrl={youtubeUrl}
-          navItems={navItems}
-          navCategories={navCategories}
-          footerNavConfig={footerNavConfig}
-          open={menuOpen}
-          buttonRef={buttonRef}
-          onClose={closeMenu}
-        />
-      )}
+        {hasNavItems && (
+          <DocsetSwitcher
+            siteName={menuTitle || siteName}
+            spectrumUrl={spectrumHandle && getSpectrumUrl(spectrumHandle)}
+            twitterUrl={twitterHandle && `https://twitter.com/${twitterHandle}`}
+            youtubeUrl={youtubeUrl}
+            navItems={navItems}
+            navCategories={navCategories}
+            footerNavConfig={footerNavConfig}
+            open={menuOpen}
+            buttonRef={buttonRef}
+            onClose={closeMenu}
+          />
+        )}
+      </MainContentWrapper>
     </Layout>
   );
 }
