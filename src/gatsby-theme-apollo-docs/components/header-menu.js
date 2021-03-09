@@ -17,8 +17,8 @@ const Container = styled.div({
 });
 
 const MenuButton = styled.a({
-  minWidth: 160,
-  height: 40,
+  minWidth: 140,
+  height: 38,
   padding: 8,
   textDecoration: "none",
   textAlign: "center",
@@ -44,6 +44,7 @@ export default function HeaderMenu(props) {
         return (
           <MenuButton
             href={menuItem.link}
+            target={menuItem.external ? "_blank" : "_self"}
           >
             {menuItem.name}
           </MenuButton>

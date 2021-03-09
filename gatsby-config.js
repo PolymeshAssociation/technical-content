@@ -99,7 +99,25 @@ module.exports = {
         category: "old-portal",
         name: "Old Portal",
         link: "/old-docs/network/polyx"
-      }
+      },
+      {
+        category: "testnet-guide",
+        name: "Testnet Guide",
+        link: "/testnet-guide/about"
+      },
+      {
+        category: "sdk-api-doc",
+        name: "SDK API Doc",
+        link: "https://developers.polymath.network/polymesh-sdk-api-reference/",
+        external: true
+      },
+      {
+        category: "ref-doc",
+        name: "Reference Doc",
+        link: "https://docs.polymesh.live/polymesh/index.html",
+        external: true
+      },
+
     ]
   },
   plugins: [

@@ -97,15 +97,9 @@ function getSidebarContents(edges, version, dirPattern, subCategory=null) {
   let activeSubSite;
 
   if (typeof subCategory !== "undefined" && subCategory) {
-    console.log("called sidebar contents with subCategory filter");
-    console.log(subCategory);
     filterActive = true;
-    console.log(subSites);
     activeSubSite = subSites.filter((site) => { return site.id == subCategory })
-    console.log(activeSubSite);
     activeSubSite = activeSubSite ? activeSubSite[0] : null
-    console.log("activeSubSite");
-    console.log(activeSubSite);
   }
 
   let mainSidebarCategories = sidebarCategories 
@@ -162,7 +156,6 @@ function getSidebarContents(edges, version, dirPattern, subCategory=null) {
 }
 
 function getVersionSidebarCategories(gatsbyConfig, hexoConfig) {
-  console.log("getVersionSidebarCategories");
   if (gatsbyConfig) {
     const trimmed = gatsbyConfig.slice(
       gatsbyConfig.indexOf('sidebarCategories')
@@ -285,9 +278,6 @@ exports.createPages = async (
   edges.forEach(edge => {
     const {id, relativePath} = edge.node;
     const {fields, frontmatter} = getPageFromEdge(edge);
-
-    console.log("frontmatter");
-    console.log(frontmatter);
     
     let versionDifference = 0;
     if (defaultVersionNumber) {
