@@ -46,11 +46,6 @@ const StyledLink = styled.a({
 const Sidebar = React.forwardRef((props, ref) => {
   const content = (
     <Fragment>
-      <Header>
-        <StyledLink href={props.logoLink}>
-          <Logo />
-        </StyledLink>
-      </Header>
       <div className={props.className}>{props.children}</div>
     </Fragment>
   );

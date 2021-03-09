@@ -14,6 +14,15 @@ const getSidebarConfig = () => {
   return sidebarCategories = {...sidebarDefaults, ...sidebarContent};
 }
 
+const subSites = [
+  {
+    id: "oldplatform",
+    sidebarCategories: require('./content/old-platform/structure.js')
+  }
+]
+
+console.log(subSites);
+
 const sidebarConfig = getSidebarConfig();
 
 const apolloDocsOptions = {
@@ -24,6 +33,7 @@ const apolloDocsOptions = {
   githubRepo: 'PolymathNetwork/technical-content',
   siteName: 'Polymesh Developer Portal',
   sidebarCategories: getSidebarConfig(),
+  subSites: subSites
 }
 
 const apolloRemarkPluginConfig = require("gatsby-theme-apollo-docs/gatsby-config.js")({
@@ -77,7 +87,20 @@ let remarkPluginConfig = [
 module.exports = {
   pathPrefix: pathPrefix,
   siteMetadata: {
+    title: "Polymesh Developer Portal",
     siteUrl: themeOptions.siteUrl,
+    topMenu: [
+      {
+        category: null,
+        name: "Developer Portal",
+        link: "/"
+      },
+      {
+        category: "old-portal",
+        name: "Old Portal",
+        link: "/old-docs/network/polyx"
+      }
+    ]
   },
   plugins: [
     {

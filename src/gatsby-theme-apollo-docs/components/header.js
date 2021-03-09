@@ -5,7 +5,6 @@ import {HEADER_HEIGHT} from '../utils';
 import {breakpoints} from 'gatsby-theme-apollo-core';
 
 const Wrapper = styled.header({
-  position: 'sticky',
   top: 0,
   left: 0,
   zIndex: 1
