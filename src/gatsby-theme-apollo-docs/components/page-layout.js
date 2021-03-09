@@ -118,6 +118,7 @@ export default function PageLayout(props) {
             title
             siteName
             topMenu {
+              category
               name
               link
             }

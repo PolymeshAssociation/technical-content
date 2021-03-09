@@ -14,6 +14,7 @@ export default function Layout(props) {
               title
               description
               topMenu {
+                category
                 name
                 link
               }
