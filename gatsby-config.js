@@ -8,9 +8,6 @@ const getSidebarConfig = () => {
   const sidebarDefaults = {
     null: [
       'index',
-    ],
-    'opt_portal2': [
-      "features/feature_test"
     ]
   };
 
@@ -19,14 +16,12 @@ const getSidebarConfig = () => {
 
 const subSites = [
   {
-    id: "portal2",
-    sidebarCategories: {
-      'features in portal2': [
-        "features/feature_test"
-      ]
-    }
+    id: "oldplatform",
+    sidebarCategories: require('./content/old-platform/structure.js')
   }
 ]
+
+console.log(subSites);
 
 const sidebarConfig = getSidebarConfig();
 

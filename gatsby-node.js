@@ -109,10 +109,7 @@ function getSidebarContents(edges, version, dirPattern, subCategory=null) {
   }
 
   let mainSidebarCategories = sidebarCategories 
-    ? Object.fromEntries(
-      Object.entries(sidebarCategories).filter((obj) => {
-        return obj[0].indexOf("opt_") != 0
-      }))
+    ? sidebarCategories
     : {};
 
   if (filterActive) {
