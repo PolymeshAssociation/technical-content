@@ -101,11 +101,6 @@ module.exports = {
         link: "/old-docs/network/polyx"
       },
       {
-        category: "testnet-guide",
-        name: "Testnet Guide",
-        link: "/testnet-guide/about"
-      },
-      {
         category: "sdk-api-doc",
         name: "SDK API Doc",
         link: "https://developers.polymath.network/polymesh-sdk-api-reference/",
