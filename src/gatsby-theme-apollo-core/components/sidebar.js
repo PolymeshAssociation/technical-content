@@ -18,7 +18,11 @@ const Container = styled.aside({
 });
 
 const ResponsiveContainer = styled(Container)(props => ({
+  paddingTop: "96px",
+  maxHeight: "calc(100% - 72px)",
   [breakpoints.md]: {
+    paddingTop: "25px",
+    maxHeight: "unset",
     height: '100%',
     backgroundColor: 'white',
     boxShadow: `0 0 48px ${transparentize(0.75, 'black')}`,

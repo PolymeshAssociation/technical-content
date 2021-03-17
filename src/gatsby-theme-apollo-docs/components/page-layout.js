@@ -40,7 +40,10 @@ const TopBarWrapper = styled.div({
 });
 
 const MainContentWrapper = styled.div({
-  paddingTop: 72
+  paddingTop: 72,
+  [breakpoints.md]: {
+    paddingTop: 0
+  }
 });
 
 const InsideContentWrapper = styled.div({
