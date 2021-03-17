@@ -35,7 +35,7 @@ const TopBarWrapper = styled.div({
   height: 72,
   width: "100%",
   position: "fixed",
-  backgroundColor: "red",
+  backgroundColor: "white",
   zIndex: 1
 });
 
