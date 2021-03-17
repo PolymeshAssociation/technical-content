@@ -26,16 +26,24 @@
   padding-bottom: 40px;
 }
 
-.box-overview-card-dyn .content {
-
-}
-
-
 .box-overview-card-dyn .inline-image-float-right {
 	width: 35%;
 	max-height: 200px;
 	float: right;
 	margin-left: 15px;
+}
+
+@media only screen and (max-width: 998px) {
+	.box-overview-card {
+		flex-direction: column-reverse;
+	}
+	.box-overview-card .content-left {
+		width: 100%;
+	}
+	
+	.box-overview-card .image-right {
+		width: 100%;
+	}
 }
 
 .box-action-cards {
