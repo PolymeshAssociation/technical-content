@@ -7,6 +7,7 @@ const Container = styled.div({
   display: 'flex',
   flexShrink: 0,
   width: 240,
+  paddingLeft: "90px",
   [breakpoints.lg]: {
     width: 'auto',
     marginRight: 0
