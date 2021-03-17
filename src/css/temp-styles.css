@@ -196,6 +196,10 @@ a.action-link img, .action-link img, .action-link img.action-icon {
 	.box-action-cards .content-wrapper {
 		display: block;
 	}
+	.box-action-cards .content-wrapper .action-card {
+		display: block;
+		margin: 0;
+	}
 }
 
 @media only screen and (max-width: 1610px) {
