@@ -49,7 +49,6 @@ const ImgRightContainer = styled.div({
 });
 
 const ImgRight = styled.img({
-
 });
 
 export default function OverviewBox(props) {
@@ -60,7 +59,7 @@ export default function OverviewBox(props) {
         {props.children}
         <Link className="action-link" href={props.linkHref}>
           {props.linkText}
-          <LinkImg src={props.linkImgSrc}>
+          <LinkImg src="/icon-arrow-right.svg">
           </LinkImg>
         </Link>
       </ContentLeft>
