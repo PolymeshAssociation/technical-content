@@ -1,5 +1,6 @@
 import OverviewBox from "../src/components/OverviewBox"
-
+import ActionCard from "../src/components/ActionCard"
+import ActionCardWrapper from "../src/components/ActionCardWrapper"
 
 ---
 title: Welcome to the Polymesh Developer Portal!
@@ -35,42 +36,12 @@ The menu on the left organises the content and the exercises in the suggested ch
 	<p>This fast-paced and well-rounded introduction begins with why regulated securities needed a specialised solution and proceeds through the cornerstones of the design.</p>
 </OverviewBox>
 
-<div class="box-action-cards">
-	<h3>Quick Start</h3>
-	<div class="content-wrapper">
-		<a class="action-card card-2" href="#">
-			<div class="action-link">
-				Get The Wallet
-				<img src="/icon-arrow-right.svg" class="action-icon"/>
-			</div>
-			<p>Connect to Polymesh with your browser in just a few minutes.</p>
-		</a>
-		<a class="action-card card-2" href="#">
-			<div class="action-link">
-				Get Verified
-				<img src="/icon-arrow-right.svg" class="action-icon"/>
-			</div>
-			<p>Polymesh users are confidential but they are not anonymous. Get an account and get verified.</p>
-		</a>
-	</div>
-	<div class="content-wrapper">
-		<a class="action-card card-2" href="#">
-			<div class="action-link">
-				Deploy a Local Node
-				<img src="/icon-arrow-right.svg" class="action-icon"/>
-			</div>
-			<p>Integrate Polymesh with your existing systems using the SDK and a local node. Developers, this is for you.</p>
-		</a>
-		<a class="action-card card-2" href="#">
-			<div class="action-link" href="#">
-				Get Testnet POLYX
-				<img src="/icon-arrow-right.svg" class="action-icon"/>
-			</div>
-			<p>Get POLYX to pay for blockchain transactions and to participate in on-chain network governance.</p>
-		</a>
-	</div>
-</div>
-
+<ActionCardWrapper title="Quick Start">
+	<ActionCard href="#" text="Get The Wallet" desc="Connect to Polymesh with your browser in just a few minutes."></ActionCard>
+	<ActionCard href="#" text="Get Verified" desc="Polymesh users are confidential but they are not anonymous. Get an account and get verified."></ActionCard>
+	<ActionCard href="#" text="Deploy a Local Node" desc="Integrate Polymesh with your existing systems using the SDK and a local node. Developers, this is for you."></ActionCard>
+	<ActionCard href="#" text="Get Testnet POLYX" desc="Get POLYX to pay for blockchain transactions and to participate in on-chain network governance."></ActionCard>
+</ActionCardWrapper>
 
 <div class="box-action-cards">
 	<h2>User Journeys</h2>
