@@ -3,9 +3,9 @@ import styled from '@emotion/styled';
 import {breakpoints} from 'gatsby-theme-apollo-core';
 
 const Card = styled.a({
-  flex: "1",
+  flex: "1 1 48%",
 	position: "relative",
-	margin: "0 15px",
+	margin: "0 1%",
   textDecoration: "none",
 	border: "1px solid #EDEDED",
   borderRadius: "8px",
@@ -15,10 +15,10 @@ const Card = styled.a({
   ":hover": {
     boxShadow: "0px 0px 10px 2px rgba(100, 100, 100, .1)"
   },
-  ":first-child": {
+  ":nth-child(odd)": {
     marginLeft: 0
   },
-  ":last-child": {
+  ":nth-child(even)": {
     marginRight: 0
   },
   [breakpoints.smMd]: {

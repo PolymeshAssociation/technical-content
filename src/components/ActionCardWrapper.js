@@ -16,6 +16,7 @@ const Title = styled.h3({
 
 const ContentWrapper = styled.div({
   display: "flex",
+  flexWrap: "wrap",
   [breakpoints.smMd]: {
 		display: "block"
   }
