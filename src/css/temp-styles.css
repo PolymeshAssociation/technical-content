@@ -202,22 +202,18 @@ a.action-link img, .action-link img, .action-link img.action-icon {
 		display: block;
 		margin: 0;
 	}
-}
-
-@media only screen and (max-width: 1610px) {
-	.box-action-cards .content-wrapper .action-card-large .intro-text {
-		min-height: 180px;
+	.box-action-cards .content-wrapper.tables {
+		display: none;
+	}
+	.box-action-cards .action-card-large {
+		margin-left: 0px !important;
+		margin-right: 0px !important;
 	}
 }
 
-@media only screen and (max-width: 1390px) {
-	.box-action-cards .content-wrapper .action-card-large .intro-text {
-		min-height: 200px;
-	}
-}
+@media only screen and (min-width: 999px) {
 
-@media only screen and (max-width: 1300px) {
-	.box-action-cards .content-wrapper .action-card-large .intro-text {
-		min-height: 280px;
+	.box-action-cards .action-card-large .action-card-table.mobile {
+		display: none;
 	}
 }
