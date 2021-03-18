@@ -53,7 +53,7 @@ const ActionCardLinkDesc = styled.p({
 
 export default function ActionCard(props) {
   return (
-    <Card href={props.link}>
+    <Card href={props.href}>
       <ActionCardLinkText>
         {props.text}
         <ActionCardLinkImg src="/icon-arrow-right.svg" class="action-icon"></ActionCardLinkImg>
