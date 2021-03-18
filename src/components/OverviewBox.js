@@ -5,7 +5,6 @@ import {breakpoints} from 'gatsby-theme-apollo-core';
 
 const OverviewBoxWrapper = styled.div({
   display: "flex",
-  padding: "15px",
   borderBottom: "1px solid #EDEDED",
 	marginBottom: "40px",
   paddingBottom: "40px",
@@ -34,9 +33,15 @@ const ContentRight = styled.div({
 });
 
 const Link = styled.a({
+  color: "#1348E3",
+  fontWeight: 700,
+  textDecoration: "none"
 });
 
 const LinkImg = styled.img({
+  display: "inline-block !important",
+  marginBottom: "-3px",
+  marginLeft: "10px"
 });
 
 const ImgRightContainer = styled.div({

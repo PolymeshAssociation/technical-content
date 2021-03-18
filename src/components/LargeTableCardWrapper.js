@@ -4,7 +4,6 @@ import {breakpoints} from 'gatsby-theme-apollo-core';
 
 
 const Wrapper = styled.div({
-  padding: "15px",
 	marginbottom: "40px",
   paddingBottom: "40px",
   borderBottom: "1px solid #EDEDED",
