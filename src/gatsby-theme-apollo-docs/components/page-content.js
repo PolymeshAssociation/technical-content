@@ -89,6 +89,9 @@ const Aside = styled.aside({
   [breakpoints.md]: {
     display: 'block'
   },
+  [breakpoints.smMd]: {
+    display: 'none'
+  },
   [breakpoints.sm]: {
     display: 'none'
   }

@@ -1,5 +1,6 @@
 const sizes = {
   sm: 600,
+  smMd: 700,
   md: 850,
   lg: 1120
 };

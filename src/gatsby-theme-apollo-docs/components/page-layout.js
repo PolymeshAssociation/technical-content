@@ -35,12 +35,14 @@ const TopBarWrapper = styled.div({
   height: 72,
   width: "100%",
   position: "fixed",
-  backgroundColor: "red",
+  backgroundColor: "white",
   zIndex: 1
 });
 
 const MainContentWrapper = styled.div({
-  paddingTop: 72
+  [breakpoints.md]: {
+    paddingTop: 0
+  }
 });
 
 const InsideContentWrapper = styled.div({
