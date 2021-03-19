@@ -47,7 +47,6 @@ const ActionCardLinkImg = styled.img({
 
 const ActionCardDevSign = styled.img({
   height: "71px",
-  display: "inline-block !important",
   width: "75px",
   marginBottom: "0px",
   position: "absolute",
