@@ -148,8 +148,7 @@ function getSidebarContents(edges, version, dirPattern, subCategory=null) {
           title: frontmatter.title,
           sidebarTitle: fields.sidebarTitle,
           description: frontmatter.description,
-          path: fields.slug,
-          showDevSign: frontmatter.showDevSign
+          path: fields.slug        
         };
       })
       .filter(Boolean)
