@@ -44,6 +44,16 @@ const ActionCardLinkImg = styled.img({
   marginLeft: "10px",
 });
 
+const ActionCardDevSign = styled.img({
+  height: "71px",
+  display: "inline-block !important",
+  width: "75px",
+  marginBottom: "0px",
+  position: "absolute",
+  right: "-24px",
+  top: "-26px"
+});
+
 const ActionCardLinkDesc = styled.p({
   marginTop: "20px",
 	marginBottom: 0,
@@ -57,6 +67,9 @@ export default function ActionCard(props) {
       <ActionCardLinkText>
         {props.text}
         <ActionCardLinkImg src="/icon-arrow-right.svg" class="action-icon"></ActionCardLinkImg>
+        { props.isDev &&
+          <ActionCardDevSign src="/dev-pink.svg"></ActionCardDevSign>
+        }
       </ActionCardLinkText>
       <ActionCardLinkDesc>{props.desc}</ActionCardLinkDesc>
     </Card>
