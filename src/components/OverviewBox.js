@@ -23,6 +23,14 @@ const ContentLeft = styled.div({
   }
 });
 
+const ContentFloating = styled.div({
+	paddingRight: "5%",
+  [breakpoints.md]: {
+    width: "100%",
+		maxWidth: "unset"
+  }
+});
+
 const Title = styled.h3({
 });
 
@@ -56,21 +64,45 @@ const ImgRightContainer = styled.div({
 const ImgRight = styled.img({
 });
 
+const ImgFloating = styled.img({
+  float: "right",
+  width: "35% !important",
+  marginTop: "50px"
+});
+
 export default function OverviewBox(props) {
-  return (
-    <OverviewBoxWrapper>
-      <ContentLeft>
-        <Title>{props.title}</Title>
-        {props.children}
-        <Link className="action-link" href={props.linkHref}>
-          {props.linkText}
-          <LinkImg src="/icon-arrow-right.svg">
-          </LinkImg>
-        </Link>
-      </ContentLeft>
-      <ImgRightContainer>
-        <ImgRight src={props.imgSrc}></ImgRight>
-      </ImgRightContainer>
-    </OverviewBoxWrapper>
-  );
+  if (props.floating) {
+    return (
+      <OverviewBoxWrapper>
+        <ContentFloating>
+          <ImgFloating src={props.imgSrc}></ImgFloating>
+          <Title>{props.title}</Title>
+          {props.children}
+          <Link className="action-link" href={props.linkHref}>
+            {props.linkText}
+            <LinkImg src="/icon-arrow-right.svg">
+            </LinkImg>
+          </Link>
+        </ContentFloating>
+      </OverviewBoxWrapper>
+    );
+  } else {
+    return (
+      <OverviewBoxWrapper>
+        <ContentLeft>
+          <Title>{props.title}</Title>
+          {props.children}
+          <Link className="action-link" href={props.linkHref}>
+            {props.linkText}
+            <LinkImg src="/icon-arrow-right.svg">
+            </LinkImg>
+          </Link>
+        </ContentLeft>
+        <ImgRightContainer>
+          <ImgRight src={props.imgSrc}></ImgRight>
+        </ImgRightContainer>
+      </OverviewBoxWrapper>
+    );
+  }
+
 }
