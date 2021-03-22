@@ -6,9 +6,9 @@ slug: /introduction/intro-polyx
 
 import HighlightBox from "../../src/components/HighlightBox"
 
-POLYX is the Polymesh native token used for staking, governance and transaction fees in the economy that secures the network.
+POLYX is Polymesh's **native token** used for staking, governance, and transaction fees in the economy that secures the network.
 
-## Securing the Network
+## Securing the network
 
 Arriving at a consensus about the ordered list of transactions is a core concern of any blockchain network. The are many processes to choose from. For example, Proof-of-Work (PoW) and Practical Byzantine Fault Tolerance (pBFT).
 
@@ -16,36 +16,44 @@ Each such system offers different properties in terms of throughput, transaction
 
 Polymesh relies on a **small set of nodes** that know exactly who the others are, who are accountable, and who are expected to be cooperative. The operators are, generally, regulated financial institutions that would not be expected to attack the network intentionally.
 
-The system does not rely exclusively on reputation, ethics, and recourse to courts of law, although these factors are clearly helpful. Malfunctioning, unresponsive, or hostile operators are detected by the remaining, well-functioning, well-intentioned operators. There is little rogue operators can do to cause harm to the network beyond a momentary performance hiccup, and they are financially penalised for service interruptions.
+The system doesn't rely exclusively on reputation, ethics, and recourse to courts of law, although these factors are clearly helpful. Malfunctioning, unresponsive, or hostile operators are detected by the remaining, well-functioning, well-intentioned operators. There is little rogue operators can do to cause harm to the network beyond a momentary performance hiccup, and they are financially penalised for service interruptions.
 
-Every incentive aligns toward cooperation and reliability.
+**Every incentive aligns toward cooperation and reliability.**
 
 ## Staking
 
-Operators are permissioned through a [governance process](/introduction/governance) where users stake funds (of their POLYX), i.e. voting with their money. Operators share earnings with those who stake funds with them, and this creates a competitive business model in which operators compete for user support on the basis of reliability and expected return on investment. Users share in losses from penalties, as well, which creates an incentive to withdraw support (in the form of funds) from unreliable operators. Since only the operators with the most support win the privilege of mining blocks at any given time, another operator will be appointed, by [consensus](https://developers.polymesh.live/consensus/), to take the place of an operator that isn't up to the task.
+Operators are permissioned through a [governance process](/introduction/intro-governance) where users stake funds (of their POLYX), i.e. signal with their POLYX token holdings. Operators share earnings with those who stake funds with them, and this creates a competitive business model in which operators compete for user support on the basis of reliability and expected return on investment. Users share in losses from penalties, as well, which creates an incentive to withdraw support (in the form of funds) from unreliable operators.
 
-The process is called **Nominated Proof-of-Stake** and since there is only a handful of operators, coordinating their interactions is very **efficient**. The resulting chain of blocks is absolutely final with none of the uncertainty that Proof-of-Work systems like Ethereum and Bitcoin are known for. There is no need to await multiple confirmations because all the nodes that _could_ propose a block have already spoken and accepted each block before it is widely distributed.
+Since only the operators with the most support win the privilege of mining blocks at any given time, another operator will be appointed, by [consensus](https://developers.polymesh.live/consensus/), to take the place of an operator that isn't up to the task.
 
-This process addresses the **high-transaction volume concern** since there are no arbitrary limits on speed or block size. It addresses **transaction finality** in a way that creates _certainty about transaction finality_ that is essential in the context of regulated securities.
+The process is called **Nominated Proof-of-Stake**. Because there is only a handful of operators, coordinating their interactions is very **efficient**. The resulting chain of blocks is absolutely final with none of the uncertainty that Proof-of-Work systems like Ethereum and Bitcoin are known for. There is no need to await multiple confirmations because all the nodes that _could_ propose a block have already spoken and accepted each block before it is widely distributed.
+
+This process addresses the **high-transaction volume concern** since there are no arbitrary limits on speed or block size. It addresses **transaction finality** in a way that creates _certainty about transaction finality_, essential in the context of regulated securities.
 
 ## Governance
 
-Various parameters in the system that one might associate with super-user controls as well as the upgrade process itself are managed through a well-defined, decentralised [governance process](/introduction/governance) that includes gathering votes from network users. Users signal support by staking funds (POLYX) on proposals they agree with. This community signal influences the decision-making.
+Various parameters in the system that one might associate with super-user controls as well as the upgrade process itself are managed through a well-defined, **decentralised [governance process](/introduction/governance)** that includes gathering votes from network users.
+
+Users **signal support** by staking funds (i.e. POLYX) on proposals they agree with. This community signal influences the decision-making.
 
 ## POLY to POLYX Bridge
 
 POLY?
 
-The Ethereum Mainnet has been live since the end of 2015 and has become the general-purpose platform of choice for various smart-contract based projects. As of 2018, Ethereum was the most viable and adopted public blockchain, allowing rapid prototyping and iteration by Polymath. Eventually, its focus on general purpose created barriers when dealing with regulated markets, leading Polymath to create its own platform. It is for this historical reason that you find a POLY ERC20 token on Ethereum.
+The Ethereum Mainnet has been live since the end of 2015 and has become the general-purpose platform of choice for various smart contract-based projects. As of 2018, Ethereum was the most viable and adopted public blockchain, allowing rapid prototyping and iteration by Polymath. Eventually, its focus on general purpose created barriers when dealing with regulated markets, leading Polymath to create its own platform. It is for this historical reason that you find a POLY ERC20 token on Ethereum.
 
 So how do you get POLYX?
 
-Now, to get POLYX on the Polymesh network requires a conversion, from Ethereum POLY to Polymesh POLYX. This conversion is handled by the aptly named [POLY to POLYX Bridge](https://developers.polymesh.live/bridge/). As the name suggests, it is a one-way bridge. At your request, the bridge locks forever some of your POLY on Ethereum, and mints the same amount, but of POLYX, on the Polymesh network. This **lock-then-mint** process ensures that the _circulating_ supply of POLY+POLYX remains unchanged. It also simplifies future audits, which only need to compare the amount of locked POLY with the amount of minted POLYX.
+There are two general methods of acquiring POLYX. Someone, which could include an exchange, sends the tokens to your Polymesh account, likely because you purchased them. Or, one can convert their POLY tokens on the Ethereum blockchain, if they have them. In either case, your Polymesh account will complete the one-time [customer due diligence (CDD)](/quickstart/quickstart-cdd) process before the receipt is finalized. Let us address the conversion process. We will use it to [acquire testnet POLYX](/quickstart/quickstart-polyx) later. 
+
+Ethereum POLY is convertable to POLYX. This conversion is handled by the aptly named [POLY to POLYX Bridge](https://developers.polymesh.live/bridge/). As the name suggests, it is a one-way bridge. At your request, the bridge locks forever some of your POLY on Ethereum, and mints the same amount, but of POLYX, on the Polymesh network.
+
+This **lock-then-mint** process ensures that the _circulating_ supply of POLY+POLYX remains unchanged. It also simplifies future audits, which only need to compare the amount of locked POLY with the amount of minted POLYX.
 
 Different networks offer tokens at different monetary values, that is why:
 
-* POLY on Ethereum's Kovan testnet, which one gets through the Poly bridge to convert to POLYX on Polymesh's Alcyone testnet. It is expected that this network, its future test siblings, and its token remain a playground and play token used for testing only.
-* POLY on Ethereum's mainnet, which one gets through the Poly bridge to convert to POLYX on Polymesh's mainnet. This network and its token are intended to be the real deal where individuals and other entities represent real world value and where actions have consequences.
+* POLY on Ethereum's Kovan Testnet, which one gets through the POLY bridge to convert to POLYX on Polymesh's Alcyone testnet. It is expected that this network, its future test siblings, and its token remain a playground and play token used for testing only;
+* POLY on Ethereum's Mainnet, which one gets through the Poly bridge to convert to POLYX on the Polymesh Mainnet. This network and its token are intended to be the real deal where individuals and other entities represent real world value and where actions have consequences.
 
 Additionally, for the avoidance of doubt, although anyone can freely and pseudonymously own and trade POLY tokens, it is still necessary, for anyone wishing to use the bridge, to complete the KYC requirements of the target Polymesh platform.
 
@@ -55,7 +63,7 @@ In case you want to dive deeper on the POLY to POLYX Bridge, check out [https://
 
 </HighlightBox>
 
-## Get some Testnet Poly
+## Get some testnet POLY
 
 --> Step-by-step to be included.
 

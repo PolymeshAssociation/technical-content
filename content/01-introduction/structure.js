@@ -4,10 +4,10 @@ module.exports = [
     `${here}intro-introduction`,
     `${here}intro-why-polymesh`,
     `${here}intro-stack`,
-//    `${here}intro-tools`,
+    // `${here}intro-tools`,
     `${here}intro-polyx`,
     `${here}intro-identity`,
     `${here}intro-governance`,
     `${here}intro-networks`,
-    `${here}intro-quiz`
+    // `${here}intro-quiz`
 ];
