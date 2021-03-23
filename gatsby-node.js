@@ -45,6 +45,7 @@ async function onCreateNode(
       getNode
     });
     let page_subsite;
+    let page_tags;
 
     if (node.frontmatter.slug) {
       slug = node.frontmatter.slug; // eslint-disable-line prefer-destructuring
@@ -52,6 +53,10 @@ async function onCreateNode(
 
     if (node.frontmatter.subsite) {
       page_subsite = node.frontmatter.subsite; // eslint-disable-line prefer-destructuring
+    }
+
+    if (node.frontmatter.tags) {
+      page_tags = node.frontmatter.tags; // eslint-disable-line prefer-destructuring
     }
 
     let category;
@@ -76,6 +81,13 @@ async function onCreateNode(
         node,
         name: 'page_subsite',
         value: page_subsite
+      });
+    }
+    if (page_tags) {
+      actions.createNodeField({
+        node,
+        name: 'page_tags',
+        value: page_tags
       });
     }
 
@@ -148,7 +160,8 @@ function getSidebarContents(edges, version, dirPattern, subCategory=null) {
           title: frontmatter.title,
           sidebarTitle: fields.sidebarTitle,
           description: frontmatter.description,
-          path: fields.slug        
+          path: fields.slug,
+          tags: frontmatter.tags
         };
       })
       .filter(Boolean)
@@ -236,6 +249,7 @@ exports.createPages = async (
                 title
                 description
                 subsite
+                tags
               }
             }
           }
@@ -325,7 +339,9 @@ exports.createPages = async (
         twitterHandle,
         versions: versionKeys, // only need to send version labels to client
         defaultVersion,
-        baseUrl
+        baseUrl,
+        subsite: frontmatter.subsite,
+        tags: frontmatter.tags
       }
     });
   });

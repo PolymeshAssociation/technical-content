@@ -163,7 +163,7 @@ function NavItems(props) {
                 {pageTitle}
               </Link>
             )}
-            { page.showDevSign &&
+            { page.tags && page.tags.includes("technical") &&
               <ActionCardDevSign src={DevSignPink}></ActionCardDevSign>
             }
             
@@ -177,7 +177,7 @@ function NavItems(props) {
 NavItems.propTypes = {
   pages: PropTypes.array.isRequired,
   pathname: PropTypes.string.isRequired,
-  onLinkClick: PropTypes.func
+  onLinkClick: PropTypes.func,
 };
 
 export default function SidebarNav(props) {
