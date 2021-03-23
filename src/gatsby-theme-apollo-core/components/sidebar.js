@@ -12,6 +12,7 @@ const Container = styled.aside({
   height: '100vh',
   padding: 24,
   overflowY: 'auto',
+  overflowX: 'hidden',
   position: 'sticky',
   top: 0
 });
