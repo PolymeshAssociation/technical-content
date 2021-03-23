@@ -7,5 +7,5 @@ module.exports = {
     "Corporate actions": require("./05-actions/structure.js"),
     "KYC and CDD in Polymesh": require("./07-kyc/structure.js"),
     "Resources": require("./08-resources/structure.js"),
-    "Platform Features": require("./features/structure.js")
+    "Community": require("./community/structure.js")
 };

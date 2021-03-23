@@ -97,7 +97,7 @@ module.exports = {
       },
       {
         category: "old-portal",
-        name: "Old Portal",
+        name: "Polymesh Docs",
         link: "/old-docs/network/polyx"
       },
       {
@@ -110,6 +110,12 @@ module.exports = {
         category: "ref-doc",
         name: "Reference Doc",
         link: "https://docs.polymesh.live/polymesh/index.html",
+        external: true
+      },
+      {
+        category: null,
+        name: "Community",
+        link: "/community/overview",
         external: true
       },
 
