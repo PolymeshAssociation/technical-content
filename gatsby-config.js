@@ -97,7 +97,7 @@ module.exports = {
       },
       {
         category: "old-portal",
-        name: "Polymesh Docs",
+        name: "Polymesh Documentation",
         link: "/old-docs/network/polyx"
       },
       {

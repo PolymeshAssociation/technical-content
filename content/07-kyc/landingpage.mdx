@@ -4,7 +4,10 @@ description: Compliance matters
 slug: /kyc/landingpage
 ---
 
-import HighlightBox from "../../src/components/HighlightBox"
+
+import OverviewBox from "../../src/components/OverviewBox"
+import ActionCard from "../../src/components/ActionCard"
+import ActionCardWrapper from "../../src/components/ActionCardWrapper"
 
 KYC checks to verify identities of customers are essential to comply with financial service guidelines.
 
@@ -21,59 +24,28 @@ What is there to discover?
 
 ***
 
-<div class="box-overview-card">
-	<div class="content-left">
-		<h3>Overview: KYC</h3>
-		<p>KYC is at the heart of a compliant digital securities management. As a purpose-built blockchain, Polymesh addresses this market requirement.</p>
-		<p>Explore the main concepts behind KYC management on Polymesh. Taking a closer look at how identity and compliance is approached, attestations work, and KYC service providers are integrated into the network gives a well-rounded overview.</p>
-		<p>Let's discover the main concepts behind Polymesh’s KYC approach and how one becomes a KYC provider.</p>
-		<a class="action-link" href="#">
-			Overview
-			<img src="/icon-arrow-right.svg"/>
-		</a>
-	</div>
-	<div class="image-right">
-		<img src="/illu-p-screen.svg"/>
-	</div>
-</div>
-<h3>KYC with Polymesh</h3>
+<OverviewBox title="Overview: KYC" linkHref="/settlement/settlement-introduction" linkText="Overview" imgSrc="/illu-p-screen.svg">
+
+KYC is at the heart of a compliant digital securities management. As a purpose-built blockchain, Polymesh addresses this market requirement.
+
+Explore the main concepts behind KYC management on Polymesh. Taking a closer look at how identity and compliance is approached, attestations work, and KYC service providers are integrated into the network gives a well-rounded overview.
+
+Let's discover the main concepts behind Polymesh’s KYC approach and how one becomes a KYC provider.
+</OverviewBox>
+
+### KYC with Polymesh
 Ensuring KYC compliance on a blockchain is an ambitious goal. Polymesh was developed to reach it.
 
 Polymesh is designed to implement KYC compliance and integrate it into the on-chain processes. The network offers access to KYC service providers and allows establishing specific compliance requirements to adapt to different regulatory regimes.
 
 For a better understanding of how KYC services are implemented in Polymesh, let’s take a look at an example scenario using the Dashboard and the SDK.
 
-<div class="box-action-cards">
-	<div class="content-wrapper">
-		<div class="action-card">
-			<img class="action-icon" src="/tmpAssets/briefcase-01.svg"/>
-			<p>Let’s discover how KYC compliance can be managed through your browser and the Polymesh Dashboard.</p>
-			<a class="action-link" href="#">
-				KYC compliance with the Dashboard
-				<img src="/icon-arrow-right.svg"/>
-			</a>
-		</div>
-		<div class="action-card">
-			<img class="action-icon" src="/tmpAssets/brackets-01.svg"/>
-			<p>How the SDK can help to ensure and provide KYC on-chain. Let’s explore an example scenario.</p>
-			<a class="action-link" href="#">
-				Providing KYC using the SDK
-				<img src="/icon-arrow-right.svg"/>
-			</a>
-		</div>
-	</div>
-</div>
+<ActionCardWrapper>
+	<ActionCard href="/kyc/kyc-dashboard" text="KYC compliance with the Dashboard" desc="Let’s discover how KYC compliance can be managed through your browser and the Polymesh Dashboard."></ActionCard>
+	<ActionCard href="/kyc/kyc-sdk" showDevSign="true" text="Providing KYC using the SDK" desc="How the SDK can help to ensure and provide KYC on-chain. Let’s explore an example scenario."></ActionCard>
+</ActionCardWrapper>
 
-<div class="box-overview-card">
-	<div class="content-left">
-		<h3>Dive into further resources</h3>
-		<p>A closer look at the detailed technical documentation to dive deeper?</p>
-		<a class="action-link" href="#">
-			Explore
-			<img src="/icon-arrow-right.svg"/>
-		</a>
-	</div>
-	<div class="image-right">
-		<img src="/illu-p-code.svg"/>
-	</div>
-</div>
+<OverviewBox title="Dive into further resources" linkHref="https://docs.polymesh.live/polymesh/index.html" linkText="Explore" imgSrc="/illu-p-code.svg">
+
+A closer look at the detailed technical documentation to dive deeper?
+</OverviewBox>
