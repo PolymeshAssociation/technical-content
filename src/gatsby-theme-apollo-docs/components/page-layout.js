@@ -125,6 +125,13 @@ function handleToggleCategory(label, expanded) {
   });
 }
 
+const MobileLogoWrapper = styled.span({
+  width: "44px",
+  height: "44px",
+  position: "absolute",
+  right: "22px"
+});
+
 export const NavItemsContext = createContext();
 
 export default function PageLayout(props) {
@@ -235,7 +242,9 @@ export default function PageLayout(props) {
         >
           <MobileNav>
             <MenuButton onClick={openSidebar} />
-            <MobileLogo width={32} fill="currentColor" />
+            <MobileLogoWrapper>
+              <MobileLogo />
+            </MobileLogoWrapper>
           </MobileNav>
           {algoliaApiKey && algoliaIndexName && (
             <Search

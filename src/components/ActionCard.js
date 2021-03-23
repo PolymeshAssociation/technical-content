@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import {breakpoints} from 'gatsby-theme-apollo-core';
+import DevSignPink from "../assets/dev-sign-pink.svg"
 
 const Card = styled.a({
   flex: "1 1 48%",
@@ -44,6 +45,15 @@ const ActionCardLinkImg = styled.img({
   marginLeft: "10px",
 });
 
+const ActionCardDevSign = styled.img({
+  height: "71px",
+  width: "75px",
+  marginBottom: "0px",
+  position: "absolute",
+  right: "-24px",
+  top: "-26px"
+});
+
 const ActionCardLinkDesc = styled.p({
   marginTop: "20px",
 	marginBottom: 0,
@@ -57,6 +67,9 @@ export default function ActionCard(props) {
       <ActionCardLinkText>
         {props.text}
         <ActionCardLinkImg src="/icon-arrow-right.svg" class="action-icon"></ActionCardLinkImg>
+        { props.showDevSign &&
+          <ActionCardDevSign src={DevSignPink}></ActionCardDevSign>
+        }
       </ActionCardLinkText>
       <ActionCardLinkDesc>{props.desc}</ActionCardLinkDesc>
     </Card>
