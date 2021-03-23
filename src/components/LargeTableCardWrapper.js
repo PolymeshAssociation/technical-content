@@ -29,7 +29,7 @@ const ContentWrapper = styled.div({
       border: 0,
       paddingBottom: "20px"
     },
-    " td::first": {
+    " td::first-child": {
       width: "40%",
       paddingRight: "10px"
     },
@@ -69,7 +69,7 @@ const ContentWrapperTables = styled.div({
       border: 0,
       paddingBottom: "20px"
     },
-    " td:first": {
+    " td:first-child": {
       width: "40%",
       paddingRight: "10px",
     },
