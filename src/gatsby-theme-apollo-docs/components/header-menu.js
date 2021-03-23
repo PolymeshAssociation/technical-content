@@ -6,8 +6,7 @@ import PropTypes from 'prop-types';
 const Container = styled.div({
   display: 'flex',
   flexShrink: 0,
-  width: 240,
-  paddingLeft: "90px",
+  paddingLeft: "87px",
   [breakpoints.lg]: {
     width: 'auto',
     marginRight: 0
@@ -18,14 +17,16 @@ const Container = styled.div({
 });
 
 const MenuButton = styled.a({
-  minWidth: 140,
   height: 38,
-  padding: 8,
+  padding: "8px 16px",
   textDecoration: "none",
   textAlign: "center",
   color: "#6C7D88",
+  whiteSpace: 'nowrap',
+  fontWeight: 700,
+  fontSize: "1.1rem",
   ':hover': {
-    backgroundColor: "#f1f1f1"
+    color: "#1348E3"
   }
 });
 
