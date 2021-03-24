@@ -6,5 +6,6 @@ module.exports = {
     "Settlement and Custody": require("./06-settlement/structure.js"),
     "Corporate actions": require("./05-actions/structure.js"),
     "KYC and CDD in Polymesh": require("./07-kyc/structure.js"),
-    "Resources": require("./08-resources/structure.js")
+    "Resources": require("./08-resources/structure.js"),
+    "Community": require("./community/structure.js")
 };

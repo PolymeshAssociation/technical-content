@@ -35,12 +35,14 @@ const TopBarWrapper = styled.div({
   height: 72,
   width: "100%",
   position: "fixed",
-  backgroundColor: "red",
+  backgroundColor: "white",
   zIndex: 1
 });
 
 const MainContentWrapper = styled.div({
-  paddingTop: 72
+  [breakpoints.md]: {
+    paddingTop: 0
+  }
 });
 
 const InsideContentWrapper = styled.div({
@@ -122,6 +124,13 @@ function handleToggleCategory(label, expanded) {
     value: Number(expanded)
   });
 }
+
+const MobileLogoWrapper = styled.span({
+  width: "44px",
+  height: "44px",
+  position: "absolute",
+  right: "22px"
+});
 
 export const NavItemsContext = createContext();
 
@@ -233,7 +242,9 @@ export default function PageLayout(props) {
         >
           <MobileNav>
             <MenuButton onClick={openSidebar} />
-            <MobileLogo width={32} fill="currentColor" />
+            <MobileLogoWrapper>
+              <MobileLogo />
+            </MobileLogoWrapper>
           </MobileNav>
           {algoliaApiKey && algoliaIndexName && (
             <Search

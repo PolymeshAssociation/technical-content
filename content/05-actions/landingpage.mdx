@@ -4,7 +4,9 @@ description: Corporate actions on Polymesh
 slug: /actions/landingpage
 ---
 
-import HighlightBox from "../../src/components/HighlightBox"
+import OverviewBox from "../../src/components/OverviewBox"
+import ActionCard from "../../src/components/ActionCard"
+import ActionCardWrapper from "../../src/components/ActionCardWrapper"
 
 You want to conduct your corporate actions on-chain? No problem with Polymesh! Find out all about corporate actions and how to implement them.
 
@@ -19,57 +21,25 @@ What will we explore?
 
 ***
 
-<div class="box-overview-card">
-	<div class="content-left">
-		<h3>Overview: Corporate action on Polymesh</h3>
-		<p>Explore how you can perform corporate actions, like distributing a dividend or royalty payment to asset owners, addressing rights issues, or executing a stock split. This overview introduction gives a first glance into the opportunities and functionalities of Polymesh and corporate actions.</p>
-		<p>Discover how Polymesh streamlines corporate actions.</p>
-		<a class="action-link" href="/actions/introduction">
-			Overview
-			<img src="/icon-arrow-right.svg"/>
-		</a>
-	</div>
-	<div class="image-right">
-		<img src="/illu-p-screen.svg"/>
-	</div>
-</div>
-<h3>Corporate actions</h3>
+<OverviewBox title="Overview: Corporate action on Polymesh" linkHref="/settlement/settlement-introduction" linkText="Overview" imgSrc="/illu-p-screen.svg">
+
+Explore how you can perform corporate actions, like distributing a dividend or royalty payment to asset owners, addressing rights issues, or executing a stock split. This overview introduction gives a first glance into the opportunities and functionalities of Polymesh and corporate actions.
+
+Discover how Polymesh streamlines corporate actions.
+</OverviewBox>
+
+### Corporate actions
 Public companies when implementing changes in regard to securities, equity, or debt, have to perform corporate actions. Polymesh can help move these from the off-chain world to become processes on-chain.
 
 We will dive deeper on Polymesh and corporate actions - the possibilities and the limits - through an example scenario. We will dive deeper building on the introduction by targeting handling corporate actions on Polymesh using the Dashboard and the SDK.
 
 
-<div class="box-action-cards">
-	<div class="content-wrapper">
-		<div class="action-card">
-			<img class="action-icon" src="/tmpAssets/briefcase-01.svg"/>
-			<p>Distribute assets with the Polymesh Token Studio Dashboard.</p>
-			<a class="action-link" href="/actions/dashboard">
-				Corporate Actions with the Token Studio Dashboard
-				<img src="/icon-arrow-right.svg"/>
-			</a>
-		</div>
-		<div class="action-card">
-			<img class="action-icon" src="/tmpAssets/brackets-01.svg"/>
-			<p>Integrate asset distribution into your systems with the SDK.</p>
-			<a class="action-link" href="/actions/sdk">
-				Corporate Actions with the SDK
-				<img src="/icon-arrow-right.svg"/>
-			</a>
-		</div>
-	</div>
-</div>
+<ActionCardWrapper>
+	<ActionCard href="/actions/dashboard" text="Corporate Actions with the Token Studio Dashboard" desc="Distribute assets with the Polymesh Token Studio Dashboard."></ActionCard>
+	<ActionCard href="/actions/sdk" showDevSign="true" text="Corporate Actions with the SDK" desc="Integrate asset distribution into your systems with the SDK."></ActionCard>
+</ActionCardWrapper>
 
-<div class="box-overview-card">
-	<div class="content-left">
-		<h3>Dive into further resources</h3>
-		<p>A closer look at the detailed technical documentation to dive deeper?</p>
-		<a class="action-link" href="#">
-			Explore
-			<img src="/icon-arrow-right.svg"/>
-		</a>
-	</div>
-	<div class="image-right">
-		<img src="/illu-p-code.svg"/>
-	</div>
-</div>
+<OverviewBox title="Dive into further resources" linkHref="https://docs.polymesh.live/polymesh/index.html" linkText="Explore" imgSrc="/illu-p-code.svg">
+
+A closer look at the detailed technical documentation to dive deeper?
+</OverviewBox>

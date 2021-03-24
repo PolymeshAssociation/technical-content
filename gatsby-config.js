@@ -112,6 +112,12 @@ module.exports = {
         link: "https://docs.polymesh.live/polymesh/index.html",
         external: true
       },
+      {
+        category: null,
+        name: "Community",
+        link: "/community/overview",
+        external: true
+      },
 
     ]
   },

@@ -3,11 +3,17 @@ title: Welcome to the Polymesh Developer Portal!
 description:
 ---
 
+import OverviewBox from "../src/components/OverviewBox"
+import ActionCard from "../src/components/ActionCard"
+import ActionCardWrapper from "../src/components/ActionCardWrapper"
+import LargeTableCardWrapper from "../src/components/LargeTableCardWrapper"
+import LargeTableCard from "../src/components/LargeTableCard"
+
 The Developer Portal is the perfect place to start discovering the Polymesh universe.
 
 Polymesh is an institutional-grade blockchain for security tokens. It provides all the foundational layers required to ensure regulatory compliance and institutional confidence. Polymesh enables  better security token creation, issuance, management, and liquidity. This blockchain was purpose-built to:
 
-* Focus on the privacy of assets, trades, and positions, whilst taking into account the  needs of issuers, , custodians, exchanges, and investors
+* Focus on the privacy of assets, trades, and positions, whilst taking into account the  needs of issuers, custodians, exchanges, and investors
 * Provide KYC/AML-permissioning with CDD requirements customizable to cross-jurisdictional needs
 * Include a governance mechanism that avoids duplication or hard forks and maintains asset functioning
 * Allow for programmable and automated compliance checks with smart contracts
@@ -26,118 +32,58 @@ Each user journey unfolds in increasing levels of detail:
 
 The menu on the left organises the content and the exercises in the suggested chronological order for those who wish to thoroughly explore everything this portal has to offer and complete all of the suggested exercises.
 
-<div class="box-overview-card">
-	<div class="content-left">
-		<h3>Introduction</h3>
-		<p>Discover how Polymesh addresses compliance, identity, and governance. Learn the important components and the structure of the network.</p>
-		<p>This fast-paced and well-rounded introduction begins with why regulated securities needed a specialised solution and proceeds through the cornerstones of the design.</p>
-		<a class="action-link" href="#">
-			Why Polymesh?
-			<img src="/icon-arrow-right.svg"/>
-		</a>
-	</div>
-	<div class="image-right">
-		<img src="/illu-p-screen.svg"/>
-	</div>
-</div>
 
-<div class="box-action-cards">
-	<h3>Quick Start</h3>
-	<div class="content-wrapper">
-		<a class="action-card card-2" href="#">
-			<div class="action-link">
-				Get The Wallet
-				<img src="/icon-arrow-right.svg" class="action-icon"/>
-			</div>
-			<p>Connect to Polymesh with your browser in just a few minutes.</p>
-		</a>
-		<a class="action-card card-2" href="#">
-			<div class="action-link">
-				Get Verified
-				<img src="/icon-arrow-right.svg" class="action-icon"/>
-			</div>
-			<p>Polymesh users are confidential but they are not anonymous. Get an account and get verified.</p>
-		</a>
-	</div>
-	<div class="content-wrapper">
-		<a class="action-card card-2" href="#">
-			<div class="action-link">
-				Deploy a Local Node
-				<img src="/icon-arrow-right.svg" class="action-icon"/>
-			</div>
-			<p>Integrate Polymesh with your existing systems using the SDK and a local node. Developers, this is for you.</p>
-		</a>
-		<a class="action-card card-2" href="#">
-			<div class="action-link" href="#">
-				Get Testnet POLYX
-				<img src="/icon-arrow-right.svg" class="action-icon"/>
-			</div>
-			<p>Get POLYX to pay for blockchain transactions and to participate in on-chain network governance.</p>
-		</a>
-	</div>
-</div>
+<OverviewBox title="Introduction" linkHref="#" linkText="Why Polymesh?" imgSrc="/illu-p-screen.svg">
+	<p>Discover how Polymesh addresses compliance, identity, and governance. Learn the important components and the structure of the network.</p>
+	<p>This fast-paced and well-rounded introduction begins with why regulated securities needed a specialised solution and proceeds through the cornerstones of the design.</p>
+</OverviewBox>
 
+<ActionCardWrapper title="Quick Start">
+	<ActionCard href="#" text="Get The Wallet" desc="Connect to Polymesh with your browser in just a few minutes."></ActionCard>
+	<ActionCard href="#" text="Get Verified" desc="Polymesh users are confidential but they are not anonymous. Get an account and get verified."></ActionCard>
+	<ActionCard href="#" showDevSign="true" text="Deploy a Local Node" desc="Integrate Polymesh with your existing systems using the SDK and a local node. Developers, this is for you."></ActionCard>
+	<ActionCard href="#" showDevSign="true" text="Get Testnet POLYX" desc="Get POLYX to pay for blockchain transactions and to participate in on-chain network governance."></ActionCard>
+</ActionCardWrapper>
 
-<div class="box-action-cards">
-	<h2>User Journeys</h2>
-	<p>Polymesh is a multi-sided network with solutions for all participants in the regulated securities industry. This portal is organised so you can dive deep into the sections that are most relevant to you. If you encounter an unfamiliar concept, be sure to return to the introduction where the big concepts and terminology are demystified.</p>
-	<div class="content-wrapper">
-		<div class="action-card-large">
-			<img class="banner-image" src="/img-lp-u1u.png"/>
-			<h3>Security tokens on Polymesh</h3>
-			<p class="intro-text">This network was made for you. Discover how organisations originate assets, distribute them, and execute corporate actions. </p>
-			<table class="action-card-table">
-				<tbody>
-					<tr>
-						<td class="left"><a class="main-link" href="#">Originate an Asset</a></td>
-						<td>Discover how securities are created.</td>
-					</tr>
-					<tr>
-						<td class="left"><a class="main-link" href="#">Distribute an Asset</a></td>
-						<td>Discover how Polymesh ensures compliance as securities are transferred.</td>
-					</tr>
-					<tr>
-						<td class="left"><a class="main-link" href="#">Corporate Actions</a></td>
-						<td>Discover how to distribute a dividend and execute other actions linked to securities.</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="action-card-large">
-			<img class="banner-image" src="/img-lp-u2u.png"/>
-			<h3>Service provider integration</h3>
-			<p class="intro-text">Service providers perform important services that business users rely on. Explore all the different ways Polymesh allows for service provider integration, and discover a settlement process with exchanges and custodians on Polymesh, as well as compliance possibilities with the help of KYC and CDD service providers.</p>
-			<table class="action-card-table">
-				<tbody>
-					<tr>
-						<td class="left"><a class="main-link" href="#">SETTLEMENT AND CUSTODY</a></td>
-						<td>Discover how Polymesh addresses the complex process of settling regulatory-compliant trades involving custodians and exchanges.</td>
-					</tr>
-					<tr>
-						<td class="left"><a class="main-link" href="#">KYC SERVICE PROVIDERS</a></td>
-						<td>Discover how Polymesh solves identity-verification while maintaining confidentiality.</td>
-					</tr>
-					<tr>
-						<td class="left"><a class="main-link" href="#">CDD SERVICE PROVIDERS</a></td>
-						<td>Discover how network-wide compliance is assured with customer due diligence service providers.</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-</div>
+<LargeTableCardWrapper title="User Journeys" text="Polymesh is a multi-sided network with solutions for all participants in the regulated securities industry. This portal is organised so you can dive deep into the sections that are most relevant to you. If you encounter an unfamiliar concept, be sure to return to the introduction where the big concepts and terminology are demystified.">
+	<LargeTableCard imgSrc="/img-lp-u1u.png" title="Security tokens on Polymesh" text="This network was made for you. Discover how organisations originate assets, distribute them, and execute corporate actions.">
+		<table>
+			<tbody>
+				<tr>
+					<td><a class="main-link" href="#">Originate an Asset</a></td>
+					<td>Discover how securities are created.</td>
+				</tr>
+				<tr>
+					<td><a class="main-link" href="#">Distribute an Asset</a></td>
+					<td>Discover how Polymesh ensures compliance as securities are transferred.</td>
+				</tr>
+				<tr>
+					<td><a class="main-link" href="#">Corporate Actions</a></td>
+					<td>Discover how to distribute a dividend and execute other actions linked to securities.</td>
+				</tr>
+			</tbody>
+		</table>
+	</LargeTableCard>
+	<LargeTableCard imgSrc="/img-lp-u2u.png" title="Service provider integration" text="TService providers perform important services that business users rely on. Explore all the different ways Polymesh allows for service provider integration, and discover a settlement process with exchanges and custodians on Polymesh, as well as compliance possibilities with the help of KYC and CDD service providers.">
+		<table>
+			<tbody>
+				<tr>
+					<td><a class="main-link" href="#">SETTLEMENT AND CUSTODY</a></td>
+					<td>Discover how Polymesh addresses the complex process of settling regulatory-compliant trades involving custodians and exchanges.</td>
+				</tr>
+				<tr>
+					<td><a class="main-link" href="#">KYC SERVICE PROVIDERS</a></td>
+					<td>Discover how Polymesh solves identity-verification while maintaining confidentiality.</td>
+				</tr>
+				<tr>
+					<td><a class="main-link" href="#">CDD SERVICE PROVIDERS</a></td>
+					<td>Discover how network-wide compliance is assured with customer due diligence service providers.</td>
+				</tr>
+			</tbody>
+		</table>
+	</LargeTableCard>
+</LargeTableCardWrapper>
 
-
-<div class="box-overview-card">
-	<div class="content-left">
-		<h3>API Reference</h3>
-		<p>Here is a collection of the Polymesh SDK tools, including libraries, code samples, tutorials and the source reference documentation.</p>
-		<a class="action-link" href="#">
-			Explore
-			<img src="/icon-arrow-right.svg"/>
-		</a>
-	</div>
-	<div class="image-right">
-		<img src="/illu-p-code.svg"/>
-	</div>
-</div>
+<OverviewBox title="API Reference" linkHref="#" linkText="Explore" imgSrc="/illu-p-code.svg">
+	<p>Here is a collection of the Polymesh SDK tools, including libraries, code samples, tutorials and the source reference documentation.</p>
+</OverviewBox>

@@ -9,6 +9,7 @@ import {Link, withPrefix} from 'gatsby';
 import {colors} from '../utils/colors';
 import {size} from 'polished';
 import {smallCaps} from '../utils/typography';
+import DevSignPink from "../../assets/dev-sign-pink.svg"
 
 const ExpandAll = styled.button(smallCaps, {
   display: 'flex',
@@ -44,6 +45,7 @@ const StyledListItem = styled.li({
   fontSize: '1rem',
   lineHeight: 1.6,
   marginBottom: '0.4rem',
+  position: "relative",
   a: {
     color: 'inherit',
     textDecoration: 'none',
@@ -121,6 +123,15 @@ const StyledOutlinkIcon = styled(IconOutlink)(size(14), {
   color: colors.text3
 });
 
+const ActionCardDevSign = styled.img({
+  height: "65px",
+  width: "75px",
+  marginBottom: "0px",
+  position: "absolute",
+  right: "-26px",
+  top: "-22px"
+});
+
 function isPageSelected(path, pathname) {
   const [a, b] = [withPrefix(path), pathname].map(string =>
     string.replace(/\/$/, '')
@@ -152,6 +163,10 @@ function NavItems(props) {
                 {pageTitle}
               </Link>
             )}
+            { page.tags && page.tags.includes("technical") &&
+              <ActionCardDevSign src={DevSignPink}></ActionCardDevSign>
+            }
+            
           </StyledListItem>
         );
       })}
@@ -162,7 +177,7 @@ function NavItems(props) {
 NavItems.propTypes = {
   pages: PropTypes.array.isRequired,
   pathname: PropTypes.string.isRequired,
-  onLinkClick: PropTypes.func
+  onLinkClick: PropTypes.func,
 };
 
 export default function SidebarNav(props) {
