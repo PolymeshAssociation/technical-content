@@ -16,8 +16,8 @@ const getSidebarConfig = () => {
 
 const subSites = [
   {
-    id: "oldplatform",
-    sidebarCategories: require('./content/old-platform/structure.js')
+    id: "polymesh-docs",
+    sidebarCategories: require('./content/polymesh-docs/structure.js')
   }
 ]
 
@@ -96,19 +96,19 @@ module.exports = {
         link: "/"
       },
       {
-        category: "old-portal",
+        category: "polymesh-docs",
         name: "Polymesh Documentation",
-        link: "/old-docs/network/polyx"
+        link: "/polymesh-docs/network/polyx"
       },
       {
         category: "sdk-api-doc",
-        name: "SDK API Doc",
+        name: "SDK Documentation",
         link: "https://developers.polymath.network/polymesh-sdk-api-reference/",
         external: true
       },
       {
         category: "ref-doc",
-        name: "Reference Doc",
+        name: "Rust Documentation",
         link: "https://docs.polymesh.live/polymesh/index.html",
         external: true
       },
