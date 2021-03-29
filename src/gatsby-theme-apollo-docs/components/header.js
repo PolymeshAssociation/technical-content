@@ -3,23 +3,22 @@ import React from 'react';
 import styled from '@emotion/styled';
 import {HEADER_HEIGHT} from '../utils';
 import {breakpoints} from 'gatsby-theme-apollo-core';
+import styles from '../../gatsby-theme-apollo-core/utils/styles';
 
 const Wrapper = styled.header({
-  position: 'sticky',
   top: 0,
   left: 0,
   zIndex: 1
 });
 
 const InnerWrapper = styled.div({
+  maxWidth: styles.maxContentWidth,
+  margin: "auto",
   display: 'flex',
   alignItems: 'center',
   height: HEADER_HEIGHT,
-  padding: '0 56px',
+  padding: '0 24px',
   backgroundColor: 'white',
-  [breakpoints.md]: {
-    padding: '0 24px'
-  }
 });
 
 export default function Header(props) {
