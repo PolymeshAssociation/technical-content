@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
+import styles from '../utils/styles'
 
 const FlexWrapper = styled.div({
   display: 'flex',
   minHeight: '100vh',
-  maxWidth: 1600,
+  maxWidth: styles.maxContentWidth,
   margin: '0 auto'
 });
 

@@ -5,6 +5,7 @@ module.exports = [
     `${here}kyc-introduction`,
     `${here}kyc-dashboard`,
     `${here}kyc-sdk`,
+    `${here}kyc-app`,
     `${here}cdd-sdk`,
     // `${here}kyc-quiz`
 ];

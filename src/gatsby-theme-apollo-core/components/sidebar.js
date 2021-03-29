@@ -11,14 +11,18 @@ const Container = styled.aside({
   width: 312,
   height: '100vh',
   padding: 24,
-  borderRight: `1px solid ${colors.divider}`,
   overflowY: 'auto',
+  overflowX: 'hidden',
   position: 'sticky',
   top: 0
 });
 
 const ResponsiveContainer = styled(Container)(props => ({
+  paddingTop: "96px",
+  maxHeight: "calc(100% - 72px)",
   [breakpoints.md]: {
+    paddingTop: "25px",
+    maxHeight: "unset",
     height: '100%',
     backgroundColor: 'white',
     boxShadow: `0 0 48px ${transparentize(0.75, 'black')}`,
@@ -46,11 +50,6 @@ const StyledLink = styled.a({
 const Sidebar = React.forwardRef((props, ref) => {
   const content = (
     <Fragment>
-      <Header>
-        <StyledLink href={props.logoLink}>
-          <Logo />
-        </StyledLink>
-      </Header>
       <div className={props.className}>{props.children}</div>
     </Fragment>
   );
