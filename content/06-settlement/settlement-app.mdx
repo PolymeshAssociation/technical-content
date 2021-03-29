@@ -72,7 +72,7 @@ Trader 1 was the buyer, so it needs to click <kbd>Mark as paid</kbd> when it has
 
 After clicking <kbd>Mark as transferred</kbd>, the trade is considered complete. Of course it is possible for either party to reject it.
 
-## Pre Polymesh
+## Post Polymesh
 
 Time to integrate with Polymesh. What needs to be done?
 
@@ -87,7 +87,7 @@ On the **configuration**:
 
 On **objects**:
 
-* in `OrderInfo`, we [add information](https://github.com/PolymathNetwork/technical-content-examples/pull/1/files?file-filters%5B%5D=.js&file-filters%5B%5D=.json&file-filters%5B%5D=.sample&file-filters%5B%5D=.ts#diff-139262810d921a125869827f871972dbdaffa7d018d28628ce220bfa431ff97dR47) about the trader's trading portfolio
+* in `OrderInfo`, we [add information](https://github.com/PolymathNetwork/technical-content-examples/pull/1/files?file-filters%5B%5D=.js&file-filters%5B%5D=.json&file-filters%5B%5D=.sample&file-filters%5B%5D=.ts#diff-139262810d921a125869827f871972dbdaffa7d018d28628ce220bfa431ff97dR47) about the trader's trading portfolio.
 * in `SettlementParty`, we [add the same information](https://github.com/PolymathNetwork/technical-content-examples/pull/1/files?file-filters%5B%5D=.js&file-filters%5B%5D=.json&file-filters%5B%5D=.sample&file-filters%5B%5D=.ts#diff-5321a5cd63f4b879cfed01d486209d7578a49bb86db4962f29533b011466b5a1R81) about the trader.
 * In `SettlementInfo`, we [add a way to reference](https://github.com/PolymathNetwork/technical-content-examples/pull/1/files?file-filters%5B%5D=.js&file-filters%5B%5D=.json&file-filters%5B%5D=.sample&file-filters%5B%5D=.ts#diff-5321a5cd63f4b879cfed01d486209d7578a49bb86db4962f29533b011466b5a1R173) a settlement instruction.
 
@@ -96,6 +96,10 @@ On **services**:
 * in `exchangeDbFs`, we [add a way to check](https://github.com/PolymathNetwork/technical-content-examples/pull/1/files?file-filters%5B%5D=.js&file-filters%5B%5D=.json&file-filters%5B%5D=.sample&file-filters%5B%5D=.ts#diff-2be3b086a47575a9f2740491f2f04fa2f3062144edc06c048697c5ab83d9dfd4R60-R71) that the Polymesh information is valid.
 * which means the `exchangeDbFactory` needs to be [adjusted to prepare](https://github.com/PolymathNetwork/technical-content-examples/pull/1/files?file-filters%5B%5D=.js&file-filters%5B%5D=.json&file-filters%5B%5D=.sample&file-filters%5B%5D=.ts#diff-4b54886f30e846be914baa6778d2764108ac257ed442141033ada85893132477R30-R33) the Polymesh API.
 * we also add a new service `SettlementEnginePoly`, which handles the [publication of the settlement instruction](https://github.com/PolymathNetwork/technical-content-examples/pull/1/files?file-filters%5B%5D=.js&file-filters%5B%5D=.json&file-filters%5B%5D=.sample&file-filters%5B%5D=.ts#diff-24961064d7f42bad3e6fa973ebcae0e74232d8a0719fe6b1a6e5778e863c6252R21) on Polymesh.
+
+On **API end points**:
+
+* No real changes other than using the right types and exceptions.
 
 On **pages**:
 
