@@ -52,7 +52,6 @@ export default function HeaderMenu(props) {
   return (
     <Container>
       {props.topMenu.map((menuItem, idx) => {
-
         return (
           <MenuButton
             href={menuItem.link}
