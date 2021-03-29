@@ -57,6 +57,7 @@ const Sidebar = React.forwardRef((props, ref) => {
   if (props.responsive) {
     return (
       <ResponsiveContainer ref={ref} open={props.open}>
+        ResponsiveContainer
         {content}
       </ResponsiveContainer>
     );
