@@ -18,7 +18,6 @@ export default function Layout(props) {
                 name
                 link
                 external
-                test1
               }
             }
           }
