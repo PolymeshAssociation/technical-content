@@ -113,7 +113,7 @@ module.exports = {
         external: true
       },
       {
-        category: null,
+        category: "category",
         name: "Community",
         link: "/community/overview",
         external: true

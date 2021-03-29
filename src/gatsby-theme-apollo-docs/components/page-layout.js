@@ -257,6 +257,8 @@ export default function PageLayout(props) {
           <HeaderButton />
           <HeaderMenu 
             topMenu={topMenu}
+            pathname={pathname}
+            pageContext={props.pageContext}
           />
         </Header>
         

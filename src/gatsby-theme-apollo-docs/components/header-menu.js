@@ -27,6 +27,10 @@ const MenuButton = styled.a({
   fontSize: "1.1rem",
   ':hover': {
     color: "#1348E3"
+  },
+  '&.active': {
+    color: "#1348E3",
+    pointerEvents: 'none'
   }
 });
 
@@ -38,6 +42,12 @@ const StyledIcon = styled(IconProceed)({
 });
 */
 
+function isSubSiteSelected(menuItem, pageContext) {
+  console.log(pageContext.subsite);
+  console.log(menuItem.category);
+  return pageContext.subsite == menuItem.category;
+}
+
 export default function HeaderMenu(props) {
   return (
     <Container>
@@ -46,6 +56,9 @@ export default function HeaderMenu(props) {
           <MenuButton
             href={menuItem.link}
             target={menuItem.external ? "_blank" : "_self"}
+            className={
+              isSubSiteSelected(menuItem, props.pageContext) ? 'active' : null
+            }
           >
             {menuItem.name}
           </MenuButton>
