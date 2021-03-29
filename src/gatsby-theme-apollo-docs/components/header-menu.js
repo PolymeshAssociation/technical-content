@@ -43,8 +43,6 @@ const StyledIcon = styled(IconProceed)({
 */
 
 function isSubSiteSelected(menuItem, pageContext) {
-  console.log(pageContext.subsite);
-  console.log(menuItem.category);
   return pageContext.subsite == menuItem.category;
 }
 

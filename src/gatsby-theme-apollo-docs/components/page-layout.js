@@ -277,6 +277,9 @@ export default function PageLayout(props) {
               ref={sidebarRef}
               title={siteName}
               logoLink={logoLink}
+              topMenu={topMenu}
+              pathname={pathname}
+              pageContext={props.pageContext}
             >
               <HeaderInner>
                 

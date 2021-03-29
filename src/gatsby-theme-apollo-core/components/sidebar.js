@@ -47,6 +47,36 @@ const StyledLink = styled.a({
   textDecoration: 'none'
 });
 
+const MobileSiteNavWrapper = styled.div({
+  display: "none",
+  width: "100%%",
+  [breakpoints.md]: {
+    display: "inline-grid"
+  }
+});
+
+const MobileMenuButton = styled.a({
+  padding: "4px 0px",
+  textDecoration: "none",
+  textAlign: "left",
+  color: "#6C7D88",
+  whiteSpace: 'nowrap',
+  fontWeight: 700,
+  fontSize: "1.1rem",
+  ':hover': {
+    color: "#1348E3"
+  },
+  '&.active': {
+    color: "#1348E3",
+    pointerEvents: 'none'
+  }
+});
+
+
+function isSubSiteSelected(menuItem, pageContext) {
+  return pageContext.subsite == menuItem.category;
+}
+
 const Sidebar = React.forwardRef((props, ref) => {
   const content = (
     <Fragment>
@@ -57,7 +87,21 @@ const Sidebar = React.forwardRef((props, ref) => {
   if (props.responsive) {
     return (
       <ResponsiveContainer ref={ref} open={props.open}>
-        ResponsiveContainer
+        <MobileSiteNavWrapper>
+          {props.topMenu.map((menuItem, idx) => {
+            return (
+              <MobileMenuButton
+                href={menuItem.link}
+                target={menuItem.external ? "_blank" : "_self"}
+                className={
+                  isSubSiteSelected(menuItem, props.pageContext) ? 'active' : null
+                }
+              >
+                {menuItem.name}
+              </MobileMenuButton>
+            )
+          })}
+        </MobileSiteNavWrapper>
         {content}
       </ResponsiveContainer>
     );
@@ -73,7 +117,10 @@ Sidebar.propTypes = {
   open: PropTypes.bool,
   responsive: PropTypes.bool,
   logoLink: PropTypes.string,
-  className: PropTypes.string
+  className: PropTypes.string,
+  topMenu: PropTypes.array,
+  pathname: PropTypes.string,
+  pageContext: PropTypes.array
 };
 
 Sidebar.defaultProps = {
