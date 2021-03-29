@@ -146,6 +146,7 @@ export default function PageLayout(props) {
               category
               name
               link
+              external
             }
           }
         }

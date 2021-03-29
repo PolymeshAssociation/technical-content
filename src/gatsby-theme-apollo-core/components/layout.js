@@ -17,6 +17,8 @@ export default function Layout(props) {
                 category
                 name
                 link
+                external
+                test1
               }
             }
           }
