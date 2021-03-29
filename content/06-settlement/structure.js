@@ -5,5 +5,6 @@ module.exports = [
     `${here}settlement-introduction`,
     `${here}settlement-dashboard`,
     `${here}settlement-sdk`,
+    `${here}settlement-app`,
     // `${here}settlement-quiz`
 ];
