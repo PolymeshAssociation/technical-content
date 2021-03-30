@@ -25,7 +25,7 @@ const ContentWrapper = styled.div({
     border: 0,
     width: "100%",
     " td": {
-      padding: "0 0 10px 0",
+      padding: "0 15px 10px 0",
       border: 0,
       paddingBottom: "20px"
     },
@@ -65,7 +65,7 @@ const ContentWrapperTables = styled.div({
     border: 0,
     width: "100%",
     " td": {
-      padding: "0 0 10px 0",
+      padding: "0 15px 10px 0",
       border: 0,
       paddingBottom: "20px"
     },

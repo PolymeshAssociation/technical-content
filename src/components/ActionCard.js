@@ -5,6 +5,7 @@ import DevSignPink from "../assets/dev-sign-pink.svg"
 
 const Card = styled.a({
   flex: "1 1 48%",
+  maxWidth: "49%",
 	position: "relative",
 	margin: "0 1%",
   textDecoration: "none",
@@ -24,7 +25,10 @@ const Card = styled.a({
   },
   [breakpoints.smMd]: {
 		display: "block",
-    margin: 0
+    margin: 0,
+  },
+  [breakpoints.md]: {
+    maxWidth: "100%"
   }
 });
 

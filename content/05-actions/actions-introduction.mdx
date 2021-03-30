@@ -201,18 +201,18 @@ RCV ballots are an efficient method of implementing a process that emulates mult
 
 ## Implementation
 
-It all begins with a corporate action. A corporate action of type notice is created with a ballot attached using ```attach_ballot```. A ballot can be removed with ```remove_ballot``` if voting hasn't started.
+It all begins with a corporate action. A corporate action of type notice is created with a ballot attached using `attach_ballot`. A ballot can be removed with `remove_ballot` if voting hasn't started.
 
 Ballot configurations can be amended - **as long as voting hasn't started**:
 
-* ```change_end```: Changes the voting deadline;
-* ```change_meta```: Changes the title and motions to vote on;
-* ```change_rcv```: Specifies the use of, or not, of RCV.
+* `change_end`: Changes the voting deadline;
+* `change_meta`: Changes the title and motions to vote on;
+* `change_rcv`: Specifies the use of, or not, of RCV.
 
-Token holders vote using ```vote```.
+Token holders vote using `vote`.
 
 # Links
 
-* Checkpoints: https://github.com/PolymathNetwork/polymesh_docs/blob/master/Polymesh/docs/assets.md#checkpoints
-* Corporate Actions: https://developers.polymesh.live/corporate_actions/
-* Corporate action pallet distribution: https://docs.polymesh.live/pallet_corporate_actions/distribution/index.html
+* [Checkpoints](https://github.com/PolymathNetwork/polymesh_docs/blob/master/Polymesh/docs/assets.md#checkpoints)
+* [Corporate Actions](/polymesh-docs/primitives/corporate-actions/)
+* [Corporate action pallet distribution](https://docs.polymesh.live/pallet_corporate_actions/distribution/index.html)
