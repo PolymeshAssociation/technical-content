@@ -5,6 +5,7 @@ import DevSignPink from "../assets/dev-sign-pink.svg"
 
 const Card = styled.a({
   flex: "1 1 48%",
+  maxWidth: "49%",
 	position: "relative",
 	margin: "0 1%",
   textDecoration: "none",
