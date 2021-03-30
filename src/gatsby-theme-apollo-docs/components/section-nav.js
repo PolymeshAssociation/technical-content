@@ -20,13 +20,14 @@ const StyledListItem = styled.li({
   fontSize: '1rem',
   lineHeight: 'inherit',
   '&.active': {
-    color: colors.primary,
+    color: '#2F353F',
     fontWeight: 'bold'
   },
   a: {
     color: 'inherit',
     textDecoration: 'none',
     ':hover': {
+      color: colors.primary,
       opacity: colors.hoverOpacity
     }
   }
