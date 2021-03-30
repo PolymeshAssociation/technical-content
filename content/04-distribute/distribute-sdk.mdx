@@ -665,9 +665,57 @@ The advantage of this single operation is that all parties can see in one go whe
 
 ## When all is done
 
-Assuming all parties have received their shares, it could be advantageous for the company to create a checkpoint. This post-issuance checkpoint would provide visibility about what was achieved during the issuance.
+Assuming all parties have received their shares, it could be advantageous for the company to create a checkpoint. This post-issuance checkpoint would provide visibility about what was achieved during the issuance. A simple checkpoint is all you need. Note that only the token owner can create a checkpoint:
 
-<!-- TODO when SDK exposes that -->
+<MultiCodeBlock>
+
+```typescript
+const checkpointQueue: TransactionQueue<Checkpoint> = await token.checkpoints.create();
+const checkpoint: Checkpoint = await checkpointQueue.run();
+const postDistributionCheckpointId: string = checkpoint.id.toString(10);
+```
+
+```javascript
+const checkpointQueue = await token.checkpoints.create();
+const checkpoint = await checkpointQueue.run();
+const postDistributionCheckpointId = checkpoint.id.toString(10);
+```
+
+</MultiCodeBlock>
+
+The checkpoint has an id, `0` if it is ACME's first checkpoint, which can be kept off-chain for future reference.
+
+That's it, the lazy checkpoint is created, and has recorded all balances. For instance, at any point in time in the future, if Bob wants to get Carol's balance after the distribution, he needs to:
+
+<MultiCodeBlock>
+
+```typescript
+const token: SecurityToken = await apiBob.getSecurityToken({
+    "ticker" :"ACME"
+});
+const allCheckpoints: CheckpointWithCreationDate[] = await token.checkpoints.get();
+const postDistributionCheckpoint: Checkpoint = allCheckpoints
+    .map((checkpointInfo: CheckpointWithCreationDate) => checkpointInfo.checkpoint)
+    .find((checkpoint: Checkpoint) => checkpoint.id.toString(10) === postDistributionCheckpointId);
+const carolAcmeBalanceAtDistribution: BigNumber = await postDistributionCheckpoint.balance({
+    "identity": carol
+});
+```
+
+```javascript
+const token = await apiBob.getSecurityToken({
+    "ticker" :"ACME"
+});
+const allCheckpoints = await token.checkpoints.get();
+const postDistributionCheckpoint = allCheckpoints
+    .map((checkpointInfo) => checkpointInfo.checkpoint)
+    .find((checkpoint) => checkpoint.id.toString(10) === postDistributionCheckpointId);
+const carolAcmeBalanceAtDistribution = await postDistributionCheckpoint.balance({
+    "identity": carol
+});
+```
+
+</MultiCodeBlock>
 
 ## Links
 
