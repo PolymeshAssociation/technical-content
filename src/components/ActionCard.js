@@ -25,7 +25,10 @@ const Card = styled.a({
   },
   [breakpoints.smMd]: {
 		display: "block",
-    margin: 0
+    margin: 0,
+  },
+  [breakpoints.md]: {
+    maxWidth: "100%"
   }
 });
 
