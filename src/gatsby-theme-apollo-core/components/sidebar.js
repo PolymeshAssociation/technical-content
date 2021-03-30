@@ -18,7 +18,7 @@ const Container = styled.aside({
 });
 
 const ResponsiveContainer = styled(Container)(props => ({
-  paddingTop: "96px",
+  paddingTop: "76px",
   maxHeight: "calc(100% - 72px)",
   [breakpoints.md]: {
     paddingTop: "25px",

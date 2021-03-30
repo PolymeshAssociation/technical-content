@@ -36,6 +36,7 @@ const TopBarWrapper = styled.div({
   width: "100%",
   position: "fixed",
   backgroundColor: "white",
+  borderBottom: "1px solid #eee",
   zIndex: 1
 });
 
@@ -46,7 +47,8 @@ const MainContentWrapper = styled.div({
 });
 
 const InsideContentWrapper = styled.div({
-  width: "100%"
+  width: "100%",
+  marginTop: 20
 })
 
 const Main = styled.main({

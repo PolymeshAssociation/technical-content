@@ -29,8 +29,7 @@ const MenuButton = styled.a({
     color: "#1348E3"
   },
   '&.active': {
-    color: "#1348E3",
-    pointerEvents: 'none'
+    color: "#1348E3"
   }
 });
 
