@@ -60,8 +60,6 @@ async function onCreateNode(
     }
 
     let category;
-    const fileName = parent.name;
-    const outputDir = 'social-cards';
 
     for (const key in sidebarCategories) {
       if (key !== 'null') {
@@ -75,7 +73,7 @@ async function onCreateNode(
     }
 
     const {title, sidebar_title, api_reference} = node.frontmatter;
-    
+
     if (page_subsite) {
       actions.createNodeField({
         node,

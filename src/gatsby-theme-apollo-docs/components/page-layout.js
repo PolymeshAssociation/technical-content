@@ -36,6 +36,7 @@ const TopBarWrapper = styled.div({
   width: "100%",
   position: "fixed",
   backgroundColor: "white",
+  borderBottom: "1px solid #eee",
   zIndex: 1
 });
 
@@ -46,7 +47,8 @@ const MainContentWrapper = styled.div({
 });
 
 const InsideContentWrapper = styled.div({
-  width: "100%"
+  width: "100%",
+  marginTop: 20
 })
 
 const Main = styled.main({
@@ -277,24 +279,12 @@ export default function PageLayout(props) {
               ref={sidebarRef}
               title={siteName}
               logoLink={logoLink}
+              topMenu={topMenu}
+              pathname={pathname}
+              pageContext={props.pageContext}
             >
               <HeaderInner>
-                {hasNavItems ? (
-                  <ButtonWrapper ref={buttonRef}>
-                    <StyledButton
-                      feel="flat"
-                      color={colors.primary}
-                      size="small"
-                      onClick={openMenu}
-                      style={{display: 'flex'}}
-                    >
-                      {sidebarTitle}
-                      <StyledIcon />
-                    </StyledButton>
-                  </ButtonWrapper>
-                ) : (
-                  sidebarTitle
-                )}
+                
                 {versions && versions.length > 0 && (
                   <Select
                     feel="flat"

@@ -97,18 +97,18 @@ module.exports = {
       },
       {
         category: "polymesh-docs",
-        name: "Polymesh Documentation",
+        name: "Polymesh Docs",
         link: "/polymesh-docs/network/polyx"
       },
       {
         category: "sdk-api-doc",
-        name: "SDK Documentation",
+        name: "SDK Docs",
         link: "https://developers.polymath.network/polymesh-sdk-api-reference/",
         external: true
       },
       {
         category: "ref-doc",
-        name: "Rust Documentation",
+        name: "Rust Docs",
         link: "https://docs.polymesh.live/polymesh/index.html",
         external: true
       },
