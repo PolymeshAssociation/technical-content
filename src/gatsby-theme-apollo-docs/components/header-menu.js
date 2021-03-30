@@ -29,8 +29,7 @@ const MenuButton = styled.a({
     color: "#1348E3"
   },
   '&.active': {
-    color: "#1348E3",
-    pointerEvents: 'none'
+    color: "#1348E3"
   }
 });
 
@@ -43,8 +42,6 @@ const StyledIcon = styled(IconProceed)({
 */
 
 function isSubSiteSelected(menuItem, pageContext) {
-  console.log(pageContext.subsite);
-  console.log(menuItem.category);
   return pageContext.subsite == menuItem.category;
 }
 

@@ -17,8 +17,7 @@ const InnerWrapper = styled.div({
   display: 'flex',
   alignItems: 'center',
   height: HEADER_HEIGHT,
-  padding: '0 24px',
-  backgroundColor: 'white',
+  padding: '0 24px'
 });
 
 export default function Header(props) {

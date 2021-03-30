@@ -66,7 +66,8 @@ const ImgRight = styled.img({
 
 const ImgFloating = styled.img({
   float: "right",
-  width: "35% !important",
+  padding: "0 3%",
+  width: "41% !important",
   marginTop: "50px"
 });
 
@@ -92,7 +93,7 @@ export default function OverviewBox(props) {
         <ContentLeft>
           <Title>{props.title}</Title>
           {props.children}
-          <Link className="action-link" href={props.linkHref}>
+          <Link className="action-link" href={props.linkHref} target={props.external ? "_blank" : ""}>
             {props.linkText}
             <LinkImg src="/icon-arrow-right.svg">
             </LinkImg>
