@@ -1,7 +1,98 @@
 ---
-title: Bug Bounty
+title: Polymesh Bug Bounty Program
 description:
 slug: /community/bug-bounty
 ---
 
-Bug Bounty content
+import HighlightBox from "../../src/components/HighlightBox"
+
+### Overview
+Welcome to the Polymath Bug Bounty Program.
+Polymesh is the software that powers the nodes of the Polymath blockchain. We want Polymesh to be robust and be the best it can be. This is where we need your help, to assist us in finding bugs and vulnerabilities. Confirmed bugs or vulnerabilities will get monetary rewards (bounty). Please see our Rules & Rewards section for more details.
+
+
+To get started, Read the [Rules](/community/bug-bounty-rules) and the [Developer Documentation](/quickstart/quickstart-landingpage), to learn about how to setup Polymesh and how to approach the bug bounty program.
+
+Having some prior knowledge about capital markets and Rust language can be beneficial. If you have still have any questions, reach out to us on our [Discord server](https://discord.gg/ud2deWAnyt), or email us at [bugbounty@polymath.network](mailto:bugbounty@polymath.network).
+
+<HighlightBox type="tip">
+
+Looking for the Vulnerability Disclosure Form? You can find it [here](https://www.federacy.com/polymesh-bug-bounty-program).  
+(By participating in the Polymath Bug Bounty Program, you agree by the program's [Terms and Conditions](/community/bug-bounty-rules))
+
+</HighlightBox>
+
+### Bounty Scope
+The bug bounty will be applicable for the following repositories, sources and sites:
+
+* [https://github.com/PolymathNetwork/Polymesh/releases/tag/v3.0.0](https://github.com/PolymathNetwork/Polymesh/releases/tag/v3.0.0)
+* [https://github.com/PolymathNetwork/cryptography/tree/da06e1db8b6d907dd81bd63c5f26e18c77836081/confidential-identity](https://github.com/PolymathNetwork/cryptography/tree/da06e1db8b6d907dd81bd63c5f26e18c77836081/confidential-identity)
+ 
+
+Following are ***out of scope***:
+
+* [https://github.com/PolymathNetwork/Polymesh/tree/develop/pallets/contracts](https://github.com/PolymathNetwork/Polymesh/tree/develop/pallets/contracts)
+* [https://github.com/PolymathNetwork/Polymesh/tree/develop/contracts](https://github.com/PolymathNetwork/Polymesh/tree/develop/contracts)
+* No “test” code - i.e. javascript integration tests or unit tests are in scope.
+
+### Rules
+
+* Rewards will be decided on a per case basis. This bug bounty program’s terms and conditions are at the sole discretion of Polymath Network.
+* Rewards will vary depending on the severity of the issue.
+* Do not disclose a bug or vulnerability to public. Doing such would disqualify it from being considered for a reward.
+* The bugs being considered for the reward are based on first come first serve basis, duplicate bugs will not be considered.
+* If you want to add more information to a provided issue, edit the original report, do not create a new submission.
+* Other variables considered for rewards include: the quality of the issue description, the instructions for reproducibility, and the quality of the fix (if included).
+* Determinations of eligibility, score and all terms related to an award are at the sole and final discretion of Polymath Network.
+* Submissions needs to be related with the Bounty Scope. Submissions out of the Bounty Scope won’t be eligible for a reward.
+* Any interference with the protocol, client or platform services, on purpose or not during the process will make the submission process invalid.
+* It is mandatory to read and follow the responsible disclosure policy available in the references. Submissions not following the disclosure policy will not be eligible for a reward.
+* By participating in the Polymath Bug Bounty program, you agree to abide by the [terms and condition](/community/bug-bounty-rules) of the program.
+
+We may modify the terms or terminate this program at any time.
+ 
+
+### Vulnerability Classification and Rewards
+
+| <b>Severity</b> | <b>Description / Example</b> | <b>Reward</b> |
+|-|-|-|
+| CRITICAL<br/>(CVSS 9.0 - 10.0) | Transaction manipulation /censorship, double-spending,<br/> POLY/POLYX minting, unauthorized token minting, staled <br/>or undermined consensus/network, governance <br/>censorship or compromise, manipulation of signing <br/>keys or master keys to gain unauthorised access to <br/>an identity. | USD 3000 - 5000 |
+| HIGH<br/>(CVSS 7.0 - 8.9) | Ability to use an extrinsic panic unexpectedly <br/>without proper handling, block the on-chain governance <br/>system from it's expected behaviour, block other users<br/>from their ability to perform expected tasks (griefing). | USD 1000 - 3000 |
+| MEDIUM<br/>(CVSS 4.0 - 6.9) | Ability to put chain data into an unexpected state which <br/>otherwise doesn't cause any disruption, forcing the <br/>emission of events which are incorrect. | USD 250 - 750 |
+| LOW<br/>(CVSS 00 - 3.9) | DoS'ing of the operator nodes, incorrect data being <br/>logged through events. | USD 100 - 300 |
+
+### Exclusions
+While researching, please refrain from:
+
+* Denial of service in general and of Public RPC nodes
+* Attacks that consume a substantial amount of Kovan ETH, Kovan POLY or Testnet POLYX and which would otherwise be cost-prohibitive on mainnet
+* Spamming
+* Social engineering (including phishing) of Polymath staff
+* Any physical attempts against Polymath property or data centres
+
+### Safe Harbor
+Any activities conducted in a manner consistent with this policy will be considered authorized conduct and we will not initiate legal action against you. If legal action is initiated by a third-party against you in connection with activities conducted under this policy, we will take steps to make it known that your actions were conducted in compliance with this policy.
+
+However, please understand that if your security research involves the networks, systems, information, applications, products, or services of third-party, that third-party is not bound by the rules of this program and may determine, at their sole discretion, whether to pursue legal action. Polymath cannot and does not authorize security research on other entities. 
+
+Please see [Safe Harbor Conditions](/community/bug-bounty-rules#23-safe-harbor-provisions) in our [Terms and Conditions](/community/bug-bounty-rules/) for full details.
+
+### References
+* [Whitepaper](https://uploads-ssl.webflow.com/5d4f4a138ab9f5b34b0a69fd/5f21cafa8b364179f4dc40cb_Polymesh%20Whitepaper.pdf?hsCtaTracking=c1b5319a-28d0-4a2f-af97-5c4a00451566%7Cd2605ea2-256d-4886-a85c-2d7e68873305)
+* [Developer Documentation](https://developers.polymesh.live/)
+* [Getting Started](/quickstart/quickstart-landingpage)
+
+
+### Submitting a bug
+Once you find a bug, please report it to us via [Federacy](https://www.federacy.com/polymesh-bug-bounty-program)  
+Please try to be detailed, specific, and clear when you fill out this form. Once we receive your report, we’ll be in touch soon.
+
+### Terms and Conditions
+The Polymath Bug Bounty Program is governed by our Terms and Conditions defined [here](/community/bug-bounty-rules).  
+By participating in the program, you agree by these Terms and Conditions.
+
+
+### Contact us
+If you need help, please feel free to contact us over email at [bugbounty@polymath.network](mailto:bugbounty@polymath.network)
+Or join our developer community in our [Discord server](https://discord.gg/ud2deWAnyt)
+
