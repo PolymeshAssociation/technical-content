@@ -59,7 +59,7 @@ At scale, a corporate actions service provider will want to integrate their inte
 
 ### Initiating corporate actions (CA)
 
-All begins with ```initiate_corporate_action```. This dispatchable function creates a corporate action. The following is included:
+All begins with `initiate_corporate_action`. This dispatchable function creates a corporate action. The following is included:
 
 * an associated asset's ticker,
 * free-form text, and
@@ -69,11 +69,11 @@ Additional information can be provided in regard to the record date, targets of 
 
 <HighlightBox type="info">
 
-The record date can be changed after the corporate action initiation with the dispatchable function ```change_record_date```.
+The record date can be changed after the corporate action initiation with the dispatchable function `change_record_date`.
 
 </HighlightBox>
 
-```initiate_corporate_action``` must be called by the **corporate action agent (CAA)**, which defaults to the asset owner. The CAA can be changed through the asset authorisation system and be reset with ```reset_caa```.
+`initiate_corporate_action` must be called by the **corporate action agent (CAA)**, which defaults to the asset owner. The CAA can be changed through the asset authorisation system and be reset with `reset_caa`.
 
 The CAA can **initiate corporate actions and change the setup**, including implementing ballots and initiating distributions.
 
@@ -105,14 +105,14 @@ Withholding taxes is performed natively on Polymesh. One can specify a percentag
 
 Such rules can apply to all investors as a general specification or to groups of individual investors.
 
-- ```set_default_witholding_tax``` creates a general tax withholding rule;
-- ```set_did_witholding_tax``` creates rules that apply to specific investors.
+- `set_default_witholding_tax` creates a general tax withholding rule;
+- `set_did_witholding_tax` creates rules that apply to specific investors.
 
 ### Specifying the token holders targeted
 
 Corporate action **participants can be specified**. This can be helpful when a corporate action targets only a specific group of investors.
 
-The default setting includes (targets) every investor in the corporate action. Each corporate action can include a list of investors to include or exclude. In the case where this becomes repetitive, a new asset-level default can be set with ```set_default_targets```.
+The default setting includes (targets) every investor in the corporate action. Each corporate action can include a list of investors to include or exclude. In the case where this becomes repetitive, a new asset-level default can be set with `set_default_targets`.
 
 Target groups can be specified inclusively or exclusively, i.e. "only these investors" or "everyone except these investors".
 
@@ -120,7 +120,7 @@ Target groups can be specified inclusively or exclusively, i.e. "only these inve
 
 **Free-form text** provides a succinct human-readable description of the corporate action. This is useful in contexts such as browsing the corporate actions to find a specific action of interest. The text is not expected to provide a comprehensive description in all cases.
 
-Relevant documentation such as documentation to satisfy reporting requirements can be linked to a corporate action with```link_ca_doc```.
+Relevant documentation such as documentation to satisfy reporting requirements can be linked to a corporate action with `link_ca_doc`.
 
 ### Corporate ballots
 
@@ -201,15 +201,15 @@ RCV ballots are an efficient method of implementing a process that emulates mult
 
 ## Implementation
 
-It all begins with a corporate action. A corporate action of type notice is created with a ballot attached using ```attach_ballot```. A ballot can be removed with ```remove_ballot``` if voting hasn't started.
+It all begins with a corporate action. A corporate action of type notice is created with a ballot attached using `attach_ballot`. A ballot can be removed with `remove_ballot` if voting hasn't started.
 
 Ballot configurations can be amended - **as long as voting hasn't started**:
 
-* ```change_end```: Changes the voting deadline;
-* ```change_meta```: Changes the title and motions to vote on;
-* ```change_rcv```: Specifies the use of, or not, of RCV.
+* `change_end`: Changes the voting deadline;
+* `change_meta`: Changes the title and motions to vote on;
+* `change_rcv`: Specifies the use of, or not, of RCV.
 
-Token holders vote using ```vote```.
+Token holders vote using `vote`.
 
 # Links
 
