@@ -66,7 +66,8 @@ const ImgRight = styled.img({
 
 const ImgFloating = styled.img({
   float: "right",
-  width: "35% !important",
+  padding: "0 3%",
+  width: "41% !important",
   marginTop: "50px"
 });
 
