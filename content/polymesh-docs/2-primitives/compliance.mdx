@@ -48,9 +48,9 @@ pub enum ClaimType {
 
 Of these, there are two "special" claims which are treated differently, which are:  
 
-- `CustomerDueDiligence`: This can only be issued by trusted [CDD](./cdd.md) service providers and allows a user general access to the Polymesh network.
+- `CustomerDueDiligence`: This can only be issued by trusted [CDD](./cdd) service providers and allows a user general access to the Polymesh network.
 
-- `InvestorZKProof`: These are self-issued claims (an identity makes the claim about itself) that declare any [linkage](./confidential_identity.md) between identities owned by the same entity investing in the same asset.
+- `InvestorZKProof`: These are self-issued claims (an identity makes the claim about itself) that declare any [linkage](./confidential_identity) between identities owned by the same entity investing in the same asset.
 
 The remainder of the claims can be issued by anyone against any identity. Some of these claim types are parameterised with additional information relevant to the claim, for example `Jurisdiction` includes the country code of the users jurisdiction.
 
@@ -116,4 +116,4 @@ pub enum ConditionType {
 
 ## Transfer Restriction Smart Extensions
 
-In addition to the flexible claim based compliance manager, asset issuers can use transfer restriction [smart extensions](./smart_extensions.md) to further control the trading of their assets.
+In addition to the flexible claim based compliance manager, asset issuers can use transfer restriction [smart extensions](./smart-extensions) to further control the trading of their assets.
