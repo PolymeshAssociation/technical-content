@@ -70,7 +70,7 @@ export default function ActionCard(props) {
     <Card href={props.href}>
       <ActionCardLinkText>
         {props.text}
-        <ActionCardLinkImg src="/icon-arrow-right.svg" class="action-icon"></ActionCardLinkImg>
+        <ActionCardLinkImg src="/icon-arrow-right.svg"></ActionCardLinkImg>
         { props.showDevSign &&
           <ActionCardDevSign src={DevSignPink}></ActionCardDevSign>
         }

@@ -21,6 +21,7 @@
     "@fontsource/ibm-plex-mono": "~4.1.0",
     "@fontsource/inter": "~4.1.0",
     "gatsby": "2.31",
+    "gatsby-plugin-google-tagmanager": "^3.2.0",
     "gatsby-plugin-mdx": "^1.10.0",
     "gatsby-plugin-sharp": "^2.14.1",
     "gatsby-remark-embed-video": "^3.0.12",

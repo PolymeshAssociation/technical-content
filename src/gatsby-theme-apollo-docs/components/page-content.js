@@ -244,20 +244,15 @@ export default function PageContent(props) {
         />
       </InnerWrapper>
       <Aside>
-        <AsideHeading>In this Section</AsideHeading>
         {props.headings.length > 0 && (
+        <>
+          <AsideHeading>In this Section</AsideHeading>        
           <SectionNav
             headings={props.headings}
             contentRef={contentRef}
             imagesLoaded={imagesLoaded === imagesToLoad}
           />
-        )}
-        {props.ffWidgetId && <FeedbackLink title={props.title} />}
-        {editLink}
-        {props.spectrumUrl && (
-          <AsideLink href={props.spectrumUrl}>
-            <SpectrumLogo /> Discuss on Spectrum
-          </AsideLink>
+        </>
         )}
       </Aside>
     </Wrapper>
