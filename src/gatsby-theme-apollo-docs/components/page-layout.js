@@ -230,19 +230,7 @@ export default function PageLayout(props) {
       </Helmet>
       
       <TopBarWrapper>
-        <Header
-          beforeContent={
-            versionDifference !== 0 && (
-              <Eyebrow>
-                You&apos;re viewing documentation for a{' '}
-                {versionDifference > 0
-                  ? 'version of this software that is in development'
-                  : 'previous version of this software'}
-                . <Link to="/">Switch to the latest stable version</Link>
-              </Eyebrow>
-            )
-          }
-        >
+        <Header>
           <MobileNav>
             <MenuButton onClick={openSidebar} />
             <MobileLogoWrapper>
