@@ -148,5 +148,18 @@ module.exports = {
         /*srcSetBreakpoints: [ 200, 340, 520, 736, 1024, 1280 ]*/
       }
     },
+    {
+      resolve: "gatsby-plugin-google-tagmanager",
+      options: {
+        id: "GTM-T48VT66",
+        includeInDevelopment: false,
+        defaultDataLayer: { platform: "devportal" },
+        // Specify optional GTM environment details.
+        //gtmAuth: "YOUR_GOOGLE_TAGMANAGER_ENVIRONMENT_AUTH_STRING",
+        //gtmPreview: "YOUR_GOOGLE_TAGMANAGER_ENVIRONMENT_PREVIEW_NAME",
+        //dataLayerName: "YOUR_DATA_LAYER_NAME",
+        routeChangeEventName: "devportal-navigate",
+      },
+    },
   ]
 };
