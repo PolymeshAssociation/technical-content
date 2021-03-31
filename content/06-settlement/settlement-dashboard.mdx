@@ -1,7 +1,7 @@
 ---
 title: Polymesh App Portal
 description: Settlement with the Polymesh App Portal
-slug: /settlement/settlement-dashboard
+slug: /settlement/app-portal
 ---
 
 import HighlightBox from "../../src/components/HighlightBox"
@@ -12,7 +12,7 @@ If you have been following along up to this point, you have already seen an exam
 
 <HighlightBox type="tip">
 
-If you want to refresh your memory, just give the [Token Studio exercise on distributing assets]((/distribute/dashboard)) another peek.
+If you want to refresh your memory, just give the [Token Studio exercise on distributing assets](/distribute/token-dashboard) another peek.
 
 </HighlightBox>
 
@@ -38,7 +38,7 @@ While it is conceivable that one day many fund transfers will be settled entirel
 
 ## Importance of integration
 
-It is expected that brokers, custodians, transfer agents, and other parties will integrate their existing systems with Polymesh. Alice and Bob don't generally have any contact with the trade settlement process beyond funding their accounts and managing their orders, so they wouldn't generally have contact with the settlement process other than brief encounters like [when Alice accepted the shares from ACME](/distribute/dashboard).
+It is expected that brokers, custodians, transfer agents, and other parties will integrate their existing systems with Polymesh. Alice and Bob don't generally have any contact with the trade settlement process beyond funding their accounts and managing their orders, so they wouldn't generally have contact with the settlement process other than brief encounters like [when Alice accepted the shares from ACME](/distribute/token-dashboard).
 
 Each organisation that integrates with the system will have a unique blend of concerns depending on the services offered, existing business processes, and existing systems. For this reason, the dashboard and Token Studio don't model a specific way of approaching this process at this time. Rather, the SDK provides granular methods for participants like SafeHands to create bespoke, in-house integrations. The end result is automation of the processes that let Alice and Bob **trade security tokens through familiar customer-facing user interfaces**, and **B2B processes that support efficient settlement**. This facilitates acceptance of security tokens and delivery of related services with minimal disruption of existing business, technical, and legal processes.
 
@@ -50,7 +50,7 @@ Before we proceed too far, we must remove an obstacle. When we originated the AC
 
 <HighlightBox type="info">
 
-KYC is explained in detail in the [KYC section](/kyc/landingpage).
+KYC is explained in detail in the [KYC section](/kyc/).
 
 </HighlightBox>
 
@@ -62,12 +62,12 @@ Confirm and sign, of course.
 
 ### Create Bob
 
-Alice will transfer some of her shares to another user. For this to work, we will need another user, so create a user with a new identity, Bob, complete [customer due diligence](/quickstart/quickstart-cdd) and [get some POLYX](/quickstart/quickstart-polyx) because Bob will need to sign some transactions:
+Alice will transfer some of her shares to another user. For this to work, we will need another user, so create a user with a new identity, Bob, complete [customer due diligence](/quickstart/verification-with-cdd) and [get some POLYX](/quickstart/quickstart-polyx) because Bob will need to sign some transactions:
 
  - `+ Add a key`;
  - **don't** assign the key to Alice or ACME;
  - Proceed to the dashboard and create a new identity, Bob;
- - Complete [customer due diligence](/quickstart/quickstart-cdd), as Bob;
+ - Complete [customer due diligence](/quickstart/verification-with-cdd), as Bob;
  - [Get some POLYX](/quickstart/quickstart-polyx) for Bob.
 
 ![bob](images/01c2-bob.png)
@@ -90,7 +90,7 @@ We will need some information from the blockchain.
 
 ## Polymesh Substrate App
 
-Recall that [Polymesh is built with Substrate](/introduction/intro-stack), which is a set of modules for creating a blockchain. Substrate provides tools that offer low-level access to everything that happens on a Substrate network and these tools work with Polymesh.
+Recall that [Polymesh is built with Substrate](/introduction/tech-stack), which is a set of modules for creating a blockchain. Substrate provides tools that offer low-level access to everything that happens on a Substrate network and these tools work with Polymesh.
 
 The **[Polymesh Substrate App](https://app.polymesh.live)** is such a tool. Blockchain enthusiasts will recognise that it is similar to block explorers found in other settings. One can use it to explore the blockchain and transactions in depth.
 
@@ -194,7 +194,7 @@ Input the unique symbol for the security token you created.
 
 <HighlightBox type="tip">
 
-If this instruction involved two or more asset transfers, then we would create additional legs. Instructions settle atomically, meaning all legs execute completely. There is **no case in which an instruction is partially processed** or some, but not all legs are processed. See examples of more complex transaction with multiple legs in the reference documentation: https://developers.polymesh.live/polymesh-docs/primitives/settlement/
+If this instruction involved two or more asset transfers, then we would create additional legs. Instructions settle atomically, meaning all legs execute completely. There is **no case in which an instruction is partially processed** or some, but not all legs are processed. See examples of more complex transaction with multiple legs in the [reference documentation](/polymesh-docs/primitives/settlement/)
 
 </HighlightBox>
 
@@ -230,12 +230,12 @@ Since this is the first time Bob has received ACME shares, Bob will create a uID
 
 <HighlightBox type="tip">
 
-For details on these processes, return to [Token Studio Dashboard](/distribute/dashboard) in the _Distribution_ section to recall how Alice received her first ACME shares and moved them to her cold store portfolio.
+For details on these processes, return to [Token Studio Dashboard](/distribute/token-dashboard) in the _Distribution_ section to recall how Alice received her first ACME shares and moved them to her cold store portfolio.
 
 </HighlightBox>
 
 ## Links
 
-- Polymesh Substrate App https://app.polymesh.live
-- Polymesh Dashboard https://dashboard.polymesh.live
-- Polymesh Primitives, Settlement: https://developers.polymesh.live/polymesh-docs/primitives/settlement/
+- [Polymesh Substrate App](https://app.polymesh.live)
+- [Polymesh Dashboard](https://dashboard.polymesh.live)
+- [Polymesh Primitives, Settlement](/polymesh-docs/primitives/settlement/)

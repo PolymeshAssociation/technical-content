@@ -115,7 +115,7 @@ module.exports = {
       {
         category: "category",
         name: "Community",
-        link: "/community/overview",
+        link: "/community/",
       },
 
     ]

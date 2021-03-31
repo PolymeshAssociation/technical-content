@@ -1,7 +1,7 @@
 ---
 title: Secondary Keys
 description: Assigning authority
-slug: /originate/secondary
+slug: /originate/secondary-keys
 ---
 
 import HighlightBox from "../../src/components/HighlightBox"
@@ -20,7 +20,7 @@ Let's resolve this.
 
 The goal is that ACME should be an **identified organisation** that has passed customer due diligence and Alice has, in addition to her personal wallet, a **signing key** to use when she represents ACME in her capacity as CEO.
 
-There is more than one way to do this. Alice, can, for example, create another key for ACME. With that key in focus (click the blue circle to the left of the unassigned key), complete [customer due diligence](/quickstart/quickstart-cdd). This will create a new primary key and a new account. Then, create a secondary key for the CEO and assign it to the new account.
+There is more than one way to do this. Alice, can, for example, create another key for ACME. With that key in focus (click the blue circle to the left of the unassigned key), complete [customer due diligence](/quickstart/verification-with-cdd). This will create a new primary key and a new account. Then, create a secondary key for the CEO and assign it to the new account.
 
 ![Alice and secondary keys](/images/primary_secondary_keys.png)
 
@@ -36,8 +36,8 @@ Let's instead proceed as though ACME and Alice are indeed **separate entities**.
 
 Let's suppose that the ACME account is managed by someone other than Alice. We can simulate this by using a different computer. This procedure closely matches a real-world scenario where these activities would indeed occur separately. For this, the following is necessary:
 
-1. Create a [wallet](/quickstart/quickstart-wallet) and PID for ACME;
-2. Complete [customer due diligence](/quickstart/quickstart-cdd);
+1. Create a [wallet](/quickstart/wallet) and PID for ACME;
+2. Complete [customer due diligence](/quickstart/verification-with-cdd);
 3. [Get some POLYX](/quickstart/quickstart-polyx) (ACME will need some too).
 
 Below, you can see ACME has been verified and has some POLYX.
@@ -48,7 +48,7 @@ Below, you can see ACME has been verified and has some POLYX.
 
 ACME can assign a key but Alice will have to supply it to them. More precisely, Alice will provide the public information but not the private signing key, which means that ACME cannot sign on her behalf. ACME can determine the scope of the CEO's, Alice, permission within ACME but only Alice can actually sign as CEO.
 
-Returning to Alice's wallet, simply click `Add a key` and follow the usual procedure. Give the key a name that will help Alice remember what the key is for, e.g. ACME CEO. The result will be that Alice has a second, unassigned key. **don't** assign this key.
+Returning to Alice's wallet, simply click `Add a key` and follow the usual procedure. Give the key a name that will help Alice remember what the key is for, e.g. ACME CEO. The result will be that Alice has a second, unassigned key. **Don't** assign this key.
 
 There is nothing Alice can do to associate the key she just made with ACME, an account she doesn't control. Instead, let's say that Alice provides the public key to ACME through an off-chain communication channel and ACME adds it to _their account_ on their own authority.
 
@@ -136,7 +136,7 @@ Permission to accept or reject such proposals is something ACME can delegate to 
 
 <HighlightBox type="tip">
 
-ACME will need some POLYX to pay transaction fees. If they don't already have some, they should [get some free testnet POLYX](quickstart/quickstart-polyx).
+ACME will need some POLYX to pay transaction fees. If they don't already have some, they should [get some free testnet POLYX](/quickstart/quickstart-polyx).
 
 </HighlightBox>
 
