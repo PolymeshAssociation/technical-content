@@ -1,17 +1,18 @@
 # Polymesh Developer Portal
 
-## Staging server
+## Servers & live website
 `main` and `staging` branches are deployed automatically
 * staging: [https://tc-staging.polymesh.live/](https://tc-staging.polymesh.live/)
-* main: [https://tc-main.polymesh.live/](https://tc-main.polymesh.live/)
+* main: [https://developers.polymesh.live/](https://developers.polymesh.live/) (main website)
+* main: [https://tc-main.polymesh.live/](https://tc-main.polymesh.live/) (secondary url)
 
 ## Project setup & tech details
 
 ### Requirements
-This project requires [npm](https://www.npmjs.com/get-npm)
+To run and build, this project requires [npm](https://www.npmjs.com/get-npm)
 
 ### Setup
-Run `npm install` to install the project.
+Run `npm install` to install.
 
 ### Local development server
 Start the local server with `npm run develop` - live reload is enabled
@@ -24,21 +25,18 @@ For debugging, use `npm run develop --verbose`
 To build the deployable website, run `npm run build`. This will create the output package in the `/public` folder.
 
 ### Known issues
-* gatsby is now using some advanced caching on local dev (which is great!). Sometimes, you might need to clear the cache manually if you don't see assets (images) or some included resources (like the menu) updating. To clean, run: `npm run clean`.
+* Gatsby is now using an advanced caching mechanism on local development (which is great!). Sometimes, you might need to clear the cache manually if you don't see assets (images), config updates or some included resources (like the menu) updating. To clean, run: `npm run clean`.
+* Production builds on an empty cache may fail with a message "error [BABEL] Note: The code generator has deoptimised the styling of [...]". This is actually just a warning, but reporting (and returning) as error. The fix is to re-run the build process again.
 
 ### Notes
 * When updating the gatsby configuration, you need to restart the server. There is now a message that will appear in the Browser, notifying you about this.
-* Run and build tested on osx, unix and within WSL
+* Run and build tested on osx, unix and WSL
 * You can skip the automatic deployment of a commit by adding [CI Skip] to the commit message
 
 ## Information for content creators
-You can find a markdown file in `features/feature_test.mdx` which demonstrates the use of all Markdown features and additional components. (This file will not be linked in the final version).
+You can find a markdown file in `features/feature_test.mdx` which demonstrates the use of all Markdown features and additional components. (This file will is not linked in the menu).
 
 ## Update workflow & Review process
-We use feature branches, named as `xx-feature-description`, where `xx` are the name initials. Once a WIP or FINAL change should be reviewed internally, a PR should be made towards staging (handled internally). Once B9lab is done with a part that should be reviewed, it will be pushed to the `review` branch (responsible person: Xavier), and a PR is opened towards `main`, assigned to a reviewer from Polymath.
+We use feature branches, named as `xx-feature-description`, where `xx` are the name initials. Once the change on the feature branch has been completed, a **PR towards `staging` should be opened.** From staging, the repository maintainers will open a PR towards main and make sure all changes have been reviewed. (If a change has already been approved on the initial PR into staging, no repeated review for this change is necessary).
 
-We will then use the Github review features to manage the review. If due to the review, an update on the content is required, it should be put on the original feature branch (if possible), or a new feature branch, and a new PR towards both staging and the review branch should be opened.
-
-This change will then be confirmed internally (Xavier accepts the PR on the review branch) and thereby automatically added to the PR from the `review` branch towards `main` (review by Polymath). Once the review is complete, the PR can be closed, pushing the update to the `main` server.
-
-In the end, the recent WIP version can be found on staging and the already reviewed version on main.
+**All content updates must be approved by the Polymath team (adamdossa) before being pushed to main.**
