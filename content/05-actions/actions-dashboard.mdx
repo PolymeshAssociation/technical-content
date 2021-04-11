@@ -8,7 +8,7 @@ import HighlightBox from "../../src/components/HighlightBox"
 
 ## Execute a distribution
 
-The ACME token has been trading for a while, and the company has had a very good quarter. The board has decided to distribute a dividend of US $5,000. Each shareholder will be entitled to receive a portion of the dividend in proportion to the number of shares they own. ACME will use Polymesh to execute the distribution.
+The ACME token has been trading for a while, and the company has had a very good quarter. The board has decided to distribute a dividend of US \$5,000. Each shareholder will be entitled to receive a portion of the dividend in proportion to the number of shares they own. Since ACME distributed 20,000 tokens, this is \$0.25 per token. ACME will use Polymesh to execute the distribution.
 
 ## Permission
 
@@ -44,7 +44,7 @@ In practice, ACME would appoint someone with authority, possibly the CFO or a se
 
 <HighlightBox type="info">
 
-Everything we do in token studio can be executed through the API, enabling automations of concerns such as conditional tax withholdings. This is one reason why ACME might opt to appoint a distribution agent to assist instead of performing the action themselves. For this example, we will set that concern aside except to mention that more precise controls exist. 
+Everything we do in token studio can be executed through the API, enabling automations of concerns such as conditional tax withholdings. This is one reason why ACME might opt to appoint a distribution agent to assist instead of performing the action themselves. For this example, we will set that concern aside except to mention that precise, scaleable controls exist. 
 
 </HighlightBox>
 
@@ -58,11 +58,15 @@ The next panel enables tax witholding for individual investors. Again, feel free
 
 ![Witholdings](./images/05-witholdings.png)
 
-The final panel is where we define the dividend. Experiment with the form, or complete it as follows:
+The final panel is where we define the dividend. 
+
+![Define Dividend](./images/55-define.png)
+
+Experiment with the form, or complete it as follows:
 
 1. Name the dividend event for reference purposes.
-2. Select a declaration date and time close to `now` but a minutes in the future so you can complete this process and then see the distribution take effect.
-3. Set an expiry date further into the future. The expiry date allows ACME to recover funds that are allocated to the distribution. It also means shareholders forfeit the on-chain distribution. For this reason, the expiry date would usually be far in the future in practice. 
+2. Select a declaration date and time close to `now` but a few minutes in the future so you can complete this process and then see the distribution take effect.
+3. Set an expiry date further into the future. The expiry date allows ACME to recover funds that are allocated to the distribution. It also means shareholders forfeit the on-chain distribution. For this reason, the expiry date would usually be well in the future. 
 4. `Pay-out amount per eligable token` should be 0.25 which is 5,000 ALCY distributed to each holder of ACME's 20,000 tokens. 
 
 Press `Configure dividends`.
@@ -77,11 +81,17 @@ A summary appears. It recaps the tokens distributed so far and taxes witheld.
 
 ![Distribution Summary](./images/07-summary.png)
 
-Now, switch the Alice's `dashboard`. 
+Now, switch to Alice's `dashboard`. 
 
 Alice should have one incoming distribution. If this does not appear within a few moments, this is likely because the scheduled distribution time hasn't arrived yet. Consider the declaration date you specified when you created the distribution. 
 
 ![Incoming Distribution](./images/08-incoming.png)
+
+The dividend distribution requires Alice's consent. When she accepts the dividend, she will first create a uID scope for ALCY (if this is the first time she has received it), and then accept distribution. The funds arrive in her default portfolio. 
+
+Press `Accept` and sign the transaction to create the uID scope. 
+
+Press `Accept` again and sign the transaction to receive the funds in the default portfolio. 
 
 <HighlightBox type="info">
 
@@ -91,12 +101,11 @@ Alice's actual dividend amount depends on her balance at the time. Your amount m
 
 ## Summary
 
-Polymesh supports on-chain execution of corporate actions that address such concerns as capital distributions and voting. The flexible permission system accommodates outsourcing the execution of corporate actions to service providers, if desired. Corporate actions can be integrated into internal systems as will be unfolded in the following section, but they can also be executed in a no-code manner.
+Polymesh supports on-chain execution of corporate actions that address such concerns as capital distributions and voting. The flexible permission system accommodates outsourcing the execution of corporate actions to service providers, if desired. Corporate actions can be integrated into internal systems as will be unfolded in the following section. Dividends can also be executed in a no-code manner using token studio.
 
 ## Links
 
-* [Polymesh Substrate App](https://app.polymesh.live)
+* [Token Studio](https://tokenstudio.polymesh.live)
 * [Dashboard](https://dashboard.polymesh.live)
-* [Checkpoints](https://github.com/PolymathNetwork/polymesh_docs/blob/master/Polymesh/docs/assets.md#checkpoints)
 * [Corporate Actions](/polymesh-docs/primitives/corporate-actions/)
 * [Corporate action pallet distribution](https://docs.polymesh.live/pallet_corporate_actions/distribution/index.html)
