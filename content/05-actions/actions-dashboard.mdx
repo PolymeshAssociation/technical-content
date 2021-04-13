@@ -18,11 +18,11 @@ By default, ACME, the token owner is a corporate actions agent for the ACME equi
 
 ## On-Chain execution
 
-**An on-chain distribution requires an on-chain asset.** We can envision an on-chain stable token that is strongly pegged to a fiat currency such as the US Dollar. Such a token would presumably be released by a third party with the necessary regulatory approvals. For example, a simple collateral-backed implementation would have a minting and redemption window where actual dollars are exchanged for dollar tokens and, importantly, the reverse - a credible assurance that tokens are redeemable for dollars. When similar conditions are in place, the token is described as a stable token with value pegged to the fiat currency it represents. 
+**An on-chain distribution requires an on-chain asset.** We can envision an on-chain stable token that is strongly pegged to a fiat currency such as the US Dollar. Such a token is described as a stable token with value pegged to the fiat currency it represents. 
 
-Such a token does not presently exist on the Polymesh mainnet. ACME could create such a token for the purpose of their near-term dividend distributions. On Alcyone, the ALCY stable token lets us proceed as though a widely-accepted stable token is already a part of the Polymesh ecosystem. 
+Such a token does not presently exist on the Polymesh Mainnet. ACME could create such a token for the purpose of their near-term dividend distribution. On Alcyone, the ALCY stable token lets us proceed as though a widely-accepted stable token is already a part of the Polymesh ecosystem. 
 
-We will begin our discovery of Corporate Actions by acquiring some free ALCY tokens to distribute. 
+We will begin our discovery of corporate actions by acquiring some free ALCY tokens to distribute. 
 
 As ACME, or ACME's corporate actions agent, proceed to the `token studio`, select the `Corp. Actions` tab. 
 
@@ -30,7 +30,7 @@ As ACME, or ACME's corporate actions agent, proceed to the `token studio`, selec
 
 Click `Get ALCY tokens`.
 
-You will be offered 10,000 ALCY tokens at no cost. This faucet gives them away because ALCY tokens are valueless. Two signatures are needed to create uID scope and to receive the tokens. 
+You will be offered 10,000 ALCY tokens at no cost. This faucet gives them away because ALCY tokens are valueless. **Two signatures** are needed to create the uID scope and to receive the tokens. 
 
 ![Confirm Issuance](./images/02-confirm_issue.png)
 
@@ -40,11 +40,11 @@ In a moment, the tokens appear in ACME's account.
 
 ## Set up the action
 
-In practice, ACME would appoint someone with authority, possibly the CFO or a service provider to actually administrate their capital distribution. Granular controls are available to address, for example, tax withholdings that may apply depending on each investor's jurisdiction. 
+In practice, ACME would appoint someone with authority, possibly the CFO or a service provider to actually administrate their capital distribution. **Granular controls** are available to address, for example, tax withholdings that may apply depending on each investor's jurisdiction. 
 
 <HighlightBox type="info">
 
-Everything we do in token studio can be executed through the API, enabling automations of concerns such as conditional tax withholdings. This is one reason why ACME might opt to appoint a distribution agent to assist instead of performing the action themselves. For this example, we will set that concern aside except to mention that precise, scaleable controls exist. 
+Everything we do in Token Studio can be executed through the API, enabling automations of concerns such as conditional tax withholdings. This is one reason why ACME might opt to appoint a distribution agent to assist, instead of performing the action themselves. For this example, we will set that concern aside, but keep in mind that precise, scaleable controls exist. 
 
 </HighlightBox>
 
@@ -52,9 +52,9 @@ Click on the `New dividend payout` card. This will open a dialog to create a div
 
 ![Exclusion List](./images/04-exclusion_list.png)
 
-Feel free to experiment with that or click `Continue`. 
+Feel free to experiment with that, or click `Continue`.
 
-The next panel enables tax witholding for individual investors. Again, feel free to experiment with that feature or click `Continue`. 
+The next panel enables tax witholding for individual investors. Again, feel free to experiment with that feature, or click `Continue`.
 
 ![Witholdings](./images/05-witholdings.png)
 
@@ -64,30 +64,30 @@ The final panel is where we define the dividend.
 
 Experiment with the form, or complete it as follows:
 
-1. Name the dividend event for reference purposes.
-2. Select a declaration date and time close to `now` but a few minutes in the future so you can complete this process and then see the distribution take effect.
-3. Set an expiry date further into the future. The expiry date allows ACME to recover funds that are allocated to the distribution. It also means shareholders forfeit the on-chain distribution. For this reason, the expiry date would usually be well in the future. 
+1. Name the `dividend event` for reference purposes.
+2. Select a `declaration date and time` close to `now` but a few minutes in the future so you can complete this process and then see the distribution take effect.
+3. Set an `expiry date` further into the future. The expiry date allows ACME to recover funds that are allocated to the distribution. It also means shareholders forfeit the on-chain distribution. For this reason, the expiry date would usually be well in the future. 
 4. `Pay-out amount per eligable token` should be 0.25 which is 5,000 ALCY distributed to each holder of ACME's 20,000 tokens. 
 
 Press `Configure dividends`.
 
-Confirm the corporate action configuration and sign the transaction. Then, confirm the distribution and sign the transaction. 
+Confirm the corporate action configuration and sign the corporate action transaction. Then, confirm the distribution and sign that transaction. 
 
 ![Confirm dividend](./images/06-confirm_pay-out.png)
 
-Notice that ACME's balance is reduced by 5,000 ALCY tokens that were committed to the distribution. If ACME is using a corporate actions agent, they might provide just enough capital to support the corporate action. ACME's relationship and financial dealings with the corporate action agent are an external concern, but the corporate action agent must have sufficient funds to support the distribution because the funds are committed in this step and remain so until either the token holder accepts the distribution or the expiration date passes. 
+Notice that ACME's balance is reduced by 5,000 ALCY tokens that were committed to the distribution. If ACME is using a corporate actions agent, they might provide just enough capital to support the corporate action. ACME's relationship and financial dealings with the corporate action agent are an external concern, but the corporate action agent must have sufficient funds to support the distribution. This is necessary as the funds are committed in this step and remain so until either the token holder accepts the distribution or the expiration date passes.
 
-A summary appears. It recaps the tokens distributed so far and taxes witheld. 
+A summary appears. It recaps the tokens distributed so far and the taxes witheld. 
 
 ![Distribution Summary](./images/07-summary.png)
 
 Now, switch to Alice's `dashboard`. 
 
-Alice should have one incoming distribution. If this does not appear within a few moments, this is likely because the scheduled distribution time hasn't arrived yet. Consider the declaration date you specified when you created the distribution. 
+Alice should have one incoming distribution. If this does not appear within a few moments, it is likely the scheduled distribution time hasn't arrived yet. Consider the declaration date you specified when you created the distribution. 
 
 ![Incoming Distribution](./images/08-incoming.png)
 
-The dividend distribution requires Alice's consent. When she accepts the dividend, she will first create a uID scope for ALCY (if this is the first time she has received it), and then accept distribution. The funds arrive in her default portfolio. 
+The dividend distribution requires Alice's consent. "When she accepts the dividend transfer, she will first create a uID scope for ALCY (the first time she receives a dividend), and then accept the dividend distribution. 
 
 Press `Accept` and sign the transaction to create the uID scope. 
 
@@ -101,7 +101,7 @@ Alice's actual dividend amount depends on her balance at the time. Your amount m
 
 ## Summary
 
-Polymesh supports on-chain execution of corporate actions that address such concerns as capital distributions and voting. The flexible permission system accommodates outsourcing the execution of corporate actions to service providers, if desired. Corporate actions can be integrated into internal systems as will be unfolded in the following section. Dividends can also be executed in a no-code manner using token studio.
+Polymesh supports on-chain execution of corporate actions that address such concerns as capital distributions and voting. The flexible permission system accommodates outsourcing the execution of corporate actions to service providers, if desired. Corporate actions can be integrated into internal systems as will be unfolded in the following section. Dividends can also be executed in a no-code manner using Token Studio.
 
 ## Links
 
