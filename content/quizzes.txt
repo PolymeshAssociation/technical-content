@@ -1,0 +1,325 @@
+## Quiz 1 - Introduction to Polymesh
+
+1. What is the main difference between Polymesh's approach and that of a general-purpose blockchain, such as Ethereum?
+*Polymesh's design focuses on a precise solution to specific requirements, rather than a generalised solution to abstract requirements.
+A general-purpose blockchain is incapable of supporting complex applications.
+General-purpose blockchains rely on economic incentives to reach consensus but Polymesh usage is free to members.
+General-purpose blockchains are computing platforms whereas Polymesh is a securities exchange.
+
+2. What does hyper-fractional asset ownership mean in the context of security tokens?
+Large owners are prevented from amassing controlling interest in the underlying asset.
+*They enable greater liquidity through the tokenisation of traditionally illiquid assets, opening up access to a global pool of investors through new asset classes for assets that were previously indivisible.
+It is a marketing phrase to differentiate digital securities from traditional securities.
+It means that assets can be lent out with only a fraction of the underlying asset in reserve.
+
+3. Who can run a Polymesh node?
+Anyone can run a regular node, as well as check the upholding of network rules and the public state secured by the blockchain, but only specific entities (operators) can run nodes that author new blocks or vote on block finality.
+Anyone can run a regular node, but only specific entities can check the upholding of network rules and the public state secured by the blockchain. Further, only specific entities can run nodes that author new blocks or vote on block finality.
+*Anyone can run a node, observe the state, and verify that the network is processing according to the rules. Only specific nodes can generate blocks.
+Anyone can run a regular node, check the upholding of network rules and the public state secured by the blockchain, and run nodes that author new blocks or vote on block finality.
+
+4. Can token holders use multiple identities on Polymesh?
+*Yes, but their control of multiple identities holding the same token is identified by the Polymesh Unique ID system which helps prevent Sybil attacks.
+Yes, users use a different identity for every asset and interaction to safeguard anonymity on the network.
+No, only one identity is allowed per token holder, which is ensured through the Polymesh Unique ID.
+No, controlling multiple identities is not allowed in on Polymesh.
+
+5. What is the purpose of the Polymesh Unique Identity System (PUIS)?
+*It enforces entity- and identity-level compliance.
+It allows users to share their identities.
+It provides uUIDs.
+It validates single entities and identities.
+
+6. Which statement about Polymesh uIDs is correct?
+A uID represents an organisation, not an individual.
+A uID represents only an individual and not an organisation.
+A uID may represent more than one individual or organisation.
+*A uID represents an individual or an organisation.
+
+7. How does a Polymesh ID claim attributes, such as name and country?
+Users complete a simple registration form.
+*Users obtain signed attestations from KYC service providers.
+Users vouche for each other in the reputation system.
+User information comes from identity-providers using oAUTH.
+
+8. What is the difference between on-chain governance and off-chain governance?
+*On-chain:Rules and decisions are made on-chain. Off-chain:Stakeholders debate on forums such as Reddit.
+On-chain governance is online, off-chain governance is offline.
+On-chain governance automatically processes everything the community votes to do.
+Off-chain governance is a power struggle. On-chain governance is harmonious.
+
+9. How are hard forks in Polymesh's on-chain protocol prevented?
+The Polymesh client doesn't allow forks.
+Only Polymesh can update the on-chain protocol.
+Multiple off-chain processes need to be completed before an on-chain fork can happen.
+*Changes are adopted by stakeholders through governance and are implemented through on-chain processes.
+
+10. What is the purpose of the Polymesh Improvement Proposal?
+It is a list of features, which could improve the Polymesh protocol.
+To inform all stakeholders about protocol improvements.
+*Concrete on-chain actions can be submitted for approval.
+To collect user feedback.
+
+11. What is the role of the Governing Council?
+*It manages the blockchain, finds consensus, and charts the general direction of development for the blockchain.
+*It can fast-track proposals to deal with emergency fixes.
+*It manages the membership of committees and of the council itself.
+*It manages the membership of POLYx token holders.
+It makes decisions about hard forks.
+
+12. What are DID accounts in Polymesh?
+They record previous transactions.
+Domain-independent data accounts are used to store larger data fragments on-chain.
+Denoted internal driver accounts are used to act on behalf of another user when an event is triggered.
+*Distributed identifier accounts which represent on-chain users. These can be natural persons or legal entities.
+
+13. Individuals or entities can be a member in the Committees and the Governing Council at the same time. Is this true or false?
+*True
+False
+
+14. How can POLYX token holders signal support or dissent with a PIP?
+By sending a message to the Governing Council.
+*By bonding some of their POLYX to the proposal.
+By posting a message on Reddit.
+By calling a vote function with their unique identifier.
+
+
+## Quiz 2 - Quick Start
+
+1. What is the difference between POLY and POLYX?
+*POLY is the original Polymath network token, deployed on the Ethereum Mainnet, and POLYX is the Polymesh network token.
+None, both are the same.
+POLY is the token which needs to be used on the Polymesh Testnet, while POLYX is the token for the Polymesh Mainnet.
+POLYX is the successor of POLY.
+
+2. Who needs to pass the CDD verification?
+Only members of the Governing Council need the CDD verification
+The CDD verification is only needed on the mainnet.
+*Every Polymesh account must pass a minimal identity verification before the account is permitted to transact with regulated securities on the network.
+Stakeholders must pass the CDD verification.
+
+
+## Quiz 3 - Quick Start
+
+1. As well as symbol reservation and origination, what else can be done with security tokens?
+*The issuance of assets
+*Token ownership transfers
+*The initial distribution of assets
+
+2. What is the ticker registration on Polymesh for?
+The ticker will continuously update the token value.
+The ticker forwards on-chain events.
+A ticker will keep track of the token supply.
+*Registering a ticker ensures no other user can issue an asset with that ticker whilst the registration is valid.
+
+3. Who is the token owner?
+Token owners are the holders of the issued tokens.
+*The token owner is the entity that can mint new tokens representing the asset.
+Tokens are jointly owned by everyone on the Polymesh network.
+No one owns the tokens. They are free spirits.
+
+4. Which elements determine ownership of a token's underlying asset?
+*The sum of balances of an individual investor's account(s) of said asset.
+*The total supply of tokens representing ownership of said asset.
+Custody. Whoever has control of the token is its de facto owner.
+The network owns everything.
+
+5. Why does Token Studio ask for your name although it is clearly displayed in your wallet?
+*Token Studio can see the account but cannot know the name stored in the wallet or the information that was provided to the customer due diligence service provider.
+Token Studio asks for an additional authentication for security reasons.
+You can and should use a pseudonym when using Token Studio.
+Token Studio only stores this information in memory.
+
+6. Thinking of secondary keys: Alice, as an ACME representative, needs a key for signing. How could ACME go about it?
+ACME can create a key for this purpose and give it to Alice.
+Only Alice can assign and sign a key.
+Alice can create a key and have it signed by ACME.
+*ACME can create a key and give the public portion to ACME. ACME can assign signing authority and permissions to this key.
+
+7. Which of the following statements are true?
+*Accounts can delegate authority to other users using secondary keys.
+*Users can assign keys that belong to other users to their own account, but only if the owners of those keys (who exclusively hold the private keys) consent to the assignment.
+
+
+## Quiz 4 - Distribute Assets
+
+1. What is an instruction in Polymesh?
+An official notice to perform an action.
+A call to a blockchain function.
+It is similar to a transaction in general-purpose blockchains.
+*An indivisible, or atomic, operation when distributing on Polymesh.
+
+2. When it comes to distribution, what is required of recipients when receiving shares?
+*The instruction won't execute, but remains in a pending state.
+The instruction executes but only for the recipients who fulfil the compliance requirements.
+
+3. What is the purpose of checkpoints?
+Checkpoints are integral to the network data backup process.
+*Establish ownership at a specific point in time.
+Checkpoints reconcile accounts at regular intervals.
+Disaster recovery includes informal check-ins using social media.
+
+4. Why does the Polymesh Unique ID System record investor uniqueness claims?
+To enforce the investor-uniqueness property which consensus relies upon.
+To personalise the user experience.
+This feature will be removed in future versions of the network.
+*To detect cases where an individual attempts to use multiple accounts to evade reporting requirements.
+
+5. Why can users transfer assets between their portfolios in one step?
+Because a one-step user experience is a superior to two-steps. Eventually, all transfers will be one-step.
+Not true; All transfers require both the sender and the receiver to affirm the transaction.
+*As there is no change of ownership, the transfer does not need to be accepted.
+
+
+Quiz 5 - Settlement
+
+1. What does settlement mean in Polymesh?
+*An exchange or transfer of securities between accounts. 
+Disputes are formally settled via the on-chain governance.
+
+2. What is a leg in Polymesh?
+Transactions are bi-pedal and use their legs to move about.
+Transaction processing is a journey, subdivided into stages, or legs.
+*A portion, or step, of an instruction.
+
+3. Which of the following is a valid leg description?
+*Alice sends 100 ACME shares from her trading portfolio to Bob's default portfolio.
+*Alice swaps 100 ACME shares for 100 US dollar tokens.
+*Alice offers 100 ACME shares at 1 US dollar per share.
+
+4. How is double-booking in another instruction's leg be avoided?
+New instructions can be created only after previous instructions have been settled.
+*An asset's relevant quantity is committed when the owner affirms a leg.
+Assets are frozen while pending instructions exist.
+Double-booking is not a concern because affirmed instructions can still fail.
+
+5. Thinking of Polymesh's instructions as multiparty transactions, which of these statements are true?
+Instructions are settled after a majority of the parties agree that it's the right thing to do.
+Multiparty transactions are not necessary because everyone acts independently.
+*An instruction cannot be created without legs, and legs cannot be created outside of instructions.
+*After it has been created, an instruction cannot be modified.
+
+6. Why can an instruction stay in a pending status after it is affirmed by all parties?
+*The instruction will remain in a pending state until ACME's compliance rules are satisfied.
+Network consensus will determine if the transaction is allowable.
+The transaction will not proceed without regulatory approval.
+All parties must also be in good standing with the validators.
+
+7. What is an atomic execution?
+*That the instructions are always either completely executed or not executed at all.
+*There is no case or interval when a transaction is partially executed.
+The cryptography is designed to repel theorised quantum computer attacks.
+The system will operate for 100 years between recharges.
+Any small part of the instruction can execute, independent of the others.
+
+8. Which of these attributes of a custodial relationship are true?
+*A custodian doesn't own the securities on-chain, the beneficiary still does.
+A custodial relationship can not be revoked.
+Custodial transfers are semi-privat and surveillance resistent.
+Custodians appear as owners on the chain. They are bound to clients by traditional legal structures.
+
+9. Does a venue creator control the accounts allowed to affirm instructions in its venue?
+False
+*True
+
+10. What is a pre-authorisation in Polymesh?
+A signature that validates at least one future instruction.
+A signature that validates any number of future instructions.
+*A signature that validates exactly one future instruction.
+There are no pre-authorisations.
+
+11. What are benefits of separating assets into logical portfolios within a single account?
+*Assets across portfolios can have different balances while being connected to the same account.
+*Permissions can be delegated by portfolio.
+*Custody can be granted by portfolio.
+*Asset partitioning into logical portfolios facilitates good asset management.
+
+12. What does beneficial ownership mean in Polymesh?
+The benefits of ownership can be severed from actual ownership and traded separately.
+*Beneficial ownership is always held by the beneficiary's account and is the base criteria to participate in corporate actions.
+There is no beneficial ownership. There is only ownership.
+It's like regular ownership, but with benefits.
+
+
+## Quiz 6 - Corporate Actions
+
+1. Who can execute corporate actions on Polymesh?
+*Only corporate action agents
+Corporate action agents and custodians
+Only custodians
+Token owners
+
+2. What is the purpose of the so-called checkpoints used in corporate actions?
+*Checkpoints are points in time at which holdings are assessed.
+Checkpoints are not used in corporate actions.
+Corporate actions are external to the system.
+When traders reach the checkpoint, their time is assessed and they rest until the race restarts.
+
+3. In which way is on-chain voting power for corporate ballots calculated?
+Each holder of one or more tokens gets exactly one vote.
+Holders vote for electoral representatives by jurisdiction. The representatives elect executives with decision-making capacity.
+The system is deterministic and has no need for on-chain voting.
+*Voting power is calculated based on the tokens owned by the targeted investors at the time of the vote checkpoint.
+
+4. What is ranked-choice voting (RCV)?
+Voting for choice of rank.
+*A voting system in which voters rank their choices by preference.
+An experimental voting process that has never been implemented successfully.
+Voting power is calculated according to one's rank in the organisation.
+
+5. Which is the correct function to change the title and motions to vote on in ballot configurations?
+*change_meta
+change_title
+change_title_motion
+
+6. Who can initiate corporate actions on behalf of ACME?
+Anyone
+Any token holder
+Only the token owner
+*The token owner itself, or an appointed corporate action agent
+Managers who work for ACME
+
+
+## Quiz 7 - CDD and KYC
+
+1. Generally, what is the difference between a CDD process and a KYC process in Polymesh?
+*CDD is a minimal KYC process that is enforced at the network level, while KYC usually refers to a bespoke process that each security token owner tailors to their own requirements.
+Customer due diligence is thorough and normalised across the system, whereas KYC collects additional details that are needed in specialised cases.
+There is no difference.
+KYC is mandatory while CDD is optional at the discretion of each user.
+
+2. Can anonymous parties receive or send security tokens on Polymesh?
+*No, each user is required to complete a customer due diligence (CDD) process that links their account to an identifiable person.
+Yes, Polymesh addresses are anonymous.
+Yes, but anonymous Polymesh addresses can potentially be unmasked through metadata analysis.
+No, the network is fully transparent and portfolio details are observable by all interested parties.
+
+3. What is the difference between asset owners and KYC providers regarding KYC compliance processes?
+Every asset owner is a KYC provider.
+There is no difference.
+*Asset owners are responsible for their own compliance while KYC providers execute services to help them ensure that compliance.
+KYC providers assume liabilities on behalf of asset owners.
+
+4. How do asset owners perform compliance checks?
+Polymesh provides database queries, document collection, and bio-metric user authentication.
+Asset owners do not ensure compliance. That is a network responsibility.
+Compliance is pre-confirmed before users interact with each other.
+*The method is at their own discretion because compliance is their own responsibility.
+
+5. What happens to tokens acquired by users who don't conform to the owner's compliance policy?
+Non-conforming transfers are rejected.
+*Transfers remain in a pending status until compliance is verified or the transfer is canceled.
+The tokens are seized and the transaction is reported to the appropriate authorities.
+The tokens are destroyed and the users are immediately ejected from the network.
+
+6. Are agreements between originators and KYC providers, and the verification processes on-chain or off-chain?
+Off-chain agreements with on-chain processes
+*Off-chain agreements and off-chain processes that produce on-chain attestations as a results of the process
+Entirely off-chain
+Entirely on-chain
+
+7. Which of the following statements is/are true?
+*All owners of a given asset passed the KYC process that was in force at the time.
+*Every asset on Polymesh can have a unique KYC policy.
+Non-compliant asset ownership is not possible on Polymesh.
+Issuers are relieved of the burden of assessing and ensuring their compliance obligations.
