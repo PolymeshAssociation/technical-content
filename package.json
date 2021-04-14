@@ -30,6 +30,8 @@
     "gatsby-remark-katex": "^3.10.0",
     "gatsby-theme-apollo-docs": "4.5.12",
     "gatsby-transformer-remark": "~2.15.0",
+    "h5p-standalone": "^2.2.0",
+    "jquery": "^3.5.1",
     "katex": "^0.12.0",
     "puppeteer": "^5.5.0",
     "react": "16.14.0",
