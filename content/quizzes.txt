@@ -67,11 +67,11 @@ To collect user feedback.
 *It manages the membership of POLYx token holders.
 It makes decisions about hard forks.
 
-12. What are Decentralized Identifiers in Polymesh?
+12. What are Decentralised Identifiers in Polymesh?
 They record previous transactions.
 Domain-independent data accounts are used to store larger data fragments on-chain.
 Denoted internal driver accounts are used to act on behalf of another user when an event is triggered.
-*Distributed identifier accounts which represent on-chain users. These can be natural persons or legal entities.
+*Decentralised identifier accounts which represent on-chain users. These can be natural persons or legal entities.
 
 13. An individual or an entity can be a member in the Committees and the Governing Council at the same time. Is this true or false?
 *True
@@ -174,7 +174,7 @@ Not true; All transfers require both the sender and the receiver to affirm the t
 Quiz 5 - Settlement
 
 1. What does settlement mean in Polymesh?
-*An exchange or transfer of securities between accounts. 
+*An exchange or transfer of securities between accounts.
 Disputes are formally settled via the on-chain governance.
 
 2. What is a leg in Polymesh?
@@ -215,7 +215,7 @@ Any small part of the instruction can execute, independent of the others.
 8. Which of these attributes of a custodial relationship are true?
 *A custodian doesn't own the securities on-chain, the beneficiary still does.
 A custodial relationship can not be revoked.
-Custodial transfers are semi-private and surveillance resistent.
+Custodial transfers are semi-private and surveillance-resistant.
 Custodians appear as owners on the chain. They are bound to clients by traditional legal structures.
 
 9. Does a venue creator control the accounts allowed to affirm instructions in its venue?
