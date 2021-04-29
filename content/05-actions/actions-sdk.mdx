@@ -5,9 +5,321 @@ slug: /actions/sdk
 tags: technical
 ---
 
-## COMING SOON
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+import HighlightBox from "../../src/components/HighlightBox"
 
-![Coming soon](images/20_coming_soon.png)
+In the previous exercise, after a good quarter, ACME distributed a simple dividend, and Alice collected her share of the dividend tokens, in this case ALCY.
+
+The Polymesh Dashboard is constructed with the SDK. The SDK supports every process you see there, and more. Use the SDK to build integrations with internal systems. Fortunately, the SDK's methods are intelligible when you know what it is you intend to do.
+
+## Agent permissioning
+
+By default, the corporate actions (CA) agent is the token owner, or in our example ACME, represented by `apiCeo`:
+
+<MultiCodeBlock>
+
+```typescript
+const apiCeo: Polymesh = await Polymesh.connect({
+    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "accountMnemonic": "word31 word32 ..."
+});
+const acme: CurrentIdentity = await apiCeo.getCurrentIdentity();
+const acmeDid: string = acme.did;
+```
+
+```javascript
+const apiCeo = await Polymesh.connect({
+    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "accountMnemonic": "word31 word32 ..."
+});
+const acme = await apiCeo.getCurrentIdentity();
+const acmeDid = acme.did;
+```
+
+</MultiCodeBlock>
+
+Nonetheless, we are going to set up a separate account. So let's prepare it:
+
+<MultiCodeBlock>
+
+```typescript
+const apiCaAgent: Polymesh = await Polymesh.connect({
+    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "accountMnemonic": "word61 word62 ..."
+});
+const caAgent: CurrentIdentity = await apiCaAgent.getCurrentIdentity();
+const caAgentDid: string = caAgent.did;
+```
+
+```javascript
+const apiCaAgent = await Polymesh.connect({
+    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "accountMnemonic": "word61 word62 ..."
+});
+const caAgent = await apiCaAgent.getCurrentIdentity();
+const caAgentDid = caAgent.did;
+```
+
+</MultiCodeBlock>
+
+In our example, Alice the CEO is the one that is going to appoint the CA agent on the ACME security token.
+
+<MultiCodeBlock>
+
+```typescript
+const acmeToken: SecurityToken = await apiCeo.getSecurityToken({
+    "ticker": "ACME"
+});
+const corporateActions: CorporateActions = acmeToken.corporateActions;
+const setAgentQueue: TransactionQueue<void> = await corporateActions.setAgent({
+    "target": caAgentDid
+});
+await setAgentQueue.run();
+```
+
+```javascript
+const acmeToken = await apiCeo.getSecurityToken({
+    "ticker": "ACME"
+});
+const corporateActions = acmeToken.corporateActions;
+const setAgentQueue = await corporateActions.setAgent({
+    "target": caAgentDid
+});
+await setAgentQueue.run();
+```
+
+</MultiCodeBlock>
+
+Is that all? No, as always, the target has to accept the responsibility, which is encapsulated in an authorisation request. So back to the `apiCaAgent` computer:
+
+<MultiCodeBlock>
+
+```typescript
+const caAuthorizations: AuthorizationRequest[] = await caAgent.authorizations.getReceived({
+    "type": AuthorizationType.TransferCorporateActionAgent,
+    "includeExpired": false
+});
+const acmeCaAuthorization: AuthorizationRequest = caAuthorizations.find(
+    (pendingAuthorization: AuthorizationRequest) => {
+        return pendingAuthorization.issuer.did === acmeDid;
+    });
+const acceptQueue: TransactionQueue<void> = await acmeCaAuthorization.accept();
+await acceptQueue.run();
+```
+
+```javascript
+const caAuthorizations = await caAgent.authorizations.getReceived({
+    "type": "TransferCorporateActionAgent",
+    "includeExpired": false
+});
+const acmeCaAuthorization = caAuthorizations.find(
+    (pendingAuthorization) => {
+        return pendingAuthorization.issuer.did === acmeDid;
+    });
+const acceptQueue = await acmeCaAuthorization.accept();
+await acceptQueue.run();
+```
+
+</MultiCodeBlock>
+
+With this done, `apiCaAgent` now allows the agent to act as ACME's corporate actions agent.
+
+If ACME wanted to remove the CA agent, then, it would need a call to `acmeToken.corporateActions.removeAgent()`.
+
+## Checkpointing
+
+As the dividend is distributed as per each investor's holding, Polymesh needs a set value for everyone. That's the role of a checkpoint. Let's create it before the company announces publicly that it will distribute a dividend. With `apiCeo`:
+
+<MultiCodeBlock>
+
+```typescript
+const checkpointQueue: TransactionQueue<Checkpoint> = await acmeToken.checkpoints.create();
+const checkpoint: Checkpoint = await checkpointQueue.run();
+const preDividendCheckpointId: string = checkpoint.id.toString(10);
+```
+
+```javascript
+const checkpointQueue = await acmeToken.checkpoints.create();
+const checkpoint = await checkpointQueue.run();
+const preDividendCheckpointId = checkpoint.id.toString(10);
+```
+
+</MultiCodeBlock>
+
+## Prefunding
+
+Here we assume that the CA agent already has been funded the $5000 tokens that they will distribute as part of the dividend. If you are working on the Alcyone test net, you can use ALCY tokens as a placeholder for dollars, for instance. To get ALCY, you can head to the Token Studio and participate in ALCY's free Security Token Offering, in effect tap its faucet.
+
+For the purpose of this exercise, we assume that the CA agent has been funded on a `NumberedPortfolio` created for the purposes of managing ACME's corporate actions.
+
+<MultiCodeBlock>
+
+```typescript
+const acmeCAFolioQueue: TransactionQueue<NumberedPortfolio> = await caAgent.portfolios.create({
+    "name": "ACME Corporate Actions"
+});
+const acmeCAFolio: NumberedPortfolio = await acmeCAFolioQueue.run();
+```
+
+```javascript
+const acmeCAFolioQueue = await caAgent.portfolios.create({
+    "name": "ACME Corporate Actions"
+});
+const acmeCAFolio = await acmeCAFolioQueue.run();
+```
+
+</MultiCodeBlock>
+
+<!-- My ALCY STO https://app.polymesh.live/?rpc=wss%3A%2F%2Falcyone-rpc.polymesh.live#/explorer/query/0xfd37d9b1fb481bcb01cacfc6ec1ca3f417df05f80a65fead4fa1990686302af2 -->
+
+## Dividend action preparing
+
+With the checkpoint done and the funds allocated, it is now time to prepare the action, on the CA agent's computer, with `apiCaAgent`. Because we are on another computer, we need to reinstantiate some elements:
+
+<MultiCodeBlock>
+
+```typescript
+const acmeToken: SecurityToken = await apiCaAgent.getSecurityToken({
+    "ticker": "ACME"
+});
+const allCheckpoints: CheckpointWithCreationDate[] = await acmeToken.checkpoints.get();
+const preDividendCheckpoint: Checkpoint = allCheckpoints
+    .map((checkpointInfo: CheckpointWithCreationDate) => checkpointInfo.checkpoint)
+    .find((checkpoint: Checkpoint) => {
+        return checkpoint.id.toString(10) === preDividendCheckpointId;
+    });
+```
+
+```javascript
+const acmeToken = await apiCaAgent.getSecurityToken({
+    "ticker": "ACME"
+});
+const allCheckpoints = await acmeToken.checkpoints.get();
+const preDividendCheckpoint = allCheckpoints
+    .map((checkpointInfo) => checkpointInfo.checkpoint)
+    .find((checkpoint) => {
+        return checkpoint.id.toString(10) === preDividendCheckpointId;
+    });
+```
+
+</MultiCodeBlock>
+
+With that, we can create the action:
+
+<MultiCodeBlock>
+
+```typescript
+const distributions: Distributions = acmeToken.corporateActions.distributions;
+const dividendActionQueue: TransactionQueue<DividendDistribution> = await distributions.configureDividendDistribution({
+    "description": "2021 First Quarter",
+    "declarationDate": new Date(), // Here declared now, but can be any date.
+    "checkpoint": preDividendCheckpoint, // Good thing we created it. If not, it would create it automatically.
+    "paymentDate": new Date(2021, 4, 2, 23, 59), // Or whichever point at which ACME holders can claim their dividend.
+    "originPortfolio": acmeCAFolio, // Another well prepared item.
+    "currency": "ALCY",
+    "maxAmount": new BigNumber("5000"), // This determines what will be locked.
+    "perShare": new BigNumber("0.25"), // Unlike with the Token Studio, you have to calculate it here.
+    "expiryDate": new Date(2022, 4, 1, 23, 59), // Sufficiently far in the future that holders have time to claim.
+    "targets": {
+        identities: [], // Nobody is excluded, i.e. everyone can claim a dividend.
+        treatment: TargetTreatment.Exclude;
+    },
+    "taxWithholdings": [], // Let's keep it simple.
+});
+const dividendAction: DividendDistribution = await dividendActionQueue.run();
+const dividendActionId: string = dividendAction.id.toString(10);
+```
+
+```javascript
+const distributions = acmeToken.corporateActions.distributions;
+const dividendActionQueue = await distributions.configureDividendDistribution({
+    "description": "2021 First Quarter",
+    "declarationDate": new Date(), // Here declared now, but can be any date.
+    "checkpoint": preDividendCheckpoint, // Good thing we created it. If not, it would create it automatically.
+    "paymentDate": new Date(2021, 4, 2, 23, 59), // Or whichever point at which ACME holders can claim their dividend.
+    "originPortfolio": acmeCAFolio, // Another well prepared item.
+    "currency": "ALCY",
+    "maxAmount": new BigNumber("5000"), // This determines what will be locked.
+    "perShare": new BigNumber("0.25"), // Unlike with the Token Studio, you have to calculate it here.
+    "expiryDate": new Date(2022, 4, 1, 23, 59), // Sufficiently far in the future that holders have time to claim.
+    "targets": {
+        identities: [], // Nobody is excluded, i.e. everyone can claim a dividend.
+        treatment: TargetTreatment.Exclude;
+    },
+    "taxWithholdings": [], // Let's keep it simple.
+});
+const dividendAction = await dividendActionQueue.run();
+const dividendActionId = dividendAction.id.toString(10);
+```
+
+</MultiCodeBlock>
+
+For the avoidance of doubt, dividend claimants can collect their dividends as per their holding of ACME at the time of the checkpoint, not at the time they claim the dividend.
+
+## Dividend claiming
+
+Alice the individual is one of the ACME holders, and as such, at, and after, the payment date, she is entitled to withdraw her dividend. If she has not done it before, she needs to publish an investor uniqueness claim with regard to ALCY. With that, she first needs to reinstantiate the dividend action in the context of her `apiAlice`:
+
+<MultiCodeBlock>
+
+```typescript
+const acmeToken: SecurityToken = await apiAlice.getSecurityToken({
+    "ticker": "ACME"
+});
+const acmeDistributions: DistributionWithDetails[] = await acmeToken.corporateActions.distributions.get();
+const acmeDividend: DividendDistribution = acmeDistributions
+    .map((distributionInfo: DistributionWithDetails) => distributionInfo.distribution)
+    .find((distribution: DividendDistribution) => {
+        return distribution.id.toString(10) === dividendActionId;
+    });
+const claimQueue: TransactionQueue<void> = await acmeDividend.claim(); // From the context of Alice, which is why we used apiAlice
+await claimQueue.run();
+```
+
+```javascript
+const acmeToken = await apiAlice.getSecurityToken({
+    "ticker": "ACME"
+});
+const acmeDistributions = await acmeToken.corporateActions.distributions.get();
+const acmeDividend = acmeDistributions
+    .map((distributionInfo) => distributionInfo.distribution)
+    .find((distribution) => {
+        return distribution.id.toString(10) === dividendActionId;
+    });
+const claimQueue = await acmeDividend.claim(); // From the context of Alice, which is why we used apiAlice
+await claimQueue.run();
+```
+
+</MultiCodeBlock>
+
+With that, Alice should now have her ALCY tokens in her default portfolio.
+
+## Reclaiming unclaimed funds
+
+What if there are some funds left at the expiry? This can happen if a recipient does not care about it or lost a private key, for instance. Instead of leaving stranded funds indefinitely, the CA agent can reclaim them. Since this would happen at a later date, the agent has to reinstantiate the action like Alice did, but in the context of `apiCaAgent`:
+
+<MultiCodeBlock>
+
+```typescript
+const acmeDividend: DividendDistribution = ...; // As for Alice
+```
+
+```javascript
+const acmeDividend = ...; // As for Alice
+```
+
+</MultiCodeBlock>
+
+## Conclusion
+
+We saw that the lifecycle of a dividend corporate action includes:
+
+* Appointing a corporate actions agent.
+* Creating a checkpoint, either explicitly, or implicitly.
+* Collecting and placing the dividend funds in one portfolio of the CA agent's.
+* Publishing the dividen action itself.
+* Letting the recipients claim on their own.
+* Reclaiming any unclaimed funds at expiry.
 
 ## Links
 
