@@ -301,20 +301,14 @@ What if there are some funds left at the expiry? This can happen if a recipient 
 <MultiCodeBlock>
 
 ```typescript
-const acmeDividend: DividendDistribution = ...; // Just like Alice did
-const reclaimQueue: TransactionQueue<void> = await acmeDividend.reclaimFunds();
-await reclaimQueue.run();
+const acmeDividend: DividendDistribution = ...; // As for Alice
 ```
 
 ```javascript
-const acmeDividend = ...; // Just like Alice did
-const reclaimQueue = await acmeDividend.reclaimFunds();
-await reclaimQueue.run();
+const acmeDividend = ...; // As for Alice
 ```
 
 </MultiCodeBlock>
-
-For the avoidance of doubt, the CA agent that can reclaim is the agent that created the action. If the token owner changed CA agent in the mean time, it is the old CA agent who can reclaim.
 
 ## Conclusion
 
