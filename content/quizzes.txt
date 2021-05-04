@@ -214,7 +214,7 @@ Any small part of the instruction can execute, independent of the others.
 
 8. Which of these attributes of a custodial relationship are true?
 *A custodian doesn't own the securities on-chain, the beneficiary still does.
-A custodial relationship can not be revoked.
+*Only the custodian can revoke their custodianship in order to protect the security of assets.
 Custodial transfers are semi-private and surveillance-resistant.
 Custodians appear as owners on the chain. They are bound to clients by traditional legal structures.
 
