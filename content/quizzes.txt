@@ -64,7 +64,7 @@ To collect user feedback.
 *It manages the blockchain, finds consensus, and charts the general direction of development for the blockchain.
 *It can fast-track proposals to deal with emergency fixes.
 *It manages the membership of committees and of the council itself.
-*It manages the membership of POLYx token holders.
+It manages the membership of POLYx token holders.
 It makes decisions about hard forks.
 
 12. What are Decentralised Identifiers in Polymesh?
