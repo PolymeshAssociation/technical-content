@@ -1,3 +1,5 @@
+This is just a full copy of the quiz content to allow a quick review and index. The actual quiz questions are stored in the h5p containers in /static/h5p/
+
 ## Quiz 1 - Introduction to Polymesh
 
 1. What is the main difference between Polymesh's approach and that of a general-purpose blockchain, such as Ethereum?
