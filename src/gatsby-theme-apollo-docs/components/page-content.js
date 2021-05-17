@@ -9,8 +9,8 @@ import {IconGithub} from '@apollo/space-kit/icons/IconGithub';
 import {IconStar} from '@apollo/space-kit/icons/IconStar';
 import {PageNav, breakpoints, colors} from 'gatsby-theme-apollo-core';
 import {ReactComponent as SpectrumLogo} from '../assets/spectrum.svg';
-import {withPrefix} from 'gatsby';
-import FeedbackBox from '../../components/FeedbackBox'
+import {withPrefix, useStaticQuery} from 'gatsby';
+import {ReactComponent as IconClockSVG} from "../assets/fa-clock-light.svg";
 
 const Wrapper = styled.div({
   display: 'flex',
@@ -177,10 +177,50 @@ const EditLink = styled.div({
   }
 });
 
+const TopInfoBar = styled.div`
+  display: inline-flex;
+  margin-bottom: 20px;
+`
+
+const SVGIconWrapper = styled.div`
+  width: 20px;
+  margin-right: 12px;
+`
+
 export default function PageContent(props) {
   const contentRef = useRef(null);
   const [imagesToLoad, setImagesToLoad] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(0);
+
+  // fetch extra data (readingtime)
+  const extraData = useStaticQuery(
+    graphql`
+      {
+        allFile {
+          nodes {
+            relativePath
+            childMdx {
+              fields {
+                readingTime {
+                  minutes
+                }
+              }
+            }
+          }
+        }
+      }
+    `
+  );
+
+  // We are using a static query to get a list of all reading times (build time!), to then filter down to the reading time we are actually looking for. This will run once for each page (potential build slowdown)! The field is being added by a transformer plugin, see gatsby-config module "gatsby-plugin-readingtime".
+  const childMdx = extraData.allFile.nodes[0].childMdx
+  //.filter(node => "https://git.b9lab.com/client-projects/polymath-developer-portal/portal-website/tree/main/content/" + node.relativePath == props.githubUrl)
+
+  let readingTime = 0;
+  if (childMdx) {
+    readingTime = childMdx.fields.readingTime.minutes;
+  }
+  
 
   useMount(() => {
     if (props.hash) {
@@ -236,6 +276,12 @@ export default function PageContent(props) {
             'api-ref': props.apiReference
           })}
         >
+          <TopInfoBar>
+            <SVGIconWrapper>
+              <IconClockSVG/>
+            </SVGIconWrapper>
+            Reading Time: {Math.ceil(readingTime)} min
+          </TopInfoBar>
           {props.children}
         </BodyContent>
         <EditLink>{editLink}</EditLink>
