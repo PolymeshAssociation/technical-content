@@ -33,6 +33,7 @@
     "h5p-standalone": "^2.2.0",
     "jquery": "^3.5.1",
     "katex": "^0.12.0",
+    "loadjs": "^4.2.0",
     "puppeteer": "^5.5.0",
     "react": "16.14.0",
     "react-dom": "16.14.0"
