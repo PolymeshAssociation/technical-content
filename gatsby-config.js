@@ -161,5 +161,23 @@ module.exports = {
         routeChangeEventName: "devportal-navigate",
       },
     },
+    {
+      resolve: "gatsby-remark-reading-time"
+    },
+    {
+      resolve: `gatsby-plugin-readingtime`,
+      options: {
+        config: { 
+          // configuration for reading-time package https://github.com/ngryman/reading-time
+        },
+        types: {
+          // Key: GraphQL Type to add reading times to, Value: Resolver function takes source node of Defined GraphQL type and returns content to be processed.
+          mdx: source => {
+            const { blocks } = source;
+            return blocks.map(block => block.saveContent).join('');
+          }, 
+        },
+      }
+    }
   ]
 };
