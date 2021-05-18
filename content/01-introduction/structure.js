@@ -9,5 +9,5 @@ module.exports = [
     `${here}intro-identity`,
     `${here}intro-governance`,
     `${here}intro-networks`,
-    // `${here}intro-quiz`
+    `${here}intro-quiz`
 ];
