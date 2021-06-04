@@ -60,6 +60,8 @@ async function onCreateNode(
     }
 
     let category;
+    const fileName = parent.name;
+    const outputDir = 'social-cards-custom';
 
     for (const key in sidebarCategories) {
       if (key !== 'null') {
@@ -73,6 +75,24 @@ async function onCreateNode(
     }
 
     const {title, sidebar_title, api_reference} = node.frontmatter;
+
+    createPrinterNode({
+      id: `${node.id} >>> Printer custom`,
+      fileName,
+      outputDir,
+      data: {
+        title,
+        subtitle: subtitle || siteName,
+        category
+      },
+      component: require.resolve('./src/gatsby-theme-apollo-docs/components/social-card.js')
+    });
+
+    actions.createNodeField({
+      name: 'image-custom',
+      node,
+      value: path.join(outputDir, fileName + '.png')
+    });
 
     if (page_subsite) {
       actions.createNodeField({
