@@ -175,9 +175,9 @@ export default class FeedbackBox extends React.Component {
       <FeedbackBoxWrapper>
         Rate this Page
         <FeedbackBoxContainer className={this.state.showFeedbackContainer ? 'visible' : ''}>
-          <button onClick={() => showFeedbackForm("bad")}>
+          <button onClick={() => showFeedbackForm("good")}>
             <SmileyBox>
-              <SmileyIcon src={IconBad} alt="icon frown" />
+              <SmileyIcon src={IconGood} alt="icon smile" />
             </SmileyBox>
           </button>
           <button onClick={() => showFeedbackForm("medium")}>
@@ -185,9 +185,9 @@ export default class FeedbackBox extends React.Component {
               <SmileyIcon src={IconMedium} alt="icon meh" />
             </SmileyBox>
           </button>
-          <button onClick={() => showFeedbackForm("good")}>
+          <button onClick={() => showFeedbackForm("bad")}>
             <SmileyBox>
-              <SmileyIcon src={IconGood} alt="icon smile" />
+              <SmileyIcon src={IconBad} alt="icon frown" />
             </SmileyBox>
           </button>
         </FeedbackBoxContainer>
