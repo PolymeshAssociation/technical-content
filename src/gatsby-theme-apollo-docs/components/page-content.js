@@ -9,8 +9,8 @@ import {IconGithub} from '@apollo/space-kit/icons/IconGithub';
 import {IconStar} from '@apollo/space-kit/icons/IconStar';
 import {PageNav, breakpoints, colors} from 'gatsby-theme-apollo-core';
 import {ReactComponent as SpectrumLogo} from '../assets/spectrum.svg';
-import {withPrefix, useStaticQuery} from 'gatsby';
-import {ReactComponent as IconClockSVG} from "../assets/fa-clock-light.svg";
+import {withPrefix} from 'gatsby';
+import FeedbackBox from '../../components/FeedbackBox'
 
 const Wrapper = styled.div({
   display: 'flex',
@@ -177,55 +177,10 @@ const EditLink = styled.div({
   }
 });
 
-const TopInfoBar = styled.div`
-  display: inline-flex;
-  margin-bottom: 20px;
-`
-
-const SVGIconWrapper = styled.div`
-  width: 20px;
-  margin-right: 12px;
-`
-
 export default function PageContent(props) {
   const contentRef = useRef(null);
   const [imagesToLoad, setImagesToLoad] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(0);
-
-  // fetch extra data (readingtime)
-  const extraData = useStaticQuery(
-    graphql`
-      {
-        allFile {
-          nodes {
-            relativePath
-            childMdx {
-              fields {
-                readingTime {
-                  minutes
-                }
-                slug
-              }
-            }
-          }
-        }
-      }
-    `
-  );
-
-  // We might see an error on readme.md and other .md files, hence we try
-  const readingTime = () => {
-    try {
-      return extraData.allFile.nodes.filter(node => node.childMdx ? node.childMdx.fields.slug == props.pathname : false)[0].childMdx.fields.readingTime.minutes;
-    } catch (error) {
-      if (props.pathname != "/readme/") {
-        console.log("warn: error mapping extraData for " + props.pathname +":");
-        console.log(error);
-      }
-      return 0;
-    }
-  }
-  
 
   useMount(() => {
     if (props.hash) {
@@ -281,12 +236,6 @@ export default function PageContent(props) {
             'api-ref': props.apiReference
           })}
         >
-          <TopInfoBar>
-            <SVGIconWrapper>
-              <IconClockSVG/>
-            </SVGIconWrapper>
-            Reading Time: {Math.ceil(readingTime())} min
-          </TopInfoBar>
           {props.children}
         </BodyContent>
         <EditLink>{editLink}</EditLink>
@@ -294,6 +243,7 @@ export default function PageContent(props) {
           prevPage={props.pages[pageIndex - 1]}
           nextPage={props.pages[pageIndex + 1]}
         />
+        <FeedbackBox/>
       </InnerWrapper>
       <Aside>
         {props.headings.length > 0 && (
