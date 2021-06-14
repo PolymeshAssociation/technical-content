@@ -10,6 +10,7 @@ import {IconStar} from '@apollo/space-kit/icons/IconStar';
 import {PageNav, breakpoints, colors} from 'gatsby-theme-apollo-core';
 import {ReactComponent as SpectrumLogo} from '../assets/spectrum.svg';
 import {withPrefix} from 'gatsby';
+import FeedbackBox from '../../components/FeedbackBox'
 
 const Wrapper = styled.div({
   display: 'flex',
@@ -242,6 +243,7 @@ export default function PageContent(props) {
           prevPage={props.pages[pageIndex - 1]}
           nextPage={props.pages[pageIndex + 1]}
         />
+        <FeedbackBox/>
       </InnerWrapper>
       <Aside>
         {props.headings.length > 0 && (
