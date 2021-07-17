@@ -175,7 +175,7 @@ export default function Template(props) {
         description={frontmatter.description || description}
         siteName={title}
         baseUrl={baseUrl}
-        image={fields.image}
+        image={fields.image_custom}
         twitterHandle={twitterHandle}
       />
       <StyledContentWrapper>

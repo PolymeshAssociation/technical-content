@@ -28,6 +28,7 @@
     "gatsby-remark-images": "^3.11.0",
     "gatsby-remark-images-medium-zoom": "^1.7.0",
     "gatsby-remark-katex": "^3.10.0",
+    "gatsby-remark-reading-time": "^1.1.0",
     "gatsby-theme-apollo-docs": "4.5.12",
     "gatsby-transformer-remark": "~2.15.0",
     "h5p-standalone": "^2.2.0",
