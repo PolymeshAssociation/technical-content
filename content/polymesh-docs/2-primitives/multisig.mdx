@@ -1,0 +1,108 @@
+---
+title: MultiSig
+description:
+slug: /polymesh-docs/primitives/multisig
+subsite: polymesh-docs
+---
+
+## Overview
+
+Instead of using an external address as a primary or secondary key on your Polymesh Identity, it is possible to use a MultiSig.
+
+MultiSig keys can specify a set of associated signers (`n` signers) or which a subset (`m` signers) must agree in order to execute an on-chain action.
+
+## Creating a MultiSig
+
+In Polymesh, MultiSigs are always created by an existing identity, and will be associated with that identity (the creator) permanently.
+
+The primary key of the creating identity can add / remove signers from the MultiSig, and must have a valid CDD claim associated with them.
+
+### Step 1 - Setting Up Accounts
+
+In this tutorial we will create a 2 of 3 MultiSig and set it as the primary key of our Polymesh identity.
+
+To begin, we create three new keys, called `ITN_ORG_MULTISIG_SIGNER_1/2/3`. In practice these can be created and secured by three different parties.
+
+![MultiSig Signers](../images/multisig/1_multisig_accounts.png)
+
+These keys can be created in the Polymesh Wallet, or using the Polymesh App (https://itn-app.polymesh.live) in the Accounts tab. We've used the latter for this tutorial.
+
+### Step 2 - Creating A MultiSig
+
+We now create the MultiSig key, by calling the `multiSig::createMultisig` extrinsic. This can only be called by a Primary Key of an existing Identity.
+
+In this tutorial, `ITN_ORG` is the Primary Key of our identity, so we use this key to submit the `createMultisig` transaction.
+
+This requires us to pass in the initial set of signers for the MultiSig, and specify how many of those signers are required to agree in order to execute a transaction. We specify the three new keys created in Step 1. here.
+
+![MultiSig Create](../images/multisig/2_create_multisig.png)
+
+Once this extrinsic has been executed, we can check for  the corresponding event which will tell us the address of the newly created MultiSig key.
+
+![MultiSig Event](../images/multisig/3_create_multisig_event.png)
+
+In this case the MultiSig has an address of `2DYhiZ....3zBivp`. You can add this to your address book in the Polymesh App to make it easier to reference in the future.
+
+![Address Book](../images/multisig/3a_address_book.png)
+
+You should now see this MultiSig account in your list of accounts in the Polymesh App, alongside its balance.
+
+![MultiSig Account](../images/multisig/4_new_multisig.png)
+
+### Step 3 - Accepting Signer Authorizations
+
+We now need to accept the authorisation to be a signer on this MultiSig from each of the three signers that we specified in Step 2.
+
+To accept these authorisations, we need to know the authorisation ID for each signer to accept. These are emitted when the MultiSig is created as events, or alternatively you can query the `identity::authorizations` storage.
+
+![Signer Authorizations](../images/multisig/8_accept_multisig_signer_event.png)
+
+Once you have the authorization ID you can call `multiSig::acceptMultisigSignerAsKey` from each of the signer accounts with the correct authorization ID (each signer will have a different authorization ID to accept).
+
+![Signer Accepting](../images/multisig/9_accept_multisig.png)
+
+NB - when accepting these authorisations, the current primary key of the creating identity will pay for the transactions.
+
+At this point your MultiSig is created, and three signing addresses have been associated with it. However your MultiSig has not been associated as a primary or secondary key with an identity yet.
+
+### Step 4 - Setting MultiSig As Primary Key
+
+In this tutorial we will rotate the Primary Key of our identity to the new MultiSig we've just created. To do this you can call the extrinsic `multiSig::makeMultisigPrimary`.
+
+![MultiSig Primary](../images/multisig/5_primary_rotate.png)
+
+Your MultiSig is now the Primary Key of your identity and as a result can hold funds (POLYX).
+
+Note that the original Primary Key (`ITN_ORG`) is no longer attached to an Identity (since it was replaced by our new MultiSig). This means that any POLYX on the key will be locked until it is attached to a new CDD'ed Identity.
+
+### Step 5 - Funding The MultiSig
+
+To fund your MultiSig you can just transfer POLYX to it like any other key.
+
+![MultiSig Fund](../images/multisig/6_fund_multisig.png)
+
+If you added the MultiSig to your Address Book, you should now see its updated balance.
+
+![MultiSig Fund](../images/multisig/7_multisig_funded.png)
+
+Since the MultiSig is the Primary Key of our identity it will need funds in order to pay for the transactions from its signers.
+
+### Step 6 - Using The MultiSig
+
+You can now go ahead and use your MultiSig to execute actions as your identity. For example, suppose we want to create a new asset, we can call `asset::createAsset`
+
+You will need to first propose this transaction from one of the signers, and then approve it from another signer (since 2 of the 3 signers must agree to execute an action).
+
+![Create Proposal](../images/multisig/13_create_proposal.png)
+
+When the first signer proposes the transaction, the corresponding event shows the proposal ID which can be used by the second signer when approving the transaction.
+
+![Proposal Event](../images/multisig/14_proposal_event.png)
+
+In this case the proposal ID is 1, which we then approve from the second signer.
+
+![Approve Proposal](../images/multisig/15_approve_proposal.png)
+
+You can now see that the `asset::createAsset` transaction is executed!
+
+![Proposal Executed](../images/multisig/16_proposal_executed.png)
