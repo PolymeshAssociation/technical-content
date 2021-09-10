@@ -22,7 +22,7 @@ const {fonts, image, logo} = preval`
   const cssPath = require.resolve('@fontsource/inter/index.css');
   const fonts = fs
     .readFileSync(cssPath, 'utf-8')
-    .replace(/\\.\\/files\\/inter-all-400-normal\\.woff/g, base64Regular);
+    .replaceAll('./files/inter-all-400-normal.woff', base64Regular);
 
   const imagePath = path.resolve(__dirname, '../assets/social-bg.jpg');
   const base64Image = fs.readFileSync(imagePath, 'base64');
