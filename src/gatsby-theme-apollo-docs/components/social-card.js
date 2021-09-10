@@ -17,12 +17,11 @@ const {fonts, image, logo} = preval`
     return 'data:application/x-font-woff;charset=utf-8;base64,' + base64Font;
   }
 
-  const base64Regular = getBase64('/inter-all-400-normal.woff');
+  // const base64Regular = getBase64('/inter-all-400-normal.woff');
 
   const cssPath = require.resolve('@fontsource/inter/index.css');
   const fonts = fs
-    .readFileSync(cssPath, 'utf-8')
-    .replaceAll('./files/inter-all-400-normal.woff', base64Regular);
+    .readFileSync(cssPath, 'utf-8');
 
   const imagePath = path.resolve(__dirname, '../assets/social-bg.jpg');
   const base64Image = fs.readFileSync(imagePath, 'base64');
