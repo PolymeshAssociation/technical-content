@@ -11,7 +11,7 @@ const OverviewVideoBoxWrapper = styled.div({
     borderBottom: "1px solid #EDEDED",
     marginBottom: "40px",
     paddingBottom: "40px",
-	marginTop: "40px",
+    marginTop: "20px",
 });
 
 const ContentWrapper = styled.div({
