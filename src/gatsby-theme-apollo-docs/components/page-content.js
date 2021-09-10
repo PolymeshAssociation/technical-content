@@ -204,7 +204,6 @@ export default function PageContent(props) {
                 readingTime {
                   minutes
                 }
-                slug
               }
             }
           }
@@ -213,17 +212,13 @@ export default function PageContent(props) {
     `
   );
 
-  // We might see an error on readme.md and other .md files, hence we try
-  const readingTime = () => {
-    try {
-      return extraData.allFile.nodes.filter(node => node.childMdx ? node.childMdx.fields.slug == props.pathname : false)[0].childMdx.fields.readingTime.minutes;
-    } catch (error) {
-      if (props.pathname != "/readme/") {
-        console.log("warn: error mapping extraData for " + props.pathname +":");
-        console.log(error);
-      }
-      return 0;
-    }
+  // We are using a static query to get a list of all reading times (build time!), to then filter down to the reading time we are actually looking for. This will run once for each page (potential build slowdown)! The field is being added by a transformer plugin, see gatsby-config module "gatsby-plugin-readingtime".
+  const childMdx = extraData.allFile.nodes[0].childMdx
+  //.filter(node => "https://git.b9lab.com/client-projects/polymath-developer-portal/portal-website/tree/main/content/" + node.relativePath == props.githubUrl)
+
+  let readingTime = 0;
+  if (childMdx) {
+    readingTime = childMdx.fields.readingTime.minutes;
   }
   
 
@@ -285,7 +280,7 @@ export default function PageContent(props) {
             <SVGIconWrapper>
               <IconClockSVG/>
             </SVGIconWrapper>
-            Reading Time: {Math.ceil(readingTime())} min
+            Reading Time: {Math.ceil(readingTime)} min
           </TopInfoBar>
           {props.children}
         </BodyContent>
