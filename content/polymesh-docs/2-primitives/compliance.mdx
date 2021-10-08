@@ -7,11 +7,9 @@ subsite: polymesh-docs
 
 ## Overview
 
-Polymesh allows asset issuers to enforce relevant compliance on their assets in real-time, through the use of claim based transfer rules, and optional additional transfer restriction smart extensions.
+Polymesh allows asset issuers to enforce relevant compliance on their assets in real-time, through the use of claim based transfer rules, and optional additional transfer restrictions.
 
 The compliance manager, implemented in the base layer of the Polymesh blockchain, provides a flexible framework to allow asset issuers to easily configure complex transfer rules based on claims that must be held by their investors.
-
-Smart extensions allow asset issuers to add additional transfer restrictions that depend on other attributes, such as the total number of investors or the amount of assets held by a particular investor.
 
 ## Claims
 
@@ -39,10 +37,12 @@ pub enum ClaimType {
     Exempted,
     /// User is Blocked.
     Blocked,
-    ///
-    InvestorZKProof,
+    /// User identity can be bounded under a `ScopeId`.
+    InvestorUniqueness,
     /// Empty type
     NoType,
+    /// New Investor uniqueness claim.
+    InvestorUniquenessV2,
 }
 ```
 
@@ -50,7 +50,7 @@ Of these, there are two "special" claims which are treated differently, which ar
 
 - `CustomerDueDiligence`: This can only be issued by trusted [CDD](./cdd) service providers and allows a user general access to the Polymesh network.
 
-- `InvestorZKProof`: These are self-issued claims (an identity makes the claim about itself) that declare any [linkage](./confidential-identity) between identities owned by the same entity investing in the same asset.
+- `InvestorUniqueness`: These are self-issued claims (an identity makes the claim about itself) that declare any [linkage](./confidential-identity) between identities owned by the same entity investing in the same asset.
 
 The remainder of the claims can be issued by anyone against any identity. Some of these claim types are parameterised with additional information relevant to the claim, for example `Jurisdiction` includes the country code of the users jurisdiction.
 
@@ -108,12 +108,9 @@ pub enum ConditionType {
     IsNoneOf(Vec<Claim>),
     /// Condition to ensure that the sender/receiver is a particular identity or primary issuance agent
     IsIdentity(TargetIdentity),
-    /// Condition to ensure that the target identity has a valid `InvestorZKProof` claim for the given
-    /// ticker.
-    HasValidProofOfInvestor(Ticker),
 }
 ```
 
-## Transfer Restriction Smart Extensions
+## Additional Transfer Restrictions
 
-In addition to the flexible claim based compliance manager, asset issuers can use transfer restriction [smart extensions](./smart-extensions) to further control the trading of their assets.
+In addition to the flexible claim based compliance manager, asset issuers can use transfer restrictions to further control the trading of their assets.
