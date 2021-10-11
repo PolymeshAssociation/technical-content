@@ -24,13 +24,10 @@ pub enum AuthorizationData<AccountId> {
     /// CDD provider's attestation to change primary key
     AttestPrimaryKeyRotation(IdentityId),
     /// Authorization to change primary key
-    RotatePrimaryKey(IdentityId),
+    RotatePrimaryKey,
     /// Authorization to transfer a ticker
     /// Must be issued by the current owner of the ticker
     TransferTicker(Ticker),
-    /// Authorization to transfer a token's primary issuance agent.
-    /// Must be issued by the current owner of the token
-    TransferPrimaryIssuanceAgent(Ticker),
     /// Add a signer to multisig
     /// Must be issued to the identity that created the ms (and therefore owns it permanently)
     AddMultiSigSigner(AccountId),
@@ -39,14 +36,15 @@ pub enum AuthorizationData<AccountId> {
     TransferAssetOwnership(Ticker),
     /// Authorization to join an Identity
     /// Must be issued by the identity which is being joined
-    JoinIdentity(Vec<Permission>),
+    JoinIdentity(Permissions),
     /// Authorization to take custody of a portfolio
     PortfolioCustody(PortfolioId),
-    /// Any other authorization
-    /// TODO: Is this used?
-    Custom(Ticker),
-    /// No authorization data
-    NoData,
+    /// Authorization to become an agent of the `Ticker` with the `AgentGroup`.
+    BecomeAgent(Ticker, AgentGroup),
+    /// Add Relayer paying key to user key
+    /// Must be issued by the paying key.
+    /// `AddRelayerPayingKey(user_key, paying_key, polyx_limit)`
+    AddRelayerPayingKey(AccountId, AccountId, Balance),
 }
 ```
 
