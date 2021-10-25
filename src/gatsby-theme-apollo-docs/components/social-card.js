@@ -7,31 +7,33 @@ import {IconArrowRight} from '@apollo/space-kit/icons/IconArrowRight';
 import {colors} from 'gatsby-theme-apollo-core/src/utils/colors';
 import {smallCaps} from 'gatsby-theme-apollo-core/src/utils/typography';
 
-const {fonts, image} = preval`
+const {fonts, image, logo} = preval`
   const fs = require('fs');
   const path = require('path');
 
   function getBase64(path) {
-    const fontPath = require.resolve('source-sans-pro/' + path);
+    const fontPath = require.resolve('@fontsource/inter/files' + path);
     const base64Font = fs.readFileSync(fontPath, 'base64');
     return 'data:application/x-font-woff;charset=utf-8;base64,' + base64Font;
   }
 
-  const base64Regular = getBase64('/WOFF2/TTF/SourceSansPro-Regular.ttf.woff2');
-  const base64Semibold = getBase64('/WOFF2/TTF/SourceSansPro-Semibold.ttf.woff2');
+  const base64Regular = getBase64('/inter-all-400-normal.woff');
 
-  const cssPath = require.resolve('source-sans-pro/source-sans-pro.css');
+  const cssPath = require.resolve('@fontsource/inter/index.css');
   const fonts = fs
     .readFileSync(cssPath, 'utf-8')
-    .replace('WOFF2/TTF/SourceSansPro-Regular.ttf.woff2', base64Regular)
-    .replace('WOFF2/TTF/SourceSansPro-Semibold.ttf.woff2', base64Semibold);
+    .replace(/\\.\\/files\\/inter-all-400-normal\\.woff/g, base64Regular);
 
   const imagePath = path.resolve(__dirname, '../assets/social-bg.jpg');
   const base64Image = fs.readFileSync(imagePath, 'base64');
 
+  const logoPath = path.resolve(__dirname, '../assets/polymesh-icon.png');
+  const base64Logo = fs.readFileSync(logoPath, 'base64');
+
   module.exports = {
     fonts,
-    image: 'data:image/jpeg;base64,' + base64Image
+    image: 'data:image/jpeg;base64,' + base64Image,
+    logo: 'data:image/png;base64,' + base64Logo
   };
 `;
 
@@ -46,9 +48,9 @@ export default function SocialCard(props) {
         width: 1200,
         height: 628,
         padding: 80,
-        fontFamily: "'Source Sans Pro'",
+        fontFamily: "'Inter'",
         color: 'white',
-        backgroundColor: "#ec1d24"
+        backgroundImage: `url(${image})`
       }}
     >
       <Global
@@ -85,12 +87,14 @@ export default function SocialCard(props) {
           </Fragment>
         )}
       </div>
+      <img src={logo} style={{marginBottom: '50px'}}/>
       <TextFit
         min={80}
         max={120}
         style={{
           width: '100%',
           height: 250,
+          marginTop: '50px',
           marginBottom: 'auto',
           lineHeight: 1.2,
           colors: colors.text1
