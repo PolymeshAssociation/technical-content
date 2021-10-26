@@ -7,7 +7,7 @@ subsite: polymesh-docs
 
 ## Overview
 
-The POLY to POLYX bridge allows ERC20 POLY tokens issued on the Ethereum mainnet, to be bridged on a 1-1 basis to Polymesh as POLYX native tokens.
+The POLY to POLYX bridge allows ERC20 POLY tokens issued on the Ethereum Mainnet, to be bridged on a 1-1 basis to Polymesh as POLYX native tokens.
 
 Carrying the tokens over follows the standard *lock and mint* process. First, Ethereum tokens are locked indefinitely by an Ethereum smart contract. Then, native tokens are minted on the Polymesh side.
 
@@ -31,7 +31,7 @@ Minting of POLYX tokens is implemented in the Polymesh runtime, in the bridge pa
 
 Relayers are members of the bridge multisig account owned by the *bridge controller*. On the testnet, the number of relayers at genesis is 5. To start handling a transaction -- that is to change its status from absent -- at least 3 out of 5 relayers have to propose that same transaction.
 
-Even though there is no maximum limit of how much POLY can be bridged, the Alcyone testnet side sets a limit on how much POLY is bridged per unit of time. There is going to be no such a limit on the mainnet.
+Even though there is no maximum limit of how much POLY can be bridged, the Testnet side sets a limit on how much POLY is bridged per unit of time. There is going to be no such a limit on the Mainnet.
 
 ## State Diagram
 
