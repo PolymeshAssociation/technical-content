@@ -11,5 +11,4 @@ module.exports = [
     `polymesh-docs/${here}compliance`,
     `polymesh-docs/${here}settlement`,
     `polymesh-docs/${here}corporate_actions`,
-    `polymesh-docs/${here}smart_extensions`
 ];
