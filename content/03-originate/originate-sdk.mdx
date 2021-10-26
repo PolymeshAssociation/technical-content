@@ -38,14 +38,14 @@ To recap:
 
     ```typescript
     const apiAlice: Polymesh = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word1 word2 ..."
     });
     ```
 
     ```javascript
     const apiAlice = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word1 word2 ..."
     });
     ```
@@ -232,7 +232,7 @@ Now we assume that ACME has gone through CDD and has an account, complete with a
 
 ```typescript
 const apiAcme: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word21 word22 ..."
 });
 const acme: CurrentIdentity = await apiAcme.getCurrentIdentity();
@@ -241,7 +241,7 @@ const acmeDid: string = acme.did;
 
 ```javascript
 const apiAcme = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word21 word22 ..."
 });
 const acme = await apiAcme.getCurrentIdentity();
@@ -256,14 +256,14 @@ On her end, Alice, has created another mnemonic for a private key she intends to
 
 ```typescript
 const apiCeo: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word31 word32 ..."
 });
 ```
 
 ```javascript
 const apiCeo = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word31 word32 ..."
 });
 ```

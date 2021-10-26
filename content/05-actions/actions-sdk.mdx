@@ -20,7 +20,7 @@ By default, the corporate actions (CA) agent is the token owner, or in our examp
 
 ```typescript
 const apiCeo: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word31 word32 ..."
 });
 const acme: CurrentIdentity = await apiCeo.getCurrentIdentity();
@@ -29,7 +29,7 @@ const acmeDid: string = acme.did;
 
 ```javascript
 const apiCeo = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word31 word32 ..."
 });
 const acme = await apiCeo.getCurrentIdentity();
@@ -44,7 +44,7 @@ Nonetheless, we are going to set up a separate account. So let's prepare it:
 
 ```typescript
 const apiCaAgent: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word61 word62 ..."
 });
 const caAgent: CurrentIdentity = await apiCaAgent.getCurrentIdentity();
@@ -53,7 +53,7 @@ const caAgentDid: string = caAgent.did;
 
 ```javascript
 const apiCaAgent = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word61 word62 ..."
 });
 const caAgent = await apiCaAgent.getCurrentIdentity();
