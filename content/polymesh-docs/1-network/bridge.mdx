@@ -9,7 +9,7 @@ subsite: polymesh-docs
 
 The POLY to POLYX bridge allows ERC20 POLY tokens issued on the Ethereum mainnet, to be bridged on a 1-1 basis to Polymesh as POLYX native tokens.
 
-Carrying the tokens over follows the standard *lock and mint* process. First, Ethereum tokens are locked indefinitely by an Ethereum smart contract. Then, native tokens are minted on the Polymesh side.
+Carrying the tokens over follows the standard *lock and mint* process. First, Ethereum tokens are locked permanently by an Ethereum smart contract. Then, native tokens are minted on the Polymesh side.
 
 The bridge is a distributed system made up of the Ethereum smart contract, off-chain relay middleware and a dedicated Polymesh [runtime module](https://docs.polymesh.live/pallet_bridge/index.html).
 
@@ -29,9 +29,9 @@ Each signer has a Polymesh key which is registered in the bridge multisig wallet
 
 Minting of POLYX tokens is implemented in the Polymesh runtime, in the bridge pallet. Below is the state machine diagram for the lifecycle of a bridge transaction arriving at Polymesh from the bridge relayers. There are 5 states: absent, timelocked, pending, handled and frozen. Any successful transaction makes its way from absent (start) to handled (end). The solid arrows correspond to automated transitions according to the business logic. The dashed arrows correspond to manual actions of the bridge administrator. The administrator has the ability to freeze a transaction that is still in progress. This is however an exceptional measure only to allow for the human to stay in the loop. It is supposed to be exercised only in extreme cases.
 
-Relayers are members of the bridge multisig account owned by the *bridge controller*. On the testnet, the number of relayers at genesis is 5. To start handling a transaction -- that is to change its status from absent -- at least 3 out of 5 relayers have to propose that same transaction.
+Relayers are members of the bridge multisig account owned by the *bridge controller*, and provided a quorum agree, POLY locked on Ethereum will be bridged to Polymesh.
 
-Even though there is no maximum limit of how much POLY can be bridged, the Alcyone testnet side sets a limit on how much POLY is bridged per unit of time. There is going to be no such a limit on the mainnet.
+Even though there is no maximum limit of how much POLY can be bridged, the Testnet sets a limit on how much POLY is bridged per unit of time. There is going to be no such a limit on the mainnet.
 
 ## State Diagram
 
