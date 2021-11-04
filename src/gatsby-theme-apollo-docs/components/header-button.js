@@ -41,7 +41,7 @@ const StyledIcon = styled(IconProceed)({
 export default function HeaderButton() {
   return (
     <Container href="/">
-      <HeaderLogo src="/polymesh-logo-c.png" />
+      <HeaderLogo src="/polymesh-logo.png" />
     </Container>
   );
 }
