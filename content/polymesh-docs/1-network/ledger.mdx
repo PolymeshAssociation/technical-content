@@ -7,6 +7,8 @@ subsite: polymesh-docs
 
 NB - to install the Polymesh Ledger App you must enable `Developer Mode` under Settings in Ledger Live.
 
+This can be found under *Settings -> Experimental Features -> Developer Mode* (Toggle on)
+
 ## Overview
 
 > Note: Because of required WebUSB support, Ledger wallets currently only work on Chromium-based
@@ -16,16 +18,17 @@ The Polymesh Ledger application is compatible with both the Ledger Nano S and th
 
 The Polymesh Ledger application allows you to manage Polymesh's native token, POLYX and interact with the Polymesh Mainnet blockchain.
 
-NB - due to memory constraints, the version of the app for the Ledger Nano S only supports a subset of possible transactions, primarily POLYX transfers, identity and staking operations.
+NB - due to memory constraints, the version of the app for the Ledger Nano S only supports a subset of possible transactions, primarily POLYX transfers, identity and staking operations. You can see the README.md at https://github.com/Zondax/ledger-polymesh for full details.
 
 ## Requirements
 
 Here is a list of what you will need before starting:
 
 - A Ledger Nano S or a Ledger Nano X.
-- The latest firmware installed (at the time of writing this is 2.0.0 on the Nano S, and 1.3.0 on the Nano X).
-- Ledger Live is installed and at version 2.1 or newer (see *settings -> about* to find out if you're  up to date).
+- The latest firmware installed (at the time of writing this is 2.0.0 on the Nano S, and 2.0.0 on the Nano X).
+- Ledger Live is installed and at version 2.1 or newer (see *Settings -> About* to find out if you're  up to date).
 - A Chromium-based web browser installed to access the [Polymesh App](https://mainnet-app.polymesh.network/#/explorer) with.
+- Alternatively you can use the Polymesh Wallet to access your Ledger Nano Polymesh key - this can be downloaded from the Chrome Store.
 
 ## Installing the Ledger Application
 
@@ -34,7 +37,7 @@ Here is a list of what you will need before starting:
 - Open the *"Manager"* tab in Ledger Live.
 - Connect and unlock your Ledger device.
 - If asked, allow the manager on your device by pressing both buttons on the YES screen.
-- Find Polymesh in the app catalog and install it. You will need to enable Developer Mode in LedgerLive to see the app in the catalog.
+- Find Polymesh in the app catalog and install it. You will need to enable Developer Mode in Ledger Live (under *Settings -> Experimental Features*) to see the app in the catalog.
 
 ## Using on the Polymesh App
 
@@ -52,7 +55,7 @@ Click *"Save"* to keep your settings.
 
 *For the next step, your Ledger device must be attached to your computer, and the Ledger Live app must be closed.*
 
-Now when you go to the *"Accounts"* tab you will see a new button that says *"Add Ledger"*. Ensure that your Ledger device is unlocked and that you have navigated into the Polymesh application, then click this button. Whilst the app is in review, you will also need to click through when it tells you that the app is "Pending Ledger Review".
+Now when you go to the *"Accounts"* tab you will see a new button that says *"Add via Ledger"*. Ensure that your Ledger device is unlocked and that you have navigated into the Polymesh application, then click this button. Whilst the app is in review, you will also need to click through when it tells you that the app is "Pending Ledger Review".
 
 ![Add Ledger button in Polymesh](../images/ledger/query-ledger.png)
 
@@ -83,6 +86,26 @@ Here you can scroll through and make sure the address matches to what is display
 Once you have your account loaded on the *"Accounts"* tab, it should show a row with your Ledger account. At the far right of the row, your account's POLYX balance is displayed. If you expand the balance arrow, it will show details of your balance such as locks or reserved amounts.
 
 If you select your Ledger account when submitting an extrinsic, you will be prompted to sign the transaction on your Ledger. The Ledger device must be attached when submitting an extrinsic from your Ledger account.
+
+## Using on the Polymesh Wallet
+
+Once you've downloaded the Polymesh Wallet extension from the Chrome Store, you can alternatively use the Polymesh Wallet to interact with Polymesh via your Ledger Nano device.
+
+Ensure that your Ledger device is unlocked and that you have navigated into the Polymesh application. Whilst the app is in review, you will also need to click through when it tells you that the app is "Pending Ledger Review".
+
+If you open the Polymesh Wallet, there is an option to "Add a key" and under that an option to "Attach Ledger account".
+
+![Add Ledger From Polymesh Wallet](../images/ledger/wallet-add-key.png)
+
+Provided your Ledger Nano wallet is attached to your computer, and the Polymesh App is open, you should then be able to connect.
+
+![Connect Ledger From Polymesh Wallet](../images/ledger/wallet-connect.png)
+
+You can then add a key from your Ledger Nano device. The first option lets you select an account. You can have multiple accounts on a single Ledger device. The second dropdown lets you pick a derivation path - think of it like a formula from which child accounts are generated. If in doubt, pick the first option for both. 0 / 0 is a good default.
+
+![Selecting Key From Polymesh Wallet](../images/ledger/wallet-add-account.png)
+
+You can now interact with the Polymesh blockchain through our UIs or App as usual, or use this key to onboard to Polymesh.
 
 ## Support
 
