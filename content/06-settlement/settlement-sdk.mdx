@@ -28,7 +28,7 @@ Like we saw before, each participant has an identity and a computer on which the
         "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word1 word2 ..."
     });
-    const alice: CurrentIdentity = await apiAlice.getCurrentIdentity();
+    const alice: Identity = await apiAlice.getCurrentIdentity();
     const aliceDid: string = alice.did; // For SafeHands
     ```
 
@@ -50,7 +50,7 @@ Like we saw before, each participant has an identity and a computer on which the
         "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word41 word42 ..."
     });
-    const safeHands: CurrentIdentity = await apiSafeHands.getCurrentIdentity();
+    const safeHands: Identity = await apiSafeHands.getCurrentIdentity();
     const safeHandsDid: string = safeHands.did; // For Alice and NextDaq
     ```
 
@@ -72,7 +72,7 @@ Like we saw before, each participant has an identity and a computer on which the
         "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word51 word52 ..."
     });
-    const nextDaq: CurrentIdentity = await apiNextDaq.getCurrentIdentity();
+    const nextDaq: Identity = await apiNextDaq.getCurrentIdentity();
     const nextDaqDid: string = nextDaq.did; // For SafeHands
     ```
 
@@ -81,7 +81,7 @@ Like we saw before, each participant has an identity and a computer on which the
         "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word51 word52 ..."
     });
-    const nextDaq: CurrentIdentity = await apiNextDaq.getCurrentIdentity();
+    const nextDaq: Identity = await apiNextDaq.getCurrentIdentity();
     const nextDaqDid: string = nextDaq.did; // For SafeHands
     ```
 
@@ -234,14 +234,14 @@ const acmeToken: SecurityToken = await apiSafeHands.getSecurityToken({
     "ticker": "ACME"
 });
 const isPossible: TransferStatus = await acmeToken.settlements.canSettle({
-    "amout": new BigNumber("1"),
+    "amount": new BigNumber("1"),
     "from": {
         "did": aliceDid,
-        "id": tradingFolio.id.toString(10)
+        "id": tradingFolio.id
     },
     "to": aliceDid
 });
-assert(isPossible === "Success");
+assert(isPossible === TransferSuccess.Success);
 ```
 
 ```javascript
@@ -249,10 +249,10 @@ const acmeToken = await apiSafeHands.getSecurityToken({
     "ticker": "ACME"
 });
 const isPossible = await acmeToken.settlements.canSettle({
-    "amout": new BigNumber("1"),
+    "amount": new BigNumber("1"),
     "from": {
         "did": aliceDid,
-        "id": tradingFolio.id.toString(10)
+        "id": tradingFolio.id
     },
     "to": aliceDid
 });
@@ -520,7 +520,7 @@ const paymentLegs: Leg[] = legs.data.filter((leg: Leg) => {
     return leg.to.did === aliceOrder.to.identity &&
         leg.to.id.isEqualTo(aliceOrder.to.id) &&
         leg.token.ticker === aliceOrder.price.token &&
-        leg.amount.isEqualTo(expectedUsd);
+        leg.amount.isMoreThanEqualTo(expectedUsd);
 });
 // Are we getting paid in our default portfolio?
 assert(payment.length === 1);
@@ -564,7 +564,7 @@ const paymentLegs = legs.data.filter((leg) => {
     return leg.to.did === aliceOrder.to.identity &&
         leg.to.id.isEqualTo(aliceOrder.to.id) &&
         leg.token.ticker === aliceOrder.price.token &&
-        leg.amount.isEqualTo(expectedUsd);
+        leg.amount.isMoreThanEqualTo(expectedUsd);
 });
 // Are we getting paid in our default portfolio?
 assert(payment.length === 1);
@@ -644,26 +644,26 @@ const onTrustAffirmations: InstructionAffirmation[] = affirmations.data.filter((
     return affirmation.identity.did === onTrustDid;
 });
 safeHandsAffirmed: boolean = safeHandsAffirmations.every((safeHandsAffirmation: InstructionAffirmation) => {
-    if (safeHandsAffirmation.status === "Affirmed") {
+    if (safeHandsAffirmation.status === AffirmationStatus.Affirmed) {
         return true;
-    } else if (safeHandsAffirmation.status === "Pending") {
+    } else if (safeHandsAffirmation.status === AffirmationStatus.Pending) {
         // Count 1 strike for SafeHands.
-    } else if (safeHandsAffirmation.status === "Rejected") {
+    } else if (safeHandsAffirmation.status === AffirmationStatus.Rejected) {
         // Mmh, what could this mean?
-    } else if (safeHandsAffirmation.status === "Unknown") {
+    } else if (safeHandsAffirmation.status === AffirmationStatus.Unknown) {
         // Status is unknown. What to do?
     }
     return false;
 });
 
 onTrustAffirmed: boolean = onTrustAffirmations.every((onTrustAffirmation: InstructionAffirmation) => {
-    if (onTrustAffirmation.status === "Affirmed") {
+    if (onTrustAffirmation.status === AffirmationStatus.Affirmed) {
         return true;
-    } else if (onTrustAffirmation.status === "Pending") {
+    } else if (onTrustAffirmation.status === AffirmationStatus.Pending) {
         // Count 1 strike for OnTrust.
-    } else if (onTrustAffirmation.status === "Rejected") {
+    } else if (onTrustAffirmation.status === AffirmationStatus.Rejected) {
         // Mmh, what could this mean?
-    } else if (onTrustAffirmation.status === "Unknown") {
+    } else if (onTrustAffirmation.status === AffirmationStatus.Unknown) {
         // Status is unknown. What to do?
     }
     return false;
@@ -783,8 +783,8 @@ const fromTradingPromises: Promise<Leg[]>[] = pendingInstructions.map(async(inst
     });
     return outLegs;
 });
-const outLegs: Leg[] = (await Promise.all(fromTradingPromises)).flat();
-const outAmount: BigNumber = outLegs.reduce(
+const pendingOutLegs: Leg[] = (await Promise.all(fromTradingPromises)).flat();
+const outAmount: BigNumber = pendingOutLegs.reduce(
     (amount: BigNumber, leg: Leg) => {
         return amount.plus(leg.amount);
     },
@@ -805,8 +805,8 @@ const fromTradingPromises = pendingInstructions.map(async(instruction) => {
     });
     return outLegs;
 });
-const outLegs = (await Promise.all(fromTradingPromises)).flat();
-const outAmount = outLegs.reduce(
+const pendingOutLegs = (await Promise.all(fromTradingPromises)).flat();
+const outAmount = pendingOutLegs.reduce(
     (amount, leg) => {
         return amount.plus(leg.amount);
     },

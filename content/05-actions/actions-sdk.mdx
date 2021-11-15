@@ -23,7 +23,7 @@ const apiCeo: Polymesh = await Polymesh.connect({
     "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word31 word32 ..."
 });
-const acme: CurrentIdentity = await apiCeo.getCurrentIdentity();
+const acme: Identity = await apiCeo.getCurrentIdentity();
 const acmeDid: string = acme.did;
 ```
 
@@ -47,7 +47,7 @@ const apiCaAgent: Polymesh = await Polymesh.connect({
     "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word61 word62 ..."
 });
-const caAgent: CurrentIdentity = await apiCaAgent.getCurrentIdentity();
+const caAgent: Identity = await apiCaAgent.getCurrentIdentity();
 const caAgentDid: string = caAgent.did;
 ```
 
@@ -182,24 +182,18 @@ With the checkpoint done and the funds allocated, it is now time to prepare the 
 const acmeToken: SecurityToken = await apiCaAgent.getSecurityToken({
     "ticker": "ACME"
 });
-const allCheckpoints: CheckpointWithCreationDate[] = await acmeToken.checkpoints.get();
-const preDividendCheckpoint: Checkpoint = allCheckpoints
-    .map((checkpointInfo: CheckpointWithCreationDate) => checkpointInfo.checkpoint)
-    .find((checkpoint: Checkpoint) => {
-        return checkpoint.id.toString(10) === preDividendCheckpointId;
-    });
+const preDividendCheckpoint: Checkpoint = await acmeToken.checkpoints.getOne({
+    "id": new BigNumber(preDividendCheckpointId)
+});
 ```
 
 ```javascript
 const acmeToken = await apiCaAgent.getSecurityToken({
     "ticker": "ACME"
 });
-const allCheckpoints = await acmeToken.checkpoints.get();
-const preDividendCheckpoint = allCheckpoints
-    .map((checkpointInfo) => checkpointInfo.checkpoint)
-    .find((checkpoint) => {
-        return checkpoint.id.toString(10) === preDividendCheckpointId;
-    });
+const preDividendCheckpoint = await acmeToken.checkpoints.getOne({
+    "id": new BigNumber(preDividendCheckpointId)
+});
 ```
 
 </MultiCodeBlock>
@@ -266,12 +260,10 @@ Alice the individual is one of the ACME holders, and as such, at, and after, the
 const acmeToken: SecurityToken = await apiAlice.getSecurityToken({
     "ticker": "ACME"
 });
-const acmeDistributions: DistributionWithDetails[] = await acmeToken.corporateActions.distributions.get();
-const acmeDividend: DividendDistribution = acmeDistributions
-    .map((distributionInfo: DistributionWithDetails) => distributionInfo.distribution)
-    .find((distribution: DividendDistribution) => {
-        return distribution.id.toString(10) === dividendActionId;
-    });
+const acmeDividendWithDetails: DistributionWithDetails = await acmeToken.corporateActions.distributions.getOne({
+    "id": new BigNumber(dividendActionId)
+});
+const acmeDividend: DividendDistribution = acmeDividendWithDetails.distribution;
 const claimQueue: TransactionQueue<void> = await acmeDividend.claim(); // From the context of Alice, which is why we used apiAlice
 await claimQueue.run();
 ```
@@ -280,12 +272,10 @@ await claimQueue.run();
 const acmeToken = await apiAlice.getSecurityToken({
     "ticker": "ACME"
 });
-const acmeDistributions = await acmeToken.corporateActions.distributions.get();
-const acmeDividend = acmeDistributions
-    .map((distributionInfo) => distributionInfo.distribution)
-    .find((distribution) => {
-        return distribution.id.toString(10) === dividendActionId;
-    });
+const acmeDividendWithDetails = await acmeToken.corporateActions.distributions.getOne({
+    "id": new BigNumber(dividendActionId)
+});
+const acmeDividend = acmeDividendWithDetails.distribution;
 const claimQueue = await acmeDividend.claim(); // From the context of Alice, which is why we used apiAlice
 await claimQueue.run();
 ```

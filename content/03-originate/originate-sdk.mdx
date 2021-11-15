@@ -114,7 +114,7 @@ At this stage, Alice owns the reservation. You can confirm it with the following
 <MultiCodeBlock>
 
 ```typescript
-const alice: CurrentIdentity = await apiAlice.getCurrentIdentity();
+const alice: Identity = await apiAlice.getCurrentIdentity();
 const details: TickerReservationDetails = await reservation.details();
 const owner: Identity = details.owner;
 assert(owner.did === alice.did);
@@ -235,7 +235,7 @@ const apiAcme: Polymesh = await Polymesh.connect({
     "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word21 word22 ..."
 });
-const acme: CurrentIdentity = await apiAcme.getCurrentIdentity();
+const acme: Identity = await apiAcme.getCurrentIdentity();
 const acmeDid: string = acme.did;
 ```
 
@@ -289,7 +289,7 @@ Then she needs to send this `pubCeo` information to the computer that holds `api
 <MultiCodeBlock>
 
 ```typescript
-const acme: CurrentIdentity = await apiAcme.getCurrentIdentity();
+const acme: Identity = await apiAcme.getCurrentIdentity();
 await acme.inviteAccount({
     "targetAccount": pubCeo
 });
@@ -309,7 +309,7 @@ With the invitation sent out into the blockchain, back at her computer, Alice, w
 <MultiCodeBlock>
 
 ```typescript
-const ceoAccount: CurrentAccount = apiCeo.getAccount();
+const ceoAccount: Account = apiCeo.getAccount();
 const pendingAuthorizations: AuthorizationRequest[] = await ceoAccount.authorizations.getReceived();
 const acmeAuthorization: AuthorizationRequest = pendingAuthorizations
     .find((pendingAuthorization: AuthorizationRequest) => {
@@ -371,7 +371,7 @@ She first needs to recall her personal account number, or `did`.
 <MultiCodeBlock>
 
 ```typescript
-const alice: CurrentIdentity = await apiAlice.getCurrentIdentity();
+const alice: Identity = await apiAlice.getCurrentIdentity();
 const aliceDid: string = alice.did;
 ```
 
@@ -423,7 +423,7 @@ We use ACME's account as the KYC service provider, but realistically, it should 
 ```typescript
 const acmeCompliance: Compliance = token.compliance;
 const acmeRequirements: Requirements = acmeCompliance.requirements;
-const acme: CurrentIdentity = await apiCeo.getCurrentIdentity();
+const acme: Identity = await apiCeo.getCurrentIdentity();
 const setRequirementsQueue: TransactionQueue<SecurityToken> = await acmeRequirements.set({
     "requirements": [
         [
