@@ -51,21 +51,24 @@ The token reservation and origination are not the only available operations for 
 
 All these can be **managed through the asset base layer logic in Polymesh**. Of note is that the documentation content, although referenced on the blockchain by link or by content hash, is not actually stored on-chain.
 
-### The token ownership
+### The token external agents
 
-The token is typically owned by its originator, or by the account to which the ownership was transferred. Eventually, it is expected that such a consequential task, ownership of the token, will be held by a multi-signature account, which would be called upon for rare and important tasks, typically to delegate to other roles. Polymesh was built with such a vision in mind. A multi-signature account could, for instance, be the expression of a quorum of the board of directors of a company.
+Given the breadth of operations that a token sees over its lifecycle, it is only natural to spread responsibilities among varied parties, a.k.a. external agents. Each external agent is entrusted with, and restricted to, certain operations. Given a well-defined mix of responsibilities of a given external agent, it is possible to map it to existing real world roles, such as primary issuance agent (PIA) or corporate actions agent (CAA). Polymesh lets you tailor agents' responsibilities and permissions with the conventional use of external agent permission groups.
 
-<HighlightBox type="info">
+### The token owners
 
-Below, you can find a first example, that of the primary issuance agent.
+There is a special group of external agents, one that gives all rights over a token. It helps discussion to call this type of agent the token owner. To avoid ending up with _orphan_ tokens, there must always be at least one token owner. The originator of a token is, quite naturally, the token's initial owner. Eventually, because of the importance of this ownership role, it is expected that:
 
-</HighlightBox>
+* The token owner will be held by a multi-signature account.
+* The token owner would be called upon for rare and higher-level tasks, typically to appoint and revoke external agents.
+
+Polymesh was built with such a vision in mind. A multi-signature account could, for instance, be the expression of a quorum of the board of directors of a company.
 
 ## The underlying asset
 
 To assist you with disambiguation, and have a feel of what the point is, we shall peek ahead at what lies beyond origination.
 
-As seen above, the token represents the type of the asset, and is owned by its originator, or by whomever they transferred the ownership to. By contrast, the asset it represents is owned by individual investors' accounts.
+As seen above, the token represents the type of the asset, and is _owned_ by its originator, or by whomever else they granted full rights on the token to. By contrast, the asset it represents is owned by individual investors' accounts.
 
 ### Ownership of the asset
 
@@ -74,13 +77,13 @@ Two elements determine **ownership** of a token's underlying asset:
 * The sum of balances of an individual investor's account(s) of said asset. The **numerator** if you will;
 * The total supply of tokens representing ownership of said asset. i.e. the **denominator**.
 
-When the total supply of tokens increases, it is called **issuance**. The account responsible for it is called the **primary issuance agent (PIA)**. The PIA is by default the owner of the token itself, although this role can be delegated by the owner.
+When the total supply of tokens increases, it is called **issuance**. The external agent account responsible for it is commonly called the **primary issuance agent (PIA)**. The owner of the token itself can act as a PIA, although this role can be delegated by the owner.
 
-As with so many actions in Polymesh, the targeted account needs to accept the role delegation for it to become effective.
+As with so many actions in Polymesh, the targeted external agent account needs to accept the role delegation for it to become effective.
 
 <HighlightBox type="info">
 
-Whether an asset can be transferred, or owned at all, is called **compliance** and is automatically enforced on-chain by Polymesh. In effect, for an action to take place, all involved accounts must have attestations that match with the rules defined by the token originator for that action.
+Whether an asset can be transferred, or owned at all, is called **compliance** and is automatically enforced on-chain by Polymesh. In effect, for an action to take place, all involved accounts must have attestations that match with the rules defined by the token originator for that action. Skip ahead to the section about [Compliance](compliance) if you want details about this.
 
 </HighlightBox>
 
