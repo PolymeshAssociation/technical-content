@@ -69,7 +69,7 @@ In Polymesh, nothing material happens until the compliance rules have been met. 
 
 For the avoidance of doubt, an instruction may be affirmed by all parties and still be in a pending state while the KYC requirements remain unresolved. The reason for durability of the instruction is that it represents contractual committments. The compliance of parties is fluid and changeable. Failing to comply is merely a temporary setback. It can usually be resolved by addressing KYC requirements. Parties are compelled to resolve compliance issues by the contractual obligation represented by the instruction.
 
-As a matter of detail, when an instruction has been fully affirmed but is still pending because of some missing compliance, and it is finally possible for it to execute because the last compliance requirement has now been satisfied, the instruction does not automagically execute. It still needs an account to explicitly send a transaction to execute it. Naturally, if an instruction is asked to be executed and it still fails because of compliance, then the instruction is not cancelled, but is instead sent back to a pending state.
+As a matter of detail, when an instruction has been fully affirmed but is still pending because of compliance, and it is finally possible for it to execute because the last compliance requirement has been satisfied, the instruction does not automagically execute. It still needs an account to explicitly send a transaction to execute it. Naturally, if an instruction is asked to be executed and it still fails because of compliance, then the instruction is not cancelled. It remains in a pending state.
 
 As expected, it is also possible to cancel the whole instruction while compliance is pending.
 
