@@ -495,7 +495,7 @@ It returns previously-known information about `aliceOrderId` in the shape of:
 }
 ```
 
-Now, SafeHands need to live up to their name and only affirm the instruction if it is one they recognise. Polymesh, at the API level, allows one to affirm a single leg for a single portfolio. However the SDK finds the relevant legs and portfolios for you, and in turn adds all the necessary affirmations in the transaction queue. The flip side of this convenience is that SafeHands therefore has to make sure nothing untoward was slipped in.
+Now, SafeHands need to live up to their name and only affirm the instruction if it is one they recognise. Polymesh, at the API level, allows one to affirm a single leg for a single portfolio. However the SDK finds the relevant legs and portfolios for you, and in turn adds all the necessary affirmations in the transaction queue. The flip side of this convenience is that SafeHands therefore have to make sure nothing untoward was slipped in.
 
 <MultiCodeBlock>
 
@@ -593,6 +593,31 @@ As you have noticed, the code above acts suspicious about the instruction it is 
 
 In parallel to SafeHands, OnTrust has to do the same. And provided KYC considerations are satisfied, the trade goes through. So we are done with the trade. But are we done with the exercise?
 
+## The instruction is executed
+
+The instruction has been affirmed, but it is possible that it has not be executed yet because of a missing compliance from one or more of the parties. Let's assume that the transaction was left pending and is now ready to be executed again, and that it is SafeHands who have decided to post this transaction.
+
+<MultiCodeBlock>
+
+```typescript
+assert(await aliceInstruction.isPending());
+const updatedInstructionQueue: TransactionQueue<Instruction> = await aliceInstruction.reschedule();
+await updatedInstructionQueue.run();
+```
+
+```javascript
+assert(await aliceInstruction.isPending());
+const updatedInstructionQueue = await aliceInstruction.reschedule();
+await updatedInstructionQueue.run();
+```
+
+</MultiCodeBlock>
+
+With that, the system will reevaluate whether it can execute the instruction, and:
+
+* if yes, will execute it,
+* if not, will send it back to a pending state.
+
 ## The exchange verifies
 
 NextDaq trust the brokers to do the deed, but they also verify **at the end of the day** that the brokers actually did it. NextDaq run a business partly based on the reputation that trades matched on their platform get eventually settled. Let see what they can do about it.
@@ -611,30 +636,43 @@ if (typeof earlierInstruction === "undefined") {
 }
 
 const affirmations: ResultSet‹InstructionAffirmation› = await earlierInstruction.getAffirmations();
-const safeHandsAffirmation: InstructionAffirmation = affirmations.data.find((affirmation: InstructionAffirmation) => {
+// Discarding ResultSet's pagination to simplify.
+const safeHandsAffirmations: InstructionAffirmation[] = affirmations.data.filter((affirmation: InstructionAffirmation) => {
     return affirmation.identity.did === safeHandsDid;
 });
-const onTrustAffirmation: InstructionAffirmation = affirmations.data.find((affirmation: InstructionAffirmation) => {
+const onTrustAffirmations: InstructionAffirmation[] = affirmations.data.filter((affirmation: InstructionAffirmation) => {
     return affirmation.identity.did === onTrustDid;
 });
-if (safeHandsAffirmation.status === "Pending") {
-    // Count 1 strike for SafeHands.
-} else if (safeHandsAffirmation.status === "Rejected") {
-    // Mmh, what could this mean?
-} else if (safeHandsAffirmation.status === "Unknown") {
-    // Status is unknown. What to do?
-}
+safeHandsAffirmed: boolean = safeHandsAffirmations.every((safeHandsAffirmation: InstructionAffirmation) => {
+    if (safeHandsAffirmation.status === "Affirmed") {
+        return true;
+    } else if (safeHandsAffirmation.status === "Pending") {
+        // Count 1 strike for SafeHands.
+    } else if (safeHandsAffirmation.status === "Rejected") {
+        // Mmh, what could this mean?
+    } else if (safeHandsAffirmation.status === "Unknown") {
+        // Status is unknown. What to do?
+    }
+    return false;
+});
 
-if (onTrustAffirmation.status === "Pending") {
-    // Count 1 strike for OnTrust.
-} else if (onTrustAffirmation.status === "Rejected") {
-    // Mmh, what could this mean?
-} else if (onTrustAffirmation.status === "Unknown") {
-    // Status is unknown. What to do?
-}
+onTrustAffirmed: boolean = onTrustAffirmations.every((onTrustAffirmation: InstructionAffirmation) => {
+    if (onTrustAffirmation.status === "Affirmed") {
+        return true;
+    } else if (onTrustAffirmation.status === "Pending") {
+        // Count 1 strike for OnTrust.
+    } else if (onTrustAffirmation.status === "Rejected") {
+        // Mmh, what could this mean?
+    } else if (onTrustAffirmation.status === "Unknown") {
+        // Status is unknown. What to do?
+    }
+    return false;
+});
 
-if (safeHandsAffirmation.status === "Affirmed" && onTrustAffirmation.status === "Affirmed") {
-    // Do we have a situation with compliance?
+if (safeHandsAffirmed && onTrustAffirmed) {
+    // Do we have a situation with compliance? And how should NextDaq record this failure?
+    // Should NextDaq trigger an execution, and charge back the custodians?
+    await (await earlierInstruction.reschedule()).run();
 }
 ```
 
@@ -648,30 +686,43 @@ if (typeof earlierInstruction === "undefined") {
 }
 
 const affirmations = await earlierInstruction.getAffirmations();
-const safeHandsAffirmation = affirmations.data.find((affirmation: InstructionAffirmation) => {
+// Discarding ResultSet's pagination to simplify.
+const safeHandsAffirmations = affirmations.data.filter((affirmation) => {
     return affirmation.identity.did === safeHandsDid;
 });
-const onTrustAffirmation = affirmations.data.find((affirmation: InstructionAffirmation) => {
+const onTrustAffirmations = affirmations.data.filter((affirmation) => {
     return affirmation.identity.did === onTrustDid;
 });
-if (safeHandsAffirmation.status === "Pending") {
-    // Count 1 strike for SafeHands.
-} else if (safeHandsAffirmation.status === "Rejected") {
-    // Mmh, what could this mean?
-} else if (safeHandsAffirmation.status === "Unknown") {
-    // Status is unknown. What to do?
-}
+safeHandsAffirmed = safeHandsAffirmations.every((safeHandsAffirmation) => {
+    if (safeHandsAffirmation.status === "Affirmed") {
+        return true;
+    } else if (safeHandsAffirmation.status === "Pending") {
+        // Count 1 strike for SafeHands.
+    } else if (safeHandsAffirmation.status === "Rejected") {
+        // Mmh, what could this mean?
+    } else if (safeHandsAffirmation.status === "Unknown") {
+        // Status is unknown. What to do?
+    }
+    return false;
+});
 
-if (onTrustAffirmation.status === "Pending") {
-    // Count 1 strike for OnTrust.
-} else if (onTrustAffirmation.status === "Rejected") {
-    // Mmh, what could this mean?
-} else if (onTrustAffirmation.status === "Unknown") {
-    // Status is unknown. What to do?
-}
+onTrustAffirmed = onTrustAffirmations.every((onTrustAffirmation) => {
+    if (onTrustAffirmation.status === "Affirmed") {
+        return true;
+    } else if (onTrustAffirmation.status === "Pending") {
+        // Count 1 strike for OnTrust.
+    } else if (onTrustAffirmation.status === "Rejected") {
+        // Mmh, what could this mean?
+    } else if (onTrustAffirmation.status === "Unknown") {
+        // Status is unknown. What to do?
+    }
+    return false;
+});
 
-if (safeHandsAffirmation.status === "Affirmed" && onTrustAffirmation.status === "Affirmed") {
-    // Do we have a situation with compliance?
+if (safeHandsAffirmed && onTrustAffirmed) {
+    // Do we have a situation with compliance? And how should NextDaq record this failure?
+    // Should NextDaq trigger an execution, and charge back the custodians?
+    await (await earlierInstruction.reschedule()).run();
 }
 ```
 
@@ -767,7 +818,7 @@ if (outAmount.isGreaterThan(new BigNumber("0"))) {
 
 </MultiCodeBlock>
 
-At this point, depending on the relationship, SafeHands, can decide to update or pull the sell order on the exchange to reflect the future amount. They could also deem the isntruction fraudulent and reject it.
+At this point, depending on the relationship, SafeHands, can decide to update or pull the sell order on the exchange to reflect the future amount. They could also deem the instruction fraudulent and reject it.
 
 ## Conclusion
 
