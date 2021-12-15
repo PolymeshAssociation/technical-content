@@ -60,15 +60,11 @@ Recall that permissions are defined by including or excluding pallets and extrin
 
 For example, the capitalDistribution pallet:
 
-
-
-
-
-
+![Explore Pallets](./images/explorePallets.PNG)
 
 contains granular transaction types:
 
-
+![Pallet extrinsics](./images/palletExtrinsics.PNG)
 
 These can be granted or revoked in whole or in part using an Agent Group. 
 
