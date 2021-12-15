@@ -52,7 +52,7 @@ ACME was created with the default full permission Agent Group. We can see that t
 
 The query can be further refined to filter Agents in a specific Agent Group, meaning with a certain set of permissions. 
 
-
+![Explore Agent Groups](./images/exploreTokenAgentGroups.PNG)
 
 ## Create a Permission Group
 
