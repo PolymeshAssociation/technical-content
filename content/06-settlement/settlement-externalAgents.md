@@ -91,7 +91,7 @@ There are several options for Agent Group.
 
 * Full: The account can be given full permission. 
 * Custom: Use this to specify the Agent Group you just created. 
-* ExceptMeta: ???? what is this ????
+* ExceptMeta: Manages identities of external agents themselves.
 * PolymeshV1CAA: Use this to replicate the permission scheme for a Corporate Actions Agent in Polymesh version 1. 
 * PolymeshV1PIA: Use this to replicate the permission scheme for a Primary Issuance Agent in Polymesh version 1. 
 
