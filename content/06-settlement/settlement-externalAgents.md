@@ -70,12 +70,14 @@ These can be granted or revoked in whole or in part using an Agent Group.
 
 Let us suppose that we want to create an Agent Group for an external party that will maintain the corporate documents _and nothing else_. 
 
-Navigate to the _externalAgents_ pallet and _createGroup()_ extrinsic. 
-Use the ACME Co. account, the owner of the token, since that account will be the only account with permission to do this unless you have already experimented with permissions. 
-Input the ticker system. At the time of writing, this is in hex format which you can get from the query above. It should be 12 bytes long with trailing zeroes. 
-Create the permissions defined as:
- _these_: asset (the pallet containing the extrinsics to grant). 
-_these_: addDocument and removeDocument (the two activities that will be permissible for members of this group. 
+1. Navigate to the _externalAgents_ pallet and _createGroup()_ extrinsic. 
+2. Use the ACME Co. account, the owner of the token, since that account will be the only account with permission to do this unless you have already experimented with permissions. 
+3. Input the ticker system. At the time of writing, this is in hex format which you can get from the query above. It should be 12 bytes long with trailing zeroes. 
+4. Create the permissions defined as:
+   * _these_: asset (the pallet containing the extrinsics to grant). 
+   * _these_: addDocument and removeDocument (the two activities that will be permissible for members of this group. 
+
+![Documentation Agent Group](./images/documentAgentGroup.PNG)
 
 Submit the transaction and the new Agent Group is created. Return to Explore (above) and see that a new Agent Group is added to the token. 
 
@@ -83,7 +85,7 @@ Submit the transaction and the new Agent Group is created. Return to Explore (ab
 
 An Agent Group’s permissions can be discovered through Chain state => externalAgents => groupPermissions. To add an account to an Agent Group, navigate to Extrinsics => externalAgents => changeGroup. Input the ticker, group and Agent id. 
 
-
+![Add Agent to Group](./images/addAgentToGroup.PNG)
 
 There are several options for Agent Group. 
 
