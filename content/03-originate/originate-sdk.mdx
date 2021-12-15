@@ -25,7 +25,7 @@ You can find it here [@polymathnetwork/polymesh-sdk](https://www.npmjs.com/packa
 
 ## Preconditions
 
-If you went through the Quick Start, we can assume that you have created an account (a public-private key pair) on the Polymesh testnet, that you associated it with an account, and that you credited it with POLYX. We shall call this personal signing key `aliceKey`, and the personal account it represents `alice`.
+If you went through the Quick Start, we can assume that you have created an account (a public-private key pair) on the Polymesh Testnet, that you associated it with an account, and that you credited it with POLYX. We shall call this personal signing key `aliceKey`, and the personal account it represents `alice`.
 
 Here, we are going to follow along the Token Studio Dashboard exercise, and do the same _mistake_. whereby she creates the token with her personal account, and which we will eventually fix. The credible simple reason why Alice created the token with her personal account is that her and her co-founders wanted to act fast so as to have the ticker available before getting the company through CDD.
 
@@ -38,14 +38,14 @@ To recap:
 
     ```typescript
     const apiAlice: Polymesh = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word1 word2 ..."
     });
     ```
 
     ```javascript
     const apiAlice = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word1 word2 ..."
     });
     ```
@@ -232,7 +232,7 @@ Now we assume that ACME has gone through CDD and has an account, complete with a
 
 ```typescript
 const apiAcme: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word21 word22 ..."
 });
 const acme: CurrentIdentity = await apiAcme.getCurrentIdentity();
@@ -241,7 +241,7 @@ const acmeDid: string = acme.did;
 
 ```javascript
 const apiAcme = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word21 word22 ..."
 });
 const acme = await apiAcme.getCurrentIdentity();
@@ -256,14 +256,14 @@ On her end, Alice, has created another mnemonic for a private key she intends to
 
 ```typescript
 const apiCeo: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word31 word32 ..."
 });
 ```
 
 ```javascript
 const apiCeo = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word31 word32 ..."
 });
 ```

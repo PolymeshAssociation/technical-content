@@ -8,7 +8,7 @@ tags: technical
 import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
 import HighlightBox from "../../src/components/HighlightBox"
 
-In the previous exercise, after a good quarter, ACME distributed a simple dividend, and Alice collected her share of the dividend tokens, in this case ALCY.
+In the previous exercise, after a good quarter, ACME distributed a simple dividend, and Alice collected her share of the dividend tokens, in this case STBL.
 
 The Polymesh Dashboard is constructed with the SDK. The SDK supports every process you see there, and more. Use the SDK to build integrations with internal systems. Fortunately, the SDK's methods are intelligible when you know what it is you intend to do.
 
@@ -20,7 +20,7 @@ By default, the corporate actions (CA) agent is the token owner, or in our examp
 
 ```typescript
 const apiCeo: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word31 word32 ..."
 });
 const acme: CurrentIdentity = await apiCeo.getCurrentIdentity();
@@ -29,7 +29,7 @@ const acmeDid: string = acme.did;
 
 ```javascript
 const apiCeo = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word31 word32 ..."
 });
 const acme = await apiCeo.getCurrentIdentity();
@@ -44,7 +44,7 @@ Nonetheless, we are going to set up a separate account. So let's prepare it:
 
 ```typescript
 const apiCaAgent: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word61 word62 ..."
 });
 const caAgent: CurrentIdentity = await apiCaAgent.getCurrentIdentity();
@@ -53,7 +53,7 @@ const caAgentDid: string = caAgent.did;
 
 ```javascript
 const apiCaAgent = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word61 word62 ..."
 });
 const caAgent = await apiCaAgent.getCurrentIdentity();
@@ -148,7 +148,7 @@ const preDividendCheckpointId = checkpoint.id.toString(10);
 
 ## Prefunding
 
-Here we assume that the CA agent already has been funded the $5000 tokens that they will distribute as part of the dividend. If you are working on the Alcyone test net, you can use ALCY tokens as a placeholder for dollars, for instance. To get ALCY, you can head to the Token Studio and participate in ALCY's free Security Token Offering, in effect tap its faucet.
+Here we assume that the CA agent already has been funded the $5000 tokens that they will distribute as part of the dividend. If you are working on the Testnet, you can use STBL tokens as a placeholder for dollars, for instance. To get STBL, you can head to the Token Studio and participate in STBL's free Security Token Offering, in effect tap its faucet.
 
 For the purpose of this exercise, we assume that the CA agent has been funded on a `NumberedPortfolio` created for the purposes of managing ACME's corporate actions.
 
@@ -170,7 +170,7 @@ const acmeCAFolio = await acmeCAFolioQueue.run();
 
 </MultiCodeBlock>
 
-<!-- My ALCY STO https://app.polymesh.live/?rpc=wss%3A%2F%2Falcyone-rpc.polymesh.live#/explorer/query/0xfd37d9b1fb481bcb01cacfc6ec1ca3f417df05f80a65fead4fa1990686302af2 -->
+<!-- My STBL STO https://app.polymesh.live/?rpc=wss%3A%2F%2Falcyone-rpc.polymesh.live#/explorer/query/0xfd37d9b1fb481bcb01cacfc6ec1ca3f417df05f80a65fead4fa1990686302af2 -->
 
 ## Dividend action preparing
 
@@ -216,7 +216,7 @@ const dividendActionQueue: TransactionQueue<DividendDistribution> = await distri
     "checkpoint": preDividendCheckpoint, // Good thing we created it. If not, it would create it automatically.
     "paymentDate": new Date(2021, 4, 2, 23, 59), // Or whichever point at which ACME holders can claim their dividend.
     "originPortfolio": acmeCAFolio, // Another well prepared item.
-    "currency": "ALCY",
+    "currency": "STBL",
     "maxAmount": new BigNumber("5000"), // This determines what will be locked.
     "perShare": new BigNumber("0.25"), // Unlike with the Token Studio, you have to calculate it here.
     "expiryDate": new Date(2022, 4, 1, 23, 59), // Sufficiently far in the future that holders have time to claim.
@@ -238,7 +238,7 @@ const dividendActionQueue = await distributions.configureDividendDistribution({
     "checkpoint": preDividendCheckpoint, // Good thing we created it. If not, it would create it automatically.
     "paymentDate": new Date(2021, 4, 2, 23, 59), // Or whichever point at which ACME holders can claim their dividend.
     "originPortfolio": acmeCAFolio, // Another well prepared item.
-    "currency": "ALCY",
+    "currency": "STBL",
     "maxAmount": new BigNumber("5000"), // This determines what will be locked.
     "perShare": new BigNumber("0.25"), // Unlike with the Token Studio, you have to calculate it here.
     "expiryDate": new Date(2022, 4, 1, 23, 59), // Sufficiently far in the future that holders have time to claim.
@@ -258,7 +258,7 @@ For the avoidance of doubt, dividend claimants can collect their dividends as pe
 
 ## Dividend claiming
 
-Alice the individual is one of the ACME holders, and as such, at, and after, the payment date, she is entitled to withdraw her dividend. If she has not done it before, she needs to publish an investor uniqueness claim with regard to ALCY. With that, she first needs to reinstantiate the dividend action in the context of her `apiAlice`:
+Alice the individual is one of the ACME holders, and as such, at, and after, the payment date, she is entitled to withdraw her dividend. If she has not done it before, she needs to publish an investor uniqueness claim with regard to STBL. With that, she first needs to reinstantiate the dividend action in the context of her `apiAlice`:
 
 <MultiCodeBlock>
 
@@ -292,7 +292,7 @@ await claimQueue.run();
 
 </MultiCodeBlock>
 
-With that, Alice should now have her ALCY tokens in her default portfolio.
+With that, Alice should now have her STBL tokens in her default portfolio.
 
 ## Reclaiming unclaimed funds
 
