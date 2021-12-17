@@ -36,7 +36,7 @@ If you have been following along by reading the previous chapters and sections, 
 
 <highlightBox type="tip">
 
-For more information on the corporate actions agent and corporate actions in general, take another look at the previous chapter on [Executing Actions: Corporate actions on Polymesh](../actions/).
+For more information on the corporate actions agent and corporate actions in general, take another look at the previous chapter on [Executing Actions: Corporate actions on Polymesh](./actions/).
 
 </highlightBox>
 
@@ -79,7 +79,7 @@ ACME would then assign an account, the external agent, to such an agent group to
 
 ACME was created with the default full permission agent group. We can see that in the Polymesh App under the `Developer` tab `Chain state`.
 
-![Chain State in Polymesh App](./images/exploreChainState.png)
+![Chain State in Polymesh App](images/exploreChainState.png)
 
 The `externalAgents` pallet query called `groupOfAgent(Ticker, IdentityId): Option<AgentGroup>` returns the agents mapped to a ticker.
 
@@ -87,7 +87,7 @@ Here we can see that ACME has one agent, the agent with full permission. The age
 
 The query can be further refined to filter agents in a specific agent group, meaning with a certain set of permissions.
 
-![Explore Agent Groups](./images/exploreTokenAgentGroups.png)
+![Explore Agent Groups](images/exploreTokenAgentGroups.png)
 
 ## Create a permission group
 
@@ -95,11 +95,11 @@ Recall that **permissions are defined by including or excluding pallets and extr
 
 For example, the `capitalDistribution` pallet:
 
-![Explore Pallets](./images/explorePallets.png)
+![Explore Pallets](images/explorePallets.png)
 
 contains granular transaction types:
 
-![Pallet Extrinsics](./images/palletExtrinsics.png)
+![Pallet Extrinsics](images/palletExtrinsics.png)
 
 These can be granted or revoked in whole or in part using an agent group.
 
@@ -112,7 +112,7 @@ Let us suppose that we want to create an agent group for an external party that 
    * _these_: Asset (the pallet containing the extrinsics to grant);
    * _these_: `addDocument` and `removeDocument` - the two activities that will be permissible for members of this group.
 
-![Documentation Agent Group](./images/documentAgentGroup.png)
+![Documentation Agent Group](images/documentAgentGroup.png)
 
 Submit the transaction and the new agent group is created. Return to the Explore section (as described above) and check that the new agent group was added to the asset.
 
@@ -120,7 +120,7 @@ Submit the transaction and the new agent group is created. Return to the Explore
 
 An agent group's permission can be discovered by navigating to `Chain state` under the `Developer` tab and then selecting `externalAgents` in the _selected state query_ field and `groupPermissions(Ticker, AGId): Option<ExtrinsicPermissions>`. To add an account to an agent group, navigate to `Extrinsics` under the `Developer` tab, and select `externalAgents` in the `submit the following extrinsic` field and `changeGroup(ticker, agent, group)`. Input the ticker, group, and agent ID.
 
-![Add Agent to Group](./images/addAgentToGroup.png)
+![Add Agent to Group](images/addAgentToGroup.png)
 
 There are several options for agent groups:
 
