@@ -6,7 +6,7 @@ slug: /settlement/settlement-agents
 
 import HighlightBox from "../../src/components/HighlightBox"
 
-It is common for issuers of regulated securities to delegate certain responsibilities to specialized service providers. For example, ACME may want that a specialist publishes documentation related to the security token.
+It is common for issuers of regulated securities to delegate certain responsibilities to specialised service providers. For example, ACME may want that a specialist publishes documentation related to the security token.
 
 In Polymesh, **external agents** and **agent groups** with granular permissions assist with representing the contractual relationships with these parties. The external agents module provides extrinsics to manage:
 
@@ -18,7 +18,7 @@ By providing functions to allow for managing the external agents of an asset, ad
 
 * `create_group`: Creates a custom agent group (CAG) with certain permissions for an asset;
 * `set_group_permissions`: Changes the permissions of a CAG for an asset;
-* `change_group`: Changes the agent group an asset belongs to; 
+* `change_group`: Changes the agent group an asset belongs to;
 * `remove_agent`: Removes an agent from an asset;
 * `abdicate`: Removes the caller as an agent from an asset.
 
@@ -29,10 +29,10 @@ The extrinsics of the external agents module can be split into:
 
 ## Default configuration
 
-If you have been following along by reading the previous chapters and sections, Alice issued a security token and then transferred ownership to ACME. Behind the scenes, Alice and then ACME were given full permission. In Polymesh version 1 (V1), **two distinct permission** were granted:
+If you have been following along by reading the previous chapters and sections, Alice issued a security token and then transferred ownership to ACME. Behind the scenes, Alice and then ACME were given full permission. In Polymesh version 1 (V1), **two distinct permissions** were granted:
 
 * **Primary issuance agent (PIA):** ACME needed this permission to perform the minting operation;
-* **Corporate actions agent (CAA):** Needed for activities such as dividends.
+* **Corporate actions agent (CAA):** Needed for activities such as dividend distributions.
 
 <highlightBox type="tip">
 
@@ -46,7 +46,7 @@ The permission system is _not surfaced in the Token Studio_. It is explored and 
 
 <highlightBox type="info">
 
-V1 functionality can be replicated in V2 by assigning an agent to the PolymeshV1CAA (corporate actions agent) and PolymeshV1PIA (primary issuance agent). In the [Polymesh App](https://tooling-app.polymesh.live/), navigate to `Developer` => `Extrinsics` then select `externalAgents` in the field _submit the following extrinsic_ and `changeGroup(ticker, agent, group)`.
+V1 functionality can be replicated in V2 by assigning an agent to the PolymeshV1CAA (corporate actions agent) group or PolymeshV1PIA (primary issuance agent) group. In the [Polymesh App](https://tooling-app.polymesh.live/), navigate to `Developer` => `Extrinsics` then select `externalAgents` in the field _submit the following extrinsic_ and `changeGroup(ticker, agent, group)`.
 
 </highlightBox>
 
@@ -56,11 +56,11 @@ Agents are assigned to agent groups from which they derive their permissions for
 
 <highlightBox type="info">
 
-The last full agent cannot leave the abdicate before another ID is added as an agent with full permissions. This default avoids an asset not having an agent with all permissions, i.e. not being managed because of missing permissions and agents.
+The last full agent cannot leave or abdicate before another ID is added as an agent with full permissions. This default avoids an asset not having an agent with all permissions, i.e. not being managed because of missing permissions and agents.
 
 </highlightBox>
 
-In practice, ACME will grant minimal permission to external agents (or internal staff) so that agent can execute their duties while at the same time it cannot stray into sensitive areas where the agent should not be engaged.
+In practice, ACME will grant minimal permission to external agents (or internal staff) so that agents can execute their duties while at the same time it cannot stray into sensitive areas where the agent should not be engaged.
 
 For convenience, permissions can be defined as:
 
