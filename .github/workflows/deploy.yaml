@@ -14,10 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: install libvips-dev
-      run: apt-get install -y libvips-dev
-    - name: install dependencies
-      run: npm install --build-from-source
     - name: build static website
       run: npm run build
     - name: Deployment to Cloudflare workers
