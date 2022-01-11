@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: install dependencies
-      run: npm install
+      run: npm install --build-from-source
     - name: build static website
       run: npm run build
     - name: Deployment to Cloudflare workers
