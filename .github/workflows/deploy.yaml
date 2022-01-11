@@ -18,6 +18,8 @@ jobs:
       run: rm -rf node_modules/
     - name: delete package-lock.json
       run: rm package-lock.json
+    - name: clear npm cache
+      run: npm cache clean --force
     - name: install dependencies
       run: npm install
     - name: build static website
