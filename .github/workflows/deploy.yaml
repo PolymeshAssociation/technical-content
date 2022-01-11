@@ -14,6 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: delete node_modules
+      run: rm -rf node_modules/
+    - name: delete package-lock.json
+      run: rm package-lock.json
     - name: install dependencies
       run: npm install
     - name: build static website
