@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: update Ubuntu dependencies, and install libvips-dev
+      run: apt-get update && apt-get install -y libvips-dev --no-install-recommends
     - name: install dependencies
       run: npm install --build-from-source
     - name: build static website
