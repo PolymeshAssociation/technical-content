@@ -23,7 +23,7 @@ jobs:
     - name: install dependencies
       run: npm install --legacy-peer-deps
     - name: build static website
-      run: npm run build
+      run: npm run build || npm run build
     - name: Deployment to Cloudflare workers
       run: npx wrangler publish --env ${GITHUB_REF#refs/heads/}
       env:
