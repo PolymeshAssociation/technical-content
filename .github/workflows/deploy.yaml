@@ -6,6 +6,7 @@ on:
       - main
       - staging
       - review
+      - gb-fix-ci
 
 jobs:
   cloudflare:
