@@ -23,6 +23,8 @@ jobs:
       run: npm cache clean --force
     - name: install dependencies
       run: npm install --legacy-peer-deps
+    - name: Log gatsby info
+      run: npx gatsby info --clipboard
     - name: build static website
       run: npm run build || npm run build
     - name: Deployment to Cloudflare workers
