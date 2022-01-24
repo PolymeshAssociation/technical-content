@@ -1,0 +1,55 @@
+require('dotenv').config();
+var cloudinary = require('cloudinary').v2;
+
+class CloudinaryHelper {
+    constructor(cloudName, apiKey, apiSecret) {
+        this.cloudName = cloudName;
+        this.apiKey = apiKey;
+        this.apiSecret = apiSecret;
+
+        this._setup();
+    }
+
+    checkImage(path, id) {
+        console.log('Cloudinary helper: check image');
+        this._find(id).then(image => {
+            if (!image) this._upload(path, id);
+        });
+    }
+
+    _upload(path, id) {
+        console.log('Cloudinary helper: image upload started');
+        cloudinary.uploader.upload(path, {public_id: id}, (err, image) => {
+            if (err) console.error(err);
+            console.log('Cloudinary helper: image upload completed, public ID: ', image.public_id);
+        });
+    }
+
+    _find(id) {
+        return new Promise((resolve) => {
+            cloudinary.search.expression(`public_id=${id}`).execute().then(result => {
+                if (!result || result.total_count == 0) resolve(null);
+                resolve(result.resources[0]);
+            }).catch(err => {
+                console.error(err);
+                resolve(null);
+            });
+        });
+    }
+
+    _setup() {
+        cloudinary.config({ 
+            cloud_name: this.cloudName, 
+            api_key: this.apiKey, 
+            api_secret: this.apiSecret,
+        });
+    }
+}
+
+const cloudName = process.env.CLOUDINARY_NAME, 
+    apiKey = process.env.CLOUDINARY_API_KEY,
+    apiSecret = process.env.CLOUDINARY_API_SECRET,
+    id = process.env.CLOUDINARY_IMAGE_ID;
+
+const cloudinaryHelper = new CloudinaryHelper(cloudName, apiKey, apiSecret);
+cloudinaryHelper.checkImage('./src/gatsby-theme-apollo-docs/assets/social-bg.jpg', id);

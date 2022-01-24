@@ -3,7 +3,6 @@ const path = require('path');
 const git = require('simple-git')();
 const {createFilePath} = require('gatsby-source-filesystem');
 const {getVersionBasePath, getSpectrumUrl} = require('./src/gatsby-theme-apollo-docs/utils');
-const {createPrinterNode} = require('gatsby-plugin-printer');
 
 const mainGatsbyConfig = require('./gatsby-config');
 
@@ -73,26 +72,6 @@ async function onCreateNode(
         }
       }
     }
-
-    const {title, sidebar_title, api_reference} = node.frontmatter;
-
-    createPrinterNode({
-      id: `${node.id} >>> Printer custom`,
-      fileName,
-      outputDir,
-      data: {
-        title,
-        subtitle: subtitle || siteName,
-        category
-      },
-      component: require.resolve('./src/gatsby-theme-apollo-docs/components/social-card.js')
-    });
-
-    actions.createNodeField({
-      name: 'image-custom',
-      node,
-      value: path.join(outputDir, fileName + '.png')
-    });
 
     if (page_subsite) {
       actions.createNodeField({

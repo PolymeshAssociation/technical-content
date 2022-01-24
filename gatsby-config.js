@@ -25,6 +25,11 @@ console.log(subSites);
 
 const sidebarConfig = getSidebarConfig();
 
+const shareImageConfig = {
+  cloudName: process.env.CLOUDINARY_NAME || 'dk6bl0g1a',
+  imagePublicID: process.env.CLOUDINARY_IMAGE_ID || 'polimesh-social-bg'
+};
+
 const apolloDocsOptions = {
   ...themeOptions,
   root: __dirname,
@@ -33,6 +38,7 @@ const apolloDocsOptions = {
   githubRepo: 'PolymathNetwork/technical-content',
   siteName: 'Polymesh Developer Portal',
   sidebarCategories: getSidebarConfig(),
+  shareImageConfig: shareImageConfig,
   subSites: subSites
 }
 
