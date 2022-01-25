@@ -10,18 +10,22 @@ class CloudinaryHelper {
         this._setup();
     }
 
-    checkImage(path, id) {
-        console.log('Cloudinary helper: check image');
-        this._find(id).then(image => {
-            if (!image) this._upload(path, id);
+    checkResource(path, id, options) {
+        console.log('Cloudinary helper: check resource ', id);
+
+        if (!options) options = {};
+        options.public_id = id;
+
+        this._find(id).then(resource => {
+            if (!resource) this._upload(path, options);
         });
     }
 
-    _upload(path, id) {
-        console.log('Cloudinary helper: image upload started');
-        cloudinary.uploader.upload(path, {public_id: id}, (err, image) => {
+    _upload(path, options) {
+        console.log('Cloudinary helper: resource upload started');
+        cloudinary.uploader.upload(path, options, (err, resource) => {
             if (err) console.error(err);
-            console.log('Cloudinary helper: image upload completed, public ID: ', image.public_id);
+            console.log('Cloudinary helper: resource upload completed, public ID: ', resource.public_id);
         });
     }
 
@@ -38,7 +42,7 @@ class CloudinaryHelper {
     }
 
     _setup() {
-        cloudinary.config({ 
+        cloudinary.config({
             cloud_name: this.cloudName, 
             api_key: this.apiKey, 
             api_secret: this.apiSecret,
@@ -52,4 +56,7 @@ const cloudName = process.env.CLOUDINARY_NAME,
     id = process.env.CLOUDINARY_IMAGE_ID;
 
 const cloudinaryHelper = new CloudinaryHelper(cloudName, apiKey, apiSecret);
-cloudinaryHelper.checkImage('./src/gatsby-theme-apollo-docs/assets/social-bg.jpg', id);
+// check social background image
+cloudinaryHelper.checkResource('./src/gatsby-theme-apollo-docs/assets/polymesh-social-bg.jpg', id);
+// check font
+cloudinaryHelper.checkResource('node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2', 'inter.woff2', {resource_type: 'raw', type: 'authenticated'});
