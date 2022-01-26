@@ -6,7 +6,6 @@ on:
       - main
       - staging
       - review
-      - gb-update-theme
 
 jobs:
   cloudflare:
