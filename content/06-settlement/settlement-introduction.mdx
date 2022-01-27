@@ -6,7 +6,7 @@ slug: /settlement/settlement-process
 
 import HighlightBox from "../../src/components/HighlightBox"
 
-**Settlement** is where _an action that was agreed beforehand is effectively acted upon_. It is a term often found in finance. In the case of Polymesh, the prior agreement is that of **an exchange or transfer of securities between accounts**. Regulatory requirements and compliance are both important aspects of modern settlements.
+**Settlement** is where _an action that was agreed beforehand is effectively acted upon_. It is a term often found in finance. In the case of Polymesh, the prior agreement is that of **an exchange or transfer of securities between accounts**. A settlement in Polymesh represents the contractual obligation to which the involved parties have agreed. Regulatory requirements and compliance are both important aspects of modern settlements.
 
 When looking at current settlement processes, for example in case of post-trade security clearings, one can notice:
 
@@ -67,13 +67,17 @@ An instruction cannot be created without legs, and legs cannot be created outsid
 
 In Polymesh, nothing material happens until the compliance rules have been met. This is true of instructions. So, in our two-legged instruction example, the KYC attestations attached to Alice's and Bob's accounts should comply with ACME's sending and receiving rules, respectively. The instruction will remain in a pending state until ACME's compliance rules are satisfied.
 
-For the avoidance of doubt, yes, an instruction can have been affirmed by all parties and still stay in a pending state while the KYC requirements are unresolved. As expected, it is also possible to cancel the whole instruction while compliance is pending.
+For the avoidance of doubt, an instruction may be affirmed by all parties and still be in a pending state while the KYC requirements remain unresolved. The reason for durability of the instruction is that it represents contractual committments. The compliance of parties is fluid and changeable. Failing to comply is merely a temporary setback. It can usually be resolved by addressing KYC requirements. Parties are compelled to resolve compliance issues by the contractual obligation represented by the instruction.
+
+As a matter of detail, when an instruction has been fully affirmed but is still pending because of compliance, and it is finally possible for it to execute because the last compliance requirement has been satisfied, the instruction does not automagically execute. It still needs an account to explicitly send a transaction to execute it. Naturally, if an instruction is asked to be executed and it still fails because of compliance, then the instruction is not cancelled. It remains in a pending state.
+
+As expected, it is also possible to cancel the whole instruction while compliance is pending.
 
 Additionally, the securities token issuer can also restrict which accounts are allowed to create instructions transferring _their_ token. Although it is expected that this facility will seldom be used.
 
 ### Atomic execution
 
-Instructions execute completely, or not at all - another way of saying they are atomic. For example, the above-mentioned instruction has two legs to send shares from Alice to Bob and funds from Bob to Alice. Alice and Bob both need to affirm that the entire instruction is agreeable and properly represents their agreement. Instructions contain other details such as when to actually execute, e.g. as soon as its affirmed or at a scheduled point of time in the future. Alice and Bob's affirmations indicate their agreement with all such details.
+Instructions execute completely, or not at all - in technical parlance, "atomic". For example, the above-mentioned instruction has two legs to send shares from Alice to Bob and funds from Bob to Alice. Alice and Bob both need to affirm that the entire instruction is agreeable and properly represents their contractual agreement. Instructions contain other details such as when to actually execute, e.g. as soon as it's affirmed or at a scheduled point of time in the future. Alice and Bob's affirmations indicate their agreement with all such details.
 
 The **actual execution** is atomic, meaning that the instructions are always **either completely executed or not executed at all**. There is no case in which one leg of an instruction has executed and the other has not.
 
@@ -147,7 +151,7 @@ In both situations, the net effect is that:
 * Bob has 60 more ACME and 5 fewer USD;
 * Carol has 60 more ACME and 7 fewer USD.
 
-So there is reason to believe that all three parties, or their respective custodians, would be agreeable to the single larger instruction. The instruction is still atomic so it would not be possible for Alice to send her shares without full compensation, for instance. A potential downside is that with more parties whose affirmation, and proper attestations, are required, there is a higher chance of a hold-up. Which is why an exchange would be expected to do this only with parties with higher trust.
+So there is reason to believe that all three parties, or their respective custodians, would be agreeable to the single larger instruction. The instruction is still atomic so it would not be possible for Alice to send her shares without full compensation, for instance. A potential downside is that with more parties whose affirmations, and proper attestations, are required, there is a higher chance of a hold-up. Which is why an exchange would be expected to do this only with parties with higher trust or pre-authorisations.
 
 ### Chain of responsibility
 
@@ -167,7 +171,7 @@ To achieve this, they monitor their participants' reputation, and they make sure
 
 **Custodians** can represent a security beneficiary, for instance on an exchange. They may represent more than one beneficiary on an exchange too, and, from the point of view of an exchange, the _trader_ is the custodian. So the exchange is in effect keeping track of the custodians' reputations. In turn, when it comes to a given settlement, a custodian cannot override a beneficiary's failing compliance. This is a reputational risk for custodians. Therefore, custodians are compelled to monitor the compliance of their customers before they represent them on an exchange.
 
-Also, given sufficient liquidity, a given custodian can also act as an exchange between parties when it is possible to create such matches. In this case , as well, custodians have a vested interest in ensuring that settlement instructions complete.
+Also, given sufficient liquidity, a given custodian can act as an exchange between parties when it is possible to create such matches. In this case, as well, custodians have a vested interest in ensuring that settlement instructions complete.
 
 ### On custodians and portfolios
 

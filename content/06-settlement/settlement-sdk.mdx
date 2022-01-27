@@ -25,16 +25,16 @@ Like we saw before, each participant has an identity and a computer on which the
 
     ```typescript
     const apiAlice: Polymesh = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word1 word2 ..."
     });
-    const alice: CurrentIdentity = await apiAlice.getCurrentIdentity();
+    const alice: Identity = await apiAlice.getCurrentIdentity();
     const aliceDid: string = alice.did; // For SafeHands
     ```
 
     ```javascript
     const apiAlice = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word1 word2 ..."
     });
     const alice = await apiAlice.getCurrentIdentity();
@@ -47,16 +47,16 @@ Like we saw before, each participant has an identity and a computer on which the
 
     ```typescript
     const apiSafeHands: Polymesh = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word41 word42 ..."
     });
-    const safeHands: CurrentIdentity = await apiSafeHands.getCurrentIdentity();
+    const safeHands: Identity = await apiSafeHands.getCurrentIdentity();
     const safeHandsDid: string = safeHands.did; // For Alice and NextDaq
     ```
 
     ```javascript
     const apiSafeHands = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word41 word42 ..."
     });
     const safeHands = await apiSafeHands.getCurrentIdentity();
@@ -69,19 +69,19 @@ Like we saw before, each participant has an identity and a computer on which the
 
     ```typescript
     const apiNextDaq: Polymesh = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word51 word52 ..."
     });
-    const nextDaq: CurrentIdentity = await apiNextDaq.getCurrentIdentity();
+    const nextDaq: Identity = await apiNextDaq.getCurrentIdentity();
     const nextDaqDid: string = nextDaq.did; // For SafeHands
     ```
 
     ```javascript
     const apiNextDaq = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word51 word52 ..."
     });
-    const nextDaq: CurrentIdentity = await apiNextDaq.getCurrentIdentity();
+    const nextDaq: Identity = await apiNextDaq.getCurrentIdentity();
     const nextDaqDid: string = nextDaq.did; // For SafeHands
     ```
 
@@ -234,14 +234,14 @@ const acmeToken: SecurityToken = await apiSafeHands.getSecurityToken({
     "ticker": "ACME"
 });
 const isPossible: TransferStatus = await acmeToken.settlements.canSettle({
-    "amout": new BigNumber("1"),
+    "amount": new BigNumber("1"),
     "from": {
         "did": aliceDid,
-        "id": tradingFolio.id.toString(10)
+        "id": tradingFolio.id
     },
     "to": aliceDid
 });
-assert(isPossible === "Success");
+assert(isPossible === TransferSuccess.Success);
 ```
 
 ```javascript
@@ -249,10 +249,10 @@ const acmeToken = await apiSafeHands.getSecurityToken({
     "ticker": "ACME"
 });
 const isPossible = await acmeToken.settlements.canSettle({
-    "amout": new BigNumber("1"),
+    "amount": new BigNumber("1"),
     "from": {
         "did": aliceDid,
-        "id": tradingFolio.id.toString(10)
+        "id": tradingFolio.id
     },
     "to": aliceDid
 });
@@ -495,7 +495,7 @@ It returns previously-known information about `aliceOrderId` in the shape of:
 }
 ```
 
-Now, SafeHands need to live up to their name and only affirm the instruction if it is one they recognise. Polymesh, at the API level, allows one to affirm a single leg for a single portfolio. However the SDK finds the relevant legs and portfolios for you, and in turn adds all the necessary affirmations in the transaction queue. The flip side of this convenience is that SafeHands therefore has to make sure nothing untoward was slipped in.
+Now, SafeHands needs to live up to their name and only affirm the instruction if it is one they recognise. Polymesh, at the API level, allows one to affirm a single leg for a single portfolio. However the SDK finds the relevant legs and portfolios for you, and in turn adds all the necessary affirmations in the transaction queue. The flip side of this convenience is that SafeHands therefore have to make sure nothing untoward was slipped in.
 
 <MultiCodeBlock>
 
@@ -520,7 +520,7 @@ const paymentLegs: Leg[] = legs.data.filter((leg: Leg) => {
     return leg.to.did === aliceOrder.to.identity &&
         leg.to.id.isEqualTo(aliceOrder.to.id) &&
         leg.token.ticker === aliceOrder.price.token &&
-        leg.amount.isEqualTo(expectedUsd);
+        leg.amount.isMoreThanEqualTo(expectedUsd);
 });
 // Are we getting paid in our default portfolio?
 assert(payment.length === 1);
@@ -564,7 +564,7 @@ const paymentLegs = legs.data.filter((leg) => {
     return leg.to.did === aliceOrder.to.identity &&
         leg.to.id.isEqualTo(aliceOrder.to.id) &&
         leg.token.ticker === aliceOrder.price.token &&
-        leg.amount.isEqualTo(expectedUsd);
+        leg.amount.isMoreThanEqualTo(expectedUsd);
 });
 // Are we getting paid in our default portfolio?
 assert(payment.length === 1);
@@ -593,6 +593,31 @@ As you have noticed, the code above acts suspicious about the instruction it is 
 
 In parallel to SafeHands, OnTrust has to do the same. And provided KYC considerations are satisfied, the trade goes through. So we are done with the trade. But are we done with the exercise?
 
+## The instruction is executed
+
+The instruction has been affirmed, but it is possible that it has not been executed yet because of missing compliance from one or more of the parties. Let's assume that the transaction was left pending and is now ready to be executed again, and that it is SafeHands who have decided to post this transaction.
+
+<MultiCodeBlock>
+
+```typescript
+assert(await aliceInstruction.isPending());
+const updatedInstructionQueue: TransactionQueue<Instruction> = await aliceInstruction.reschedule();
+await updatedInstructionQueue.run();
+```
+
+```javascript
+assert(await aliceInstruction.isPending());
+const updatedInstructionQueue = await aliceInstruction.reschedule();
+await updatedInstructionQueue.run();
+```
+
+</MultiCodeBlock>
+
+With that, the system will reevaluate whether it can execute the instruction, and:
+
+* if yes, will execute it,
+* if not, will send it back to a pending state.
+
 ## The exchange verifies
 
 NextDaq trust the brokers to do the deed, but they also verify **at the end of the day** that the brokers actually did it. NextDaq run a business partly based on the reputation that trades matched on their platform get eventually settled. Let see what they can do about it.
@@ -611,30 +636,43 @@ if (typeof earlierInstruction === "undefined") {
 }
 
 const affirmations: ResultSet‹InstructionAffirmation› = await earlierInstruction.getAffirmations();
-const safeHandsAffirmation: InstructionAffirmation = affirmations.data.find((affirmation: InstructionAffirmation) => {
+// Discarding ResultSet's pagination to simplify.
+const safeHandsAffirmations: InstructionAffirmation[] = affirmations.data.filter((affirmation: InstructionAffirmation) => {
     return affirmation.identity.did === safeHandsDid;
 });
-const onTrustAffirmation: InstructionAffirmation = affirmations.data.find((affirmation: InstructionAffirmation) => {
+const onTrustAffirmations: InstructionAffirmation[] = affirmations.data.filter((affirmation: InstructionAffirmation) => {
     return affirmation.identity.did === onTrustDid;
 });
-if (safeHandsAffirmation.status === "Pending") {
-    // Count 1 strike for SafeHands.
-} else if (safeHandsAffirmation.status === "Rejected") {
-    // Mmh, what could this mean?
-} else if (safeHandsAffirmation.status === "Unknown") {
-    // Status is unknown. What to do?
-}
+safeHandsAffirmed: boolean = safeHandsAffirmations.every((safeHandsAffirmation: InstructionAffirmation) => {
+    if (safeHandsAffirmation.status === AffirmationStatus.Affirmed) {
+        return true;
+    } else if (safeHandsAffirmation.status === AffirmationStatus.Pending) {
+        // Count 1 strike for SafeHands.
+    } else if (safeHandsAffirmation.status === AffirmationStatus.Rejected) {
+        // Mmh, what could this mean?
+    } else if (safeHandsAffirmation.status === AffirmationStatus.Unknown) {
+        // Status is unknown. What to do?
+    }
+    return false;
+});
 
-if (onTrustAffirmation.status === "Pending") {
-    // Count 1 strike for OnTrust.
-} else if (onTrustAffirmation.status === "Rejected") {
-    // Mmh, what could this mean?
-} else if (onTrustAffirmation.status === "Unknown") {
-    // Status is unknown. What to do?
-}
+onTrustAffirmed: boolean = onTrustAffirmations.every((onTrustAffirmation: InstructionAffirmation) => {
+    if (onTrustAffirmation.status === AffirmationStatus.Affirmed) {
+        return true;
+    } else if (onTrustAffirmation.status === AffirmationStatus.Pending) {
+        // Count 1 strike for OnTrust.
+    } else if (onTrustAffirmation.status === AffirmationStatus.Rejected) {
+        // Mmh, what could this mean?
+    } else if (onTrustAffirmation.status === AffirmationStatus.Unknown) {
+        // Status is unknown. What to do?
+    }
+    return false;
+});
 
-if (safeHandsAffirmation.status === "Affirmed" && onTrustAffirmation.status === "Affirmed") {
-    // Do we have a situation with compliance?
+if (safeHandsAffirmed && onTrustAffirmed) {
+    // Do we have a situation with compliance? And how should NextDaq record this failure?
+    // Should NextDaq trigger an execution, and charge back the custodians?
+    await (await earlierInstruction.reschedule()).run();
 }
 ```
 
@@ -648,30 +686,43 @@ if (typeof earlierInstruction === "undefined") {
 }
 
 const affirmations = await earlierInstruction.getAffirmations();
-const safeHandsAffirmation = affirmations.data.find((affirmation: InstructionAffirmation) => {
+// Discarding ResultSet's pagination to simplify.
+const safeHandsAffirmations = affirmations.data.filter((affirmation) => {
     return affirmation.identity.did === safeHandsDid;
 });
-const onTrustAffirmation = affirmations.data.find((affirmation: InstructionAffirmation) => {
+const onTrustAffirmations = affirmations.data.filter((affirmation) => {
     return affirmation.identity.did === onTrustDid;
 });
-if (safeHandsAffirmation.status === "Pending") {
-    // Count 1 strike for SafeHands.
-} else if (safeHandsAffirmation.status === "Rejected") {
-    // Mmh, what could this mean?
-} else if (safeHandsAffirmation.status === "Unknown") {
-    // Status is unknown. What to do?
-}
+safeHandsAffirmed = safeHandsAffirmations.every((safeHandsAffirmation) => {
+    if (safeHandsAffirmation.status === "Affirmed") {
+        return true;
+    } else if (safeHandsAffirmation.status === "Pending") {
+        // Count 1 strike for SafeHands.
+    } else if (safeHandsAffirmation.status === "Rejected") {
+        // Mmh, what could this mean?
+    } else if (safeHandsAffirmation.status === "Unknown") {
+        // Status is unknown. What to do?
+    }
+    return false;
+});
 
-if (onTrustAffirmation.status === "Pending") {
-    // Count 1 strike for OnTrust.
-} else if (onTrustAffirmation.status === "Rejected") {
-    // Mmh, what could this mean?
-} else if (onTrustAffirmation.status === "Unknown") {
-    // Status is unknown. What to do?
-}
+onTrustAffirmed = onTrustAffirmations.every((onTrustAffirmation) => {
+    if (onTrustAffirmation.status === "Affirmed") {
+        return true;
+    } else if (onTrustAffirmation.status === "Pending") {
+        // Count 1 strike for OnTrust.
+    } else if (onTrustAffirmation.status === "Rejected") {
+        // Mmh, what could this mean?
+    } else if (onTrustAffirmation.status === "Unknown") {
+        // Status is unknown. What to do?
+    }
+    return false;
+});
 
-if (safeHandsAffirmation.status === "Affirmed" && onTrustAffirmation.status === "Affirmed") {
-    // Do we have a situation with compliance?
+if (safeHandsAffirmed && onTrustAffirmed) {
+    // Do we have a situation with compliance? And how should NextDaq record this failure?
+    // Should NextDaq trigger an execution, and charge back the custodians?
+    await (await earlierInstruction.reschedule()).run();
 }
 ```
 
@@ -732,8 +783,8 @@ const fromTradingPromises: Promise<Leg[]>[] = pendingInstructions.map(async(inst
     });
     return outLegs;
 });
-const outLegs: Leg[] = (await Promise.all(fromTradingPromises)).flat();
-const outAmount: BigNumber = outLegs.reduce(
+const pendingOutLegs: Leg[] = (await Promise.all(fromTradingPromises)).flat();
+const outAmount: BigNumber = pendingOutLegs.reduce(
     (amount: BigNumber, leg: Leg) => {
         return amount.plus(leg.amount);
     },
@@ -754,8 +805,8 @@ const fromTradingPromises = pendingInstructions.map(async(instruction) => {
     });
     return outLegs;
 });
-const outLegs = (await Promise.all(fromTradingPromises)).flat();
-const outAmount = outLegs.reduce(
+const pendingOutLegs = (await Promise.all(fromTradingPromises)).flat();
+const outAmount = pendingOutLegs.reduce(
     (amount, leg) => {
         return amount.plus(leg.amount);
     },
@@ -767,7 +818,7 @@ if (outAmount.isGreaterThan(new BigNumber("0"))) {
 
 </MultiCodeBlock>
 
-At this point, depending on the relationship, SafeHands, can decide to update or pull the sell order on the exchange to reflect the future amount. They could also deem the isntruction fraudulent and reject it.
+At this point, depending on the relationship, SafeHands, can decide to update or pull the sell order on the exchange to reflect the future amount. They could also deem the instruction fraudulent and reject it.
 
 ## Conclusion
 
