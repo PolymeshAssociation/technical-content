@@ -25,7 +25,7 @@ For additional information related to docker commands refer to [Docker Docs]( ht
 
 ## Getting the Polymesh Image
 
-Images are available for mainnet, testnet, staging and develop chains. There are two flavours available for each: debian and distroless. The distroless version has no shell and thus provides a reduced attack surface, whereas the debian versions shell can help with debugging during the initial setup. The images are tagged with \<version\>-\<chain\>-\<flavour\>. 
+Images are available for mainnet, testnet, staging and develop chains. There are two flavours available for each: debian and distroless. The distroless version has no shell and thus provides a reduced attack surface, whereas the debian versions shell can help with debugging during the initial setup. The images are tagged with <version\>-<chain\>-<flavour\>. 
 
 The version, chain and flavour are required for mainnet and testnet chains to ensure deterministic versioning. For staging and develop the version can be omitted. When omitted docker will pull the latest release for that chain and flavour combination.  
 
@@ -47,7 +47,7 @@ By default, if the Polymesh container image has not previously been pulled from 
 sudo docker run --rm polymeshassociation/polymesh:4.1.2-testnet-distroless --version
 ```
 
-**All available Polymesh [FLAGS], [OPTIONS] and \<SUBCOMMAND\> commands can be viewed by calling:**
+**All available Polymesh [FLAGS], [OPTIONS] and <SUBCOMMAND\> commands can be viewed by calling:**
 
 ```
 sudo docker run --rm polymeshassociation/polymesh:4.1.2-testnet-distroless --help
@@ -217,9 +217,9 @@ There are 4 main ports you may wish to expose for your node, depending on your a
 
 ### Bridged Network
 
-By default, a Docker container creates a separate network stack which is bridged to the host network (`--network=bridge`). An IP address will be allocated for containers on the bridge’s network and traffic will be routed through this bridge to the container. To communicate with the container network the required ports must be exposed. Ports are exposed using the `-p` or `--publish` flag in the format \<hostPort\>:\<containerPort\>. It is best practice to only expose required ports. E.g. add `-p 30333:30333` to the Docker run command to expose the libp2p port.
+By default, a Docker container creates a separate network stack which is bridged to the host network (`--network=bridge`). An IP address will be allocated for containers on the bridge’s network and traffic will be routed through this bridge to the container. To communicate with the container network the required ports must be exposed. Ports are exposed using the `-p` or `--publish` flag in the format <hostPort\>:<containerPort\>. It is best practice to only expose required ports. E.g. add `-p 30333:30333` to the Docker run command to expose the libp2p port.
 
-The default configuration for RPC, WS and Prometheus is to allow traffic from localhost only. As, by default, Docker creates a separate network from the host network, connections from local host will be refused even if the required ports are published. To allow the host system to communicate with the containerized Polymesh instance, the `--rpc-external`, `--ws-external` or `--prometheus-external` flags must be added as applicable. Additionally, for RPC & WS connections the `--rpc-cors <ORIGINS>` flag should be added, Where, \<ORIGINS\> is a comma separated list of origins (protocol://domain e.g. https://mainnet-app.polymesh.network/) allowed to access the HTTP & WS RPC server. Value of `all` will disable origin validation. When running in --dev mode the default is to allow all origins.
+The default configuration for RPC, WS and Prometheus is to allow traffic from localhost only. As, by default, Docker creates a separate network from the host network, connections from local host will be refused even if the required ports are published. To allow the host system to communicate with the containerized Polymesh instance, the `--rpc-external`, `--ws-external` or `--prometheus-external` flags must be added as applicable. Additionally, for RPC & WS connections the `--rpc-cors <ORIGINS>` flag should be added, Where, <ORIGINS\> is a comma separated list of origins (protocol://domain e.g. https://mainnet-app.polymesh.network/) allowed to access the HTTP & WS RPC server. Value of `all` will disable origin validation. When running in --dev mode the default is to allow all origins.
 
 Note: adding these flags allows access from outside your host network. Ensure your firewall is configured to allow or block traffic on these ports as required. If running an [operator node](#running-an-operator-node) it is not recommended to expose RPC and WS externally.
 
