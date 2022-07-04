@@ -1,0 +1,368 @@
+---
+title: Running a Node with Docker
+description:
+slug: /polymesh-docs/network/running_a_node_docker
+subsite: polymesh-docs
+---
+
+# Running a Polymesh Node with Docker
+
+## Introduction
+
+Docker is an open source containerization platform which allows developers to pack, ship, and run any application as a lightweight, portable, self-sufficient container.
+
+For convenience the Polymesh Association offers precompiled Docker container images of Polymesh. These images allow a user to quickly deploy the Polymesh software and it’s dependencies. Prebuilt container image can be fetched from the [Polymesh Association Docker Hub repository](https://hub.docker.com/r/polymeshassociation/polymesh/tags). The Polymesh Association also published a sample [Docker-Compose file]( https://github.com/PolymeshAssociation/polymesh-tools/tree/main/docker-compose) which can be used to quickly deploy a Polymesh node as part of a multi container environment. The use of Docker Compose is not covered in this guide.
+
+---
+
+***Following examples are run on the Polymesh testnet chain without SSL. They can be used to quick start and learn how Polymesh can be configured. Please find out how to secure your node, if you want to operate it on the internet. Do not expose RPC and WS ports, if they are not correctly configured.***
+
+---
+
+This guide was written based on Ubuntu 20.04, but the instructions should be similar for other platforms and assumes Docker is already installed. If Docker is not yet installed follow the official [docker installation instructions](https://docs.docker.com/engine/install/ubuntu/) to install. This guide assumes you are logged in as a non-root user with sudo privileges. For security it is recommended root user login is disabled.
+
+For additional information related to docker commands refer to [Docker Docs]( https://docs.docker.com/engine/reference/run/).
+
+## Getting the Polymesh Image
+
+Images are available for mainnet, testnet, staging and develop chains. There are two flavours available for each: debian and distroless. The distroless version has no shell and thus provides a reduced attack surface, whereas the debian versions shell can help with debugging during the initial setup. The images are tagged with \<version\>-\<chain>-\<flavour\>. 
+
+The version, chain and flavour are required for mainnet and testnet chains to ensure deterministic versioning. For staging and develop the version can be omitted. When omitted docker will pull the latest release for that chain and flavour combination.  
+
+**Note: The specified Docker container health checks will not work with the distroless image, but it's more lightweight and safer.**
+
+Refer to the [Polymesh Association Docker Hub repository](https://hub.docker.com/r/polymeshassociation/polymesh/tags) for the available release tags. Your desired release tag can be pulled with the command:
+
+```
+sudo docker pull polymeshassociation/polymesh:4.1.2-testnet-distroless
+```
+
+The tag `:4.1.2-testnet-distroless` should be replaced with the desired release tag. 
+
+The Polymesh Association does not publish a `:latest` build. If a release tag is omitted the docker pull command will error. 
+
+By default, if the Polymesh container image has not previously been pulled from the repository, it will be pulled when first attempting to run it. You can verify the version installed by running the following command:
+
+```
+sudo docker run --rm polymeshassociation/polymesh:4.1.2-testnet-distroless --version
+```
+
+**All available Polymesh [FLAGS], [OPTIONS] and \<SUBCOMMAND\> commands can be viewed by calling:**
+
+```
+sudo docker run --rm polymeshassociation/polymesh:4.1.2-testnet-distroless --help
+```
+
+
+## Running a node
+
+With the image downloaded you can now run your first testnet node:
+
+```
+sudo docker run -u root --rm -it polymeshassociation/polymesh:4.1.2-testnet-distroless --chain testnet
+```
+
+Note: the above command is required to be run as the root user with the flag `-u` or `--user root` in order for the user to have suitable permissions to successfully run the node.
+
+`--rm` is used to automatically remove the container when it exits.
+
+`-it` is used to allocate an interactive, tty virtual terminal session for the container process. This allows node logs to be displayed. When you are satisfied with the configuration of your docker run command and node you can replace `-it` with `-d` or `--detach` to start a container in detached mode so it runs in the background.
+
+`--chain testnet` is used to run a node on the `testnet` blockchain. Replacing `testnet` with `mainnet` would result in a node being created for the Polymesh mainnet blockchain. It can also be one of the predefined ones (`dev`, `local`, or `staging`)
+
+To stop the running container first open a new terminal window. Use `sudo docker ps` to identify the Docker container ID or name for the running Polymesh container. The container is then stopped with the command:
+
+```
+sudo docker stop <CONTAINER ID or NAME>
+```
+Alternatively, Ctrl+C will stop the running container.
+
+## Creating a Volume for Persistent Storage
+
+When the container was stopped all records of it are automatically removed. This is not what you want for a live blockchain node. If you want chain information to persist you need to define a local volume on the operating system that the container will write to. In this example we will use `/var/lib/polymesh/`:
+
+```
+sudo mkdir /var/lib/polymesh/
+```
+
+```
+sudo docker run \
+-u root \
+--rm -it \
+--volume=/var/lib/polymesh/:/var/lib/polymesh/ \
+polymeshassociation/polymesh:4.1.2-testnet-distroless \
+--chain testnet \
+--base-path /var/lib/polymesh/
+```
+
+`--base-path` Specifies a directory where the Polymesh container should store all the data related to this chain. (If it is omitted the default base path is `/.local/share/polymesh/` and the container volume address should be updated to bind to this location)
+
+`-v` or `--volume=<HOST VOLUME:CONTAINER VOLUME>` is used to bind mount the volume.
+
+Now when stopping the container and starting a new one the blockchain information persists and the node will recommence syncing the chain where it previously stopped.
+
+## Running a Node as a Non Root User
+
+So far your nodes have been run as the root user. For security it is advised to run the container as a non-root user. This section will cover the steps required to run a container as a non-root user. In this section you will create a system user, with no home directory and no login capabilities called `polymesh` and run the Polymesh container as that user.
+
+```
+sudo useradd -r -M -s /usr/sbin/nologin polymesh
+```
+
+Before you run your node you need to ensure this new user has ownership of the storage directory and all file within. This step is essential or the node will fail to run due to permission errors.
+
+```
+sudo chown polymesh:polymesh /var/lib/polymesh/ -R
+```
+
+Now that your system user has ownership of your storage volume you can run the node. To do this you will use the `-u` or `--user` Docker flag. As the “polymesh” user does not exist in the container we must instead specify the UID (user ID) and GID (group ID) for this user explicitly. In the below example `$(id -u polymesh)` and `$(id -g polymesh)` return the UID and GID for the polymesh user. Alternatively, they could be specified explicitly e.g. `--user 999:999` if those are the UID and GID assigned to the polymesh user:
+
+```
+sudo docker run \
+--user $(id -u polymesh):$(id -g polymesh) \
+--rm -it \
+--volume=/var/lib/polymesh/:/var/lib/polymesh/ \
+polymeshassociation/polymesh:4.1.2-testnet-distroless \
+--chain testnet \
+--base-path /var/lib/polymesh/
+```
+
+## Naming your Node and Container
+
+By default, Polymesh assigns a random node name. This can be seen in the node log upon startup. e.g. `Node name: elastic-scarecrow-5175`. Similarly, Docker assigns a random name to the container running the node. For ease of identification users can optionally assign a custom name of their choice for both, using the `--name <name>` flag as shown in this example:
+
+```
+sudo docker run \
+--name my-container-name \
+--user $(id -u polymesh):$(id -g polymesh) \
+--rm -it \
+--volume=/var/lib/polymesh/:/var/lib/polymesh/ \
+polymeshassociation/polymesh:4.1.2-testnet-distroless \
+--chain testnet \
+--name my-node-name \
+--base-path /var/lib/polymesh/
+```
+
+The above command runs a Docker container called `my-container-name` and a Polymesh node called `my-node-name`. The name can be arbitrary, but there is a character limit.
+
+Note - the name assigned for the node will be publicly visible in the telemetry sent to Polymesh's servers. (Telemetry is enabled by default). Once your node is running it should appear in the chain telemetry which can be found at the [Polymesh Telemetry Page](https://stats.polymesh.network/).
+
+The Docker container can now be addressed by name. For example, to stop the node you can run the command:
+
+```
+sudo docker stop my-container-name
+```
+
+## Automatically Restarting your Node
+
+Your node should automatically restart in the case of an intermittent failure. This may be a server restart or crash of the Docker container. To achieve this, you will use the `--restart` flag. The recommended restart policy is `always`:
+
+```
+sudo docker run \
+--name my-container-name \
+--user $(id -u polymesh):$(id -g polymesh) \
+--restart always \
+-it \
+--volume=/var/lib/polymesh/:/var/lib/polymesh/ \
+polymeshassociation/polymesh:4.1.2-testnet-distroless \
+--chain testnet \
+--name my-node-name \
+--base-path /var/lib/polymesh/
+```
+
+In the above example we have replaced the `--rm` flag with `--restart always`. To confirm the restart policy is correctly configured you can reboot your server:
+
+```
+sudo reboot
+```
+
+While the server is rebooting your node will no longer be displayed on the Polymesh telemetry page, after it has restarted it will reappear. Following restart, you can also run:
+
+```
+sudo docker ps
+```
+
+to confirm your container is listed as running.
+
+On Debian and Ubuntu, the Docker service is configured to start on boot by default. If the container does not restart automatically you may need to review your configuration for both `docker.service` and `containerd.service`
+
+If you wish to stop your node you can use the command:
+
+```
+sudo docker stop my-container-name
+```
+
+Note: as the restart flag is configured as `always` should the server be rebooted the node will restart. If you no longer want your node to restart, you need to either remove the container or update the container restart policy.
+
+To remove the container:
+
+```
+sudo docker rm my-container-name
+```
+
+To update the container restart policy:
+
+```
+sudo docker update --restart=no my-container-name
+```
+
+## Exposing Container Ports (Libp2p, RPC, WS & Prometheus)
+
+There are 4 main ports you may wish to expose for your node, depending on your application. You should only expose ports you require.
+
+1.	Libp2p – The port that your node will listen for p2p traffic on. Default port: 30333. The default libp2p port can be overridden using the `--port <PORT>` flag on your Polymesh instance. This should always be exposed for both your container and your firewall to ensure your node is able to sync with the chain.
+2.	Remote Procedure Calls – The port that your node will listen for incoming RPC traffic on. Default port: 9933. A custom HTTP RPC server TCP port can be specified using the `--rpc-port <PORT>` flag on your Polymesh instance.
+3.	WebSocket – The port that your node will listen for incoming WebSocket traffic on. Default = 9944. A custom WebSockets RPC server TCP port can be specified using the `--ws-port <PORT>` flag on your Polymesh instance.
+4.	Prometheus – By default Polymesh exposes an endpoint which serves metrics in the [Prometheus exposition format](https://prometheus.io/docs/concepts/data_model/). Default port: 9615. You can change the port with `--prometheus-port <PORT>`. Prometheus metrics can be disabled with the flag `--no-prometheus`
+
+### Bridged Network
+
+By default, a Docker container creates a separate network stack which is bridged to the host network (`--network=bridge`). An IP address will be allocated for containers on the bridge’s network and traffic will be routed through this bridge to the container. To communicate with the container network the required ports must be exposed. Ports are exposed using the `-p` or `--publish` flag in the format \<hostPort\>:\<containerPort\>. It is best practice to only expose required ports. E.g. add `-p 30333:30333` to the Docker run command to expose the libp2p port.
+
+The default configuration for RPC, WS and Prometheus is to allow traffic from localhost only. As, by default, Docker creates a separate network from the host network, connections from local host will be refused even if the required ports are published. To allow the host system to communicate with the containerized Polymesh instance, the `--rpc-external`, `--ws-external` or `--prometheus-external` flags must be added as applicable. Additionally, for RPC & WS connections the `--rpc-cors <ORIGINS>` flag should be added, Where, \<ORIGINS\> is a comma separated list of origins (protocol://domain e.g. https://mainnet-app.polymesh.network/) allowed to access the HTTP & WS RPC server. Value of `all` will disable origin validation. When running in --dev mode the default is to allow all origins.
+
+Note: adding these flags allows access from outside your host network. Ensure your firewall is configured to allow or block traffic on these ports as required. If running an [operator node](#running-an-operator-node) it is not recommended to expose RPC and WS externally.
+
+Example of node configuration with exposed container ports to allow access from host localhost or WAN:
+
+```
+sudo docker run \
+--name my-container-name \
+--user $(id -u polymesh):$(id -g polymesh) \
+--rm \
+-it \
+--volume=/var/lib/polymesh/:/var/lib/polymesh/ \
+-p 30333:30333 \
+-p 9933:9933 \
+-p 9944:9944 \
+-p 9615:9615 \
+polymeshassociation/polymesh:4.1.2-testnet-distroless \
+--chain testnet \
+--name my-node-name \
+--base-path /var/lib/polymesh/ \
+--rpc-external \
+--rpc-cors all \
+--ws-external \
+--prometheus-external
+```
+### Host Network
+
+An alternate option is to use the host's network stack inside the container. With the `--network` flag set to `host` a container will share the host’s network stack and all interfaces from the host will be available to the container. Compared to the default bridge mode, the host mode gives significantly better networking performance since it uses the host’s native networking stack whereas the bridge has to go through one level of virtualization through the Docker daemon.
+
+Warning: `--network=host` gives the container full access to local system services and is therefore considered insecure. This option should be used with caution.
+
+Example of Docker node configuration with --network=host:
+
+```
+sudo docker run \
+--name my-container-name \
+--user $(id -u polymesh):$(id -g polymesh) \
+--rm \
+-it \
+--volume=/var/lib/polymesh/:/var/lib/polymesh/ \
+--network=host \
+polymeshassociation/polymesh:4.1.2-testnet-distroless \
+--chain testnet \
+--name my-node-name \
+--base-path /var/lib/polymesh/
+```
+
+A benefit of this option is the node can be addressed directly from localhost on the host environment without exposing RPC and WebSocket externally. For example, calling:
+
+```
+curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "system_localPeerId"}' http://localhost:9933/
+```
+
+will now return the Peer ID of the node.
+
+---
+
+Note: Not all RPC methods are safe to be exposed publicly. The default RPC methods exposed depends on the node configuration. In both of the previous two examples we did not explicitly specify the RPC methods to expose, therefore it defaulted to `--rpc-methods Auto`. `Auto`: Acts as `Safe` if RPC is served externally, e.g. when `--{rpc,ws}-external` is passed, otherwise acts as `Unsafe`. `Unsafe`: Exposes every RPC method. `Safe`: Exposes only a safe subset of RPC methods, denying unsafe RPC methods. Disabled RPC methods include `author_hasKey`, `author_hasSessionKeys`, `author_insertKey`, `author_removeExtrinsic`, `author_rotateKeys`, `babe_epochAuthorship`, `childstate_getStorageSize`, `offchain_localStorageGet`, `offchain_localStorageSet`, `state_getPairs`, `state_queryStorage`, `state_queryStorageAt`, `sync_state_genSyncSpec`, `system_addLogFilter`, `system_dryRun`, `system_dryRunAt` and `system_resetLogFilter`.
+
+The two previous node configuration examples result in different RPC methods being exposed. In the second example with `--network=host` it is possible to call an unsafe rpc method such as `author_rotateKeys` which is not possible for first example with `--rpc-external` configured. External unsafe methods can also be forced by setting `--rpc-methods Unsafe` and `--unsafe-rpc-external` or `--unsafe-ws-external` as required.
+
+## Purging Chain Database
+
+On occasions you may wish to purge your blockchain database. For example, you wish to remove partial files created as a result of stopping and starting your node or if you are changing your node to an operator node and wish to change the database `--pruning` mode. In that instance you will need to either resync from scratch or restore a database backup from a node with the same pruning settings. However, before resyncing the chain you will first need to stop your running node, remove the stopped docker container and purge existing database. (refer to stop and remove commands in the [Automatically Restarting your Node](#automatically-restarting-your-node) section)
+
+Once your container is stopped and removed (if you are not restarting with the same configuration) the data base can be purged with the following command:
+
+```
+sudo docker run \
+-u $(id -u polymesh):$(id -g polymesh) \
+--rm -it \
+-v /var/lib/polymesh/:/var/lib/polymesh/ \
+polymeshassociation/polymesh:4.1.2-testnet-distroless \
+purge-chain \
+--chain testnet  \
+--base-path /var/lib/polymesh/
+```
+
+You will be presented with a prompt to confirm you wish to remove the database which you need to confirm.
+
+```
+Are you sure to remove "/var/lib/polymesh/chains/testnet/db"? [y/N]: y
+"/var/lib/polymesh/chains/testnet/db" removed.
+```
+
+Ensure your command specifies the correct `--base-path`, volumes and `--chain` for the database you wish to remove.
+
+## Running an Operator Node
+
+The Operator role on Polymesh is permissioned. Operators must be regulated capital market participants that meet specific criteria and be approved by Polymesh Governance. For more information on becoming an operator visit the [Polymesh Website]( https://polymesh.network/node-operators)
+
+In the previous examples we did not explicitly state the `--pruning` mode for the nodes. The default database for a **full node** is pruned: it discards all finalized blocks older than a configurable number except the genesis block: This is 256 blocks from the last finalized one, by default. A node that is pruned this way requires much less space than an archive node.
+
+The default `--pruning` mode for an operator node is `archive`. An **archive node** keeps all the past blocks. An archive node makes it convenient to query the past state of the chain at any point in time. Finding out what an account's balance at a certain block was, or which extrinsics resulted in a certain state change are fast operations when using an archive node. However, an archive node takes up a lot of disk space.
+
+If first running a non-operator node to sync the chain, prior to changing to an operator node, the pruning mode should explicitly be configured as `--pruning archive`.  Alternatively, the database must be [purged](#purging-chain-database) prior to starting the operator node.
+
+To run a node as an operator the `--operator` flag must be added to the node configuration. Below is an example of node configured as an operator:
+
+```
+sudo docker run \
+--name my-container-name \
+--user $(id -u polymesh):$(id -g polymesh) \
+--restart always \
+-it \
+--volume=/var/lib/polymesh/:/var/lib/polymesh/ \
+-p 30333:30333 \
+-p 9615:9615 \
+--ulimit nofile=1024:10240
+polymeshassociation/polymesh:4.1.2-testnet-distroless \
+--chain testnet \
+--operator \
+--name my-node-name \
+--base-path /var/lib/polymesh/ \
+--wasm-execution compiled \
+--db-cache 4096 \
+--prometheus-external
+```
+
+While it is strongly recommended to run an operator node with pruning configured as `archive`, this is not essential. To reduce the size of the database alternative pruning can be considered provided the operator understands the potential risks (e.g. chain reorg greater than the number of blocks stored). To set custom pruning use the flag `--pruning` followed by the number of blocks to keep. e.g. `--pruning 30000` will only keep 30,000 blocks. When running an operator node and setting pruning to anything other than `archive`, you must additionally set the `--unsafe-pruning` flag.
+
+
+## Generating Node Session Keys
+
+Session keys are the keys that an operator node uses to sign data needed for consensus. Session keys are typically generated in the client, although they don't have to be, and are stored on the operator node itself. Session keys are not meant to control funds and should only be used for their intended purpose. They can be used to perform actions that will result in a penalty, like double signing. Hence, it is important to keep these keys secure. They can be changed regularly.
+
+Polymesh uses four session keys:
+- GRANDPA: ed25519
+- BABE: sr25519
+- I'm Online: sr25519
+- Authority Discovery: sr25519
+
+These keys can either be generated offline and injected in the operator node or can be generated within the operator node by calling the appropriate RPC method. Once generated the session keys should be persisted.
+
+The official Polymesh docker images contain a small binary to generate the session keys and insert them in the keystore. This is the simplest method to generate session keys as it does not require exposing unsafe rpc methods externally or the installation of curl either in the container itself or in a sidecar.
+
+This binary is located in /usr/local/bin/rotate and when executed will produce a string containing the concatenated public session keys used for signing operator transactions. The binary can be run on a running container with the command:
+
+```
+sudo docker exec -u $(id -u polymesh):$(id -g polymesh) my-container-name /usr/local/bin/rotate
+0xb10d37dd9a0df59b128788e9620491143230e3f5459951108e1767fd1c79558c82f719fa0060b90e5f9414acdd5f593e72c5714c4ca6de0d5b99f137e14a0c5944e1805cc6b4226291a5e7dcb437d775a3af715c30009688515c9bd1f4941570b64d0f96063afce278393f18a1aa4d56fd1decd085b38c6577ee9d8a9d78bf64
+```
+
+Take note of the string generated by your command: it contains the public portion of your session keys that you will use to link your Polymesh key to your node. The private keys output is stored in a keystore on your operator server e.g. in the `/<base path>/chains/testnet/keystore/` directory.
+
+After you have generated your session keys refer to the [Polymesh Operator Guide]( https://github.com/PolymeshAssociation/polymesh-tools/tree/main/docs/operator#bonding-polyx) for steps required to bond POLYX, set session keys and activate your operator node. **Ensure you wait before activating your operator node until all your nodes are be fully synced with the chain.**
