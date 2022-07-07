@@ -27,26 +27,38 @@ You can find it here [@polymathnetwork/polymesh-sdk](https://www.npmjs.com/packa
 
 If you went through the Quick Start, we can assume that you have created an account (a public-private key pair) on the Polymesh Testnet, that you associated it with an account, and that you credited it with POLYX. We shall call this personal signing key `aliceKey`, and the personal account it represents `alice`.
 
-Here, we are going to follow along the Token Studio Dashboard exercise, and do the same _mistake_. whereby she creates the token with her personal account, and which we will eventually fix. The credible simple reason why Alice created the token with her personal account is that her and her co-founders wanted to act fast so as to have the ticker available before getting the company through CDD.
+Here, we are going to follow along the Token Studio Dashboard exercise, and do the same _mistake_. whereby she creates the asset with her personal account, and which we will eventually fix. The credible simple reason why Alice created the asset with her personal account is that her and her co-founders wanted to act fast so as to have the ticker available before getting the company through CDD.
 
 To recap:
 
 * Alice, ACME's CEO and acting agent, already has an **individual** Polymesh account, named `alice`, tied to a primary private key named `aliceKey`;
 * `aliceKey`'s private key is based on the `"word1 word2 ..."` mnemonic;
-* A Polymesh client has been [instantiated](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#static-connect) by Alice so she can do the next actions:
+* A Polymesh client has been [instantiated](https://github.com/PolymathNetwork/polymesh-sdk/wiki/api.client.Polymesh.Polymesh#connect) by Alice so she can do the next actions:
     <MultiCodeBlock>
 
     ```typescript
+    const signingManagerAlice: LocalSigningManager = await LocalSigningManager.create({
+        "accounts": [{
+            "mnemonic": "word1 word2 ..."
+        }]
+    });
+    
     const apiAlice: Polymesh = await Polymesh.connect({
         "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-        "accountMnemonic": "word1 word2 ..."
+        "signingManager": signingManagerAlice
     });
     ```
 
     ```javascript
+    const signingManagerAlice = await LocalSigningManager.create({
+        "accounts": [{
+            "mnemonic": "word1 word2 ..."
+        }]
+    });    
+
     const apiAlice = await Polymesh.connect({
         "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-        "accountMnemonic": "word1 word2 ..."
+        "signingManager": signingManagerAlice
     });
     ```
 
@@ -54,18 +66,18 @@ To recap:
 
 ## Ticker reservation
 
-Before creating the token proper, Alice needs to [reserve](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#reserveticker) the ACME ticker so that it is not squatted while the founders incorporate the company. Think of it on the same level as grabbing your `.com` domain as early as possible:
+Before creating the asset proper, Alice needs to [reserve](https://github.com/PolymathNetwork/polymesh-sdk/wiki/api.client.Assets.Assets#reserveticker) the ACME ticker so that it is not squatted while the founders incorporate the company. Think of it on the same level as grabbing your `.com` domain as early as possible:
 
 <MultiCodeBlock>
 
 ```typescript
-const reservationQueue: TransactionQueue<TickerReservation> = await apiAlice.reserveTicker({
+const reservationQueue: TransactionQueue<TickerReservation> = await apiAlice.assets.reserveTicker({
     "ticker": "ACME"
 });
 ```
 
 ```javascript
-const reservationQueue = await apiAlice.reserveTicker({
+const reservationQueue = await apiAlice.assets.reserveTicker({
     "ticker": "ACME"
 });
 ```
@@ -114,14 +126,14 @@ At this stage, Alice owns the reservation. You can confirm it with the following
 <MultiCodeBlock>
 
 ```typescript
-const alice: Identity = await apiAlice.getCurrentIdentity();
+const alice: Identity = await apiAlice.getSigningIdentity();
 const details: TickerReservationDetails = await reservation.details();
 const owner: Identity = details.owner;
 assert(owner.did === alice.did);
 ```
 
 ```javascript
-const alice = await apiAlice.getCurrentIdentity();
+const alice = await apiAlice.getSigningIdentity();
 const { owner } = await reservation.details();
 assert(owner.did === alice.did);
 ```
@@ -130,60 +142,62 @@ assert(owner.did === alice.did);
 
 Something is not immediately apparent from the few lines of code above. It is nonetheless important to point it out.
 
-When we created `apiAlice` with `await Polymesh.connect()`, we passed an identifier `accountMnemonic` that allowed the SDK to recreate the `aliceKey` private key. At the risk of repeating what was covered in the introduction module, this private key is not the Polymesh account proper, nor is it the public key. The public key is associated with an account, whether as a primary key, like here, or a secondary one. When the private key is used to sign a transaction, it is the **associated account** that will be considered to be the one doing the action.
+When we created `apiAlice` with `await Polymesh.connect()`, we passed an identifier `signingManager` which was created using an identifier `accountMnemonic` that allowed the SDK to recreate the `aliceKey` private key. At the risk of repeating what was covered in the introduction module, this private key is not the Polymesh account proper, nor is it the public key. The public key is associated with an account, whether as a primary key, like here, or a secondary one. When the private key is used to sign a transaction, it is the **associated account** that will be considered to be the one doing the action.
 
 This associated account information is **not embedded in the private key**. It is an association that is stored on the blockchain, may change in the future, and as such, it needs to be retrieved to be known.
 
 <HighlightBox type="info">
 
-So when we wrote `await` in `await apiAlice.getCurrentIdentity()`, this is no accident. We indeed need to do a round trip to the blockchain to know what account our public key is associated with.
+So when we wrote `await` in `await apiAlice.getSigningIdentity()`, this is no accident. We indeed need to do a round trip to the blockchain to know what account our public key is associated with.
 
 </HighlightBox>
 
 ## Ticker creation
 
-Now that the ticker is reserved, it is time to issue the security token.
+Now that the ticker is reserved, it is time to issue the asset.
 
 Oh wait! The reservation may have happened some time ago. After all a reservation remains valid for 60 days, for instance. And your `const reservation: TickerReservation` instance might no longer be in memory.
 
-How do you get it back? Use [`getTickerReservation`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#gettickerreservation):
+How do you get it back? Use [`assets.getTickerReservation`](https://github.com/PolymathNetwork/polymesh-sdk/wiki/api.client.Assets.Assets#gettickerreservation):
 
 <MultiCodeBlock>
 
 ```typescript
+const signingManagerAlice: LocalSigningManager = await LocalSigningManager.create({...});
 const apiAlice: Polymesh = await Polymesh.connect({...});
-const reservation: TickerReservation = await apiAlice.getTickerReservation({
+const reservation: TickerReservation = await apiAlice.assets.getTickerReservation({
     "ticker": "ACME"
 });
 ```
 
 ```javascript
+const signingManagerAlice = await LocalSigningManager.create({...});
 const apiAlice = await Polymesh.connect({...});
-const reservation = await apiAlice.getTickerReservation({
+const reservation = await apiAlice.assets.getTickerReservation({
     "ticker": "ACME"
 });
 ```
 
 </MultiCodeBlock>
 
-You will note that the class `TickerReservation`, just like the transaction queue, keeps a [`protected context: Context`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/tickerreservation#properties-1). This `context` in turn keeps a [`polymeshApi`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/context#properties-1). It is in there that we find the implicit knowledge that it is `alice`'s account that is asking for the next actions. If it were any other **account** that had called `getTickerReservation`, this other account would not be able to follow up with a `.createToken` command because it doesn't own the reservation.
+You will note that the class `TickerReservation`, just like the transaction queue, keeps a [`protected context: Context`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/tickerreservation#properties-1). This `context` in turn keeps a [`polymeshApi`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/context#properties-1). It is in there that we find the implicit knowledge that it is `alice`'s account that is asking for the next actions. If it were any other **account** that had called `assets.getTickerReservation`, this other account would not be able to follow up with a `.createAsset` command because it doesn't own the reservation.
 
-With our `reservation` in memory, and 10,000 POLYX in `alice`'s wallet, which is the cost of creation of one security token, we now can create it:
+With our `reservation` in memory, and 10,000 POLYX in `alice`'s wallet, which is the cost of creation of one asset, we now can create it:
 
 <MultiCodeBlock>
 
 ```typescript
-const tokenQueue: TransactionQueue<SecurityToken> = await reservation.createToken({
+const assetQueue: TransactionQueue<Asset> = await reservation.createAsset({
     "name": "ACME Co",
-    "tokenType": KnownTokenType.EquityPreferred,
+    "assetType": KnownAssetType.EquityPreferred,
     "isDivisible": false
 });
 ```
 
 ```javascript
-const tokenQueue = await reservation.createToken({
+const assetQueue = await reservation.createAsset({
     "name": "ACME Co",
-    "tokenType": "EquityPreferred",
+    "assetType": "EquityPreferred",
     "isDivisible": false
 });
 ```
@@ -195,56 +209,66 @@ We have another queue, so, as we did before:
 <MultiCodeBlock>
 
 ```typescript
-const token: SecurityToken = await tokenQueue.run();
+const asset: Asset = await assetQueue.run();
 ```
 
 ```javascript
-const token = await tokenQueue.run();
+const asset = await assetQueue.run();
 ```
 
 </MultiCodeBlock>
 
-Implicit in the creation of this token is that Alice, as a private individual, is **both the token's owner and its primary issuance agent (PIA)**. We were satisfied with this situation only up to this point. Now this needs to change.
+Implicit in the creation of this asset is that Alice, as a private individual, is **both the asset's owner and its primary issuance agent (PIA)**. We were satisfied with this situation only up to this point. Now this needs to change.
 
-This `token` instance will not always be in memory, so if we wanted to fetch it at a later date, we would do:
+This `asset` instance will not always be in memory, so if we wanted to fetch it at a later date, we would do:
 
 <MultiCodeBlock>
 
 ```typescript
-const token: SecurityToken = await apiAlice.getSecurityToken({
+const asset: Asset = await apiAlice.assets.getAsset({
     "ticker": "ACME"
 });
 ```
 
 ```javascript
-const token = await apiAlice.getSecurityToken({
+const asset = await apiAlice.assets.getAsset({
     "ticker": "ACME"
 });
 ```
 
 </MultiCodeBlock>
 
-## Secondary keys
+## Secondary Accounts
 
 Now we assume that ACME has gone through CDD and has an account, complete with a private key and its mnemonic, which, in a mirror fashion of that of Alice gives us:
 
 <MultiCodeBlock>
 
 ```typescript
+const signingManagerAcme: LocalSigningManager = await LocalSigningManager.create({
+    "accounts": [{
+        "mnemonic": "word21 word22 ..."
+    }]
+});
 const apiAcme: Polymesh = await Polymesh.connect({
     "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-    "accountMnemonic": "word21 word22 ..."
+    "signingManager": signingManagerAcme
 });
-const acme: Identity = await apiAcme.getCurrentIdentity();
+const acme: Identity = await apiAcme.getSigningIdentity();
 const acmeDid: string = acme.did;
 ```
 
 ```javascript
+const signingManagerAcme = await LocalSigningManager.create({
+    "accounts": [{
+        "mnemonic": "word21 word22 ..."
+    }]
+}); 
 const apiAcme = await Polymesh.connect({
     "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-    "accountMnemonic": "word21 word22 ..."
+    "signingManager": signingManagerAcme
 });
-const acme = await apiAcme.getCurrentIdentity();
+const acme = await apiAcme.getSigningIdentity();
 const acmeDid = acme.did;
 ```
 
@@ -255,16 +279,26 @@ On her end, Alice, has created another mnemonic for a private key she intends to
 <MultiCodeBlock>
 
 ```typescript
+const signingManagerCeo: LocalSigningManager = await LocalSigningManager.create({
+    "accounts": [{
+        "mnemonic": "word31 word32 ..."
+    }]
+}); 
 const apiCeo: Polymesh = await Polymesh.connect({
     "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-    "accountMnemonic": "word31 word32 ..."
+    "signingManager": signingManagerCeo
 });
 ```
 
 ```javascript
+const signingManagerCeo = await LocalSigningManager.create({
+    "accounts": [{
+        "mnemonic": "word31 word32 ..."
+    }]
+}); 
 const apiCeo = await Polymesh.connect({
     "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-    "accountMnemonic": "word31 word32 ..."
+    "signingManager": signingManagerCeo
 });
 ```
 
@@ -275,29 +309,27 @@ At this point, `apiCeo` has no associated account. It is a signing key in search
 <MultiCodeBlock>
 
 ```typescript
-const pubCeo: string = apiCeo.getAccount().address;
+const pubCeo: string = apiCeo.accountManagement.getAccount().address;
 ```
 
 ```javascript
-const pubCeo = apiCeo.getAccount().address;
+const pubCeo = apiCeo.accountManagement.getAccount().address;
 ```
 
 </MultiCodeBlock>
 
-Then she needs to send this `pubCeo` information to the computer that holds `apiAcme`. When this is done, the company can invite her to be a secondary key:
+Then she needs to send this `pubCeo` information to `apiAcme`. When this is done, the company can invite her to be a secondary key:
 
 <MultiCodeBlock>
 
 ```typescript
-const acme: Identity = await apiAcme.getCurrentIdentity();
-await acme.inviteAccount({
+await apiAcme.accountManagement.inviteAccount({
     "targetAccount": pubCeo
 });
 ```
 
 ```javascript
-const acme = await apiAcme.getCurrentIdentity();
-await acme.inviteAccount({
+await apiAcme.accountManagement.inviteAccount({
     "targetAccount": pubCeo
 });
 ```
@@ -309,7 +341,7 @@ With the invitation sent out into the blockchain, back at her computer, Alice, w
 <MultiCodeBlock>
 
 ```typescript
-const ceoAccount: Account = apiCeo.getAccount();
+const ceoAccount: Account = apiCeo.accountManagement.getAccount();
 const pendingAuthorizations: AuthorizationRequest[] = await ceoAccount.authorizations.getReceived();
 const acmeAuthorization: AuthorizationRequest = pendingAuthorizations
     .find((pendingAuthorization: AuthorizationRequest) => {
@@ -334,29 +366,29 @@ await acceptQueue.run();
 
 With this done, `apiCeo` now allows Alice to properly act as the CEO, on behalf of ACME.
 
-## Token ownership transfer
+## Asset ownership transfer
 
-With the keys and accounts finally set right, it is time for Alice to fix the token situation, and transfer its ownership to ACME.
+With the keys and accounts finally set right, it is time for Alice to fix the asset situation, and transfer its ownership to ACME.
 
-Since it is Alice the individual who owns the token, she has to go back to using her personal account.
+Since it is Alice the individual who owns the asset, she has to go back to using her personal account.
 
 <MultiCodeBlock>
 
 ```typescript
-const token: SecurityToken = await apiAlice.getSecurityToken({
+const asset: Asset = await apiAlice.assets.getAsset({
     "ticker": "ACME"
 });
-const transferQueue: TransactionQueue<SecurityToken> = await token.transferOwnership({
+const transferQueue: TransactionQueue<Asset> = await asset.transferOwnership({
     "target": acmeDid
 });
 await transferQueue.run();
 ```
 
 ```javascript
-const token = await apiAlice.getSecurityToken({
+const asset = await apiAlice.assets.getAsset({
     "ticker": "ACME"
 });
-const transferQueue = await token.transferOwnership({
+const transferQueue = await asset.transferOwnership({
     "target": acmeDid
 });
 await transferQueue.run();
@@ -371,12 +403,12 @@ She first needs to recall her personal account number, or `did`.
 <MultiCodeBlock>
 
 ```typescript
-const alice: Identity = await apiAlice.getCurrentIdentity();
+const alice: Identity = await apiAlice.getSigningIdentity();
 const aliceDid: string = alice.did;
 ```
 
 ```javascript
-const alice = await apiAlice.getCurrentIdentity();
+const alice = await apiAlice.getSigningIdentity();
 const aliceDid string = alice.did;
 ```
 
@@ -408,28 +440,28 @@ await acceptQueue.run();
 
 </MultiCodeBlock>
 
-With this, the token is rightfully owned by ACME the company.
+With this, the asset is rightfully owned by ACME the company.
 
 ## Compliance
 
-We are not done yet with the token, though.
+We are not done yet with the asset, though.
 
-As the CEO, Alice still needs to do one more step, that is, to define the conditions of ownership. Namely, require any account who acquires the token to not have a jurisdictional attestation of <span title="Elbonia doesn't appear in the CountryCode enum">Liechtenstein</span>. An exception will be made for the primary issuance agent, who is simply used as a conduit and can send to anyone.
+As the CEO, Alice still needs to do one more step, that is, to define the conditions of ownership. Namely, require any account who acquires the asset to not have a jurisdictional attestation of <span title="Elbonia doesn't appear in the CountryCode enum">Liechtenstein</span>. An exception will be made for the primary issuance agent, who is simply used as a conduit and can send to anyone.
 
 We use ACME's account as the KYC service provider, but realistically, it should be another account.
 
 <MultiCodeBlock>
 
 ```typescript
-const acmeCompliance: Compliance = token.compliance;
+const acmeCompliance: Compliance = asset.compliance;
 const acmeRequirements: Requirements = acmeCompliance.requirements;
-const acme: Identity = await apiCeo.getCurrentIdentity();
-const setRequirementsQueue: TransactionQueue<SecurityToken> = await acmeRequirements.set({
+const acme: Identity = await apiCeo.getSigningIdentity();
+const setRequirementsQueue: TransactionQueue<Asset> = await acmeRequirements.set({
     "requirements": [
         [
             {
                 "target": ConditionTarget.Sender,
-                "type": ConditionType.IsPrimaryIssuanceAgent
+                "type": ConditionType.IsExternalAgent
             }
         ],
         [
@@ -440,7 +472,7 @@ const setRequirementsQueue: TransactionQueue<SecurityToken> = await acmeRequirem
                     "type": ClaimType.KnowYourCustomer,
                     "scope": {
                         "type": ScopeType.Ticker,
-                        "value": token.ticker
+                        "value": asset.ticker
                     }
                 },
                 "trustedClaimIssuers": [{
@@ -456,7 +488,7 @@ const setRequirementsQueue: TransactionQueue<SecurityToken> = await acmeRequirem
                     "code": CountryCode.Li,
                     "scope": {
                         "type": ScopeType.Ticker,
-                        "value": token.ticker
+                        "value": asset.ticker
                     }
                 },
                 "trustedClaimIssuers": [{
@@ -467,19 +499,19 @@ const setRequirementsQueue: TransactionQueue<SecurityToken> = await acmeRequirem
         ]
     ]
 });
-const updatedToken: SecurityToken = await setRequirementsQueue.run();
+const updatedAsset: Asset = await setRequirementsQueue.run();
 ```
 
 ```javascript
-const acmeCompliance = token.compliance;
+const acmeCompliance = asset.compliance;
 const acmeRequirements = acmeCompliance.requirements;
-const acme = await apiCeo.getCurrentIdentity();
+const acme = await apiCeo.getSigningIdentity();
 const setRequirementsQueue = await acmeRequirements.set({
     "requirements": [
         [
             {
                 "target": "Sender",
-                "type": "IsPrimaryIssuanceAgent"
+                "type": "IsExternalAgent"
             }
         ],
         [
@@ -490,7 +522,7 @@ const setRequirementsQueue = await acmeRequirements.set({
                     "type": "KnowYourCustomer",
                     "scope": {
                         "type": "Ticker",
-                        "value": token.ticker
+                        "value": asset.ticker
                     }
                 },
                 "trustedClaimIssuers": [{
@@ -506,7 +538,7 @@ const setRequirementsQueue = await acmeRequirements.set({
                     "code": "Li",
                     "scope": {
                         "type": "Ticker",
-                        "value": token.ticker
+                        "value": asset.ticker
                     }
                 },
                 "trustedClaimIssuers": [{
@@ -517,12 +549,12 @@ const setRequirementsQueue = await acmeRequirements.set({
         ]
     ]
 });
-const updatedToken: SecurityToken = await setRequirementsQueue.run();
+const updatedAsset: Asset = await setRequirementsQueue.run();
 ```
 
 </MultiCodeBlock>
 
-With this, the token is _originated_. Nobody, including Alice under her personal account, is yet a holder of any amount of the security token, though, we remedy that in the next chapter when we tackle **distribution**.
+With this, the asset is _originated_. Nobody, including Alice under her personal account, is yet a holder of any amount of the asset, though, we remedy that in the next chapter when we tackle **distribution**.
 
 ## Links
 

@@ -31,7 +31,7 @@ pub enum AuthorizationData<AccountId> {
     /// Add a signer to multisig
     /// Must be issued to the identity that created the ms (and therefore owns it permanently)
     AddMultiSigSigner(AccountId),
-    /// Authorization to transfer a token's ownership
+    /// Authorization to transfer a asset's ownership
     /// Must be issued by the current owner of the asset
     TransferAssetOwnership(Ticker),
     /// Authorization to join an Identity

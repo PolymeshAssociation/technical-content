@@ -24,21 +24,29 @@ Like we saw before, each participant has an identity and a computer on which the
     <MultiCodeBlock>
 
     ```typescript
+    const signingManagerAlice: LocalSigningManager = await LocalSigningManager.create({
+        "accounts": [{
+            "mnemonic": "word1 word2 ..."
+        }]
+    });
+
     const apiAlice: Polymesh = await Polymesh.connect({
         "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-        "accountMnemonic": "word1 word2 ..."
+        "signingManager": signingManagerAlice
     });
-    const alice: Identity = await apiAlice.getCurrentIdentity();
-    const aliceDid: string = alice.did; // For SafeHands
     ```
 
     ```javascript
+    const signingManagerAlice = await LocalSigningManager.create({
+        "accounts": [{
+            "mnemonic": "word1 word2 ..."
+        }]
+    });    
+
     const apiAlice = await Polymesh.connect({
         "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-        "accountMnemonic": "word1 word2 ..."
+        "signingManager": signingManagerAlice
     });
-    const alice = await apiAlice.getCurrentIdentity();
-    const aliceDid = alice.did; // For SafeHands
     ```
 
     </MultiCodeBlock>
@@ -46,20 +54,30 @@ Like we saw before, each participant has an identity and a computer on which the
     <MultiCodeBlock>
 
     ```typescript
+    const signingManagerSafeHands: LocalSigningManager = await LocalSigningManager.create({
+        "accounts": [{
+            "mnemonic": "word41 word42 ..."
+        }]
+    });
     const apiSafeHands: Polymesh = await Polymesh.connect({
         "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-        "accountMnemonic": "word41 word42 ..."
+        "signingManager": signingManagerSafeHands
     });
-    const safeHands: Identity = await apiSafeHands.getCurrentIdentity();
+    const safeHands: Identity = await apiSafeHands.getSigningIdentity();
     const safeHandsDid: string = safeHands.did; // For Alice and NextDaq
     ```
 
     ```javascript
+    const signingManagerSafeHands = await LocalSigningManager.create({
+        "accounts": [{
+            "mnemonic": "word41 word42 ..."
+        }]
+    });
     const apiSafeHands = await Polymesh.connect({
         "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-        "accountMnemonic": "word41 word42 ..."
+        "signingManager": signingManagerSafeHands
     });
-    const safeHands = await apiSafeHands.getCurrentIdentity();
+    const safeHands = await apiSafeHands.getSigningIdentity();
     const safeHandsDid = safeHands.did; // For Alice and NextDaq
     ```
 
@@ -68,11 +86,16 @@ Like we saw before, each participant has an identity and a computer on which the
     <MultiCodeBlock>
 
     ```typescript
+    const signingManagerNextDaq: LocalSigningManager = await LocalSigningManager.create({
+        "accounts": [{
+            "mnemonic": "word51 word52 ..."
+        }]
+    });
     const apiNextDaq: Polymesh = await Polymesh.connect({
         "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-        "accountMnemonic": "word51 word52 ..."
+        "signingManager": signingManagerNextDaq
     });
-    const nextDaq: Identity = await apiNextDaq.getCurrentIdentity();
+    const nextDaq: Identity = await apiNextDaq.getSigningIdentity();
     const nextDaqDid: string = nextDaq.did; // For SafeHands
     ```
 
@@ -81,7 +104,7 @@ Like we saw before, each participant has an identity and a computer on which the
         "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word51 word52 ..."
     });
-    const nextDaq: Identity = await apiNextDaq.getCurrentIdentity();
+    const nextDaq: Identity = await apiNextDaq.getSigningIdentity();
     const nextDaqDid: string = nextDaq.did; // For SafeHands
     ```
 
@@ -97,14 +120,14 @@ We saw earlier that Alice kept her ACME shares in her portfolio named _Cold stor
 <MultiCodeBlock>
 
 ```typescript
-const tradingFolioQueue: TransactionQueue<NumberedPortfolio> = await alice.portfolios.create({
+const tradingFolioQueue: TransactionQueue<NumberedPortfolio> = await apiAlice.identities.createPortfolio({
     "name": "Trading"
 });
 const tradingFolio: NumberedPortfolio = await tradingFolioQueue.run();
 ```
 
 ```javascript
-const tradingFolioQueue = await alice.portfolios.create({
+const tradingFolioQueue = await apiAlice.identities.createPortfolio({
     "name": "Trading"
 });
 const tradingFolio = await tradingFolioQueue.run();
@@ -126,7 +149,7 @@ const coldStore: NumberedPortfolio = await alice.portfolios.getPortfolio({
 const moveQueue: TransactionQueue<void> = await coldStore.moveFunds({
     "items": [
         {
-            "token": "ACME",
+            "asset": "ACME",
             "amount": new BigNumber("1000")
         }
     ],
@@ -142,7 +165,7 @@ const coldStore = await alice.portfolios.getPortfolio({
 const moveQueue = await coldStore.moveFunds({
     "items": [
         {
-            "token": "ACME",
+            "asset": "ACME",
             "amount": new BigNumber("1000")
         }
     ],
@@ -230,10 +253,10 @@ We already know that when Alice eventually sells some ACME shares, the instructi
 <MultiCodeBlock>
 
 ```typescript
-const acmeToken: SecurityToken = await apiSafeHands.getSecurityToken({
+const acmeAsset: Asset = await apiSafeHands.assets.getAsset({
     "ticker": "ACME"
 });
-const isPossible: TransferStatus = await acmeToken.settlements.canSettle({
+const transfer: TransferBreakdown = await acmeAsset.settlements.canTransfer({
     "amount": new BigNumber("1"),
     "from": {
         "did": aliceDid,
@@ -241,14 +264,14 @@ const isPossible: TransferStatus = await acmeToken.settlements.canSettle({
     },
     "to": aliceDid
 });
-assert(isPossible === TransferSuccess.Success);
+assert(transfer.result === true);
 ```
 
 ```javascript
-const acmeToken = await apiSafeHands.getSecurityToken({
+const acmeAsset = await apiSafeHands.assets.getAsset({
     "ticker": "ACME"
 });
-const isPossible = await acmeToken.settlements.canSettle({
+const transfer = await acmeAsset.settlements.canTransfer({
     "amount": new BigNumber("1"),
     "from": {
         "did": aliceDid,
@@ -256,7 +279,7 @@ const isPossible = await acmeToken.settlements.canSettle({
     },
     "to": aliceDid
 });
-assert(isPossible === "Success");
+assert(transfer.result === true);
 ```
 
 </MultiCodeBlock>
@@ -366,7 +389,7 @@ With this information, and after some cross-checking, NextDaq is able to underst
 ```javascript
 const legs = [
     {
-        "token": "ACME",
+        "asset": "ACME",
         "amount": new BigNumber("200"),
         "from": {
             // This is the view from SafeHands. What NextDaq see is a string like "0x55678..."
@@ -382,7 +405,7 @@ const legs = [
         }
     },
     {
-        "token": "DEEPUSD",
+        "asset": "DEEPUSD",
         "amount": new BigNumber("1000"),
         // This is the view from OnTrust. What NextDaq see is a string like "0x11907..."
         "from": onTrustDid,
@@ -445,15 +468,15 @@ Let's look at what it would look like from SafeHands point of view. Because Alic
 <MultiCodeBlock>
 
 ```typescript
-const pendingInstructions: Instruction[] = await tradeVenue.getPendingInstructions();
-const aliceInstruction: Instruction = pendingInstructions.find((instruction: Instruction) => {
+const instructions: Instruction[] = await tradeVenue.getInstructions();
+const aliceInstruction: Instruction = instructions.pending.find((instruction: Instruction) => {
     return instruction.id.isEqualTo(new BigNumber(tradeInstructionId));
 });
 ```
 
 ```javascript
-const pendingInstructions = await tradeVenue.getPendingInstructions();
-const aliceInstruction = pendingInstructions.find((instruction: Instruction) => {
+const instructions = await tradeVenue.getInstructions();
+const aliceInstruction = instructions.pending.find((instruction: Instruction) => {
     return instruction.id.isEqualTo(new BigNumber(tradeInstructionId));
 });
 ```
@@ -478,7 +501,7 @@ It returns previously-known information about `aliceOrderId` in the shape of:
 
 ```json
 {
-    "token": "ACME",
+    "asset": "ACME",
     "amount": new BigNumber("1000"),
     "from": {
         "identity": aliceDid,
@@ -489,7 +512,7 @@ It returns previously-known information about `aliceOrderId` in the shape of:
         "id": null
     },
     "price": {
-        "token": "DEEPUSD",
+        "asset": "DEEPUSD",
         "amount": new BigNumber("5")
     }
 }
@@ -508,7 +531,7 @@ assert(legs.count === 2);
 const aliceLegs: Leg[] = legs.data.filter((leg: Leg) => {
     return leg.from.did === aliceOrder.from.identity &&
         leg.from.id.isEqualTo(aliceOrder.from.id) &&
-        leg.token.ticker === aliceOrder.token &&
+        leg.asset.ticker === aliceOrder.asset &&
         leg.amount.isLessThanOrEqualTo(aliceOrder.amount);
 });
 // Is it even about Alice's shares?
@@ -519,7 +542,7 @@ const expectedUsd: BigNumber = soldAmount.multipliedBy(aliceOrder.price.amount);
 const paymentLegs: Leg[] = legs.data.filter((leg: Leg) => {
     return leg.to.did === aliceOrder.to.identity &&
         leg.to.id.isEqualTo(aliceOrder.to.id) &&
-        leg.token.ticker === aliceOrder.price.token &&
+        leg.asset.ticker === aliceOrder.price.asset &&
         leg.amount.isMoreThanEqualTo(expectedUsd);
 });
 // Are we getting paid in our default portfolio?
@@ -552,7 +575,7 @@ assert(legs.count === 2);
 const aliceLegs = legs.data.filter((leg) => {
     return leg.from.did === aliceOrder.from.identity &&
         leg.from.id.isEqualTo(aliceOrder.from.id) &&
-        leg.token.ticker === aliceOrder.token &&
+        leg.asset.ticker === aliceOrder.asset &&
         leg.amount.isLessThanOrEqualTo(aliceOrder.amount);
 });
 // Is it even about Alice's shares?
@@ -563,7 +586,7 @@ const expectedUsd = soldAmount.multipliedBy(aliceOrder.price.amount);
 const paymentLegs = legs.data.filter((leg) => {
     return leg.to.did === aliceOrder.to.identity &&
         leg.to.id.isEqualTo(aliceOrder.to.id) &&
-        leg.token.ticker === aliceOrder.price.token &&
+        leg.asset.ticker === aliceOrder.price.asset &&
         leg.amount.isMoreThanEqualTo(expectedUsd);
 });
 // Are we getting paid in our default portfolio?
@@ -627,8 +650,8 @@ They will collect affirmations on instructions they created. When they collect t
 <MultiCodeBlock>
 
 ```typescript
-const pendingInstructions: Instruction[] = await tradeVenue.getPendingInstructions();
-const earlierInstruction: Instruction = pendingInstructions.find((instruction: Instruction) => {
+const instructions: Instruction[] = await tradeVenue.getInstructions();
+const earlierInstruction: Instruction = instructions.pending.find((instruction: Instruction) => {
     return instruction.id.isEqualTo(new BigNumber(tradeInstructionId));
 });
 if (typeof earlierInstruction === "undefined") {
@@ -677,8 +700,8 @@ if (safeHandsAffirmed && onTrustAffirmed) {
 ```
 
 ```javascript
-const pendingInstructions = await tradeVenue.getPendingInstructions();
-const earlierInstruction = pendingInstructions.find((instruction: Instruction) => {
+const instructions = await tradeVenue.getInstructions();
+const earlierInstruction = instructions.pending.find((instruction: Instruction) => {
     return instruction.id.isEqualTo(new BigNumber(tradeInstructionId));
 });
 if (typeof earlierInstruction === "undefined") {
@@ -741,12 +764,12 @@ const alice: Identity = apiSafeHands.getIdentity(aliceDid);
 const tradingFolio: NumberedPortfolio = await alice.portfolios.getPortfolio({
     "portfolioId": tradingFolio.id
 });
-const acmeTokenBalances: PortfolioBalance[] = await tradingFolio.getTokenBalances({
-    "tokens": [ "ACME" ]
+const acmeAssetBalances: PortfolioBalance[] = await tradingFolio.getAssetBalances({
+    "assets": [ "ACME" ]
 });
-const acmeTokenBalance: PortfolioBalance = acmeTokenBalances[0];
+const acmeAssetBalance: PortfolioBalance = acmeAssetBalances[0];
 
-if (acmeTokenBalance.total.isLessThan(new BigNumber("1000"))) {
+if (acmeAssetBalance.total.isLessThan(new BigNumber("1000"))) {
     // TODO update the order on NextDaq accordingly.
 }
 ```
@@ -756,12 +779,12 @@ const alice = apiSafeHands.getIdentity(aliceDid);
 const tradingFolio = await alice.portfolios.getPortfolio({
     "portfolioId": tradingFolio.id
 });
-const acmeTokenBalances = await tradingFolio.getTokenBalances({
-    "tokens": [ "ACME" ]
+const acmeAssetBalances = await tradingFolio.getAssetBalances({
+    "assets": [ "ACME" ]
 });
-const acmeTokenBalance = acmeTokenBalances[0];
+const acmeAssetBalance = acmeAssetBalances[0];
 
-if (acmeTokenBalance.total.isLessThan(new BigNumber("1000"))) {
+if (acmeAssetBalance.total.isLessThan(new BigNumber("1000"))) {
     // TODO update the order on NextDaq accordingly.
 }
 ```
@@ -773,8 +796,8 @@ On the other hand, if they want to pre-emptively change the order on NextDaq as 
 <MultiCodeBlock>
 
 ```typescript
-const pendingInstructions: Instruction[] = await alice.getPendingInstructions();
-const fromTradingPromises: Promise<Leg[]>[] = pendingInstructions.map(async(instruction: Instruction) => {
+const instructions: Instruction[] = await alice.getInstructions();
+const fromTradingPromises: Promise<Leg[]>[] = instructions.pending.map(async(instruction: Instruction) => {
     const legs: ResultSet<Leg> = await instruction.getLegs();
     const outLegs: Leg[] = legs.data.filter((leg: Leg) => {
         return leg.from.owner.did === aliceDid &&
@@ -795,8 +818,8 @@ if (outAmount.isGreaterThan(new BigNumber("0"))) {
 ```
 
 ```javascript
-const pendingInstructions = await alice.getPendingInstructions();
-const fromTradingPromises = pendingInstructions.map(async(instruction) => {
+const instructions = await alice.getInstructions();
+const fromTradingPromises = instructions.pending.map(async(instruction) => {
     const legs = await instruction.getLegs();
     const outLegs = legs.data.filter((leg) => {
         return leg.from.owner.did === aliceDid &&
