@@ -115,7 +115,7 @@ Let us suppose that we want to create an agent group for an external party that 
    * _DispatchableNames_: These - to indicate we will define permissions for specific actions;
    * _DispatchableName_: `add_documents` and `remove_documents` - the two activities that will be permissible for members of this group. The dispatchable name must be written in snake_case.
 
-   Submit the transaction and the new agent group is created. 
+Submit the transaction and the new agent group is created. 
 
 ![Documentation Agent Group](images/documentAgentGroup.png)
 
@@ -123,17 +123,39 @@ Review the `GroupCreated` event in a the blockchain explorer for the submitted t
 
 ## Assign an account to an agent group
 
+Once a custom agent group has been defined lets say we now want to Alice, or someone else, maintain the asset's documentation. Before we do this we need to assign it to the custom group to the external agent to allow them access to the token extrinsics configured in the `groupPermissions`. As with other authorizations this is doen using the `identity` pallet `addAuthorization` extrinsic.
+
+1. Navigate to the `identity` pallet and `addAuthorization(target, data, expiry)` extrinsic.
+2. Use the ACME Corp account, the owner of the asset, since that account will be the only account with permission to do this unless you have already experimented with permissions.
+3. Input the DID for the external agent (dding authorization for an external agent only accepts an identity and not an account).
+4. Under data: `AuthorizationData` select `BecomeAgent`
+5. Input the ticker symbol as previously used (in hex format, 12 bytes long with trailing zeroes if required).
+6. Finhally select `Custom` for the agent group and enter the number for the group ID previously created.
+   
+Submit the transaction and the authorization request is created.
+
+![Add authorization Become Agent](images/addAuthorizationBecomeAgent.png)
+
+In addition to the **Custom** agent group, just created, there are several predefined agent groups:
+
+* **Full:** The account can be given full permission;
+* **ExceptMeta:** Everything except the external agents pallet;
+* **PolymeshV1CAA:** Used to replicate the permission scheme for a corporate actions agent (CAA) in Polymesh's version 1 (V1);
+* **PolymeshV1PIA:** Used to replicate the permission scheme for a primary issuance agent (PIA) in Polymesh version 1 (V1).
+
+## Accept permission and abdication
+
+As with other aspects of the system, Polymesh recognizes that an agent may not accept the responsibilities that come with being assigned to an agent group. It is therefore a **two-stage process**. An agent accepts membership by navigating to `Extrinsics` under the `Developer` tab, and selecting `externalAgents` and `acceptBecomeAgent(auth_id)`.
+
+An agent may also self-demote (i.e. leave the agent group) by navigating to `Extrinsics` under the `Developer` tab, and select `externalAgents` and `abdicate(ticker)`. Abdicating is not unconditional. The last member with full permission is not permitted to abdicate.
+
+
+
+
 An agent group's permission can be discovered by navigating to `Chain state` under the `Developer` tab and then selecting `externalAgents` in the _selected state query_ field and `groupPermissions(Ticker, AGId): Option<ExtrinsicPermissions>`. To add an account to an agent group, navigate to `Extrinsics` under the `Developer` tab, and select `externalAgents` in the `submit the following extrinsic` field and `changeGroup(ticker, agent, group)`. Input the ticker, group, and agent ID.
 
 ![Add Agent to Group](images/addAgentToGroup.png)
 
-There are several options for agent groups:
-
-* **Full:** The account can be given full permission;
-* **Custom:** Used to specify the agent group just created;
-* **ExceptMeta:** Manages identities of external agents;
-* **PolymeshV1CAA:** Used to replicate the permission scheme for a corporate actions agent (CAA) in Polymesh's version 1 (V1);
-* **PolymeshV1PIA:** Used to replicate the permission scheme for a primary issuance agent (PIA) in Polymesh version 1 (V1).
 
 If you have been following along and created an agent group for the asset's documentation, then select `Custom` and set the `Custom: AGId` to 1. For example, let Alice, or someone else, maintain the asset's documentation.
 
