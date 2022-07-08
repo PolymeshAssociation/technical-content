@@ -8,7 +8,7 @@ import HighlightBox from "../../src/components/HighlightBox"
 
 It is common for issuers of regulated securities to delegate certain responsibilities to specialised service providers. For example, ACME may want that a specialist publishes documentation related to the security token.
 
-In Polymesh, **external agents** and **agent groups** with granular permissions assist with representing the contractual relationships with these parties. The external agents module provides extrinsics to manage:
+In Polymesh, **external agents** and **agent groups**, with granular permissions, assist with representing the contractual relationships with these parties. The external agents module provides extrinsics to manage:
 
 * The set of agents for an asset,
 * The group agents belong to, and
@@ -20,16 +20,17 @@ By providing functions to allow for managing the external agents of an asset, ad
 * `set_group_permissions`: Changes the permissions of a CAG for an asset;
 * `change_group`: Changes the agent group an asset belongs to;
 * `remove_agent`: Removes an agent from an asset;
+* `acceptBecomeAgent`: Accept an authorization to become an agent of the account that issued `auth_id` and to also become an agent of the ticker the account specified.
 * `abdicate`: Removes the caller as an agent from an asset.
 
 The extrinsics of the external agents module can be split into:
 
 * Managing groups: `create_group` and `set_group_permissions`, and
-* Managing agents: `remove_agent`, `abdicate`, `change_group`, and hooks for the identity module to enable adding agents.
+* Managing agents: `remove_agent`, `abdicate`, `change_group` and `acceptBecomeAgent`, and hooks for the identity module to enable adding agents.
 
 ## Default configuration
 
-If you have been following along by reading the previous chapters and sections, Alice issued a security token and then transferred ownership to ACME. Behind the scenes, Alice and then ACME were given full permission. In Polymesh version 1 (V1), **two distinct permissions** were granted:
+If you have been following along by reading the previous chapters and sections, Alice issued a security token and then transferred ownership to ACME. Behind the scenes, Alice and then ACME were given **Full** permission. In Polymesh version 1 (V1), **two distinct permissions** were granted:
 
 * **Primary issuance agent (PIA):** ACME needed this permission to perform the minting operation;
 * **Corporate actions agent (CAA):** Needed for activities such as dividend distributions.
@@ -40,19 +41,19 @@ For more information on the corporate actions agent and corporate actions in gen
 
 </highlightBox>
 
-Version 2 (V2, the most current version at the time of writing) models the roles of PIA and CAA in a new, more granular permission system. By default, the asset creator and owner has _full_ permission. Thus, ACME has full permission over the ACME token by default.
+Version 2 (V2, the most current version at the time of writing) models the roles of PIA and CAA in a new, more granular permission system. By default, the asset creator and owner has _Full_ permission. Thus, ACME has full permission over the ACME token by default.
 
-The permission system is _not surfaced in the Token Studio_. It is explored and configured via the [Polymesh App](https://tooling-app.polymesh.live/) or the SDK. This helps reduce complexity at the Token Studio level.
+The permission system is _not surfaced in the Token Studio_. It is explored and configured via the [Polymesh App](https://mainnet-app.polymesh.network/) or the SDK. This helps reduce complexity at the Token Studio level.
 
 <highlightBox type="info">
 
-V1 functionality can be replicated in V2 by assigning an agent to the PolymeshV1CAA (corporate actions agent) group or PolymeshV1PIA (primary issuance agent) group. In the [Polymesh App](https://tooling-app.polymesh.live/), navigate to `Developer` => `Extrinsics` then select `externalAgents` in the field _submit the following extrinsic_ and `changeGroup(ticker, agent, group)`.
+V1 functionality can be replicated in V2 by assigning an agent to the PolymeshV1CAA (corporate actions agent) group or PolymeshV1PIA (primary issuance agent) group. In the [Polymesh App](https://mainnet-app.polymesh.network/), navigate to `Developer` => `Extrinsics` then select `externalAgents`. Use the extrinsic `changeGroup(ticker, agent, group)` to set the desired group for an existing agent.
 
 </highlightBox>
 
 ## Permissions: Extrinsics, pallets, and groups
 
-Agents are assigned to agent groups from which they derive their permissions for a given asset. As you might have guessed, **an agent group** _defines a set of permissions granted to members_. Each asset can have one or more agent groups. There is always at least one user with full permission as the system prevents the removal of the last user with full permission. Initially, the asset creator has full permission by default.
+Agents are assigned to agent groups from which they derive their permissions for a given asset. As you might have guessed, **an agent group** _defines a set of permissions granted to members_. Each asset can have one or more agent groups but each agent can only be assigned to a single group for that asset. There is always at least one user with full permission as the system prevents the removal of the last user with full permission. Initially, the asset creator has full permission by default.
 
 <highlightBox type="info">
 
@@ -83,9 +84,9 @@ ACME was created with the default full permission agent group. We can see that i
 
 The `externalAgents` pallet query called `groupOfAgent(Ticker, IdentityId): Option<AgentGroup>` returns the agents mapped to a ticker.
 
-Here we can see that ACME has one agent, the agent with full permission. The agent is the ACME Corp account. The previous field is the ticker symbol ("ACME") in hex.
+Here we can see that ACME has one agent, the agent with full permission. The agent is the ACME Corp account. The ticker input field for the call is the symbol "ACME" in hex (0x41434d450000000000000000).
 
-The query can be further refined to filter agents in a specific agent group, meaning with a certain set of permissions.
+The query can be further refined to filter specific agent identities and return only the group they are associated with, meaning with a certain set of permissions.
 
 ![Explore Agent Groups](images/exploreTokenAgentGroups.png)
 
@@ -107,14 +108,18 @@ Let us suppose that we want to create an agent group for an external party that 
 
 1. Navigate to the `externalAgents` pallet and `createGroup(ticker, perms)` extrinsic.
 2. Use the ACME Corp account, the owner of the asset, since that account will be the only account with permission to do this unless you have already experimented with permissions.
-3. Input the ticker system. At the time of writing, this is in hex format, which you can get from the query above. It should be 12 bytes long with trailing zeroes.
+3. Input the ticker symbol. At the time of writing, this is required to be in hex format, which you can get from the query above. It should be 12 bytes long with trailing zeroes.
 4. Create the permissions defined as:
-   * _these_: Asset (the pallet containing the extrinsics to grant);
-   * _these_: `addDocument` and `removeDocument` - the two activities that will be permissible for members of this group.
+   * _ExtrinsicPermission_: These - to indicate we will define pallets to configure permissions for;
+   * _PaletName_: `Asset` - the pallet containing the extrinsics to define permissions for. The pallet name must be written in UpperCamelCase;
+   * _DispatchableNames_: These - to indicate we will define permissions for specific actions;
+   * _DispatchableName_: `add_documents` and `remove_documents` - the two activities that will be permissible for members of this group. The dispatchable name must be written in snake_case.
+
+   Submit the transaction and the new agent group is created. 
 
 ![Documentation Agent Group](images/documentAgentGroup.png)
 
-Submit the transaction and the new agent group is created. Return to the Explore section (as described above) and check that the new agent group was added to the asset.
+Review the `GroupCreated` event in a the blockchain explorer for the submitted transaction to identify the assigned group ID or navigate to `Chain state` under the `Developer` tab and then selecte `externalAgents` and use the `aGIdSequence` call to identify the most recently created agent group ID. Configured permissions for the group ID can be viewed using the `groupPermissions` call.
 
 ## Assign an account to an agent group
 
