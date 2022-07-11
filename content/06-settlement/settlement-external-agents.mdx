@@ -163,10 +163,12 @@ There is always at least one account with full permission and the system does no
 
 Agent groups are used to describe functional requirements and access privileges and assign users to agent groups.
 
-When a user creates an asset with the Token Studio, that user automatically receives full permission. 
+When a user creates an asset with the Token Studio, that user automatically receives full permission.
+
 <HighlightBox type="info">
 
 Permissions hold when token ownership is transferred. In order to transfer ownership of a token to a new identity they need to first be made an agent of that token. Previous owner permissions are **not** automatically removed. Therefore, managing external agent permission is a key part of the ownership transfer process.
+
 </HighlightBox>
 
 The full granularity of the permission system is not exposed through the Token Studio. Use the Polymesh App and/or the SDK to configure agent groups, permissions, and members.
