@@ -68,8 +68,6 @@ There are three types of keys that can be used in Polymesh:
 
 - Multisigs
 
-- Other identities
-
 Polymesh is generally agnostic as to the type of key being used, and treats each key type consistently (e.g. for permissioning).
 
 ### Public / Private Key Pairs
@@ -116,27 +114,21 @@ When a MultiSig executes a proposal, we have:
 
 - Payment made by Creator Identity
 
-### Identity Keys
-
-To allow flexible identity modelling of indiviudals, organisations and different types of cooperating stakeholders, Polymesh allows one identity to act as a key for another identity. This means the origin identity is attached as a secondary key to the acting identiy.
-
-An appropriately permissioned key on the origin can sign a message on behalf of the origin identity to forward an action through the acting identity. For example Acme could add their transfer agents identity as a secondary key on their identity, with limited permissions to only add or remove documentation for certain assets.
-
 ## Permissions
 
 Permissions in Polymesh have three levels of granularity, that can be combined:  
 
-- actions
+- assets
+
+- extrinsics
 
 - portfolios
 
-- assets
+The *assets* granularity allows a key to be limited to interacting with only specific assets held in any portfolio under the identity.
 
-The *actions* granularity allows a key to be permissioned to specific on-chain actions, such as submitting documentation for an asset, or signalling in governance.
+The *extrinsics* granularity allows a key to be permissioned to specific on-chain actions, such as submitting documentation for an asset, or signalling in governance.
 
 The *portfolios* granularity allows a key to be limited to interacting with only those assets in specific portfolios under that identity.
-
-The *assets* granularity allows a key to be limited to interacting with only specific assets held in any portfolio under the identity.
 
 The access of a particular key is the intersection of each of these categories. It is possible to permission a key with full access to any of these categories.
 

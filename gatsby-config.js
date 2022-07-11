@@ -25,14 +25,27 @@ console.log(subSites);
 
 const sidebarConfig = getSidebarConfig();
 
+const shareImageConfig = {
+  cloudName: process.env.CLOUDINARY_NAME || 'dk6bl0g1a',
+  imagePublicID: process.env.CLOUDINARY_IMAGE_ID || 'polimesh-social-bg',
+  tagline: "",
+  titleFont: "inter.woff2",
+  textAreaWidth: 1200,
+  titleLeftOffset: 80,
+  titleBottomOffset: 80,
+  titleFontSize: 92,
+  textColor: "ffffff"
+};
+
 const apolloDocsOptions = {
   ...themeOptions,
   root: __dirname,
   contentDir: './content/',
-  description: 'Polymesh Developer Portal description',
+  description: 'Polymesh Developer Portal',
   githubRepo: 'PolymathNetwork/technical-content',
   siteName: 'Polymesh Developer Portal',
   sidebarCategories: getSidebarConfig(),
+  shareImageConfig: shareImageConfig,
   subSites: subSites
 }
 

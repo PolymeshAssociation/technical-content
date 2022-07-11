@@ -17,25 +17,25 @@ You will need POLYX to complete the exercises.
 
 ## Testnet POLYX
 
-The testnet is where you can practise using Polymesh without material consequences. As the name suggests, it is a fully functional Polymesh network. The main differences are:
+The Testnet is where you can practise using Polymesh without material consequences. As the name suggests, it is a fully functional Polymesh network. The main differences are:
 
-- The funds and securities on the testnet aren't real and have no material value;
-- Future testnets may be initialised in the future and the present testnet may be retired;
+- The funds and securities on the Testnet aren't real and have no material value;
+- Future testnets may be initialised in the future and the present Testnet may be retired;
 - You can acquire testnet POLYX at virtually no cost.
 
-Since you will interact with the testnet while you pursue the suggested exercises, let's get some free testnet POLYX to work with.
+Since you will interact with the Testnet while you pursue the suggested exercises, let's get some free Testnet POLYX to work with.
 
 ## Background and concept
 
 It will be helpful to understand a little bit of history to understand how this process works and why it works the way it does.
 
-In summary, the original Polymath network and network token, POLY, was deployed on the Ethereum Mainnet. Those POLY tokens do indeed have material value. Consequently, the conversion process is backward-compatible. Owners of POLY can convert their POLY to POLYX at a ratio of 1:1.
+In summary, the original Polymath network and network token, POLY, was deployed on the Ethereum Mainnet. Those POLY tokens do indeed have material value. Consequently, the upgrade process is backward-compatible. Owners of POLY can upgrade their POLY to POLYX at a ratio of 1:1.
 
 This process works by locking POLY on the Ethereum network, which means sending them to a contract that takes them out of circulation. Without delving too deeply into the smart contract details, suffice it to say users send their POLY to the contract, then the POLYX is sent to the Polymesh signing key.
 
 The technical challenge is that these are separate blockchains. So, the bridge involves an off-chain process that monitors Ethereum for incoming POLY and releases POLYX on Polymesh in response to events observed on Ethereum. Also, since Ethereum and Polymesh use different account schemes, the UI will associate the sending Ethereum address with the receiving Polymesh signing key.
 
-The preliminary conditions are familiar to POLY holders who are already accustomed to Ethereum tokens. And, the testnet implementation helps test and verify the conversion process. In order to get some free POLYX, you will first establish the initial conditions of a POLY holder on Ethereum.
+The preliminary conditions are familiar to POLY holders who are already accustomed to Ethereum tokens. And, the testnet implementation helps test and verify the upgrade process. In order to get some free POLYX, you will first establish the initial conditions of a POLY holder on Ethereum.
 
 ## MetaMask
 
@@ -51,22 +51,22 @@ If you don't already have MetaMask, search for it in your browser plug-ins area 
 
 Take your time and follow the on-screen instructions to create one account. Initially, it will have no money, which is fine.
 
-## Kovan Testnet
+## Goerli Testnet
 
-It's a good idea to open MetaMask and change to the Kovan Test Network now. Click the icon in the plug-ins tray and click on the network selection box at the top of the applet. Select **Kovan Test Network**.
+It's a good idea to open MetaMask and change to the Goerli Test Network now. Click the icon in the plug-ins tray and click on the network selection box at the top of the applet. Select **Goerli Test Network**.
 
-![kovan](images/kovan.png)
+![goerli](images/goerli.png)
 
 ## Testnet ETH
 
-Ethereum uses **ETH to pay for transaction fees**. Since we cannot complete this process without sending transactions, we will need some testnet ETH to pay for them.
+Ethereum uses **ETH to pay for transaction fees**. Since we cannot complete this process without sending transactions, we will need some Testnet ETH to pay for them.
 
 Testnet ETH has no value and it is given away. All we have to do is ask. You can ask a friend, or use a faucet which is an automated or semi-automated system that simply gives it away. Automated systems tend to have anti-spam/anti-abuse mechanisms to help ensure everyone will receive enough to move forward.
 
 We can recommend using:
 
-- **ETH Faucet:** Visit this website which uses your GitHub account to authenticate users: [https://faucet.kovan.network/](https://faucet.kovan.network/)
-- **Gitter Chat:** Visit this website and post your Ethereum address - Funds are on the way! [https://gitter.im/kovan-testnet/faucet](https://gitter.im/kovan-testnet/faucet)
+- **ETH Faucet:** Visit this website which uses your Facebook/Twitter account to authenticate users: [https://faucet.goerli.mudit.blog//](https://faucet.goerli.mudit.blog//)
+- **Goerli Faucet:** Visit this website and post your Ethereum address - Funds are on the way! [https://faucets.chain.link/goerli](https://faucets.chain.link/goerli)
 
 You may be asked for your Ethereum address. Open MetaMask, hover over your address and click on the clipboard icon that appears.
 
@@ -76,13 +76,13 @@ Your ETH balance will increase after you request the funds and the transaction i
 
 ## Testnet POLY
 
-As you may have already guessed, Polymath has published a contract on Ethereum that gives away free testnet POLY. That is what you need to proceed across the bridge and convert it to POLYX on Polymesh.
+As you may have already guessed, Polymath has published a contract on Ethereum that gives away free Testnet POLY. That is what you need to proceed across the bridge and convert it to POLYX on Polymesh.
 
-Point your browser to the contract: [https://kovan.etherscan.io/address/0xb347b9f5b56b431b2cf4e1d90a5995f7519ca792#writeContract](https://kovan.etherscan.io/address/0xb347b9f5b56b431b2cf4e1d90a5995f7519ca792#writeContract)
+Point your browser to the contract: [https://goerli.etherscan.io/address/0x9e32c0eff886b6ccae99350fd5e7002dced55f15#writeContract](https://goerli.etherscan.io/address/0x9e32c0eff886b6ccae99350fd5e7002dced55f15#writeContract)
 
-![faucet contract](images/get-kovan-poly.png)
+![faucet contract](images/get-goerli-poly.png)
 
-If you see `Connect to Web3`, press it. This will open MetaMask so you can confirm you wish it to talk to this website. Select the account you wish to use. Choose the account that has testnet ETH. It should say `Connected - Web3` and your account.
+If you see `Connect to Web3`, press it. This will open MetaMask so you can confirm you wish it to talk to this website. Select the account you wish to use. Choose the account that has Testnet ETH. It should say `Connected - Web3` and your account.
 
 Now, scroll down to `getTokens` and expand it. Fill in the `_amount` with the number of POLY you would like. This uses 18 decimal places with no period (de facto standard for Ethereum tokens), so 50,000 POLY (suggested) is `50000000000000000000000`.
 
@@ -90,17 +90,17 @@ The `_recipient` is you. Copy your address from MetaMask by opening the applet, 
 
 MetaMask tells you the web page is trying to do something with your funds and asks you to confirm. Press `Confirm`.
 
-![etherscan verify](images/etherscan-verify-faucet-txn.png)
+![etherscan verify](images/etherscan-verify-goerli-faucet-txn.png)
 
 ## Onward to the Bridge
 
-Now that you have testnet POLY and a way to pay for transactions on the Ethereum network, you can proceed to the Polymesh Bridge to convert your POLY to POLYX.
+Now that you have Testnet POLY and a way to pay for transactions on the Ethereum network, you can proceed to the Polymesh Bridge to convert your POLY to POLYX.
 
-Point your browser to the dashboard explorer and select POLY to POLYX Bridge - [https://dashboard.polymesh.live/explore](https://dashboard.polymesh.live/explore)
+Point your browser to the dashboard explorer and select POLY to POLYX Bridge - [https://dashboard.polymath.network/explore](https://dashboard.polymath.network/explore)
 
 ![dashboard explorer](images/dashboard-explore-bridge.png)
 
-Or, go directly to: https://polybridge.polymesh.live/
+Or, go directly to: https://polybridge.polymesh.network/
 
 ![bridge](images/polybridge.png)
 
@@ -118,9 +118,9 @@ Open your Polymesh Wallet and copy your signing key, then paste it into `Your Po
 
 If you completed [CDD](/quickstart/verification-with-cdd) (you should), then the site will indicate that your Polymesh Account is verified. If not, then you will be directed to customer due diligence.
 
-Enter an amount of your POLY to convert. You cannot convert more than what is in your wallet.
+Enter an amount of your POLY to upgrade. You cannot upgrade more than what is in your wallet.
 
-![convert poly](images/convert-poly-polyx.png)
+![upgrade poly](images/convert-poly-polyx.png)
 
 When everything is ready, the site will confirm your intentions.
 
@@ -130,7 +130,7 @@ Press `Confirm`.
 
 MetaMask will, again, ask you to confirm that you intend to send the specified amount of POLY to the Polymesh Bridge. Confirm this transaction.
 
-Now, you will see two stages of the process unfold. First, Ethereum will process the transaction that sends your testnet POLY to the bridge. This is the "Locking" transaction. Then, Polymesh will observe this event on Ethereum and send you an equal amount of POLYX.
+Now, you will see two stages of the process unfold. First, Ethereum will process the transaction that sends your Testnet POLY to the bridge. This is the "Locking" transaction. Then, Polymesh will observe this event on Ethereum and send you an equal amount of POLYX.
 
 ![success](images/bridge-success.png)
 
@@ -143,8 +143,9 @@ When everything confirms, you will have POLYX in your wallet.
 ## Links
 
 - [POLY to POLYX Bridge](/polymesh-docs/network/bridge/)
-- [A Simple Guide for Getting Kovan Testnet POLY](https://blog.polymath.network/a-simple-guide-for-getting-kovan-testnet-poly-27ddeb1149cb)
-- [Kovan POLY Faucet](https://kovan.etherscan.io/address/0xb347b9f5b56b431b2cf4e1d90a5995f7519ca792#writeContract)
-- [Kovan ETH Faucet](https://faucet.kovan.network/)
-- [Kovan Gitter Faucet](https://gitter.im/kovan-testnet/faucet)
+<!-- TODO - [A Simple Guide for Getting Kovan Testnet POLY](https://blog.polymath.network/a-simple-guide-for-getting-kovan-testnet-poly-27ddeb1149cb) -->
+- [Goerli POLY Faucet](https://goerli.etherscan.io/address/0x9e32c0eff886b6ccae99350fd5e7002dced55f15#writeContract)
+- [ETH Faucet](https://faucet.goerli.mudit.blog/)
+- [Goerli Faucet](https://faucets.chain.link/goerli)
 - [Metamask](https://metamask.io/)
+

@@ -14,10 +14,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: delete node_modules
+      run: rm -rf node_modules/
+    - name: delete package-lock.json
+      run: rm package-lock.json
+    - name: clear npm cache
+      run: npm cache clean --force
     - name: install dependencies
-      run: npm install
+      run: npm install --legacy-peer-deps
+    - name: setup cloudinary for social card
+      run: npm run cloudinary:setup
+      env:
+        CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
+        CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+        CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+        CLOUDINARY_IMAGE_ID: ${{ secrets.CLOUDINARY_IMAGE_ID }}
     - name: build static website
-      run: npm run build
+      run: npm run build || npm run build
     - name: Deployment to Cloudflare workers
       run: npx wrangler publish --env ${GITHUB_REF#refs/heads/}
       env:

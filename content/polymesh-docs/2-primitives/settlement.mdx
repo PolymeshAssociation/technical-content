@@ -11,11 +11,25 @@ Settlement in Polymesh is the process by which assets are transferred between id
 
 It requires all counterparties of a transaction to affirm (agree) an instruction (a set of asset transfers) before the instruction settles (completes).
 
+Any counterparty to the instruction can unilaterally reject the instruction.
+
+If an instruction is fully affirmed, but settlement fails (for example as a result of compliance rules) the instruction can be re-settled again at a later date by any one of the counterparties, once the failure cause has been remediated.
+
+Once an instruction has been affirmed by a counterparty, the associated assets are locked in the counterparties account. If the instruction is subsequently rejected, these assets are unlocked and can be used in another settlement instruction.
+
+Instructions can be settled either via:  
+
+- on-chain movement of assets
+
+- an off-chain payment receipt
+
+Payment receipts are small pieces of data signed by an authorised signatory (determined by the venue on which the instruction is settling) which allege that the corresponding assets have moved off-chain.
+
 ## Roles
 
 ### Asset Issuer
 
-The asset issuer controls the set of identities that are allowed to create instructions that reference their asset. They can also choose to leave this open.
+The asset issuer (or agent on their behalf) controls the set of identities that are allowed to create instructions that reference their asset. They can also choose to leave this open.
 
 ### Venue Creator
 
