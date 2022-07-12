@@ -4,6 +4,7 @@ module.exports = [
     `${here}landingpage`,
     `${here}settlement-introduction`,
     `${here}settlement-dashboard`,
+    `${here}settlement-external-agents`,
     `${here}settlement-sdk`,
     `${here}settlement-app`,
     `${here}settlement-quiz`

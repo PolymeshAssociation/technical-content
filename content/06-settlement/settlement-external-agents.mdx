@@ -35,31 +35,31 @@ If you have been following along by reading the previous chapters and sections, 
 * **Primary issuance agent (PIA):** ACME needed this permission to perform the minting operation;
 * **Corporate actions agent (CAA):** Needed for activities such as dividend distributions.
 
-<highlightBox type="tip">
+<HighlightBox type="tip">
 
-For more information on the corporate actions agent and corporate actions in general, take another look at the previous chapter on [Executing Actions: Corporate actions on Polymesh](./actions/).
+For more information on the corporate actions agent and corporate actions in general, take another look at the previous chapter on [Executing Actions: Corporate actions on Polymesh](../actions/).
 
-</highlightBox>
+</HighlightBox>
 
 Version 2 (V2, the most current version at the time of writing) models the roles of PIA and CAA in a new, more granular permission system. By default, the asset creator and owner has _Full_ permission. Thus, ACME has full permission over the ACME token by default.
 
 The permission system is _not surfaced in the Token Studio_. It is explored and configured via the [Polymesh App](https://mainnet-app.polymesh.network/) or the SDK. This helps reduce complexity at the Token Studio level.
 
-<highlightBox type="info">
+<HighlightBox type="info">
 
 V1 functionality can be replicated in V2 by assigning an agent to the PolymeshV1CAA (corporate actions agent) group or PolymeshV1PIA (primary issuance agent) group. In the [Polymesh App](https://mainnet-app.polymesh.network/), navigate to `Developer` => `Extrinsics` then select `externalAgents`. Use the extrinsic `changeGroup(ticker, agent, group)` to set the desired group for an existing agent.
 
-</highlightBox>
+</HighlightBox>
 
 ## Permissions: Extrinsics, pallets, and groups
 
 Agents are assigned to agent groups from which they derive their permissions for a given asset. As you might have guessed, **an agent group** _defines a set of permissions granted to members_. Each asset can have one or more agent groups but each agent can only be assigned to a single group for that asset. There is always at least one user with full permission as the system prevents the removal of the last user with full permission. Initially, the asset creator has full permission by default.
 
-<highlightBox type="info">
+<HighlightBox type="info">
 
 The last full agent cannot leave or abdicate before another ID is added as an agent with full permissions. This default avoids an asset not having an agent with all permissions, i.e. not being managed because of missing permissions and agents.
 
-</highlightBox>
+</HighlightBox>
 
 In practice, ACME will grant minimal permission to external agents (or internal staff) so that agents can execute their duties while at the same time it cannot stray into sensitive areas where the agent should not be engaged.
 
@@ -163,7 +163,13 @@ There is always at least one account with full permission and the system does no
 
 Agent groups are used to describe functional requirements and access privileges and assign users to agent groups.
 
-When a user creates an asset with the Token Studio, that user automatically receives full permission. Permissions hold when token ownership is transferred. In order to transfer ownership of a token to a new identity they need to first be made an agent of that token. Previous owner permissions are **not** automatically removed. Therefore, managing external agent permission is a key part of the ownership transfer process.
+When a user creates an asset with the Token Studio, that user automatically receives full permission.
+
+<HighlightBox type="info">
+
+Permissions hold when token ownership is transferred. In order to transfer ownership of a token to a new identity they need to first be made an agent of that token. Previous owner permissions are **not** automatically removed. Therefore, managing external agent permission is a key part of the ownership transfer process.
+
+</HighlightBox>
 
 The full granularity of the permission system is not exposed through the Token Studio. Use the Polymesh App and/or the SDK to configure agent groups, permissions, and members.
 
