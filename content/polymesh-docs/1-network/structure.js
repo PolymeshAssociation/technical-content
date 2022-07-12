@@ -10,4 +10,5 @@ module.exports = [
     `polymesh-docs/${here}tokenomics`,
     `polymesh-docs/${here}consensus`,
     `polymesh-docs/${here}ledger`,
+    `polymesh-docs/${here}running_a_node_docker`,
 ];

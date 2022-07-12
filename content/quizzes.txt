@@ -96,7 +96,7 @@ POLYX is the successor of POLY.
 
 2. Who needs to pass the CDD verification?
 Only members of the Governing Council need the CDD verification
-The CDD verification is only needed on the mainnet.
+The CDD verification is only needed on the Mainnet.
 *Every Polymesh account must pass a minimal identity verification before the account is permitted to transact on the network.
 Stakeholders must pass the CDD verification.
 

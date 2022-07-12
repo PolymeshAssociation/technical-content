@@ -23,14 +23,14 @@ We assume that:
 
     ```typescript
     const apiCeo: Polymesh = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word31 word32 ..."
     });
     ```
 
     ```javascript
     const apiCeo = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word31 word32 ..."
     });
     ```
@@ -59,14 +59,14 @@ We assume that:
 
     ```typescript
     const apiAlice: Polymesh = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live",
+        "nodeUrl": "wss://testnet-rpc.polymesh.live",
         "accountMnemonic": "word1 word2 ..."
     });
     ```
 
     ```javascript
     const apiAlice = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live",
+        "nodeUrl": "wss://testnet-rpc.polymesh.live",
         "accountMnemonic": "word1 word2 ..."
     });
     ```
@@ -127,7 +127,7 @@ ACME's **Did** is in the account, and already comes formatted as `0x123...`:
 <MultiCodeBlock>
 
 ```typescript
-const acme: CurrentIdentity = await apiCeo.getCurrentIdentity();
+const acme: Identity = await apiCeo.getCurrentIdentity();
 ```
 
 ```javascript
@@ -213,11 +213,11 @@ This was a lengthy proof preparation. We need one more value, the **CddId**, a.k
 <MultiCodeBlock>
 
 ```typescript
-const acmeCddClaims: CddClaim[] = await apiCeo.claims.getCddClaims({
+const acmeCddClaims: ClaimData<CddClaim>[] = await apiCeo.claims.getCddClaims({
     "includeExpired": false
 });
 assert(acmeCddClaims.length > 0);
-const acmeCddClaim: CddClaim = acmeCddClaims[0];
+const acmeCddClaim: CddClaim = acmeCddClaims[0].claim;
 ```
 
 ```javascript
@@ -225,7 +225,7 @@ const acmeCddClaims = await apiCeo.claims.getCddClaims({
     "includeExpired": false
 });
 assert(acmeCddClaims.length > 0);
-const acmeCddClaim = acmeCddClaims[0];
+const acmeCddClaim = acmeCddClaims[0].claim;
 ```
 
 </MultiCodeBlock>
@@ -334,7 +334,7 @@ const distributionVenueId = distributionVenue.id.toString();
 
 We keep `distributionVenueId`, the string id of the venue, for later as this is information that will need to be shared with the ultimate recipient.
 
-Now that we have the venue, let's have the CEO [issue](https://developers.polymath.network/polymesh-sdk-api-reference/v/docs%2Falpha/classes/issuance#issue) enough shares to later transfer to Alice. Of course, if the CEO planned on issuing shares for all founders of ACME Corp, she would issue more.
+Now that we have the venue, let's have the CEO [issue](https://developers.polymath.network/polymesh-sdk-api-reference/v/docs-alpha/classes/issuance#issue) enough shares to later transfer to Alice. Of course, if the CEO planned on issuing shares for all founders of ACME Corp, she would issue more.
 
 <MultiCodeBlock>
 
@@ -391,7 +391,7 @@ Here we are talking about Alice, the eventual owner, not the CEO, so we are goin
 <MultiCodeBlock>
 
 ```typescript
-const alice: CurrentIdentity = await apiAlice.getCurrentIdentity();
+const alice: Identity = await apiAlice.getCurrentIdentity();
 const portfolios: Portfolios = alice.portfolios;
 const portfolioQueue: TransactionQueue<NumberedPortfolio> = await portfolios.create({
     "name": "Cold store"
@@ -439,7 +439,7 @@ On her end, she needs to re-instantiate some instances given the previous inform
 <MultiCodeBlock>
 
 ```typescript
-const acme: CurrentIdentity = await apiCeo.getCurrentIdentity();
+const acme: Identity = await apiCeo.getCurrentIdentity();
 const acmeDefaultPortfolio: DefaultPortfolio = await acme.portfolios.getPortfolio();
 const acmeDid: string = acme.did;
 
@@ -517,7 +517,7 @@ const venue: Venue = (await acme.getVenues()).find((venue: Venue) => {
 });
 const pendingInstructions: Instruction[] = await venue.getPendingInstructions();
 const aliceInstruction: Instruction = pendingInstructions.find((instruction: Instruction) => {
-    return instruction.id.isEqualTo(distributionInstructionId);
+    return instruction.id.isEqualTo(new BigNumber(distributionInstructionId));
 });
 ```
 
@@ -530,7 +530,7 @@ const venue = (await acme.getVenues()).find((venue) => {
 });
 const pendingInstructions = await venue.getPendingInstructions();
 const aliceInstruction = pendingInstructions.find((instruction) => {
-    return instruction.id.isEqualTo(distributionInstructionId);
+    return instruction.id.isEqualTo(new BigNumber(distributionInstructionId));
 });
 ```
 
@@ -693,10 +693,9 @@ That's it, the lazy checkpoint is created, and has recorded all balances. For in
 const token: SecurityToken = await apiBob.getSecurityToken({
     "ticker" :"ACME"
 });
-const allCheckpoints: CheckpointWithCreationDate[] = await token.checkpoints.get();
-const postDistributionCheckpoint: Checkpoint = allCheckpoints
-    .map((checkpointInfo: CheckpointWithCreationDate) => checkpointInfo.checkpoint)
-    .find((checkpoint: Checkpoint) => checkpoint.id.toString(10) === postDistributionCheckpointId);
+const postDistributionCheckpoint: Checkpoint = await token.checkpoints.getOne({
+    "id": new BigNumber(postDistributionCheckpointId)
+});
 const carolAcmeBalanceAtDistribution: BigNumber = await postDistributionCheckpoint.balance({
     "identity": carol
 });
@@ -706,10 +705,9 @@ const carolAcmeBalanceAtDistribution: BigNumber = await postDistributionCheckpoi
 const token = await apiBob.getSecurityToken({
     "ticker" :"ACME"
 });
-const allCheckpoints = await token.checkpoints.get();
-const postDistributionCheckpoint = allCheckpoints
-    .map((checkpointInfo) => checkpointInfo.checkpoint)
-    .find((checkpoint) => checkpoint.id.toString(10) === postDistributionCheckpointId);
+const postDistributionCheckpoint = await token.checkpoints.getOne({
+    "id": new BigNumber(postDistributionCheckpointId)
+});
 const carolAcmeBalanceAtDistribution = await postDistributionCheckpoint.balance({
     "identity": carol
 });

@@ -25,7 +25,7 @@ You can find it here [@polymathnetwork/polymesh-sdk](https://www.npmjs.com/packa
 
 ## Preconditions
 
-If you went through the Quick Start, we can assume that you have created an account (a public-private key pair) on the Polymesh testnet, that you associated it with an account, and that you credited it with POLYX. We shall call this personal signing key `aliceKey`, and the personal account it represents `alice`.
+If you went through the Quick Start, we can assume that you have created an account (a public-private key pair) on the Polymesh Testnet, that you associated it with an account, and that you credited it with POLYX. We shall call this personal signing key `aliceKey`, and the personal account it represents `alice`.
 
 Here, we are going to follow along the Token Studio Dashboard exercise, and do the same _mistake_. whereby she creates the token with her personal account, and which we will eventually fix. The credible simple reason why Alice created the token with her personal account is that her and her co-founders wanted to act fast so as to have the ticker available before getting the company through CDD.
 
@@ -38,14 +38,14 @@ To recap:
 
     ```typescript
     const apiAlice: Polymesh = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word1 word2 ..."
     });
     ```
 
     ```javascript
     const apiAlice = await Polymesh.connect({
-        "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
         "accountMnemonic": "word1 word2 ..."
     });
     ```
@@ -114,7 +114,7 @@ At this stage, Alice owns the reservation. You can confirm it with the following
 <MultiCodeBlock>
 
 ```typescript
-const alice: CurrentIdentity = await apiAlice.getCurrentIdentity();
+const alice: Identity = await apiAlice.getCurrentIdentity();
 const details: TickerReservationDetails = await reservation.details();
 const owner: Identity = details.owner;
 assert(owner.did === alice.did);
@@ -232,16 +232,16 @@ Now we assume that ACME has gone through CDD and has an account, complete with a
 
 ```typescript
 const apiAcme: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word21 word22 ..."
 });
-const acme: CurrentIdentity = await apiAcme.getCurrentIdentity();
+const acme: Identity = await apiAcme.getCurrentIdentity();
 const acmeDid: string = acme.did;
 ```
 
 ```javascript
 const apiAcme = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word21 word22 ..."
 });
 const acme = await apiAcme.getCurrentIdentity();
@@ -256,14 +256,14 @@ On her end, Alice, has created another mnemonic for a private key she intends to
 
 ```typescript
 const apiCeo: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word31 word32 ..."
 });
 ```
 
 ```javascript
 const apiCeo = await Polymesh.connect({
-    "nodeUrl": "wss://alcyone-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
     "accountMnemonic": "word31 word32 ..."
 });
 ```
@@ -289,7 +289,7 @@ Then she needs to send this `pubCeo` information to the computer that holds `api
 <MultiCodeBlock>
 
 ```typescript
-const acme: CurrentIdentity = await apiAcme.getCurrentIdentity();
+const acme: Identity = await apiAcme.getCurrentIdentity();
 await acme.inviteAccount({
     "targetAccount": pubCeo
 });
@@ -309,7 +309,7 @@ With the invitation sent out into the blockchain, back at her computer, Alice, w
 <MultiCodeBlock>
 
 ```typescript
-const ceoAccount: CurrentAccount = apiCeo.getAccount();
+const ceoAccount: Account = apiCeo.getAccount();
 const pendingAuthorizations: AuthorizationRequest[] = await ceoAccount.authorizations.getReceived();
 const acmeAuthorization: AuthorizationRequest = pendingAuthorizations
     .find((pendingAuthorization: AuthorizationRequest) => {
@@ -371,7 +371,7 @@ She first needs to recall her personal account number, or `did`.
 <MultiCodeBlock>
 
 ```typescript
-const alice: CurrentIdentity = await apiAlice.getCurrentIdentity();
+const alice: Identity = await apiAlice.getCurrentIdentity();
 const aliceDid: string = alice.did;
 ```
 
@@ -423,7 +423,7 @@ We use ACME's account as the KYC service provider, but realistically, it should 
 ```typescript
 const acmeCompliance: Compliance = token.compliance;
 const acmeRequirements: Requirements = acmeCompliance.requirements;
-const acme: CurrentIdentity = await apiCeo.getCurrentIdentity();
+const acme: Identity = await apiCeo.getCurrentIdentity();
 const setRequirementsQueue: TransactionQueue<SecurityToken> = await acmeRequirements.set({
     "requirements": [
         [
