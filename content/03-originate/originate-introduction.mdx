@@ -19,7 +19,7 @@ Polymesh makes it exceptionally simple to originate a regulated security. There 
 
 For example, a business may only occasionally issue new securities, in which case the intuitive manual approach will be sufficient. Service providers who routinely issue securities for their clients may wish to eliminate repetition. In this case, create an integration with internal systems and automate the process. The Token Studio found in the Polymesh Dashboard is an example of an integration created with the SDK.
 
-Before we go through a simple practical exercise, let's explore the overal asset representation and the origination process.
+Before we go through a simple practical exercise, let's explore the overall asset representation and the origination process.
 
 ![security tokens](images/security_tokens.png)
 
@@ -51,24 +51,26 @@ The token reservation and origination are not the only available operations for 
 
 All these can be **managed through the asset base layer logic in Polymesh**. Of note is that the documentation content, although referenced on the blockchain by link or by content hash, is not actually stored on-chain.
 
-### The token external agents
+### The token owner
 
-Given the scope of possible operations that affect a token over its lifecycle, it is only natural to delegate responsibilities to specialized parties that act on behalf of the token owner, a.k.a. external agents. Each external agent is entrusted with, and restricted to, certain specific operations. Well-defined responsibilities assigned to external agents map to real world roles, such as primary issuance agent (PIA) or corporate actions agent (CAA). Polymesh lets you tailor agents' responsibilities and permissions through external agent permission groups.
-
-### The token owners
-
-There is a special group of external agents that gives all rights over a token. It helps discussion to call this type of agent the token owner. To avoid a case of _orphan_ tokens, there must always be at least one token owner. The originator of a token is, quite naturally, the token's initial owner. Eventually, because of the importance of this ownership role, it is expected that:
+The originator of a token is, quite naturally, the token's initial owner by default and they are assigned permissions for full control over the token. Eventually, because of the importance of this ownership role, it is expected that:
 
 * The token owner will be held by a multi-signature account.
-* The token owner will be called upon for rare and higher-level tasks, typically to appoint and revoke external agents.
+* The token owner will be called upon for rare and higher-level tasks, typically to appoint and revoke or modify permissions for external agents.
 
 Polymesh was built with such a vision in mind. A multi-signature account could, for instance, be the expression of a quorum of the board of directors of a company.
+
+### The token external agents
+
+Given the scope of possible operations that affect a token over its lifecycle, and to limit the need to use the token owner with full permissions, it is only natural to delegate responsibilities to specialized parties that act on behalf of the token owner, a.k.a. external agents. Each external agent is entrusted with, and restricted to, certain specific operations. Well-defined responsibilities assigned to external agents map to real world roles, such as primary issuance agent (PIA) or corporate actions agent (CAA). Polymesh lets you tailor agents' responsibilities and permissions through [external agent permission groups](../settlement/settlement-agents).
+
+There is a special permission group for external agents that gives all rights over a token. It helps discussion to call those assigned those permission the token owner.  As previously discussed the originator of a token is the default owner. It is possible to assign full permissions to additional identities and also to remove those permissions for the originator. To avoid a case of _orphan_ tokens, there must always be at least one token owner.
 
 ## The underlying asset
 
 To help you develop a sense of the permissions, we shall peek ahead at what lies beyond origination.
 
-As seen above, the token represents the type of the asset, and is _owned_ by its originator, or by whomever else they granted full rights on the token to. By contrast, the asset it represents is owned by individual investors' accounts.
+As seen above, the token represents the type of the asset, and is _owned_ by its originator, or by whomever else they granted full rights on the token to. By contrast, the asset it represents is owned by individual investors' accounts according to token holdings.
 
 ### Ownership of the asset
 
@@ -77,7 +79,7 @@ Two elements determine **ownership** of a token's underlying asset:
 * The sum of balances of an individual investor's account(s) of said asset. The **numerator** if you will;
 * The total supply of tokens representing ownership of said asset. i.e. the **denominator**.
 
-When the total supply of tokens increases, it is called **issuance**. The external agent account responsible for issuance is commonly called the **primary issuance agent (PIA)**. The owner of the token itself can act as a PIA, but this role can be delegated by the owner.
+When the total supply of tokens increases, it is called **issuance**. The account responsible for issuance is commonly called the **primary issuance agent (PIA)**. The owner of the token itself can act as a PIA, but this role can be delegated by the owner to an external agent.
 
 As with so many actions in Polymesh, the targeted external agent account needs to accept the role delegation for it to become effective.
 
@@ -97,7 +99,7 @@ We have seen that the token has a lifecycle. The **underlying asset has a lifecy
 
 Those too are managed through the asset base layer logic in Polymesh.
 
-Other actions address rare cases such as the forcible return of the asset to the primary issuance agent. For the avoidance of doubt, issuance bypasses the compliance step.
+Other actions address rare cases such as the forcible return of the asset to the primary issuance agent. For the avoidance of doubt, issuance to the PIA bypasses the compliance step.
 
 ## Conclusion
 
