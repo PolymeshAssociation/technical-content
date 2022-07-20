@@ -31,7 +31,7 @@ Like we saw before, each participant has an identity and a computer on which the
     });
 
     const apiAlice: Polymesh = await Polymesh.connect({
-        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
         "signingManager": signingManagerAlice
     });
     ```
@@ -44,7 +44,7 @@ Like we saw before, each participant has an identity and a computer on which the
     });    
 
     const apiAlice = await Polymesh.connect({
-        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
         "signingManager": signingManagerAlice
     });
     ```
@@ -60,7 +60,7 @@ Like we saw before, each participant has an identity and a computer on which the
         }]
     });
     const apiSafeHands: Polymesh = await Polymesh.connect({
-        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
         "signingManager": signingManagerSafeHands
     });
     const safeHands: Identity = await apiSafeHands.getSigningIdentity();
@@ -74,7 +74,7 @@ Like we saw before, each participant has an identity and a computer on which the
         }]
     });
     const apiSafeHands = await Polymesh.connect({
-        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
         "signingManager": signingManagerSafeHands
     });
     const safeHands = await apiSafeHands.getSigningIdentity();
@@ -92,7 +92,7 @@ Like we saw before, each participant has an identity and a computer on which the
         }]
     });
     const apiNextDaq: Polymesh = await Polymesh.connect({
-        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
         "signingManager": signingManagerNextDaq
     });
     const nextDaq: Identity = await apiNextDaq.getSigningIdentity();
@@ -101,7 +101,7 @@ Like we saw before, each participant has an identity and a computer on which the
 
     ```javascript
     const apiNextDaq = await Polymesh.connect({
-        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
         "accountMnemonic": "word51 word52 ..."
     });
     const nextDaq: Identity = await apiNextDaq.getSigningIdentity();

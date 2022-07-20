@@ -25,7 +25,7 @@ const signingManagerCeo: LocalSigningManager = await LocalSigningManager.create(
     }]
 }); 
 const apiCeo: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
     "signingManager": signingManagerCeo
 });
 const acme: Identity = await apiCeo.getSigningIdentity();
@@ -39,7 +39,7 @@ const signingManagerCeo = await LocalSigningManager.create({
     }]
 }); 
 const apiCeo = await Polymesh.connect({
-    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
     "signingManager": signingManagerCeo
 });
 const acme = await apiCeo.getSigningIdentity();
@@ -59,7 +59,7 @@ const signingManagerCaAgent: LocalSigningManager = await LocalSigningManager.cre
     }]
 }); 
 const apiCaAgent: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
     "signingManager": signingManagerCaAgent
 });
 const caAgent: Identity = await apiCaAgent.getSigningIdentity();
@@ -73,7 +73,7 @@ const signingManagerCaAgent = await LocalSigningManager.create({
     }]
 }); 
 const apiCaAgent = await Polymesh.connect({
-    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
     "signingManager": signingManagerCaAgent
 });
 const caAgent = await apiCaAgent.getSigningIdentity();

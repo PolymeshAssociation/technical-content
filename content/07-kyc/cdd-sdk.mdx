@@ -48,7 +48,7 @@ const signingManagerEzCdd: LocalSigningManager = await LocalSigningManager.creat
 });
 
 const apiEzCdd: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
     "signingManager": signingManagerEzCdd
 });
 ```
@@ -61,7 +61,7 @@ const signingManagerEzCdd = await LocalSigningManager.create({
 });
 
 const apiEzCdd = await Polymesh.connect({
-    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
     "signingManager": signingManagerEzCdd
 });
 ```

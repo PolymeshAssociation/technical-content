@@ -44,7 +44,7 @@ To recap:
     });
     
     const apiAlice: Polymesh = await Polymesh.connect({
-        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
         "signingManager": signingManagerAlice
     });
     ```
@@ -57,7 +57,7 @@ To recap:
     });    
 
     const apiAlice = await Polymesh.connect({
-        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
         "signingManager": signingManagerAlice
     });
     ```
@@ -142,7 +142,7 @@ assert(owner.did === alice.did);
 
 Something is not immediately apparent from the few lines of code above. It is nonetheless important to point it out.
 
-When we created `apiAlice` with `await Polymesh.connect()`, we passed an identifier `signingManager` which was created using an identifier `accountMnemonic` that allowed the SDK to recreate the `aliceKey` private key. At the risk of repeating what was covered in the introduction module, this private key is not the Polymesh account proper, nor is it the public key. The public key is associated with an account, whether as a primary key, like here, or a secondary one. When the private key is used to sign a transaction, it is the **associated account** that will be considered to be the one doing the action.
+When we created `apiAlice` with `await Polymesh.connect()`, we passed a `signingManager` which was created with an `accountMnemonic` that allowed it to recreate the `aliceKey` private key. On chain the public key is expressed in [SS58 format](https://polkadot.js.org/docs/keyring/start/ss58/) and referred to as an "address" or "account". The account is then is associated with an identity, whether as a primary key, like here, or a secondary one. When the private key is used to sign a transaction, it is the **associated identity** that will be considered to be the one doing the action.
 
 This associated account information is **not embedded in the private key**. It is an association that is stored on the blockchain, may change in the future, and as such, it needs to be retrieved to be known.
 
@@ -251,7 +251,7 @@ const signingManagerAcme: LocalSigningManager = await LocalSigningManager.create
     }]
 });
 const apiAcme: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
     "signingManager": signingManagerAcme
 });
 const acme: Identity = await apiAcme.getSigningIdentity();
@@ -265,7 +265,7 @@ const signingManagerAcme = await LocalSigningManager.create({
     }]
 }); 
 const apiAcme = await Polymesh.connect({
-    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
     "signingManager": signingManagerAcme
 });
 const acme = await apiAcme.getSigningIdentity();
@@ -285,7 +285,7 @@ const signingManagerCeo: LocalSigningManager = await LocalSigningManager.create(
     }]
 }); 
 const apiCeo: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
     "signingManager": signingManagerCeo
 });
 ```
@@ -297,7 +297,7 @@ const signingManagerCeo = await LocalSigningManager.create({
     }]
 }); 
 const apiCeo = await Polymesh.connect({
-    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
     "signingManager": signingManagerCeo
 });
 ```
