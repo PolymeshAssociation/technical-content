@@ -19,20 +19,30 @@ By default, the corporate actions (CA) agent is the token owner, or in our examp
 <MultiCodeBlock>
 
 ```typescript
+const signingManagerCeo: LocalSigningManager = await LocalSigningManager.create({
+    "accounts": [{
+        "mnemonic": "word31 word32 ..."
+    }]
+}); 
 const apiCeo: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-    "accountMnemonic": "word31 word32 ..."
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
+    "signingManager": signingManagerCeo
 });
-const acme: Identity = await apiCeo.getCurrentIdentity();
+const acme: Identity = await apiCeo.getSigningIdentity();
 const acmeDid: string = acme.did;
 ```
 
 ```javascript
+const signingManagerCeo = await LocalSigningManager.create({
+    "accounts": [{
+        "mnemonic": "word31 word32 ..."
+    }]
+}); 
 const apiCeo = await Polymesh.connect({
-    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-    "accountMnemonic": "word31 word32 ..."
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
+    "signingManager": signingManagerCeo
 });
-const acme = await apiCeo.getCurrentIdentity();
+const acme = await apiCeo.getSigningIdentity();
 const acmeDid = acme.did;
 ```
 
@@ -43,20 +53,30 @@ Nonetheless, we are going to set up a separate account. So let's prepare it:
 <MultiCodeBlock>
 
 ```typescript
+const signingManagerCaAgent: LocalSigningManager = await LocalSigningManager.create({
+    "accounts": [{
+        "mnemonic": "word61 word62 ..."
+    }]
+}); 
 const apiCaAgent: Polymesh = await Polymesh.connect({
-    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-    "accountMnemonic": "word61 word62 ..."
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
+    "signingManager": signingManagerCaAgent
 });
-const caAgent: Identity = await apiCaAgent.getCurrentIdentity();
+const caAgent: Identity = await apiCaAgent.getSigningIdentity();
 const caAgentDid: string = caAgent.did;
 ```
 
 ```javascript
+const signingManagerCaAgent = await LocalSigningManager.create({
+    "accounts": [{
+        "mnemonic": "word61 word62 ..."
+    }]
+}); 
 const apiCaAgent = await Polymesh.connect({
-    "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-    "accountMnemonic": "word61 word62 ..."
+    "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
+    "signingManager": signingManagerCaAgent
 });
-const caAgent = await apiCaAgent.getCurrentIdentity();
+const caAgent = await apiCaAgent.getSigningIdentity();
 const caAgentDid = caAgent.did;
 ```
 
@@ -67,25 +87,45 @@ In our example, Alice the CEO is the one that is going to appoint the CA agent o
 <MultiCodeBlock>
 
 ```typescript
-const acmeToken: SecurityToken = await apiCeo.getSecurityToken({
+const acmeAsset: Asset = await apiCeo.assets.getAsset({
     "ticker": "ACME"
 });
-const corporateActions: CorporateActions = acmeToken.corporateActions;
-const setAgentQueue: TransactionQueue<void> = await corporateActions.setAgent({
-    "target": caAgentDid
+const permissions: Permissions = acmeAsset.permissions;
+const inviteAgentQueue: TransactionQueue<void> = await permissions.inviteAgent({
+    "target": caAgentDid,
+    "permissions": {
+        "transactions": {
+            "type": PermissionType.Include,
+            values: [
+                ModuleName.CorporateAction,
+                ModuleName.CorporateBallot,
+                ModuleName.CapitalDistribution
+            ]
+        }
+    }
 });
-await setAgentQueue.run();
+await inviteAgentQueue.run();
 ```
 
 ```javascript
-const acmeToken = await apiCeo.getSecurityToken({
+const acmeAsset = await apiCeo.assets.getAsset({
     "ticker": "ACME"
 });
-const corporateActions = acmeToken.corporateActions;
-const setAgentQueue = await corporateActions.setAgent({
-    "target": caAgentDid
+const permissions = acmeAsset.permissions;
+const inviteAgentQueue = await permissions.inviteAgent({
+    "target": caAgentDid,
+    "permissions": {
+        "transactions": {
+            "type": "Include",
+            values: [
+                "CorporateAction",
+                "CorporateBallot",
+                "CapitalDistribution"
+            ]
+        }
+    }
 });
-await setAgentQueue.run();
+await inviteAgentQueue.run();
 ```
 
 </MultiCodeBlock>
@@ -96,7 +136,7 @@ Is that all? No, as always, the target has to accept the responsibility, which i
 
 ```typescript
 const caAuthorizations: AuthorizationRequest[] = await caAgent.authorizations.getReceived({
-    "type": AuthorizationType.TransferCorporateActionAgent,
+    "type": AuthorizationType.BecomeAgent,
     "includeExpired": false
 });
 const acmeCaAuthorization: AuthorizationRequest = caAuthorizations.find(
@@ -109,7 +149,7 @@ await acceptQueue.run();
 
 ```javascript
 const caAuthorizations = await caAgent.authorizations.getReceived({
-    "type": "TransferCorporateActionAgent",
+    "type": "BecomeAgent",
     "includeExpired": false
 });
 const acmeCaAuthorization = caAuthorizations.find(
@@ -124,7 +164,7 @@ await acceptQueue.run();
 
 With this done, `apiCaAgent` now allows the agent to act as ACME's corporate actions agent.
 
-If ACME wanted to remove the CA agent, then, it would need a call to `acmeToken.corporateActions.removeAgent()`.
+If ACME wanted to remove the CA agent, then, it would need a call to `acmeAsset.corporateActions.removeAgent()`.
 
 ## Checkpointing
 
@@ -133,13 +173,13 @@ As the dividend is distributed as per each investor's holding, Polymesh needs a 
 <MultiCodeBlock>
 
 ```typescript
-const checkpointQueue: TransactionQueue<Checkpoint> = await acmeToken.checkpoints.create();
+const checkpointQueue: TransactionQueue<Checkpoint> = await acmeAsset.checkpoints.create();
 const checkpoint: Checkpoint = await checkpointQueue.run();
 const preDividendCheckpointId: string = checkpoint.id.toString(10);
 ```
 
 ```javascript
-const checkpointQueue = await acmeToken.checkpoints.create();
+const checkpointQueue = await acmeAsset.checkpoints.create();
 const checkpoint = await checkpointQueue.run();
 const preDividendCheckpointId = checkpoint.id.toString(10);
 ```
@@ -155,14 +195,14 @@ For the purpose of this exercise, we assume that the CA agent has been funded on
 <MultiCodeBlock>
 
 ```typescript
-const acmeCAFolioQueue: TransactionQueue<NumberedPortfolio> = await caAgent.portfolios.create({
+const acmeCAFolioQueue: TransactionQueue<NumberedPortfolio> = await apiCaAgent.identities.createPortfolio({
     "name": "ACME Corporate Actions"
 });
 const acmeCAFolio: NumberedPortfolio = await acmeCAFolioQueue.run();
 ```
 
 ```javascript
-const acmeCAFolioQueue = await caAgent.portfolios.create({
+const acmeCAFolioQueue = await apiCaAgent.identities.createPortfolio({
     "name": "ACME Corporate Actions"
 });
 const acmeCAFolio = await acmeCAFolioQueue.run();
@@ -179,19 +219,19 @@ With the checkpoint done and the funds allocated, it is now time to prepare the 
 <MultiCodeBlock>
 
 ```typescript
-const acmeToken: SecurityToken = await apiCaAgent.getSecurityToken({
+const acmeAsset: Asset = await apiCaAgent.assets.getAsset({
     "ticker": "ACME"
 });
-const preDividendCheckpoint: Checkpoint = await acmeToken.checkpoints.getOne({
+const preDividendCheckpoint: Checkpoint = await acmeAsset.checkpoints.getOne({
     "id": new BigNumber(preDividendCheckpointId)
 });
 ```
 
 ```javascript
-const acmeToken = await apiCaAgent.getSecurityToken({
+const acmeAsset = await apiCaAgent.assets.getAsset({
     "ticker": "ACME"
 });
-const preDividendCheckpoint = await acmeToken.checkpoints.getOne({
+const preDividendCheckpoint = await acmeAsset.checkpoints.getOne({
     "id": new BigNumber(preDividendCheckpointId)
 });
 ```
@@ -203,17 +243,17 @@ With that, we can create the action:
 <MultiCodeBlock>
 
 ```typescript
-const distributions: Distributions = acmeToken.corporateActions.distributions;
+const distributions: Distributions = acmeAsset.corporateActions.distributions;
 const dividendActionQueue: TransactionQueue<DividendDistribution> = await distributions.configureDividendDistribution({
-    "description": "2021 First Quarter",
+    "description": "2022 Third Quarter",
     "declarationDate": new Date(), // Here declared now, but can be any date.
     "checkpoint": preDividendCheckpoint, // Good thing we created it. If not, it would create it automatically.
-    "paymentDate": new Date(2021, 4, 2, 23, 59), // Or whichever point at which ACME holders can claim their dividend.
+    "paymentDate": new Date(2022, 8, 2, 23, 59), // Or whichever point at which ACME holders can claim their dividend.
     "originPortfolio": acmeCAFolio, // Another well prepared item.
     "currency": "STBL",
     "maxAmount": new BigNumber("5000"), // This determines what will be locked.
     "perShare": new BigNumber("0.25"), // Unlike with the Token Studio, you have to calculate it here.
-    "expiryDate": new Date(2022, 4, 1, 23, 59), // Sufficiently far in the future that holders have time to claim.
+    "expiryDate": new Date(2023, 4, 1, 23, 59), // Sufficiently far in the future that holders have time to claim.
     "targets": {
         identities: [], // Nobody is excluded, i.e. everyone can claim a dividend.
         treatment: TargetTreatment.Exclude;
@@ -225,17 +265,17 @@ const dividendActionId: string = dividendAction.id.toString(10);
 ```
 
 ```javascript
-const distributions = acmeToken.corporateActions.distributions;
+const distributions = acmeAsset.corporateActions.distributions;
 const dividendActionQueue = await distributions.configureDividendDistribution({
-    "description": "2021 First Quarter",
+    "description": "2022 Third Quarter",
     "declarationDate": new Date(), // Here declared now, but can be any date.
     "checkpoint": preDividendCheckpoint, // Good thing we created it. If not, it would create it automatically.
-    "paymentDate": new Date(2021, 4, 2, 23, 59), // Or whichever point at which ACME holders can claim their dividend.
+    "paymentDate": new Date(2022, 8, 2, 23, 59), // Or whichever point at which ACME holders can claim their dividend.
     "originPortfolio": acmeCAFolio, // Another well prepared item.
     "currency": "STBL",
     "maxAmount": new BigNumber("5000"), // This determines what will be locked.
     "perShare": new BigNumber("0.25"), // Unlike with the Token Studio, you have to calculate it here.
-    "expiryDate": new Date(2022, 4, 1, 23, 59), // Sufficiently far in the future that holders have time to claim.
+    "expiryDate": new Date(2023, 4, 1, 23, 59), // Sufficiently far in the future that holders have time to claim.
     "targets": {
         identities: [], // Nobody is excluded, i.e. everyone can claim a dividend.
         treatment: TargetTreatment.Exclude;
@@ -257,10 +297,10 @@ Alice the individual is one of the ACME holders, and as such, at, and after, the
 <MultiCodeBlock>
 
 ```typescript
-const acmeToken: SecurityToken = await apiAlice.getSecurityToken({
+const acmeAsset: Asset = await apiAlice.assets.getAsset({
     "ticker": "ACME"
 });
-const acmeDividendWithDetails: DistributionWithDetails = await acmeToken.corporateActions.distributions.getOne({
+const acmeDividendWithDetails: DistributionWithDetails = await acmeAsset.corporateActions.distributions.getOne({
     "id": new BigNumber(dividendActionId)
 });
 const acmeDividend: DividendDistribution = acmeDividendWithDetails.distribution;
@@ -269,10 +309,10 @@ await claimQueue.run();
 ```
 
 ```javascript
-const acmeToken = await apiAlice.getSecurityToken({
+const acmeAsset = await apiAlice.assets.getAsset({
     "ticker": "ACME"
 });
-const acmeDividendWithDetails = await acmeToken.corporateActions.distributions.getOne({
+const acmeDividendWithDetails = await acmeAsset.corporateActions.distributions.getOne({
     "id": new BigNumber(dividendActionId)
 });
 const acmeDividend = acmeDividendWithDetails.distribution;
@@ -319,4 +359,4 @@ We saw that the lifecycle of a dividend corporate action includes:
 
 ## Links
 
-- SDK: https://developers.polymath.network/classic-sdk/globals
+- SDK: https://github.com/PolymathNetwork/polymesh-sdk/wiki

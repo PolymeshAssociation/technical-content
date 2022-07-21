@@ -116,7 +116,7 @@ module.exports = {
       {
         category: "sdk-api-doc",
         name: "SDK Docs",
-        link: "https://developers.polymath.network/polymesh-sdk-api-reference/",
+        link: "https://github.com/PolymathNetwork/polymesh-sdk/wiki",
         external: true
       },
       {
