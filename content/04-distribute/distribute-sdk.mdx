@@ -18,20 +18,30 @@ We assume that:
 
 * ACME, the company, already has a Polymesh account, `acme`;
 * Alice, ACME Co's CEO and acting agent, holds a secondary private key for `acme` that allows her to act on its behalf;
-* Alice the CEO can [instantiate](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#static-connect) a Polymesh client whenever she needs to act with:
+* Alice the CEO can [instantiate](https://github.com/PolymathNetwork/polymesh-sdk/wiki/api.client.Polymesh.Polymesh#connect) a Polymesh client whenever she needs to act with:
     <MultiCodeBlock>
 
     ```typescript
+    const signingManagerCeo: LocalSigningManager = await LocalSigningManager.create({
+        "accounts": [{
+            "mnemonic": "word31 word32 ..."
+        }]
+    }); 
     const apiCeo: Polymesh = await Polymesh.connect({
-        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-        "accountMnemonic": "word31 word32 ..."
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
+        "signingManager": signingManagerCeo
     });
     ```
 
     ```javascript
+    const signingManagerCeo = await LocalSigningManager.create({
+        "accounts": [{
+            "mnemonic": "word31 word32 ..."
+        }]
+    }); 
     const apiCeo = await Polymesh.connect({
-        "nodeUrl": "wss://testnet-rpc.polymesh.live", // For instance, or the proper network
-        "accountMnemonic": "word31 word32 ..."
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
+        "signingManager": signingManagerCeo
     });
     ```
 
@@ -40,13 +50,13 @@ We assume that:
     <MultiCodeBlock>
 
     ```typescript
-    const token: SecurityToken = await apiCeo.getSecurityToken({
+    const asset: Asset = await apiCeo.assets.getAsset({
         "ticker" :"ACME"
     });
     ```
 
     ```javascript
-    const token = await apiCeo.getSecurityToken({
+    const asset = await apiCeo.assets.getAsset({
         "ticker" :"ACME"
     });
     ```
@@ -54,20 +64,32 @@ We assume that:
     </MultiCodeBlock>
 * `acme` is the owner of the ACME token. `acme` will also be the token's primary issuance agent;
 * Alice has an account, `alice`, that represents her as an individual;
-* Alice the individual also can [instantiate](https://developers.polymath.network/polymesh-sdk-api-reference/classes/polymesh#static-connect) a Polymesh client whenever she needs to act with:
+* Alice the individual also can [instantiate](https://github.com/PolymathNetwork/polymesh-sdk/wiki/api.client.Polymesh.Polymesh#connect) a Polymesh client whenever she needs to act with:
     <MultiCodeBlock>
 
     ```typescript
+    const signingManagerAlice: LocalSigningManager = await LocalSigningManager.create({
+        "accounts": [{
+            "mnemonic": "word1 word2 ..."
+        }]
+    });
+
     const apiAlice: Polymesh = await Polymesh.connect({
-        "nodeUrl": "wss://testnet-rpc.polymesh.live",
-        "accountMnemonic": "word1 word2 ..."
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
+        "signingManager": signingManagerAlice
     });
     ```
 
     ```javascript
+    const signingManagerAlice = await LocalSigningManager.create({
+        "accounts": [{
+            "mnemonic": "word1 word2 ..."
+        }]
+    });    
+
     const apiAlice = await Polymesh.connect({
-        "nodeUrl": "wss://testnet-rpc.polymesh.live",
-        "accountMnemonic": "word1 word2 ..."
+        "nodeUrl": "wss://testnet-rpc.polymesh.live", // or your preferred node
+        "signingManager": signingManagerAlice
     });
     ```
 
@@ -127,11 +149,11 @@ ACME's **Did** is in the account, and already comes formatted as `0x123...`:
 <MultiCodeBlock>
 
 ```typescript
-const acme: Identity = await apiCeo.getCurrentIdentity();
+const acme: Identity = await apiCeo.getSigningIdentity();
 ```
 
 ```javascript
-const acme = await apiCeo.getCurrentIdentity();
+const acme = await apiCeo.getSigningIdentity();
 ```
 
 </MultiCodeBlock>
@@ -313,18 +335,18 @@ Let's get started. We fetched ACME's account in the previous step:
 <MultiCodeBlock>
 
 ```typescript
-const distributionVenueQueue: TransactionQueue<Venue> = await acme.createVenue({
+const distributionVenueQueue: TransactionQueue<Venue> = await acme.settlements.createVenue({
     "type": VenueType.Distribution,
-    "details": "For ACME Co"
+    "description": "For ACME Co"
 });
 const distributionVenue: Venue = await distributionVenueQueue.run();
 const distributionVenueId: string = distributionVenue.id.toString();
 ```
 
 ```javascript
-const distributionVenueQueue = await acme.createVenue({
+const distributionVenueQueue = await acme.settlements.createVenue({
     "type": "Distribution",
-    "details": "For ACME Co"
+    "description": "For ACME Co"
 });
 const distributionVenue = await distributionVenueQueue.run();
 const distributionVenueId = distributionVenue.id.toString();
@@ -334,32 +356,32 @@ const distributionVenueId = distributionVenue.id.toString();
 
 We keep `distributionVenueId`, the string id of the venue, for later as this is information that will need to be shared with the ultimate recipient.
 
-Now that we have the venue, let's have the CEO [issue](https://developers.polymath.network/polymesh-sdk-api-reference/v/docs-alpha/classes/issuance#issue) enough shares to later transfer to Alice. Of course, if the CEO planned on issuing shares for all founders of ACME Corp, she would issue more.
+Now that we have the venue, let's have the CEO [issue](https://github.com/PolymathNetwork/polymesh-sdk/wiki/api.entities.Asset.Issuance.Issuance#issue) enough shares to later transfer to Alice. Of course, if the CEO planned on issuing shares for all founders of ACME Corp, she would issue more.
 
 <MultiCodeBlock>
 
 ```typescript
-const token: SecurityToken = await apiCeo.getSecurityToken({
+const asset: Asset = await apiCeo.assets.getAsset({
     "ticker": "ACME"
 });
-const issuance: Issuance = token.issuance;
+const issuance: Issuance = asset.issuance;
 ```
 
 ```javascript
-const token = await apiCeo.getSecurityToken({
+const asset = await apiCeo.assets.getAsset({
     "ticker": "ACME"
 });
-const issuance = token.issuance;
+const issuance = asset.issuance;
 ```
 
 </MultiCodeBlock>
 
-Here too, in `issuance`, the context is still `apiCeo`. In fact, its [`parent`](https://developers.polymath.network/polymesh-sdk-api-reference/classes/issuance#properties-1) is the `token` itself.
+Here too, in `issuance`, the context is still `apiCeo`. In fact, its [`parent`](https://github.com/PolymathNetwork/polymesh-sdk/wiki/api.entities.Asset.Issuance.Issuance#hierarchy) is the `asset` itself.
 
 <MultiCodeBlock>
 
 ```typescript
-const issueQueue: TransactionQueue<SecurityToken> = await issuance.issue({
+const issueQueue: TransactionQueue<Asset> = await issuance.issue({
     "amount": new BigNumber("20000")
 });
 await issueQueue.run();
@@ -384,25 +406,21 @@ At this point, ACME, has 20,000 received shares. We still need to send them over
 
 ## In which portfolio?
 
-Now, Alice doesn't want to receive her ACME shares into her default portfolio. Instead, she wants to have them sent to a new "cold store" portfolio, she first needs to [create](https://developers.polymath.network/polymesh-sdk-api-reference/classes/portfolios#create) the portfolio.
+Now, Alice doesn't want to receive her ACME shares into her default portfolio. Instead, she wants to have them sent to a new "cold store" portfolio, she first needs to [create](https://github.com/PolymathNetwork/polymesh-sdk/wiki/api.client.Identities.Identities#createportfolio) the portfolio.
 
 Here we are talking about Alice, the eventual owner, not the CEO, so we are going to use _her_ Polymesh client instance `apiAlice`:
 
 <MultiCodeBlock>
 
 ```typescript
-const alice: Identity = await apiAlice.getCurrentIdentity();
-const portfolios: Portfolios = alice.portfolios;
-const portfolioQueue: TransactionQueue<NumberedPortfolio> = await portfolios.create({
+const portfolioQueue: TransactionQueue<NumberedPortfolio> = await apiAlice.identities.createPortfolio({
     "name": "Cold store"
 });
 const coldStore: NumberedPortfolio = await portfolioQueue.run();
 ```
 
 ```javascript
-const alice = await apiAlice.getCurrentIdentity();
-const portfolios = alice.portfolios;
-const portfolioQueue = await portfolios.create({
+const portfolioQueue = await await apiAlice.identities.createPortfolio({
     "name": "Cold store"
 });
 const coldStore = await portfolioQueue.run();
@@ -410,9 +428,9 @@ const coldStore = await portfolioQueue.run();
 
 </MultiCodeBlock>
 
-To [retrieve](https://developers.polymath.network/polymesh-sdk-api-reference/classes/portfolios#getportfolio) the portfolio at a later date, anyone can use the string `coldStore.id`, or find the portfolio by name.
+To [retrieve](https://github.com/PolymathNetwork/polymesh-sdk/wiki/api.entities.Identity.Portfolios.Portfolios#getportfolio) the portfolio at a later date, anyone can use the string `coldStore.id`, or find the portfolio by name.
 
-Time to [move](https://developers.polymath.network/polymesh-sdk-api-reference/classes/portfolio#movefunds) the shares.
+Time to [move](https://github.com/PolymathNetwork/polymesh-sdk/wiki/api.entities.Portfolio.Portfolio#movefunds) the shares.
 
 Now that Alice has created the portfolio in which she wishes to receive her shares, she needs to prepare some information for her alter ego, the CEO:
 
@@ -439,11 +457,11 @@ On her end, she needs to re-instantiate some instances given the previous inform
 <MultiCodeBlock>
 
 ```typescript
-const acme: Identity = await apiCeo.getCurrentIdentity();
+const acme: Identity = await apiCeo.getSigningIdentity();
 const acmeDefaultPortfolio: DefaultPortfolio = await acme.portfolios.getPortfolio();
 const acmeDid: string = acme.did;
 
-const alice: Identity = await apiCeo.getIdentity({
+const alice: Identity = await apiCeo.identities.getIdentity({
     "did": aliceDid
 });
 const aliceColdStore: Portfolio = await alice.portfolios.getPortfolio({
@@ -452,11 +470,11 @@ const aliceColdStore: Portfolio = await alice.portfolios.getPortfolio({
 ```
 
 ```javascript
-const acme = await apiCeo.getCurrentIdentity();
+const acme = await apiCeo.getSigningIdentity();
 const acmeDefaultPortfolio = await acme.portfolios.getPortfolio();
 const acmeDid = acme.did;
 
-const alice = await apiCeo.getIdentity({
+const alice = await apiCeo.identities.getIdentity({
     "did": aliceDid
 });
 const aliceColdStore = await alice.portfolios.getPortfolio({
@@ -476,7 +494,7 @@ const distributionInstructionQueue: TransactionQueue<Instruction> = await distri
         "amount": new BigNumber(20000),
         "from": acmeDefaultPortfolio,
         "to": aliceColdStore,
-        "token": token
+        "asset": asset
     }]
 });
 const distributionInstruction: Instruction = await distributionInstructionQueue.run();
@@ -489,11 +507,11 @@ const distributionInstructionQueue = await distributionVenue.addInstruction({
         "amount": new BigNumber(20000),
         "from": acmeDefaultPortfolio,
         "to": aliceColdStore,
-        "token": token
+        "asset": asset
     }]
 });
 const distributionInstruction = await distributionInstructionQueue.run();
-const distributionInstructionId = distributionInstruction.id.toString(10);
+const distributionInstructionId = distributionInstruction.id;
 ```
 
 </MultiCodeBlock>
@@ -509,34 +527,34 @@ Since she is most likely on another computer or system, we need once more to rei
 <MultiCodeBlock>
 
 ```typescript
-const acme: Identity = await apiAlice.getIdentity({
+const acme: Identity = await apiAlice.identities.getIdentity({
     "did": acmeDid
 });
 const venue: Venue = (await acme.getVenues()).find((venue: Venue) => {
     return venue.id.isEqualTo(new BigNumber(distributionVenueId));
 });
-const pendingInstructions: Instruction[] = await venue.getPendingInstructions();
-const aliceInstruction: Instruction = pendingInstructions.find((instruction: Instruction) => {
+const instructions: Instruction[] = await venue.getInstructions();
+const aliceInstruction: Instruction = instructions.pending.find((instruction: Instruction) => {
     return instruction.id.isEqualTo(new BigNumber(distributionInstructionId));
 });
 ```
 
 ```javascript
-const acme = await apiAlice.getIdentity({
+const acme = await apiAlice.identities.getIdentity({
     "did": acmeDid
 });
 const venue = (await acme.getVenues()).find((venue) => {
     return venue.id.isEqualTo(new BigNumber(distributionVenueId));
 });
-const pendingInstructions = await venue.getPendingInstructions();
-const aliceInstruction = pendingInstructions.find((instruction) => {
+const instructions = await venue.getInstructions();
+const aliceInstruction = instructions.pending.find((instruction) => {
     return instruction.id.isEqualTo(new BigNumber(distributionInstructionId));
 });
 ```
 
 </MultiCodeBlock>
 
-Alice could also have chosen to retrieve all the pending instructions associated with her `CurrentIdentity`. That would have included all instructions, not just that one from the distribution venue she knows about. With a view to reduce the possibility of spam, she chose to use the venue to retrieve the instructions.
+Alice could also have chosen to retrieve all the pending instructions associated with her `SigningIdentity`. That would have included all instructions, not just that one from the distribution venue she knows about. With a view to reduce the possibility of spam, she chose to use the venue to retrieve the instructions.
 
 Now, it is just a matter of affirming the instruction:
 
@@ -566,22 +584,22 @@ Well, she can check what's inside her portfolio:
 const coldStore: NumberedPortfolio = await alice.portfolios.getPortfolio({
     "portfolioId": new BigNumber(coldStoreId)
 });
-const acmeTokenBalances: PortfolioBalance[] = await coldStore.getTokenBalances({
-    "tokens": [ "ACME" ]
+const acmeAssetBalances: PortfolioBalance[] = await coldStore.getAssetBalances({
+    "assets": [ "ACME" ]
 });
-const acmeTokenBalance: PortfolioBalance = acmeTokenBalances[0];
-assert(acmeTokenBalance.total.isEqualTo(new BigNumber("20000")));
+const acmeAssetBalance: PortfolioBalance = acmeAssetBalances[0];
+assert(acmeAssetBalance.total.isEqualTo(new BigNumber("20000")));
 ```
 
 ```javascript
 const coldStore = await alice.portfolios.getPortfolio({
     "portfolioId": new BigNumber(coldStoreId)
 });
-const acmeTokenBalances = await coldStore.getTokenBalances({
-    "tokens": [ "ACME" ]
+const acmeAssetBalances = await coldStore.getAssetBalances({
+    "assets": [ "ACME" ]
 });
-const acmeTokenBalance = acmeTokenBalances[0];
-assert(acmeTokenBalance.total.isEqualTo(new BigNumber("20000")));
+const acmeAssetBalance = acmeAssetBalances[0];
+assert(acmeAssetBalance.total.isEqualTo(new BigNumber("20000")));
 ```
 
 </MultiCodeBlock>
@@ -596,7 +614,7 @@ On the other hand, if the founders have decided that they should all receive the
 <MultiCodeBlock>
 
 ```typescript
-const issueQueue: TransactionQueue<SecurityToken> = await issuance.issue({
+const issueQueue: TransactionQueue<Asset> = await issuance.issue({
     "amount": new BigNumber("100000")
 });
 await issueQueue.run();
@@ -606,19 +624,19 @@ const distributionInstructionQueue: TransactionQueue<Instruction> = await distri
             "amount": new BigNumber(20000),
             "from": acmeDefaultPortfolio,
             "to": aliceColdStore,
-            "token": token
+            "asset": asset
         },
         {
             "amount": new BigNumber(30000),
             "from": acmeDefaultPortfolio,
             "to": bobTargetPortfolio,
-            "token": token
+            "asset": asset
         },
         {
             "amount": new BigNumber(50000),
             "from": acmeDefaultPortfolio,
             "to": carolTargetPortfolio,
-            "token": token
+            "asset": asset
         }
     ]
 });
@@ -637,19 +655,19 @@ const distributionInstructionQueue = await distributionVenue.addInstruction({
             "amount": new BigNumber(20000),
             "from": acmeDefaultPortfolio,
             "to": aliceColdStore,
-            "token": token
+            "asset": asset
         },
         {
             "amount": new BigNumber(30000),
             "from": acmeDefaultPortfolio,
             "to": bobTargetPortfolio,
-            "token": token
+            "asset": asset
         },
         {
             "amount": new BigNumber(50000),
             "from": acmeDefaultPortfolio,
             "to": carolTargetPortfolio,
-            "token": token
+            "asset": asset
         }
     ]
 });
@@ -670,13 +688,13 @@ Assuming all parties have received their shares, it could be advantageous for th
 <MultiCodeBlock>
 
 ```typescript
-const checkpointQueue: TransactionQueue<Checkpoint> = await token.checkpoints.create();
+const checkpointQueue: TransactionQueue<Checkpoint> = await asset.checkpoints.create();
 const checkpoint: Checkpoint = await checkpointQueue.run();
 const postDistributionCheckpointId: string = checkpoint.id.toString(10);
 ```
 
 ```javascript
-const checkpointQueue = await token.checkpoints.create();
+const checkpointQueue = await asset.checkpoints.create();
 const checkpoint = await checkpointQueue.run();
 const postDistributionCheckpointId = checkpoint.id.toString(10);
 ```
@@ -690,10 +708,10 @@ That's it, the lazy checkpoint is created, and has recorded all balances. For in
 <MultiCodeBlock>
 
 ```typescript
-const token: SecurityToken = await apiBob.getSecurityToken({
+const asset: Asset = await apiBob.assets.getAsset({
     "ticker" :"ACME"
 });
-const postDistributionCheckpoint: Checkpoint = await token.checkpoints.getOne({
+const postDistributionCheckpoint: Checkpoint = await asset.checkpoints.getOne({
     "id": new BigNumber(postDistributionCheckpointId)
 });
 const carolAcmeBalanceAtDistribution: BigNumber = await postDistributionCheckpoint.balance({
@@ -702,10 +720,10 @@ const carolAcmeBalanceAtDistribution: BigNumber = await postDistributionCheckpoi
 ```
 
 ```javascript
-const token = await apiBob.getSecurityToken({
+const asset = await apiBob.assets.getAsset({
     "ticker" :"ACME"
 });
-const postDistributionCheckpoint = await token.checkpoints.getOne({
+const postDistributionCheckpoint = await asset.checkpoints.getOne({
     "id": new BigNumber(postDistributionCheckpointId)
 });
 const carolAcmeBalanceAtDistribution = await postDistributionCheckpoint.balance({
@@ -717,4 +735,4 @@ const carolAcmeBalanceAtDistribution = await postDistributionCheckpoint.balance(
 
 ## Links
 
-- SDK: https://developers.polymath.network/classic-sdk/globals
+- SDK: https://github.com/PolymathNetwork/polymesh-sdk/wiki
