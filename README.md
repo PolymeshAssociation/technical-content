@@ -6,7 +6,7 @@
 * main: [https://developers.polymesh.live/](https://developers.polymesh.live/) (main website)
 * main: [https://tc-main.polymesh.live/](https://tc-main.polymesh.live/) (secondary url)
 
-## Project setup & tech details
+## Project Setup
 
 ### Requirements
 To run and build, this project requires [npm](https://www.npmjs.com/get-npm)
