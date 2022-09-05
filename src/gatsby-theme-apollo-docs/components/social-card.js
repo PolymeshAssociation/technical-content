@@ -27,7 +27,7 @@ const {fonts, image, logo} = preval`
   const imagePath = path.resolve(__dirname, '../assets/social-bg.jpg');
   const base64Image = fs.readFileSync(imagePath, 'base64');
 
-  const logoPath = path.resolve(__dirname, '../assets/polymesh-icon.png');
+  const logoPath = path.resolve(__dirname, '../assets/polymesh-symbol.png');
   const base64Logo = fs.readFileSync(logoPath, 'base64');
 
   module.exports = {
