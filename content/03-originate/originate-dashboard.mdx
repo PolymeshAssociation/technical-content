@@ -4,11 +4,10 @@ description: Originating assets with no code
 slug: /originate/dashboard
 ---
 
-import HighlightBox from "../../src/components/HighlightBox"
-import YoutubePlayer from "../../src/components/YoutubePlayer"
+import HighlightBox from '../../src/components/HighlightBox';
+import YoutubePlayer from '../../src/components/YoutubePlayer';
 
-<YoutubePlayer videoId="-dxy9XN98Vs"/>
-
+<YoutubePlayer videoId='-dxy9XN98Vs' />
 
 ## Exercise
 
@@ -23,11 +22,11 @@ At a later stage, the company founders plan to issue an IPO, another event invol
 
 ## Compliance
 
- ACME will create the securities on the Polymesh blockchain. Since ACME is required to ensure compliance, it will first make some important business decisions.
+ACME will create the securities on the Polymesh blockchain. Since ACME is required to ensure compliance, it will first make some important business decisions.
 
- - Choosing and engaging a **KYC service provider**. ACME chose EzKyc;
- - Defining the **KYC requirements** and establishing an agreed process that the KYC service provider will provide;
- - Defining **jurisdictional properties**. ACME chose anyone that is not a resident of <span title="Elbonia doesn't appear in the list of countries">Liechtenstein</span>.
+- Choosing and engaging a **KYC service provider**. ACME chose EzKyc;
+- Defining the **KYC requirements** and establishing an agreed process that the KYC service provider will provide;
+- Defining **jurisdictional properties**. ACME chose anyone that is not a resident of <span title="Elbonia doesn't appear in the list of countries">Liechtenstein</span>.
 
 <HighlightBox type="info">
 
@@ -59,11 +58,11 @@ You might be wondering why Token Studio is asking for your name when it is clear
 
 Recall that network participants have completed [customer due diligence](/quickstart/verification-with-cdd) but this doesn't reveal who they are to other network members. It is the same with Token Studio, which can see the account (when the wallet is authorised) but cannot know the name stored in the wallet (for your own reference) or the information that was provided to the customer due diligence service provider.
 
-![register](images/04-token-studio-register.PNG)
+![register](images/04-token-studio-register.png)
 
 Sign the transaction.
 
-![sign](images/05-token-studio-register-sign.PNG)
+![sign](images/05-token-studio-register-sign.png)
 
 ## 4. My tokens
 
@@ -77,7 +76,7 @@ The service provider marketplace is where you will choose your KYC service provi
 
 For now, let's just reserve the symbol.
 
-![reserve symbol](images/07-go-to-ticker.PNG)
+![reserve symbol](images/07-go-to-ticker.png)
 
 Enter the symbol you want to reserve.
 
@@ -87,15 +86,15 @@ Symbol reservations are held for 60 days to allow ample time to attend to the se
 
 </HighlightBox>
 
-![reserve form](images/08-reserve-ticker.PNG)
+![reserve form](images/08-reserve-ticker.png)
 
 **Wait!** There is problem. If you are following along, chances are another user has already reserved the ACME symbol.
 
-![unavailable](images/09-not-available.PNG)
+![unavailable](images/09-not-available.png)
 
 You will have to get creative and enter a symbol no one else has reserved.
 
-![available](images/10-symbol-available.PNG)
+![available](images/10-symbol-available.png)
 
 ## 5. Send the reservation
 
@@ -109,17 +108,17 @@ If you are low on POLYX, [get some free Testnet POLYX](/quickstart/quickstart-po
 
 This will confirm that it is your intention to reserve the symbol and pay for the transaction with your funds.
 
-![confirm reservation](images/12-confirm-symbol.PNG)
+![confirm reservation](images/12-confirm-symbol.png)
 
 When you click `Confirm` the site will inform the wallet that a signature is needed. Even though the site is authorised to explore the public information held in the wallet, it _always_ asks for your approval before signing transactions.
 
 Since we expected this and we trust this site, click `sign`.
 
-![sign transaction](images/13-confirm-symbol-txn.PNG)
+![sign transaction](images/13-confirm-symbol-txn.png)
 
 In a few moments, the symbol is reserved.
 
-![reserved](images/14-symbol-reserved.PNG)
+![reserved](images/14-symbol-reserved.png)
 
 ## 6. Security token details
 
@@ -127,29 +126,29 @@ You can now proceed to specifying the details of the security this token represe
 
 In practice, not all important business decisions will be finalised at this point. That's okay. You can return any time in the next 60 days while the reservation remains in effect.
 
-![returning later](images/16-returning-later.PNG)
+![returning later](images/16-returning-later.png)
 
 Let's proceed with a **simple configuration**.
 
 Take a moment to explore the options. This will help you understand the breadth of security tokens that can be created this way. To keep matters simple, enter just a company name, select "Equity Preferred", and leave the rest of the defaults as they are.
 
-![details](images/17-token-details.PNG)
+![details](images/17-token-details.png)
 
 Token Studio confirms your intentions before asking the wallet to prepare a signed transaction.
 
-![confirm details](images/18-confirm-details.PNG)
+![confirm details](images/18-confirm-details.png)
 
 The wallet will ask you to sign the transaction.
 
-![sign details txn](images/19-sign-details-txn.PNG)
+![sign details txn](images/19-sign-details-txn.png)
 
 In a few moments, success! **Your token has been created.**
 
-![success](images/20-success.PNG)
+![success](images/20-success.png)
 
 Your token will be on your dashboard where you can edit properties from time to time. Take a moment to explore how you can amend and extend the configuration over time.
 
-![success](images/21-success-2.PNG)
+![success](images/21-success-2.png)
 
 ## Links
 

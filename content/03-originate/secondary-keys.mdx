@@ -4,10 +4,10 @@ description: Assigning authority
 slug: /originate/secondary-keys
 ---
 
-import HighlightBox from "../../src/components/HighlightBox"
-import YoutubePlayer from "../../src/components/YoutubePlayer"
+import HighlightBox from '../../src/components/HighlightBox';
+import YoutubePlayer from '../../src/components/YoutubePlayer';
 
-<YoutubePlayer videoId="Osb4Dnf8rvI"/>
+<YoutubePlayer videoId='Osb4Dnf8rvI' />
 
 ## ACME Corporation
 
@@ -87,11 +87,11 @@ Press the icon to the left of Alice's secondary key to bring the correct account
 
 Since Alice is the CEO and gave ACME her key for this purpose, she expects this and, after checking the requesting account, approves the assignment.
 
-![ceo](images/03-CEO.PNG)
+![ceo](images/03-CEO.png)
 
 Alice's wallet will now have **two signing keys**, one for her personal concerns and one to use in her capacity as CEO. The wallet will change as she switches between these roles. Here, her personal signing key is in focus. The header and the accounts page on the dashboard reflect this context - this is Alice's personal account.
 
-![alice's ceo key](images/03-CEO.PNG)
+![alice's ceo key](images/03-CEO.png)
 
 She can change context by clicking on the little blue circle to the left of ACME CEO. This brings the CEO signing key into focus. Notice that the header region of the wallet updates to reflect this, and the accounts website refeshes immediately to show the ACME account where she is a signer.
 
@@ -131,7 +131,7 @@ After a few moments the option will change to `Cancel ownership transfer`, which
 
 Use the computer with ACME's primary key and navigate to the Token Studio.
 
-![accept](images/03-accept-token-ownership.PNG)
+![accept](images/03-accept-token-ownership.png)
 
 ACME can either accept or reject this incoming ownership transfer. Accept, of course.
 
