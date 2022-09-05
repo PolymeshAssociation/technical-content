@@ -328,7 +328,7 @@ sudo docker run \
 --volume=/var/lib/polymesh/:/var/lib/polymesh/ \
 -p 30333:30333 \
 -p 9615:9615 \
---ulimit nofile=1024:10240
+--ulimit nofile=1024:10240 \
 polymeshassociation/polymesh:4.1.2-testnet-distroless \
 --chain testnet \
 --operator \
