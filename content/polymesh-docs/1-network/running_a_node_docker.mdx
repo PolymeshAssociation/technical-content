@@ -1,7 +1,7 @@
 ---
 title: Running a Node with Docker
 description:
-slug: /polymesh-docs/network/running_a_node_docker
+slug: /polymesh-docs/network/running-a-node-docker
 subsite: polymesh-docs
 ---
 
@@ -34,23 +34,23 @@ The version, chain and flavour are required for mainnet and testnet chains to en
 Refer to the [Polymesh Association Docker Hub repository](https://hub.docker.com/r/polymeshassociation/polymesh/tags) for the available release tags. Your desired release tag can be pulled with the command:
 
 ```
-sudo docker pull polymeshassociation/polymesh:4.1.2-testnet-distroless
+sudo docker pull polymeshassociation/polymesh:5.0.2-testnet-distroless
 ```
 
-The tag `:4.1.2-testnet-distroless` should be replaced with the desired release tag. 
+The tag `:5.0.2-testnet-distroless` should be replaced with the desired release tag. 
 
 The Polymesh Association does not publish a `:latest` build. If a release tag is omitted the docker pull command will error. 
 
 By default, if the Polymesh container image has not previously been pulled from the repository, it will be pulled when first attempting to run it. You can verify the version installed by running the following command:
 
 ```
-sudo docker run --rm polymeshassociation/polymesh:4.1.2-testnet-distroless --version
+sudo docker run --rm polymeshassociation/polymesh:5.0.2-testnet-distroless --version
 ```
 
 **All available Polymesh [FLAGS], [OPTIONS] and <SUBCOMMAND\> commands can be viewed by calling:**
 
 ```
-sudo docker run --rm polymeshassociation/polymesh:4.1.2-testnet-distroless --help
+sudo docker run --rm polymeshassociation/polymesh:5.0.2-testnet-distroless --help
 ```
 
 
@@ -59,7 +59,7 @@ sudo docker run --rm polymeshassociation/polymesh:4.1.2-testnet-distroless --hel
 With the image downloaded you can now run your first testnet node:
 
 ```
-sudo docker run -u root --rm -it polymeshassociation/polymesh:4.1.2-testnet-distroless --chain testnet
+sudo docker run -u root --rm -it polymeshassociation/polymesh:5.0.2-testnet-distroless --chain testnet
 ```
 
 Note: the above command is required to be run as the root user with the flag `-u` or `--user root` in order for the user to have suitable permissions to successfully run the node.
@@ -90,7 +90,7 @@ sudo docker run \
 -u root \
 --rm -it \
 --volume=/var/lib/polymesh/:/var/lib/polymesh/ \
-polymeshassociation/polymesh:4.1.2-testnet-distroless \
+polymeshassociation/polymesh:5.0.2-testnet-distroless \
 --chain testnet \
 --base-path /var/lib/polymesh/
 ```
@@ -122,7 +122,7 @@ sudo docker run \
 --user $(id -u polymesh):$(id -g polymesh) \
 --rm -it \
 --volume=/var/lib/polymesh/:/var/lib/polymesh/ \
-polymeshassociation/polymesh:4.1.2-testnet-distroless \
+polymeshassociation/polymesh:5.0.2-testnet-distroless \
 --chain testnet \
 --base-path /var/lib/polymesh/
 ```
@@ -137,7 +137,7 @@ sudo docker run \
 --user $(id -u polymesh):$(id -g polymesh) \
 --rm -it \
 --volume=/var/lib/polymesh/:/var/lib/polymesh/ \
-polymeshassociation/polymesh:4.1.2-testnet-distroless \
+polymeshassociation/polymesh:5.0.2-testnet-distroless \
 --chain testnet \
 --name my-node-name \
 --base-path /var/lib/polymesh/
@@ -164,7 +164,7 @@ sudo docker run \
 --restart always \
 -it \
 --volume=/var/lib/polymesh/:/var/lib/polymesh/ \
-polymeshassociation/polymesh:4.1.2-testnet-distroless \
+polymeshassociation/polymesh:5.0.2-testnet-distroless \
 --chain testnet \
 --name my-node-name \
 --base-path /var/lib/polymesh/
@@ -236,7 +236,7 @@ sudo docker run \
 -p 9933:9933 \
 -p 9944:9944 \
 -p 9615:9615 \
-polymeshassociation/polymesh:4.1.2-testnet-distroless \
+polymeshassociation/polymesh:5.0.2-testnet-distroless \
 --chain testnet \
 --name my-node-name \
 --base-path /var/lib/polymesh/ \
@@ -261,7 +261,7 @@ sudo docker run \
 -it \
 --volume=/var/lib/polymesh/:/var/lib/polymesh/ \
 --network=host \
-polymeshassociation/polymesh:4.1.2-testnet-distroless \
+polymeshassociation/polymesh:5.0.2-testnet-distroless \
 --chain testnet \
 --name my-node-name \
 --base-path /var/lib/polymesh/
@@ -292,7 +292,7 @@ sudo docker run \
 -u $(id -u polymesh):$(id -g polymesh) \
 --rm -it \
 -v /var/lib/polymesh/:/var/lib/polymesh/ \
-polymeshassociation/polymesh:4.1.2-testnet-distroless \
+polymeshassociation/polymesh:5.0.2-testnet-distroless \
 purge-chain \
 --chain testnet  \
 --base-path /var/lib/polymesh/
@@ -329,7 +329,7 @@ sudo docker run \
 -p 30333:30333 \
 -p 9615:9615 \
 --ulimit nofile=1024:10240 \
-polymeshassociation/polymesh:4.1.2-testnet-distroless \
+polymeshassociation/polymesh:5.0.2-testnet-distroless \
 --chain testnet \
 --operator \
 --name my-node-name \
