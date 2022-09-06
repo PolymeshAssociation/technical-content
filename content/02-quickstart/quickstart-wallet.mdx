@@ -5,19 +5,22 @@ slug: /quickstart/wallet
 ---
 
 import HighlightBox from "../../src/components/HighlightBox"
-import YoutubePlayer from "../../src/components/YoutubePlayer"
-
-<YoutubePlayer videoId="k404XGxij6M"/>
 
 ## Get the Wallet
 
-The **Polymesh Wallet** is a **Google Chrome extension** that holds local copies of account information and confidential signing keys. It enables your browser to interact with the Polymesh network.
+The **Polymesh Wallet** is a **Google Chrome extension** that holds local copies of account information and confidential signing keys. The Polymesh Wallet enables you to manage your Polymesh accounts and interact with Polymesh and Polymesh decentralized apps (dApps).
 
-Get the Polymesh Wallet extension for Google Chrome by opening Chrome's extensions panel and searching for Polymesh. You should see the card when it is installed. Be sure it is enabled.
+Currently, the Polymesh Wallet is available as a Google Chrome extension and supports Google Chrome as well as Chromium based browsers (such as Brave and Microsoft Edge).
 
-![Wallet Extension](images/wallet_extension.png)
+Get the Polymesh Wallet extension [here](https://chrome.google.com/webstore/detail/polymesh-wallet/jojhfeoedkpkglbfimdfabpdfjaoolaf) or search for "Polymesh Wallet" in the chrome store and then click "Add to Chrome".
 
-Locate the Polymesh icon in the plugins tray. It may be under the plug-in icon if it is not pinned. Click it to launch the "welcome screen".
+![Get Extension](images/get_chrome_extension.png)
+
+Once installed locate the Polymesh icon in the plugins tray. It may be under the plug-in icon if it is not pinned. Click it to launch the "welcome screen".
+
+![Pin Extension](images/pin_extension.png)
+
+## Create a new Account
 
 ![Wallet Welcome](images/welcome.png)
 
@@ -41,9 +44,47 @@ Your new account is created with one unassigned key.
 
 ![Wallet New Account](images/new_account.png)
 
-Notice, at the top of the window, that it informs you which network it is connected to by default. Here, the Testnet.
+Notice, at the top of the window, that it informs you which network it is connected to by default. Here, we are connected to Testnet.
+
+<HighlightBox type='tip'>
+When connected to Mainnet addresses will start with a <span style={{fontWeight: 'bold'}}>2</span>, When connected to Testnet addresses will start with a <span style={{fontWeight: 'bold'}}>5</span>
+</HighlightBox>
+
+## Connect a Ledger Hardware wallet
+
+As an alternative to storing your password encrypted private key in the browser wallet extension itself you may prefer to use a hardware wallet to manage your private key and always keep it offline. The Polymesh wallet extension supports signing with [Ledger Hardware wallets](https://support.ledger.com/hc/en-us/articles/4641803176221-Polymesh-POLYX-?docs=true). You can search for the Polymesh ledger app in the Manager, App catalogue section of Ledger Live and install it on your device.
+
+![Get the Ledger App](images/get-ledger-app.png)
+
+Once installed enter the Polymesh App on your ledger device.
+
+<HighlightBox type='tip'>
+If you do not first enter the Polymesh ledger app you will be presented with a screen saying "Your Ledger is not connected".
+</HighlightBox>
+
+Once installed, instead of selecting `Create new account`, as described above you can select `Connect your Ledger`, if setting up your first wallet, or click `+ Add a key` and then `Connect Ledger device` if you have previously set up an account.
+
+![Connect Ledger Device](images/connect-ledger-device.png)
+
+If prompted by a browser popup select your hardware wallet and click connect.
+
+You can then name your ledger account and select `Continue` to import it to your wallet. The Advanced settings on the import screen allow you to select an alternate derivation path. This allows you to have multiple accounts on the same ledger device. The default for the first account import is Account type 0, Address index 0 - think of it like a formula from which child accounts are generated.
+
+![Import Ledger Account](images/import-ledger-account.png)
+
+Now when signing transactions you must first connect your Ledger, open the Polymesh app and you will be prompted to sign the transaction with the Ledger device. 
+
+<HighlightBox type='info'>
+Due to the limited storage available on the Nano S not all transaction types are available. See the README.md at <a href="https://github.com/LedgerHQ/app-polymesh">https://github.com/LedgerHQ/app-polymesh</a> for details of available transaction in the "Light" app.
+</HighlightBox>
+
+<HighlightBox type='info'>
+When imported, Ledger accounts are assigned the genesis hash of the chain selected in the wallet at the time of import i.e. Mainnet or Testnet. It is not good practice to share accounts across mainnet and testnet and some dApps may not show accounts imported for testnet on a mainnet instance and vice versa.
+</HighlightBox>
 
 ## Links
 
 - Polymesh Wallet https://chrome.google.com/webstore/detail/polymesh-wallet/jojhfeoedkpkglbfimdfabpdfjaoolaf
 - Polymesh Dashboard https://dashboard.polymath.network/
+- Ledger Polymesh App Github https://github.com/LedgerHQ/app-polymesh
+- Ledger Polymesh App support page https://support.ledger.com/hc/en-us/articles/4641803176221-Polymesh-POLYX

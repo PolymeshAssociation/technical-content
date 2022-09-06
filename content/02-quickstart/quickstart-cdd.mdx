@@ -5,45 +5,48 @@ slug: /quickstart/verification-with-cdd
 ---
 
 import HighlightBox from "../../src/components/HighlightBox"
-import YoutubePlayer from "../../src/components/YoutubePlayer"
-
-<YoutubePlayer videoId="FpBRxIYyKpQ"/>
 
 ## Customer Due Diligence (CDD)
 
 Every Polymesh account must pass a **minimal identity verification** before the account is permitted to transact with regulated securities on the network. This minimal verification is called **customer due diligence (CDD)**.
 
-Verifying your identity for CDD purposes means working with a CDD service provider. They will verify the information you send.
+Verifying your identity for CDD purposes means working with a CDD service provider. They will verify the information you send and write an identity claim to the chain for you.
 
 ## Assign account
 
+When you first create an account it will show as an unassigned key. This means there is no onchain identity associated with it.
+
 ![new account](images/new_account.png)
 
-The `Assign` button appears when you hover over an unassigned signing key, and it takes you directly to the account context in the [Polymesh Dashboard](https://dashboard.polymath.network/). Here, you will create a Polymesh account and assign your signing key to the account.
+The `Assign` button appears when you hover over an unassigned signing key. The associated link will take you the account context tab in the Polymath [Mainnet Polymesh](https://dashboard.polymath.network/account) or [Testnet Polymesh](https://testnet-dashboard.polymath.network/account) dashboard. From here, you can select `Create Account` to link to the Polymesh onboarding portal.
 
 ![assign account](images/assign.png)
 
-Your consent is required before the web app can communicate with your Polymesh Wallet. Press `Connect Polymesh Wallet`.
+When connecting to Polymath's dashboard for the first time you will be prompted to authorize it to communicate with your Polymesh Wallet. Press `Authorize` in the wallet popup to allow the page to load.
 
-![Wallet Welcome Dashboard](images/welcome_to_dashboard.png)
+Click the `Create Account` button to bring you to the appropriate onboarding portal.
 
-This will connect your dashboard with your Polymesh Wallet. The wallet can demand an authorisation to connect with the Polymesh Dashboard.
+![Wallet Assign Key To Id](images/dashboard-create-account.png)
 
-## Complete customer due diligence on the Testnet
+<HighlightBox type='tip'>
+You can skip accessing Polymath's dashboard by going directly to either of the following links:
+<ul>
+    <li style={{margin: '5px 0px 0px 5px'}}><a href="https://onboarding.polymesh.network/">https://onboarding.polymesh.network/</a> for Mainnet</li>
+    <li style={{margin: '5px 0px 0px 5px'}}><a href="https://testnet-onboarding.polymesh.live/">https://testnet-onboarding.polymesh.live/</a> for Testnet.</li>
+</ul>
+</HighlightBox>
 
-The web app detects that you are using an unassigned key and informs you that the setup of your new account is incomplete. Press `Create a Polymesh ID`.
+## Complete the Customer Due Diligence process
 
-![Wallet Assign Key To Id](images/assign_key_to_id.png)
+When connecting to the onboarding portal for the first time you will be prompted to authorize it to communicate with your Polymesh Wallet. Press `Authorize` in the wallet popup to allow the page to connect and then click `I've set up my Polymesh Wallet` to start the process.
 
-Now, complete the customer due diligence application.
+![Onboarding landing page](images/onboarding-landing.png)
 
-![Wallet CDD Application](images/cdd_application.png)
+Enter your email address, select the kind of Polymesh user you are, accept the privacy policy and click the "Submit" button.
 
-Enter the verification code that arrives by SMS (i.e. text message) to your phone.
+![Onboarding registration](images/onboarding-registration.png)
 
-![Wallet Verify CDD](images/verify_cdd.png)
-
-It may not be instantaneous, and the customer due diligence process on the Mainnet will be more stringent than the one on the Testnet, but very soon you will see an indication that your Polymesh account has been verified.
+An email will be sent to your email address with a link for you to log in to the onboarding portal. Open your email and follow the link.
 
 ![success](images/verification-success.png)
 
