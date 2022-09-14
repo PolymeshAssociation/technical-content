@@ -19,7 +19,7 @@ const Container = styled.a({
 
 const HeaderLogo = styled.img({
   margin: 0,
-  height: 40
+  width: "100%",
 })
 
 const StyledLink = styled.a({
@@ -41,7 +41,7 @@ const StyledIcon = styled(IconProceed)({
 export default function HeaderButton() {
   return (
     <Container href="/">
-      <HeaderLogo src="/polymesh-logo.png" />
+      <HeaderLogo src="/polymesh-logo.svg" />
     </Container>
   );
 }

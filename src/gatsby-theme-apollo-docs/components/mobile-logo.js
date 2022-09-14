@@ -1,1 +1,1 @@
-export {ReactComponent as MobileLogo} from '../assets/polymesh-logo.svg';
+export {ReactComponent as MobileLogo} from '../assets/polymesh-symbol.svg';
