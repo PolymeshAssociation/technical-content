@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Helmet} from 'react-helmet';
-import Favicon from '../../gatsby-theme-apollo-docs/assets/polymesh-logo.svg';
+import Favicon from '../../gatsby-theme-apollo-docs/assets/polymesh-symbol.svg';
 
 export default function SEO(props) {
   const {title, description, siteName, twitterCard, children, favicon} = props;

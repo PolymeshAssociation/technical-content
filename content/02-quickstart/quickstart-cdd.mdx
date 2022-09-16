@@ -5,51 +5,96 @@ slug: /quickstart/verification-with-cdd
 ---
 
 import HighlightBox from "../../src/components/HighlightBox"
-import YoutubePlayer from "../../src/components/YoutubePlayer"
-
-<YoutubePlayer videoId="FpBRxIYyKpQ"/>
 
 ## Customer Due Diligence (CDD)
 
 Every Polymesh account must pass a **minimal identity verification** before the account is permitted to transact with regulated securities on the network. This minimal verification is called **customer due diligence (CDD)**.
 
-Verifying your identity for CDD purposes means working with a CDD service provider. They will verify the information you send.
+Verifying your identity for CDD purposes means working with a CDD service provider. They will verify the information you send and write an identity claim to the chain for you.
 
 ## Assign account
 
+When you first create an account it will show as an unassigned key. This means there is no onchain identity associated with it.
+
 ![new account](images/new_account.png)
 
-The `Assign` button appears when you hover over an unassigned signing key, and it takes you directly to the account context in the [Polymesh Dashboard](https://dashboard.polymath.network/). Here, you will create a Polymesh account and assign your signing key to the account.
+The `Assign` button appears when you hover over an unassigned signing key. The associated link will take you the account context tab in the Polymath [Mainnet Polymesh](https://dashboard.polymath.network/account) or [Testnet Polymesh](https://testnet-dashboard.polymath.network/account) dashboard. From here, you can select `Create Account` to link to the Polymesh onboarding portal.
 
 ![assign account](images/assign.png)
 
-Your consent is required before the web app can communicate with your Polymesh Wallet. Press `Connect Polymesh Wallet`.
+When connecting to Polymath's dashboard for the first time you will be prompted to authorize it to communicate with your Polymesh Wallet. Press `Authorize` in the wallet popup to allow the page to load.
 
-![Wallet Welcome Dashboard](images/welcome_to_dashboard.png)
+Click the `Create Account` button to bring you to the appropriate onboarding portal.
 
-This will connect your dashboard with your Polymesh Wallet. The wallet can demand an authorisation to connect with the Polymesh Dashboard.
+![Wallet Assign Key To Id](images/dashboard-create-account.png)
 
-## Complete customer due diligence on the Testnet
+<HighlightBox type='tip'>
+You can skip accessing Polymath's dashboard by going directly to either of the following links:
+<ul>
+    <li style={{margin: '5px 0px 0px 5px'}}><a href="https://onboarding.polymesh.network/">https://onboarding.polymesh.network/</a> for Mainnet</li>
+    <li style={{margin: '5px 0px 0px 5px'}}><a href="https://testnet-onboarding.polymesh.live/">https://testnet-onboarding.polymesh.live/</a> for Testnet.</li>
+</ul>
+</HighlightBox>
 
-The web app detects that you are using an unassigned key and informs you that the setup of your new account is incomplete. Press `Create a Polymesh ID`.
+## Complete the Customer Due Diligence process
 
-![Wallet Assign Key To Id](images/assign_key_to_id.png)
+When connecting to the onboarding portal for the first time you will be prompted to authorize it to communicate with your Polymesh Wallet. Press `Authorize` in the wallet popup to allow the page to connect and then click `I've set up my Polymesh Wallet` to start the process.
 
-Now, complete the customer due diligence application.
+![Onboarding landing page](images/onboarding-landing.png)
 
-![Wallet CDD Application](images/cdd_application.png)
+Enter your email address, select the kind of Polymesh user you are, accept the privacy policy and click the "Submit" button.
 
-Enter the verification code that arrives by SMS (i.e. text message) to your phone.
+![Onboarding registration](images/onboarding-registration.png)
 
-![Wallet Verify CDD](images/verify_cdd.png)
+An email will be sent to your email address with a link for you to log in to the onboarding portal. Open your email and follow the link. 
 
-It may not be instantaneous, and the customer due diligence process on the Mainnet will be more stringent than the one on the Testnet, but very soon you will see an indication that your Polymesh account has been verified.
+You will be presented with the below screen. Click the `New Application` button.
 
-![success](images/verification-success.png)
+![Onboarding New Application](images/onboarding-new-application.png)
+ 
+### Testnet Mock Customer Due Diligence process
 
-And, you will see this next to your account next time you open your wallet.
+(For Mainnet skip to the next [section](#mainnet-customer-due-diligence-process))
+
+On testnet you will be presented with the below screen, allowing you to select the "Polymath Mock CDD" provider. Review the displayed wallet address and confirm it is the account you wish to onboard. If it is not, open the wallet extension and select the account you want to onboard as the primary key associated with your identity.
+
+When satisfied, select "Polymath Mock CDD" and then "Continue".
+
+![Choose a CDD Provider - Testnet](images/onboarding-choose-cdd-provider-testnet.png)
+
+Another email will be sent to the address you logged in with. The email will contain a link allow you log into the the mock CDD portal, linked to the wallet account you provided. Open the link and complete the form.
+
+![Mock CDD form](images/onboarding-mock-cdd.png)
+
+Complete the form with any mock data and click `Submit`. Submitting will initiate onchain actions to add a "decentralized ID" (DID) and a CDD claim to the account. This may take up to a minute to complete.
+
+Continue to the [Success](#success) section.
+
+### Mainnet Customer Due Diligence process
+
+On Mainnet you will be presented with a screen similar to below, allowing you to select your preferred CDD provider. Review the displayed wallet address and confirm it is the account you wish to onboard. If it is not, open the wallet extension and select the account you want to onboard as the primary key associated with your identity.
+
+When satisfied, select your chosen provider and then click "Continue". An email will be sent to your email address with a link to the CDD providers KYC portal. CDD steps will vary from provider to provider. Follow the instructions from the provider to submit your application for review.
+
+![Choose a CDD Provider](images/onboarding-choose-cdd-provider.png)
+
+Application processing time may vary depending on multiple factors. Please allow 48 hours for processing. You will receive an email confirming the outcome of the CDD process. You can also review the status of your application by visiting https://onboarding.polymesh.network/login 
+
+**DO NOT SUBMIT APPLICATIONS TO MULTIPLE PROVIDERS AT THE SAME TIME!** 
+
+### Success
+
+When you next open the wallet extension you will see a [DID](../introduction/identity#polymesh-account-what-isare-your-usernames) (long hexadecimal string starting with 0x) associated with your selected account account at the top of your wallet with the word **Verified** next to it.
 
 ![Wallet Verified](images/verified.png)
+
+As a bonus, **on testnet**, your account will automatically be credited with POLYX allowing you to start to transact onchain.
+
+### Final Step
+
+After successfully completing the CDD process you will receive an email linking you back to the onboarding portal. From this link you will be able to inject your [unique ID (uID)](../introduction/identity#polymesh-uid-who-are-you) into your wallet. The uID is required when transacting with Assets on Polymesh that have been configured to require holders to have an associated uniqueness claim.
+
+![Inject uID](images/inject-uid.png)
 
 **Congratulations! You have completed customer due diligence.**
 
@@ -63,5 +108,8 @@ Since we will use the Testnet for exercises as we discover Polymesh, it is recom
 
 ## Links
 
-- [Polymesh Dashboard](https://dashboard.polymath.network/)
+- [Polymath Dashboard Mainnet](https://dashboard.polymath.network/)
+- [Polymath Dashboard Testnet](https://testnet-dashboard.polymath.network/)
+- [Onboarding Mainnet](https://onboarding.polymesh.network/)
+- [Onboarding Testnet](https://testnet-onboarding.polymesh.live/)
 - [Customer due diligence](/kyc/know-your-customer)

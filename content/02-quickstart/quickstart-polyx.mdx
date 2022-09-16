@@ -1,151 +1,125 @@
 ---
 title: Get POLYX
-description: Pay network fees and vote
+description: Pay network fees, vote and stake
 slug: /quickstart/quickstart-polyx
 ---
 
 import HighlightBox from "../../src/components/HighlightBox"
-import YoutubePlayer from "../../src/components/YoutubePlayer"
-
-<YoutubePlayer videoId="S6Ysj7ruZj4"/>
 
 ## POLYX
 
-**POLYX** is the network transaction fees token as well as the governance token that helps with decentralised network management.
+POLYX is the native utility token for Polymesh. POLYX serves three primary purposes:
 
-You will need POLYX to complete the exercises.
+- Payment of onchain transaction fees
+- Network governance, allowing network participants to vote on-chain upgrades and other exceptional events.
+- Staking, securing the network by aligning the economic incentives of node operators and stakers to the correct operation of the chain.
+
+For more information on the POLYX token see https://polymesh.network/polyx
 
 ## Testnet POLYX
 
-The Testnet is where you can practise using Polymesh without material consequences. As the name suggests, it is a fully functional Polymesh network. The main differences are:
+If you are completing the exercises contained in the various sections of this site you will require Testnet POLYX. 
 
-- The funds and securities on the Testnet aren't real and have no material value;
-- Future testnets may be initialised in the future and the present Testnet may be retired;
-- You can acquire testnet POLYX at virtually no cost.
-
-Since you will interact with the Testnet while you pursue the suggested exercises, let's get some free Testnet POLYX to work with.
-
-## Background and concept
-
-It will be helpful to understand a little bit of history to understand how this process works and why it works the way it does.
-
-In summary, the original Polymath network and network token, POLY, was deployed on the Ethereum Mainnet. Those POLY tokens do indeed have material value. Consequently, the upgrade process is backward-compatible. Owners of POLY can upgrade their POLY to POLYX at a ratio of 1:1.
-
-This process works by locking POLY on the Ethereum network, which means sending them to a contract that takes them out of circulation. Without delving too deeply into the smart contract details, suffice it to say users send their POLY to the contract, then the POLYX is sent to the Polymesh signing key.
-
-The technical challenge is that these are separate blockchains. So, the bridge involves an off-chain process that monitors Ethereum for incoming POLY and releases POLYX on Polymesh in response to events observed on Ethereum. Also, since Ethereum and Polymesh use different account schemes, the UI will associate the sending Ethereum address with the receiving Polymesh signing key.
-
-The preliminary conditions are familiar to POLY holders who are already accustomed to Ethereum tokens. And, the testnet implementation helps test and verify the upgrade process. In order to get some free POLYX, you will first establish the initial conditions of a POLY holder on Ethereum.
-
-## MetaMask
-
-**MetaMask** is a browser plug-in wallet that is widely used on Ethereum.
-
-<HighlightBox type="info">
-
-You can use any wallet you like. Just extrapolate from the MetaMask signing instructions to follow the procedures of your wallet of choice.
-
+<HighlightBox type='tip'>
+Getting testnet POLYX couldn't be simpler. If you have already <a href='wallet'>set up your wallet</a> and completed the testnet <a href='verification-with-cdd'>mock certified due diligence process</a>, you will automatically have been credited with Testnet POLYX.
 </HighlightBox>
 
-If you don't already have MetaMask, search for it in your browser plug-ins area or get it from here: https://metamask.io/
+The Testnet is where you can practice using Polymesh without material consequences. As the name suggests, it is a fully functional Polymesh network. The main differences are:
 
-Take your time and follow the on-screen instructions to create one account. Initially, it will have no money, which is fine.
+- The funds and securities on the Testnet aren't real and have no material value;
+- You can acquire testnet POLYX at no cost;
+- The testnet is not guaranteed to remain in operation and may be retired and replaced with an alternate testnet in the future.
 
-## Goerli Testnet
+## Mainnet POLYX
 
-It's a good idea to open MetaMask and change to the Goerli Test Network now. Click the icon in the plug-ins tray and click on the network selection box at the top of the applet. Select **Goerli Test Network**.
+Before you can receive POLYX tokens you must first; [create a Polymesh account](wallet), and second; Onboard your account through the [CDD process](verification-with-cdd). Once those steps are complete your account is ready to receive POLYX tokens. 
 
-![goerli](images/goerli.png)
+There are two primary ways to get your first POLYX tokens:
+1. Purchase from an exchange that lists the Polymesh POLYX token.
+2. Convert ERC20 POLY tokens from Ethereum to POLYX on Polymesh via the token bridge.
 
-## Testnet ETH
+### Buying POLYX from an exchange
 
-Ethereum uses **ETH to pay for transaction fees**. Since we cannot complete this process without sending transactions, we will need some Testnet ETH to pay for them.
+Possibly the simplest way to get POLYX tokens is to purchase them from an exchange, that lists the POLYX token for trading, and withdraw the tokens to your Polymesh wallet. Refer to [CoinGecko](https://www.coingecko.com/en/coins/polymesh#markets) or [CoinMarketCap](https://coinmarketcap.com/currencies/polymesh/markets/) for lists of exchanges that list the POLYX token. 
 
-Testnet ETH has no value and it is given away. All we have to do is ask. You can ask a friend, or use a faucet which is an automated or semi-automated system that simply gives it away. Automated systems tend to have anti-spam/anti-abuse mechanisms to help ensure everyone will receive enough to move forward.
+### Getting POLYX via the Bridge
 
-We can recommend using:
+**Background and concept**
 
-- **ETH Faucet:** Visit this website which uses your Facebook/Twitter account to authenticate users: [https://faucet.goerli.mudit.blog//](https://faucet.goerli.mudit.blog//)
-- **Goerli Faucet:** Visit this website and post your Ethereum address - Funds are on the way! [https://faucets.chain.link/goerli](https://faucets.chain.link/goerli)
+Polymath, the company that originally built the Polymesh blockchain, created the POLY token on the Ethereum blockchain. POLY was intended to be used with their smart contracts used for the issuance of security tokens on the ethereum blockchain. When they built Polymesh it was decided that, instead of having a token generation event, POLYX tokens would be given to POLY token holder who choose to upgrade their tokens. Owners of POLY can upgrade their POLY to POLYX at a ratio of 1:1 through a bridge mechanism.
 
-You may be asked for your Ethereum address. Open MetaMask, hover over your address and click on the clipboard icon that appears.
+The bridge process works by locking POLY on the Ethereum network using a smart contract that permanently takes them out of circulation. This contract is monitored by the Polymesh bridge and when a locking transaction is identified creates a transaction to issue POLYX tokens to the users specified POLYX address on the Polymesh.
 
-Your ETH balance will increase after you request the funds and the transaction is confirmed. You can see that in MetaMask.
+The bridge is a one way process. It is not possible to convert POLYX tokens to POLY tokens.
 
-**Congratulations! You have some money.**
+Upon launch the Polymesh Association committed to operate the bridge for a minimum of one year, to give POLY token holders the opportunity to convert their tokens, should they wish to.
 
-## Testnet POLY
+**Requirements**
 
-As you may have already guessed, Polymath has published a contract on Ethereum that gives away free Testnet POLY. That is what you need to proceed across the bridge and convert it to POLYX on Polymesh.
+To use the POLY to POLYX bridge your require the following:
+1. The Polymesh [wallet](wallet) extension;
+2. An account with a verified onchain [identity](verification-with-cdd);
+4. The [Metamask](https://metamask.io/) wallet browser extension;
+3. ERC20 [POLY Tokens](https://etherscan.io/token/0x9992ec3cf6a55b00978cddf2b27bc6882d88d1ec) on the Ethereum blockchain in your Metamask wallet;
+5. ETH tokens for payment of transaction fees on the Ethereum Blockchain in your Metamask wallet
 
-Point your browser to the contract: [https://goerli.etherscan.io/address/0x9e32c0eff886b6ccae99350fd5e7002dced55f15#writeContract](https://goerli.etherscan.io/address/0x9e32c0eff886b6ccae99350fd5e7002dced55f15#writeContract)
+The following guide assumes you have already satisfied the above 5 requirements.
 
-![faucet contract](images/get-goerli-poly.png)
 
-If you see `Connect to Web3`, press it. This will open MetaMask so you can confirm you wish it to talk to this website. Select the account you wish to use. Choose the account that has Testnet ETH. It should say `Connected - Web3` and your account.
+### Using the Bridge
 
-Now, scroll down to `getTokens` and expand it. Fill in the `_amount` with the number of POLY you would like. This uses 18 decimal places with no period (de facto standard for Ethereum tokens), so 50,000 POLY (suggested) is `50000000000000000000000`.
-
-The `_recipient` is you. Copy your address from MetaMask by opening the applet, hovering over your account, and clicking the clipboard. Paste your address and press `write` to send this transaction to the contract.
-
-MetaMask tells you the web page is trying to do something with your funds and asks you to confirm. Press `Confirm`.
-
-![etherscan verify](images/etherscan-verify-goerli-faucet-txn.png)
-
-## Onward to the Bridge
-
-Now that you have Testnet POLY and a way to pay for transactions on the Ethereum network, you can proceed to the Polymesh Bridge to convert your POLY to POLYX.
-
-Point your browser to the dashboard explorer and select POLY to POLYX Bridge - [https://dashboard.polymath.network/explore](https://dashboard.polymath.network/explore)
-
-![dashboard explorer](images/dashboard-explore-bridge.png)
-
-Or, go directly to: https://polybridge.polymesh.network/
+To access the bridge go to https://polybridge.polymesh.network/
 
 ![bridge](images/polybridge.png)
 
-MetaMask will not talk to this website unless you authorise it, so click `Connect with MetaMask` to link your account.
+MetaMask will not connect to this website unless you authorise it. Click `Connect with MetaMask`. The metamask browser extension will popup asking you to sign in and authorise the bridge dApp to connect to your wallet. Sign in and approve the request.
 
-## Link your Polymesh ID
-
-The process begins by asking for your Polymesh signing key.
+The first step of the bridge process is to enter you Polymesh address. Open your wallet, copy the address that you wish to receive POLYX and paste it into the window as shown below. (Note: On mainnet Polymesh addresses start with a **2**)
 
 ![enter PID](images/bridge-enter-polymesh-address.png)
 
-Open your Polymesh Wallet and copy your signing key, then paste it into `Your Polymesh Address`. This key will receive the POLYX.
+Your address will be checked and below the input field it should indicate that your Polymesh account identity is verified. If not, you need to complete the [customer due diligence process](/quickstart/verification-with-cdd) before continuing.
 
-![your address](images/bridge-get-your-address.png)
+Click `Next` and then enter the amount of POLY you wish to bridge. You can enter any amount with up to 6 decimal places, provided you have sufficient POLY in your ethereum wallet to bridge. Once you have entered the amount you wish to bridge click `Next` again.
 
-If you completed [CDD](/quickstart/verification-with-cdd) (you should), then the site will indicate that your Polymesh Account is verified. If not, then you will be directed to customer due diligence.
+![upgrade poly](images/bridge-poly-to-polyx.png)
 
-Enter an amount of your POLY to upgrade. You cannot upgrade more than what is in your wallet.
+Review the transaction details and when you are ready to proceed click `Confirm`.
 
-![upgrade poly](images/convert-poly-polyx.png)
+![confirm](images/bridge-confirm-upgrade.png)
 
-When everything is ready, the site will confirm your intentions.
+Upon clicking confirm the Metamask browser extension will open and present a transaction for signing. 
 
-![confirm](images/confirm-poly-polyx.png)
+This first transaction calls the `Increase Approval` method on the POLY token contract and takes two parameters. 1. The "spender" we are approving i.e. the PolyLocker (bridge) contract address. 2. The amount of POLY tokens you are approving to be Locked. These values will have been automatically been populated by the bridge dApp. Review the transaction details and click `Confirm` to approve.
 
-Press `Confirm`.
+Following successful completion of the first transaction you will be presented with a second transaction for signing. This second transaction calls the `Limit Lock` method on the PolyLocker contract and takes two parameters. 1. The Polymesh address you are bridging tokens to. 2. The amount of POLY tokens you will bridge. Again, review the transaction details and click `Confirm` to approve. 
 
-MetaMask will, again, ask you to confirm that you intend to send the specified amount of POLY to the Polymesh Bridge. Confirm this transaction.
+Following successful completion of the second transaction click "Done". You will return to the bridge dashboard where you will now be presented with the status of you bridge transaction including a count down to completion. The POLY to POLYX Polymesh bridge has an approximately 24 hour delay between when Polymesh registers a bridge transaction on Ethereum and minting the tokens on Polymesh. This is to minimise risk of the bridge being attacked or compromised.  
 
-Now, you will see two stages of the process unfold. First, Ethereum will process the transaction that sends your Testnet POLY to the bridge. This is the "Locking" transaction. Then, Polymesh will observe this event on Ethereum and send you an equal amount of POLYX.
+![upgrade in process](images/bridge-upgrade-in-process.png)
+
+You can now safely close the bridge dApp while the transaction counts down.
+
 
 ![success](images/bridge-success.png)
 
-When everything confirms, you will have POLYX in your wallet.
+After the 24 hours have elapsed the bridge dApp will tell you that your upgrade has successfully complete. You will now have POLYX in your wallet.
 
 ![balance](images/alice-balance.png)
 
-**Congratulations! You have POLYX in your verified account.** This means you are ready to follow the exercises. Why not start by [creating a security token](/originate/creating-asset)?
+**Congratulations! You have POLYX in your verified account and are ready to transact on chain.**
+
+## Testnet Bridge
+
+A testnet bridge is also available should you require additional test POLYX or wish to test the bridging process. The testnet bridge uses the Goerli ethereum testnet and is accessible at https://testnet-polybridge.polymesh.live/
+
+The testnet bridge functions identically to the [mainnet bridge](#using-the-bridge) but with a reduced waiting time to complete the upgrade. To use it you must set your metamask wallet to the Goerli testnet, have Goerli test ETH and have Goerli test ERC-20 POLY tokens. Goerli POLY tokens are available from the Goerli [POLY faucet contract](https://goerli.etherscan.io/address/0x9e32c0eff886b6ccae99350fd5e7002dced55f15#writeContract) by connecting to the contract with your metamask wallet and calling the `getTokens` method.
 
 ## Links
 
-- [POLY to POLYX Bridge](/polymesh-docs/network/bridge/)
-<!-- TODO - [A Simple Guide for Getting Kovan Testnet POLY](https://blog.polymath.network/a-simple-guide-for-getting-kovan-testnet-poly-27ddeb1149cb) -->
-- [Goerli POLY Faucet](https://goerli.etherscan.io/address/0x9e32c0eff886b6ccae99350fd5e7002dced55f15#writeContract)
-- [ETH Faucet](https://faucet.goerli.mudit.blog/)
-- [Goerli Faucet](https://faucets.chain.link/goerli)
+- [POLY to POLYX Bridge Overview](/polymesh-docs/network/bridge/)
+- [Mainnet Bridge dApp](https://polybridge.polymesh.network/)
 - [Metamask](https://metamask.io/)
+- [Ethereum POLY Token Contract](https://etherscan.io/address/0x9992ec3cf6a55b00978cddf2b27bc6882d88d1ec)
+- [PolyLocker Bridge Contract](https://etherscan.io/address/0x5c60610ee8e502d8ce830ba189c075b5f39472df#tokentxns)
 
