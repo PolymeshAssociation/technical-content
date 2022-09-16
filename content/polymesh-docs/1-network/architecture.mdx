@@ -11,11 +11,13 @@ The Polymesh blockchain is a optimised for regulated assets and markets. This is
 
 Polymesh is a public, permissioned blockchain. This means that anyone can run a node and check that the rules enforced by the network are being followed by all participants, and see all the public state secured by the blockchain, but that only certain entities (called operators) are allowed to run nodes that author new blocks, and vote on the finality of other blocks.
 
+Polymesh is built on the [Substrate framework](https://substrate.io/), an open-source project, developed by by [Parity](https://www.parity.io/), that provides a fully customisable, modular and extendable framework for blockchain developers. 
+
+Polymesh has a native token, used for security and payments, [POLYX](./polyx).
+
 Polymesh provides core business logic and financial abstractions at its base layer, called primitives. These provide a rich set of embedded on-chain actions (called extrinsics) that a user can initiate, such as creating an asset, settling securities instructions or participating in on-chain governance.
 
-In the future Polymesh will support Layer 2 (smart contracts) logic, allowing network users to extend and leverage the base layer primitives to build on-chain financial and identity based protocols.
-
-Polymesh is built on the Substrate framework, an open-source project that provides a fully customisable, modular and extendable framework for blockchain developers. Polymesh has a native token, used for security and payments, [POLYX](./polyx).
+Polymesh also supports Layer 2 (smart contract) logic, allowing network users to extend and leverage the base layer primitives to build on-chain financial and identity based protocols. Polymesh smart contracts compile to [WebAssembly (Wasm)](https://webassembly.org/). Using Wasm expands the family of languages available to smart contract developers to include Rust, C/C++, C#, Typescript, Haxe amd Kotlin. As well as allows for the use of standard development tools. For Polymesh we recommend the use of [ink!](https://ink.substrate.io/), which is a subset of Rust specifically designed by Parity for Substrate based chains. ink! offers significantly greater performance and safety when compared with other programming languages such as Solidity.
 
 ## Architecture
 
@@ -45,7 +47,7 @@ The Polymesh governance system is designed to further decentralise over time.
 
 ### Confidentiality
 
-Privacy is at the heart of the Polymesh identity model, with confidential identity providing users the ability to keep their total positions obfuscated from observers. In future releases we will be integrating confidential assets into Polymesh, using the [MERCAT](https://info.polymath.network/hubfs/PDFs/Polymath-MERCAT-Whitepaper-Mediated-Encrypted-Reversible-SeCure-Asset-Transfers.pdf) protocol. 
+Privacy is at the heart of the Polymesh identity model, with confidential identity providing users the ability to keep their total positions obfuscated from observers. In future releases we will be integrating confidential assets into Polymesh, using the [MERCAT](https://info.polymesh.network/hubfs/Files/MERCAT-white-paper.pdf) protocol. 
 
 ### Compliance
 
