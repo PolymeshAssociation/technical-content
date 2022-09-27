@@ -21,6 +21,7 @@
     "@cloudflare/wrangler": "^1.13.0",
     "@fontsource/ibm-plex-mono": "~4.1.0",
     "@fontsource/inter": "~4.1.0",
+    "@fontsource/poppins": "^4.5.9",
     "cloudinary": "^1.28.1",
     "dotenv": "^14.2.0",
     "gatsby": "2.32.3",

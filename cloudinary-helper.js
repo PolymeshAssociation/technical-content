@@ -10,15 +10,12 @@ class CloudinaryHelper {
         this._setup();
     }
 
-    checkResource(path, id, options) {
-        console.log('Cloudinary helper: check resource ', id);
+    uploadResource(path, id, options) {
+        console.log('Cloudinary helper: upload resource ', id);
 
         if (!options) options = {};
         options.public_id = id;
-
-        this._find(id).then(resource => {
-            if (!resource) this._upload(path, options);
-        });
+        this._upload(path, options);
     }
 
     _upload(path, options) {
@@ -57,6 +54,6 @@ const cloudName = process.env.CLOUDINARY_NAME,
 
 const cloudinaryHelper = new CloudinaryHelper(cloudName, apiKey, apiSecret);
 // check social background image
-cloudinaryHelper.checkResource('./src/gatsby-theme-apollo-docs/assets/polymesh-social-bg.jpg', id);
+cloudinaryHelper.uploadResource('./src/gatsby-theme-apollo-docs/assets/polymesh-social-bg.png', id);
 // check font
-cloudinaryHelper.checkResource('node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2', 'inter.woff2', {resource_type: 'raw', type: 'authenticated'});
+cloudinaryHelper.uploadResource('node_modules/@fontsource/poppins/files/poppins-latin-600-normal.woff2', 'poppins.woff2', {resource_type: 'raw', type: 'authenticated'});
