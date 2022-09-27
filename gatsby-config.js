@@ -26,15 +26,17 @@ console.log(subSites);
 const sidebarConfig = getSidebarConfig();
 
 const shareImageConfig = {
-  cloudName: process.env.CLOUDINARY_NAME || 'dk6bl0g1a',
-  imagePublicID: process.env.CLOUDINARY_IMAGE_ID || 'polimesh-social-bg',
+  cloudName: process.env.CLOUDINARY_NAME || 'dgktrchbn',
+  imagePublicID: process.env.CLOUDINARY_IMAGE_ID || 'polymesh-social-bg',
+  imageWidth: 1600,
+  imageHeight: 800,
   tagline: "",
-  titleFont: "inter.woff2",
-  textAreaWidth: 1200,
-  titleLeftOffset: 80,
+  titleFont: "poppins.woff2",
+  textAreaWidth: 1000,
+  titleLeftOffset: 120,
   titleBottomOffset: 80,
-  titleFontSize: 92,
-  textColor: "ffffff"
+  titleFontSize: 70,
+  textColor: "1E1E1E"
 };
 
 const apolloDocsOptions = {
