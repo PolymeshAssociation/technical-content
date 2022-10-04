@@ -8,11 +8,11 @@ zone_id = ""
 bucket = "./public"
 entry-point = "workers-site"
 
-[env.main]
-name = "technical-content-main"
+[env.mainnet]
+name = "technical-content-mainnet"
+
+[env.testnet]
+name = "technical-content-testnet"
 
 [env.staging]
 name = "technical-content-staging"
-
-[env.review]
-name = "technical-content-review"
