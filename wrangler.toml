@@ -9,10 +9,10 @@ bucket = "./public"
 entry-point = "workers-site"
 
 [env.mainnet]
-name = "technical-content-mainnet"
+name = "mainnet-technical-content"
 
 [env.testnet]
-name = "technical-content-testnet"
+name = "testnet-technical-content"
 
 [env.staging]
-name = "technical-content-staging"
+name = "staging-technical-content"
