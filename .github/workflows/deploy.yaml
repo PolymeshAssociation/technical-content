@@ -3,9 +3,9 @@ name: Deployment
 on:
   push:
     branches:
-      - main
+      - mainnet
+      - testnet
       - staging
-      - review
 
 jobs:
   cloudflare:
